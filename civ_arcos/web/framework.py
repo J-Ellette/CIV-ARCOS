@@ -4,7 +4,6 @@ Emulates FastAPI/Flask without external dependencies.
 """
 
 import json
-import socket
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from typing import Any, Callable, Dict, List, Optional, Tuple
 from urllib.parse import parse_qs, urlparse

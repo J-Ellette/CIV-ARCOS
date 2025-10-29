@@ -153,16 +153,18 @@ class BadgeGenerator:
       <stop offset="1" stop-opacity=".1"/>
     </linearGradient>
   </defs>
-  
+
   <rect rx="3" width="{total_width}" height="20" fill="#555"/>
   <rect rx="3" x="{label_width}" width="{value_width}" height="20" fill="{color}"/>
-  
+
   <rect rx="3" width="{total_width}" height="20" fill="url(#smooth)"/>
-  
-  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+
+  <g fill="#fff" text-anchor="middle" \
+font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
     <text x="{label_width/2}" y="15" fill="#010101" fill-opacity=".3">{label}</text>
     <text x="{label_width/2}" y="14">{label}</text>
-    <text x="{label_width + value_width/2}" y="15" fill="#010101" fill-opacity=".3">{value}</text>
+    <text x="{label_width + value_width/2}" y="15" \
+fill="#010101" fill-opacity=".3">{value}</text>
     <text x="{label_width + value_width/2}" y="14">{value}</text>
   </g>
 </svg>"""
