@@ -1,5 +1,7 @@
 # Quick Start Guide
 
+**CIV-ARCOS** - *"Military-grade assurance for civilian code"*
+
 Get started with CIV-ARCOS in 5 minutes!
 
 ## Installation

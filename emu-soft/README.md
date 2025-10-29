@@ -1,5 +1,9 @@
 # Emulated Software
 
+**CIV-ARCOS: Civilian Assurance-based Risk Computation and Orchestration System**
+
+*"Military-grade assurance for civilian code"*
+
 This directory contains copies of all software, scripts, and code that were created by emulating existing tools and technologies.
 
 ## Quick Reference

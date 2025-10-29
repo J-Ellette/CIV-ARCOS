@@ -12,7 +12,7 @@ setup(
     name="civ-arcos",
     version="0.1.0",
     author="CIV-ARCOS Project",
-    description="Civilian Assurance-based Risk Computation and Orchestration System",
+    description="Civilian Assurance-based Risk Computation and Orchestration System - Military-grade assurance for civilian code",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/J-Ellette/CIV-ARCOS",

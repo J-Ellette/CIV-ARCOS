@@ -1,5 +1,9 @@
 # Contributing to CIV-ARCOS
 
+**Civilian Assurance-based Risk Computation and Orchestration System**
+
+*"Military-grade assurance for civilian code"*
+
 Thank you for your interest in contributing to CIV-ARCOS! This document provides guidelines and instructions for contributing.
 
 ## Development Setup

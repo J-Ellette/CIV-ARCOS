@@ -1,5 +1,8 @@
 """
 API ecosystem for CIV-ARCOS.
+
+Civilian Assurance-based Risk Computation and Orchestration System
+"Military-grade assurance for civilian code"
 """
 
 from civ_arcos.api.ecosystem import (

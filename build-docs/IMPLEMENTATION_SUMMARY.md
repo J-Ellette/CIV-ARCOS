@@ -4,6 +4,8 @@
 
 **CIV-ARCOS** (Civilian Assurance-based Risk Computation and Orchestration System) is a civilian version of military-grade software assurance following proven ARCOS methodologies.
 
+*"Military-grade assurance for civilian code"*
+
 **Status:** Step 1 Complete ✅
 
 ## What Was Implemented

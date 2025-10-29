@@ -1,5 +1,9 @@
 # Build Documentation
 
+**CIV-ARCOS: Civilian Assurance-based Risk Computation and Orchestration System**
+
+*"Military-grade assurance for civilian code"*
+
 This directory contains all the step-by-step implementation guides and summaries for the CIV-ARCOS project.
 
 ## Contents
