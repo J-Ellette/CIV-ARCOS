@@ -1,6 +1,7 @@
 """
 Web dashboard for CIV-ARCOS quality metrics and assurance cases.
 Custom HTML generation without template engines (no Jinja2/Django templates).
+Now using United States Web Design System (USWDS) for accessibility and consistency.
 """
 
 from typing import Dict, List, Any
@@ -11,22 +12,25 @@ class DashboardGenerator:
     Generate HTML dashboard pages without template engines.
     All HTML is generated programmatically following the requirement
     to not use Django Templates or Jinja2.
+    
+    Uses USWDS (United States Web Design System) for federal-standard
+    design patterns and accessibility compliance.
     """
 
     def __init__(self):
-        """Initialize dashboard generator."""
-        self.base_css = self._get_base_css()
+        """Initialize dashboard generator with USWDS."""
+        self.uswds_version = "3.8.1"
         self.base_js = self._get_base_js()
 
     def generate_home_page(self, stats: Dict[str, Any]) -> str:
         """
-        Generate the dashboard home page.
+        Generate the dashboard home page using USWDS components.
 
         Args:
             stats: System statistics including evidence count, cases, etc.
 
         Returns:
-            Complete HTML page as string
+            Complete HTML page as string with USWDS styling
         """
         evidence_count = stats.get("evidence_count", 0)
         case_count = stats.get("case_count", 0)
@@ -38,78 +42,126 @@ class DashboardGenerator:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CIV-ARCOS Dashboard</title>
-    <style>{self.base_css}</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/css/uswds.min.css">
+    <style>{self._get_custom_css()}</style>
 </head>
 <body>
-    <div class="dashboard">
-        <header class="header">
-            <h1>🛡️ CIV-ARCOS Dashboard</h1>
-            <p class="subtitle">Civilian Assurance-based Risk Computation and Orchestration System</p>
-        </header>
-
-        <nav class="nav">
-            <a href="/dashboard" class="nav-link active">Home</a>
-            <a href="/dashboard/badges" class="nav-link">Badges</a>
-            <a href="/dashboard/assurance" class="nav-link">Assurance Cases</a>
-            <a href="/dashboard/analyze" class="nav-link">Analyze Repository</a>
-        </nav>
-
-        <main class="content">
-            <section class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value">{evidence_count}</div>
-                    <div class="stat-label">Evidence Collected</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">{case_count}</div>
-                    <div class="stat-label">Assurance Cases</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">{badge_types}</div>
-                    <div class="stat-label">Badge Types</div>
-                </div>
-                <div class="stat-card status-running">
-                    <div class="stat-value">✓</div>
-                    <div class="stat-label">System Status</div>
-                </div>
-            </section>
-
-            <section class="features">
-                <h2>Features</h2>
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <h3>📊 Quality Badges</h3>
-                        <p>Generate SVG badges for test coverage, code quality, security, documentation, performance, and accessibility metrics.</p>
+    {self._get_header("Home")}
+    
+    <main id="main-content">
+        <section class="usa-section">
+            <div class="grid-container">
+                <h1 class="usa-prose">🛡️ CIV-ARCOS Dashboard</h1>
+                <p class="usa-intro">Civilian Assurance-based Risk Computation and Orchestration System</p>
+                
+                <div class="grid-row grid-gap margin-top-4">
+                    <div class="tablet:grid-col-3">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <div class="usa-card__body">
+                                    <h3 class="usa-card__heading text-center font-heading-2xl text-primary">{evidence_count}</h3>
+                                    <p class="text-center text-base">Evidence Collected</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="feature-card">
-                        <h3>🔍 Evidence Collection</h3>
-                        <p>Automated evidence collection from GitHub repositories with data provenance tracking.</p>
+                    <div class="tablet:grid-col-3">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <div class="usa-card__body">
+                                    <h3 class="usa-card__heading text-center font-heading-2xl text-primary">{case_count}</h3>
+                                    <p class="text-center text-base">Assurance Cases</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="feature-card">
-                        <h3>📝 Assurance Cases</h3>
-                        <p>Digital Assurance Cases using GSN notation with automated evidence linking.</p>
+                    <div class="tablet:grid-col-3">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <div class="usa-card__body">
+                                    <h3 class="usa-card__heading text-center font-heading-2xl text-primary">{badge_types}</h3>
+                                    <p class="text-center text-base">Badge Types</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="feature-card">
-                        <h3>🔒 Security Scanning</h3>
-                        <p>SAST vulnerability detection for SQL injection, XSS, hardcoded secrets, and more.</p>
+                    <div class="tablet:grid-col-3">
+                        <div class="usa-card bg-success-lighter">
+                            <div class="usa-card__container">
+                                <div class="usa-card__body">
+                                    <h3 class="usa-card__heading text-center font-heading-2xl text-success">✓</h3>
+                                    <p class="text-center text-base">System Status</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </section>
-
-            <section class="quick-actions">
-                <h2>Quick Actions</h2>
-                <div class="action-buttons">
-                    <a href="/dashboard/analyze" class="btn btn-primary">Analyze Repository</a>
-                    <a href="/dashboard/badges" class="btn btn-secondary">View Badges</a>
-                    <a href="/api" class="btn btn-secondary">API Documentation</a>
+                
+                <h2 class="margin-top-5">Features</h2>
+                <div class="grid-row grid-gap margin-top-3">
+                    <div class="tablet:grid-col-6">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">📊 Quality Badges</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <p>Generate SVG badges for test coverage, code quality, security, documentation, performance, and accessibility metrics.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tablet:grid-col-6">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">🔍 Evidence Collection</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <p>Automated evidence collection from GitHub repositories with data provenance tracking.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tablet:grid-col-6">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">📝 Assurance Cases</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <p>Digital Assurance Cases using GSN notation with automated evidence linking.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tablet:grid-col-6">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">🔒 Security Scanning</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <p>SAST vulnerability detection for SQL injection, XSS, hardcoded secrets, and more.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </section>
-        </main>
-
-        <footer class="footer">
-            <p>CIV-ARCOS v0.1.0 | <a href="https://github.com/J-Ellette/CIV-ARCOS">GitHub</a></p>
-        </footer>
-    </div>
+                
+                <h2 class="margin-top-5">Quick Actions</h2>
+                <div class="margin-top-3">
+                    <a href="/dashboard/analyze" class="usa-button margin-right-1">Analyze Repository</a>
+                    <a href="/dashboard/badges" class="usa-button usa-button--outline margin-right-1">View Badges</a>
+                    <a href="/api" class="usa-button usa-button--outline">API Documentation</a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    {self._get_footer()}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/js/uswds.min.js"></script>
     <script>{self.base_js}</script>
 </body>
 </html>"""
@@ -117,13 +169,13 @@ class DashboardGenerator:
 
     def generate_badge_page(self, badges: List[Dict[str, str]]) -> str:
         """
-        Generate the badge showcase page.
+        Generate the badge showcase page using USWDS components.
 
         Args:
             badges: List of badge configurations
 
         Returns:
-            Complete HTML page as string
+            Complete HTML page as string with USWDS styling
         """
         badge_examples = self._generate_badge_examples()
 
@@ -133,58 +185,56 @@ class DashboardGenerator:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quality Badges - CIV-ARCOS</title>
-    <style>{self.base_css}</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/css/uswds.min.css">
+    <style>{self._get_custom_css()}</style>
 </head>
 <body>
-    <div class="dashboard">
-        <header class="header">
-            <h1>🏅 Quality Badges</h1>
-            <p class="subtitle">Dynamic SVG badge generation for quality metrics</p>
-        </header>
-
-        <nav class="nav">
-            <a href="/dashboard" class="nav-link">Home</a>
-            <a href="/dashboard/badges" class="nav-link active">Badges</a>
-            <a href="/dashboard/assurance" class="nav-link">Assurance Cases</a>
-            <a href="/dashboard/analyze" class="nav-link">Analyze Repository</a>
-        </nav>
-
-        <main class="content">
-            <section class="badge-section">
-                <h2>Available Badge Types</h2>
+    {self._get_header("Badges")}
+    
+    <main id="main-content">
+        <section class="usa-section">
+            <div class="grid-container">
+                <h1 class="usa-prose">🏅 Quality Badges</h1>
+                <p class="usa-intro">Dynamic SVG badge generation for quality metrics</p>
+                
+                <h2 class="margin-top-5">Available Badge Types</h2>
                 {badge_examples}
-            </section>
-
-            <section class="badge-generator">
-                <h2>Badge Generator</h2>
-                <div class="generator-form">
-                    <p>Generate custom badges using the API endpoints:</p>
-                    <div class="code-block">
+                
+                <h2 class="margin-top-5">Badge Generator</h2>
+                <div class="usa-alert usa-alert--info margin-top-3">
+                    <div class="usa-alert__body">
+                        <h4 class="usa-alert__heading">API Endpoints</h4>
+                        <p class="usa-alert__text">Generate custom badges using the following API endpoints:</p>
+                    </div>
+                </div>
+                
+                <div class="usa-prose margin-top-3">
+                    <div class="bg-base-lightest padding-2 margin-y-1">
                         <code>GET /api/badge/coverage/owner/repo?coverage=95.5</code>
                     </div>
-                    <div class="code-block">
+                    <div class="bg-base-lightest padding-2 margin-y-1">
                         <code>GET /api/badge/quality/owner/repo?score=85</code>
                     </div>
-                    <div class="code-block">
+                    <div class="bg-base-lightest padding-2 margin-y-1">
                         <code>GET /api/badge/security/owner/repo?vulnerabilities=0</code>
                     </div>
-                    <div class="code-block">
+                    <div class="bg-base-lightest padding-2 margin-y-1">
                         <code>GET /api/badge/documentation/owner/repo?score=90</code>
                     </div>
-                    <div class="code-block">
+                    <div class="bg-base-lightest padding-2 margin-y-1">
                         <code>GET /api/badge/performance/owner/repo?score=88</code>
                     </div>
-                    <div class="code-block">
+                    <div class="bg-base-lightest padding-2 margin-y-1">
                         <code>GET /api/badge/accessibility/owner/repo?level=AA&issues=0</code>
                     </div>
                 </div>
-            </section>
-        </main>
-
-        <footer class="footer">
-            <p>CIV-ARCOS v0.1.0 | <a href="https://github.com/J-Ellette/CIV-ARCOS">GitHub</a></p>
-        </footer>
-    </div>
+            </div>
+        </section>
+    </main>
+    
+    {self._get_footer()}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/js/uswds.min.js"></script>
     <script>{self.base_js}</script>
 </body>
 </html>"""
@@ -192,10 +242,10 @@ class DashboardGenerator:
 
     def generate_analyze_page(self) -> str:
         """
-        Generate the repository analysis page.
+        Generate the repository analysis page using USWDS form components.
 
         Returns:
-            Complete HTML page as string
+            Complete HTML page as string with USWDS styling
         """
         html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -203,79 +253,98 @@ class DashboardGenerator:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analyze Repository - CIV-ARCOS</title>
-    <style>{self.base_css}</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/css/uswds.min.css">
+    <style>{self._get_custom_css()}</style>
 </head>
 <body>
-    <div class="dashboard">
-        <header class="header">
-            <h1>🔍 Analyze Repository</h1>
-            <p class="subtitle">Collect evidence and generate quality metrics</p>
-        </header>
-
-        <nav class="nav">
-            <a href="/dashboard" class="nav-link">Home</a>
-            <a href="/dashboard/badges" class="nav-link">Badges</a>
-            <a href="/dashboard/assurance" class="nav-link">Assurance Cases</a>
-            <a href="/dashboard/analyze" class="nav-link active">Analyze Repository</a>
-        </nav>
-
-        <main class="content">
-            <section class="analyze-form">
-                <h2>Repository Analysis</h2>
-                <form id="analyzeForm" onsubmit="analyzeRepository(event)">
-                    <div class="form-group">
-                        <label for="repoUrl">Repository URL</label>
-                        <input type="text" id="repoUrl" name="repoUrl"
-                               placeholder="owner/repo or https://github.com/owner/repo"
-                               required>
-                        <small>Enter GitHub repository (e.g., torvalds/linux)</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="commitHash">Commit Hash (Optional)</label>
-                        <input type="text" id="commitHash" name="commitHash"
-                               placeholder="Leave empty for latest">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Analysis Options</label>
-                        <div class="checkbox-group">
-                            <label>
-                                <input type="checkbox" name="collectEvidence" checked>
-                                Collect Evidence from GitHub
+    {self._get_header("Analyze Repository")}
+    
+    <main id="main-content">
+        <section class="usa-section">
+            <div class="grid-container">
+                <h1 class="usa-prose">🔍 Analyze Repository</h1>
+                <p class="usa-intro">Collect evidence and generate quality metrics</p>
+                
+                <form class="usa-form usa-form--large margin-top-5" id="analyzeForm" onsubmit="analyzeRepository(event)">
+                    <fieldset class="usa-fieldset">
+                        <legend class="usa-legend usa-legend--large">Repository Analysis</legend>
+                        
+                        <div class="usa-form-group">
+                            <label class="usa-label" for="repoUrl">
+                                Repository URL <span class="usa-hint">(Required)</span>
                             </label>
-                            <label>
-                                <input type="checkbox" name="generateCase" checked>
-                                Generate Assurance Case
-                            </label>
+                            <input class="usa-input" id="repoUrl" name="repoUrl" type="text"
+                                   placeholder="owner/repo or https://github.com/owner/repo" required>
+                            <span class="usa-hint">Enter GitHub repository (e.g., torvalds/linux)</span>
                         </div>
-                    </div>
 
-                    <button type="submit" class="btn btn-primary">Analyze Repository</button>
+                        <div class="usa-form-group">
+                            <label class="usa-label" for="commitHash">
+                                Commit Hash <span class="usa-hint">(Optional)</span>
+                            </label>
+                            <input class="usa-input" id="commitHash" name="commitHash" type="text"
+                                   placeholder="Leave empty for latest">
+                        </div>
+
+                        <fieldset class="usa-fieldset">
+                            <legend class="usa-legend">Analysis Options</legend>
+                            <div class="usa-checkbox">
+                                <input class="usa-checkbox__input" id="collectEvidence" name="collectEvidence" 
+                                       type="checkbox" checked value="yes">
+                                <label class="usa-checkbox__label" for="collectEvidence">
+                                    Collect Evidence from GitHub
+                                </label>
+                            </div>
+                            <div class="usa-checkbox">
+                                <input class="usa-checkbox__input" id="generateCase" name="generateCase" 
+                                       type="checkbox" checked value="yes">
+                                <label class="usa-checkbox__label" for="generateCase">
+                                    Generate Assurance Case
+                                </label>
+                            </div>
+                        </fieldset>
+
+                        <button class="usa-button" type="submit">Analyze Repository</button>
+                    </fieldset>
                 </form>
 
-                <div id="results" class="results-section" style="display: none;">
+                <div id="results" class="margin-top-5" style="display: none;">
                     <h3>Analysis Results</h3>
                     <div id="resultsContent"></div>
                 </div>
-            </section>
-
-            <section class="info">
-                <h2>How It Works</h2>
-                <ol class="info-list">
-                    <li>Enter a GitHub repository URL or owner/repo format</li>
-                    <li>System collects evidence from the repository</li>
-                    <li>Runs automated analysis (static, security, tests)</li>
-                    <li>Generates digital assurance case with GSN notation</li>
-                    <li>Creates quality badges for embedding</li>
-                </ol>
-            </section>
-        </main>
-
-        <footer class="footer">
-            <p>CIV-ARCOS v0.1.0 | <a href="https://github.com/J-Ellette/CIV-ARCOS">GitHub</a></p>
-        </footer>
-    </div>
+                
+                <div class="margin-top-5">
+                    <h2>How It Works</h2>
+                    <ol class="usa-process-list">
+                        <li class="usa-process-list__item">
+                            <h4 class="usa-process-list__heading">Enter Repository</h4>
+                            <p>Enter a GitHub repository URL or owner/repo format</p>
+                        </li>
+                        <li class="usa-process-list__item">
+                            <h4 class="usa-process-list__heading">Collect Evidence</h4>
+                            <p>System collects evidence from the repository</p>
+                        </li>
+                        <li class="usa-process-list__item">
+                            <h4 class="usa-process-list__heading">Run Analysis</h4>
+                            <p>Runs automated analysis (static, security, tests)</p>
+                        </li>
+                        <li class="usa-process-list__item">
+                            <h4 class="usa-process-list__heading">Generate Case</h4>
+                            <p>Generates digital assurance case with GSN notation</p>
+                        </li>
+                        <li class="usa-process-list__item">
+                            <h4 class="usa-process-list__heading">Create Badges</h4>
+                            <p>Creates quality badges for embedding</p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    {self._get_footer()}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/js/uswds.min.js"></script>
     <script>{self.base_js}</script>
     <script>
         async function analyzeRepository(event) {{
@@ -291,7 +360,7 @@ class DashboardGenerator:
             const resultsContent = document.getElementById('resultsContent');
 
             resultsDiv.style.display = 'block';
-            resultsContent.innerHTML = '<p class="loading">Analyzing repository...</p>';
+            resultsContent.innerHTML = '<div class="usa-alert usa-alert--info"><div class="usa-alert__body"><p class="usa-alert__text">Analyzing repository...</p></div></div>';
 
             try {{
                 if (collectEvidence) {{
@@ -309,27 +378,34 @@ class DashboardGenerator:
 
                     if (data.success) {{
                         resultsContent.innerHTML = `
-                            <div class="success-message">
-                                <h4>✓ Evidence collected successfully</h4>
-                                <p>Collected ${{data.evidence_collected}} pieces of evidence</p>
-                                <p>Evidence IDs: ${{data.evidence_ids.slice(0, 3).join(', ')}}...</p>
+                            <div class="usa-alert usa-alert--success">
+                                <div class="usa-alert__body">
+                                    <h4 class="usa-alert__heading">Evidence collected successfully</h4>
+                                    <p class="usa-alert__text">Collected ${{data.evidence_collected}} pieces of evidence</p>
+                                    <p class="usa-alert__text">Evidence IDs: ${{data.evidence_ids.slice(0, 3).join(', ')}}...</p>
+                                </div>
                             </div>
                         `;
                     }} else {{
                         resultsContent.innerHTML = `
-                            <div class="error-message">
-                                <h4>✗ Error: ${{data.error}}</h4>
+                            <div class="usa-alert usa-alert--error">
+                                <div class="usa-alert__body">
+                                    <h4 class="usa-alert__heading">Error</h4>
+                                    <p class="usa-alert__text">${{data.error}}</p>
+                                </div>
                             </div>
                         `;
                     }}
                 }} else {{
-                    resultsContent.innerHTML = '<p class="info-message">Analysis options not selected</p>';
+                    resultsContent.innerHTML = '<div class="usa-alert usa-alert--warning"><div class="usa-alert__body"><p class="usa-alert__text">Analysis options not selected</p></div></div>';
                 }}
             }} catch (error) {{
                 resultsContent.innerHTML = `
-                    <div class="error-message">
-                        <h4>✗ Error analyzing repository</h4>
-                        <p>${{error.message}}</p>
+                    <div class="usa-alert usa-alert--error">
+                        <div class="usa-alert__body">
+                            <h4 class="usa-alert__heading">Error analyzing repository</h4>
+                            <p class="usa-alert__text">${{error.message}}</p>
+                        </div>
                     </div>
                 `;
             }}
@@ -341,13 +417,13 @@ class DashboardGenerator:
 
     def generate_assurance_page(self, cases: List[Dict[str, Any]]) -> str:
         """
-        Generate the assurance cases page.
+        Generate the assurance cases page using USWDS components.
 
         Args:
             cases: List of assurance case summaries
 
         Returns:
-            Complete HTML page as string
+            Complete HTML page as string with USWDS styling
         """
         cases_html = self._generate_cases_list(cases)
 
@@ -357,525 +433,363 @@ class DashboardGenerator:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assurance Cases - CIV-ARCOS</title>
-    <style>{self.base_css}</style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/css/uswds.min.css">
+    <style>{self._get_custom_css()}</style>
 </head>
 <body>
-    <div class="dashboard">
-        <header class="header">
-            <h1>📝 Digital Assurance Cases</h1>
-            <p class="subtitle">GSN-based quality arguments with evidence linking</p>
-        </header>
-
-        <nav class="nav">
-            <a href="/dashboard" class="nav-link">Home</a>
-            <a href="/dashboard/badges" class="nav-link">Badges</a>
-            <a href="/dashboard/assurance" class="nav-link active">Assurance Cases</a>
-            <a href="/dashboard/analyze" class="nav-link">Analyze Repository</a>
-        </nav>
-
-        <main class="content">
-            <section class="cases-section">
-                <h2>Available Assurance Cases</h2>
+    {self._get_header("Assurance Cases")}
+    
+    <main id="main-content">
+        <section class="usa-section">
+            <div class="grid-container">
+                <h1 class="usa-prose">📝 Digital Assurance Cases</h1>
+                <p class="usa-intro">GSN-based quality arguments with evidence linking</p>
+                
+                <h2 class="margin-top-5">Available Assurance Cases</h2>
                 {cases_html}
-            </section>
-
-            <section class="templates-section">
-                <h2>Assurance Templates</h2>
-                <div class="template-grid">
-                    <div class="template-card">
-                        <h3>Code Quality</h3>
-                        <p>Argues code meets quality standards through complexity and maintainability metrics</p>
+                
+                <h2 class="margin-top-5">Assurance Templates</h2>
+                <div class="grid-row grid-gap margin-top-3">
+                    <div class="tablet:grid-col-6 desktop:grid-col-4">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">Code Quality</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <p>Argues code meets quality standards through complexity and maintainability metrics</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="template-card">
-                        <h3>Test Coverage</h3>
-                        <p>Argues system is adequately tested through coverage metrics</p>
+                    <div class="tablet:grid-col-6 desktop:grid-col-4">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">Test Coverage</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <p>Argues system is adequately tested through coverage metrics</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="template-card">
-                        <h3>Security Assurance</h3>
-                        <p>Argues system is secure through vulnerability scanning</p>
+                    <div class="tablet:grid-col-6 desktop:grid-col-4">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">Security Assurance</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <p>Argues system is secure through vulnerability scanning</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="template-card">
-                        <h3>Maintainability</h3>
-                        <p>Argues system is maintainable through code style and documentation</p>
+                    <div class="tablet:grid-col-6 desktop:grid-col-4">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">Maintainability</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <p>Argues system is maintainable through code style and documentation</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="template-card">
-                        <h3>Comprehensive Quality</h3>
-                        <p>Complete quality argument covering all aspects</p>
+                    <div class="tablet:grid-col-6 desktop:grid-col-4">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">Comprehensive Quality</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <p>Complete quality argument covering all aspects</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </section>
-        </main>
-
-        <footer class="footer">
-            <p>CIV-ARCOS v0.1.0 | <a href="https://github.com/J-Ellette/CIV-ARCOS">GitHub</a></p>
-        </footer>
-    </div>
+            </div>
+        </section>
+    </main>
+    
+    {self._get_footer()}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/js/uswds.min.js"></script>
     <script>{self.base_js}</script>
 </body>
 </html>"""
         return html
 
     def _generate_badge_examples(self) -> str:
-        """Generate HTML for badge examples."""
+        """Generate HTML for badge examples using USWDS cards."""
         return """
-        <div class="badge-grid">
-            <div class="badge-example">
-                <h3>Coverage Badge</h3>
-                <img src="/api/badge/coverage/example/repo?coverage=95.5" alt="Coverage Badge">
-                <p class="badge-desc">Gold: >95%, Silver: >80%, Bronze: >60%</p>
+        <div class="grid-row grid-gap margin-top-3">
+            <div class="tablet:grid-col-6 desktop:grid-col-4">
+                <div class="usa-card">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Coverage Badge</h3>
+                        </header>
+                        <div class="usa-card__body text-center">
+                            <img src="/api/badge/coverage/example/repo?coverage=95.5" alt="Coverage Badge">
+                            <p class="margin-top-2 text-base-dark">Gold: >95%, Silver: >80%, Bronze: >60%</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="badge-example">
-                <h3>Quality Badge</h3>
-                <img src="/api/badge/quality/example/repo?score=85" alt="Quality Badge">
-                <p class="badge-desc">Based on code quality score (0-100)</p>
+            <div class="tablet:grid-col-6 desktop:grid-col-4">
+                <div class="usa-card">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Quality Badge</h3>
+                        </header>
+                        <div class="usa-card__body text-center">
+                            <img src="/api/badge/quality/example/repo?score=85" alt="Quality Badge">
+                            <p class="margin-top-2 text-base-dark">Based on code quality score (0-100)</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="badge-example">
-                <h3>Security Badge</h3>
-                <img src="/api/badge/security/example/repo?vulnerabilities=0" alt="Security Badge">
-                <p class="badge-desc">Shows vulnerability count</p>
+            <div class="tablet:grid-col-6 desktop:grid-col-4">
+                <div class="usa-card">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Security Badge</h3>
+                        </header>
+                        <div class="usa-card__body text-center">
+                            <img src="/api/badge/security/example/repo?vulnerabilities=0" alt="Security Badge">
+                            <p class="margin-top-2 text-base-dark">Shows vulnerability count</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="badge-example">
-                <h3>Documentation Badge</h3>
-                <img src="/api/badge/documentation/example/repo?score=90" alt="Documentation Badge">
-                <p class="badge-desc">API docs, README, inline comments</p>
+            <div class="tablet:grid-col-6 desktop:grid-col-4">
+                <div class="usa-card">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Documentation Badge</h3>
+                        </header>
+                        <div class="usa-card__body text-center">
+                            <img src="/api/badge/documentation/example/repo?score=90" alt="Documentation Badge">
+                            <p class="margin-top-2 text-base-dark">API docs, README, inline comments</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="badge-example">
-                <h3>Performance Badge</h3>
-                <img src="/api/badge/performance/example/repo?score=88" alt="Performance Badge">
-                <p class="badge-desc">Load testing and profiling results</p>
+            <div class="tablet:grid-col-6 desktop:grid-col-4">
+                <div class="usa-card">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Performance Badge</h3>
+                        </header>
+                        <div class="usa-card__body text-center">
+                            <img src="/api/badge/performance/example/repo?score=88" alt="Performance Badge">
+                            <p class="margin-top-2 text-base-dark">Load testing and profiling results</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="badge-example">
-                <h3>Accessibility Badge</h3>
-                <img src="/api/badge/accessibility/example/repo?level=AA&issues=0" alt="Accessibility Badge">
-                <p class="badge-desc">WCAG compliance level (A, AA, AAA)</p>
+            <div class="tablet:grid-col-6 desktop:grid-col-4">
+                <div class="usa-card">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Accessibility Badge</h3>
+                        </header>
+                        <div class="usa-card__body text-center">
+                            <img src="/api/badge/accessibility/example/repo?level=AA&issues=0" alt="Accessibility Badge">
+                            <p class="margin-top-2 text-base-dark">WCAG compliance level (A, AA, AAA)</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         """
 
     def _generate_cases_list(self, cases: List[Dict[str, Any]]) -> str:
-        """Generate HTML for assurance cases list."""
+        """Generate HTML for assurance cases list using USWDS cards."""
         if not cases:
-            return '<p class="empty-message">No assurance cases available. Create one by analyzing a repository.</p>'
+            return '''<div class="usa-alert usa-alert--info margin-top-3">
+                <div class="usa-alert__body">
+                    <p class="usa-alert__text">No assurance cases available. Create one by analyzing a repository.</p>
+                </div>
+            </div>'''
 
-        cases_html = '<div class="cases-list">'
+        cases_html = '<div class="grid-row grid-gap margin-top-3">'
         for case in cases:
             case_id = case.get("case_id", "unknown")
             title = case.get("title", "Untitled Case")
             node_count = case.get("node_count", 0)
             cases_html += f"""
-            <div class="case-card">
-                <h3>{title}</h3>
-                <p class="case-id">ID: {case_id}</p>
-                <p class="case-nodes">{node_count} GSN nodes</p>
-                <div class="case-actions">
-                    <a href="/api/assurance/{case_id}" class="btn btn-small">View Details</a>
-                    <a href="/api/assurance/{case_id}/visualize?format=svg" class="btn btn-small">Visualize</a>
+            <div class="tablet:grid-col-6 desktop:grid-col-4">
+                <div class="usa-card">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">{title}</h3>
+                        </header>
+                        <div class="usa-card__body">
+                            <p class="text-base-dark"><strong>ID:</strong> {case_id}</p>
+                            <p class="text-base-dark">{node_count} GSN nodes</p>
+                        </div>
+                        <div class="usa-card__footer">
+                            <a href="/api/assurance/{case_id}" class="usa-button usa-button--outline">View Details</a>
+                            <a href="/api/assurance/{case_id}/visualize?format=svg" class="usa-button usa-button--outline margin-left-1">Visualize</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             """
         cases_html += "</div>"
         return cases_html
 
-    def _get_base_css(self) -> str:
-        """Get base CSS styles for dashboard."""
+    def _get_header(self, active_page: str) -> str:
+        """
+        Generate USWDS header with navigation.
+        
+        Args:
+            active_page: Name of the currently active page
+            
+        Returns:
+            HTML for USWDS header
+        """
+        pages = {
+            "Home": "/dashboard",
+            "Badges": "/dashboard/badges",
+            "Assurance Cases": "/dashboard/assurance",
+            "Analyze Repository": "/dashboard/analyze"
+        }
+        
+        nav_items = ""
+        for page_name, page_url in pages.items():
+            active_class = ' usa-current' if page_name == active_page else ''
+            nav_items += f'<li class="usa-nav__primary-item"><a href="{page_url}" class="usa-nav__link{active_class}"><span>{page_name}</span></a></li>'
+        
+        return f"""
+    <a class="usa-skipnav" href="#main-content">Skip to main content</a>
+    <section class="usa-banner" aria-label="Official government website">
+        <div class="usa-accordion">
+            <header class="usa-banner__header">
+                <div class="usa-banner__inner">
+                    <div class="grid-col-auto">
+                        <img class="usa-banner__header-flag" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='11'%3E%3Cpath fill='%23e31c3d' d='M0 0h20v1H0zm0 2h20v1H0zm0 2h20v1H0zm0 2h20v1H0zm0 2h20v1H0z'/%3E%3Cpath fill='%23002868' d='M0 0h9v7H0z'/%3E%3Cpath fill='%23fff' d='M1 1l.3.9h.9l-.7.5.3.9-.8-.6-.8.6.3-.9-.7-.5h.9zm3 0l.3.9h.9l-.7.5.3.9-.8-.6-.8.6.3-.9-.7-.5h.9zm3 0l.3.9h.9l-.7.5.3.9-.8-.6-.8.6.3-.9-.7-.5h.9zM1 3l.3.9h.9l-.7.5.3.9-.8-.6-.8.6.3-.9-.7-.5h.9zm3 0l.3.9h.9l-.7.5.3.9-.8-.6-.8.6.3-.9-.7-.5h.9zm3 0l.3.9h.9l-.7.5.3.9-.8-.6-.8.6.3-.9-.7-.5h.9zM1 5l.3.9h.9l-.7.5.3.9-.8-.6-.8.6.3-.9-.7-.5h.9zm3 0l.3.9h.9l-.7.5.3.9-.8-.6-.8.6.3-.9-.7-.5h.9zm3 0l.3.9h.9l-.7.5.3.9-.8-.6-.8.6.3-.9-.7-.5h.9z'/%3E%3C/svg%3E" alt="U.S. flag">
+                    </div>
+                    <div class="grid-col-fill tablet:grid-col-auto">
+                        <p class="usa-banner__header-text">An official software assurance system</p>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </section>
+    <header class="usa-header usa-header--extended" role="banner">
+        <div class="usa-navbar">
+            <div class="usa-logo" id="extended-logo">
+                <em class="usa-logo__text"><a href="/dashboard" title="CIV-ARCOS Home" aria-label="CIV-ARCOS Home">CIV-ARCOS</a></em>
+            </div>
+            <button class="usa-menu-btn">Menu</button>
+        </div>
+        <nav aria-label="Primary navigation" class="usa-nav" role="navigation">
+            <div class="usa-nav__inner">
+                <button class="usa-nav__close"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E" alt="Close"></button>
+                <ul class="usa-nav__primary usa-accordion">
+                    {nav_items}
+                </ul>
+            </div>
+        </nav>
+    </header>
+        """
+    
+    def _get_footer(self) -> str:
+        """Generate USWDS footer."""
         return """
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+    <footer class="usa-footer usa-footer--slim">
+        <div class="grid-container usa-footer__return-to-top">
+            <a href="#">Return to top</a>
+        </div>
+        <div class="usa-footer__primary-section">
+            <div class="usa-footer__primary-container grid-row">
+                <div class="mobile-lg:grid-col-12">
+                    <nav class="usa-footer__nav" aria-label="Footer navigation">
+                        <div class="grid-row grid-gap-4">
+                            <div class="mobile-lg:grid-col-6 desktop:grid-col-3">
+                                <section class="usa-footer__primary-content usa-footer__primary-content--collapsible">
+                                    <h4 class="usa-footer__primary-link">CIV-ARCOS</h4>
+                                    <p class="text-base-light">Civilian Assurance-based Risk Computation and Orchestration System</p>
+                                </section>
+                            </div>
+                            <div class="mobile-lg:grid-col-6 desktop:grid-col-3">
+                                <section class="usa-footer__primary-content usa-footer__primary-content--collapsible">
+                                    <h4 class="usa-footer__primary-link">Resources</h4>
+                                    <ul class="usa-list usa-list--unstyled">
+                                        <li class="usa-footer__secondary-link"><a href="/dashboard">Dashboard</a></li>
+                                        <li class="usa-footer__secondary-link"><a href="/api">API Docs</a></li>
+                                        <li class="usa-footer__secondary-link"><a href="https://github.com/J-Ellette/CIV-ARCOS">GitHub</a></li>
+                                    </ul>
+                                </section>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="usa-footer__secondary-section">
+            <div class="grid-container">
+                <div class="usa-footer__logo grid-row grid-gap-2">
+                    <div class="grid-col-auto">
+                        <p class="usa-footer__contact-heading">CIV-ARCOS v0.1.0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+        """
+    
+    def _get_custom_css(self) -> str:
+        """
+        Get custom CSS to complement USWDS styles.
+        Only includes minimal overrides and additions.
+        """
+        return """
+        /* Custom CSS to complement USWDS */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .dashboard {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 40px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .nav {
-            display: flex;
-            background: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        .nav-link {
-            flex: 1;
-            padding: 15px;
-            text-align: center;
-            text-decoration: none;
-            color: #495057;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .nav-link:hover {
-            background: #e9ecef;
-            color: #667eea;
-        }
-
-        .nav-link.active {
-            background: white;
-            color: #667eea;
-            border-bottom: 3px solid #667eea;
-        }
-
-        .content {
-            padding: 40px;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .stat-card.status-running {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
-
-        .stat-value {
-            font-size: 3em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            font-size: 1em;
-            opacity: 0.9;
-        }
-
-        .features h2, .quick-actions h2, .badge-section h2,
-        .analyze-form h2, .info h2, .cases-section h2, .templates-section h2 {
-            color: #495057;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        .feature-grid, .template-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .feature-card, .template-card {
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-
-        .feature-card h3, .template-card h3 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-
-        .feature-card p, .template-card p {
-            color: #6c757d;
-            line-height: 1.6;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: #667eea;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #5568d3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 0.9em;
-        }
-
-        .badge-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .badge-example {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .badge-example h3 {
-            color: #495057;
-            margin-bottom: 15px;
-        }
-
-        .badge-example img {
-            margin: 15px 0;
-        }
-
-        .badge-desc {
-            color: #6c757d;
-            font-size: 0.9em;
-        }
-
-        .badge-generator {
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 8px;
-            margin-top: 40px;
-        }
-
-        .code-block {
-            background: #2d3748;
-            color: #e2e8f0;
-            padding: 12px 16px;
-            border-radius: 4px;
-            margin: 10px 0;
-            font-family: 'Courier New', monospace;
-            overflow-x: auto;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            color: #495057;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-
-        .form-group input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #dee2e6;
-            border-radius: 6px;
-            font-size: 1em;
-            transition: border-color 0.3s;
-        }
-
-        .form-group input[type="text"]:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .form-group small {
-            display: block;
-            color: #6c757d;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
-
-        .checkbox-group {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            min-height: 100vh;
         }
-
-        .checkbox-group label {
+        
+        main {
+            flex: 1 0 auto;
+        }
+        
+        footer {
+            flex-shrink: 0;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        /* Ensure cards have consistent height in grids */
+        .usa-card {
+            height: 100%;
+        }
+        
+        .usa-card__container {
             display: flex;
-            align-items: center;
-            color: #495057;
-            font-weight: normal;
+            flex-direction: column;
+            height: 100%;
         }
-
-        .checkbox-group input[type="checkbox"] {
-            margin-right: 8px;
+        
+        .usa-card__body {
+            flex: 1;
         }
-
-        .results-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .success-message {
-            background: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-            padding: 15px;
-            border-radius: 6px;
-        }
-
-        .error-message {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 6px;
-        }
-
-        .info-message {
-            background: #d1ecf1;
-            border: 1px solid #bee5eb;
-            color: #0c5460;
-            padding: 15px;
-            border-radius: 6px;
-        }
-
-        .loading {
-            text-align: center;
-            color: #667eea;
-            font-style: italic;
-        }
-
-        .info-list {
-            background: #f8f9fa;
-            padding: 20px 20px 20px 40px;
-            border-radius: 8px;
-            line-height: 1.8;
-        }
-
-        .info-list li {
-            color: #495057;
-            margin-bottom: 10px;
-        }
-
-        .cases-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .case-card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-
-        .case-card h3 {
-            color: #495057;
-            margin-bottom: 10px;
-        }
-
-        .case-id, .case-nodes {
-            color: #6c757d;
-            font-size: 0.9em;
-            margin: 5px 0;
-        }
-
-        .case-actions {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .empty-message {
-            text-align: center;
-            color: #6c757d;
-            padding: 40px;
-            font-style: italic;
-        }
-
-        .footer {
-            background: #f8f9fa;
-            padding: 20px;
-            text-align: center;
-            color: #6c757d;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .footer a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .dashboard {
-                border-radius: 0;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .nav {
-                flex-direction: column;
-            }
-
-            .content {
-                padding: 20px;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
+        
+        /* Responsive button spacing */
+        @media (max-width: 640px) {
+            .margin-right-1 {
+                margin-right: 0 !important;
+                margin-bottom: 0.5rem;
             }
         }
         """
