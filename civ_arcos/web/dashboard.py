@@ -225,7 +225,7 @@ class DashboardGenerator:
                 <form id="analyzeForm" onsubmit="analyzeRepository(event)">
                     <div class="form-group">
                         <label for="repoUrl">Repository URL</label>
-                        <input type="text" id="repoUrl" name="repoUrl" 
+                        <input type="text" id="repoUrl" name="repoUrl"
                                placeholder="owner/repo or https://github.com/owner/repo"
                                required>
                         <small>Enter GitHub repository (e.g., torvalds/linux)</small>
@@ -233,7 +233,7 @@ class DashboardGenerator:
 
                     <div class="form-group">
                         <label for="commitHash">Commit Hash (Optional)</label>
-                        <input type="text" id="commitHash" name="commitHash" 
+                        <input type="text" id="commitHash" name="commitHash"
                                placeholder="Leave empty for latest">
                     </div>
 
@@ -280,19 +280,19 @@ class DashboardGenerator:
     <script>
         async function analyzeRepository(event) {{
             event.preventDefault();
-            
+
             const form = event.target;
             const repoUrl = form.repoUrl.value;
             const commitHash = form.commitHash.value;
             const collectEvidence = form.collectEvidence.checked;
             const generateCase = form.generateCase.checked;
-            
+
             const resultsDiv = document.getElementById('results');
             const resultsContent = document.getElementById('resultsContent');
-            
+
             resultsDiv.style.display = 'block';
             resultsContent.innerHTML = '<p class="loading">Analyzing repository...</p>';
-            
+
             try {{
                 if (collectEvidence) {{
                     const response = await fetch('/api/evidence/collect', {{
@@ -304,9 +304,9 @@ class DashboardGenerator:
                             source: 'github'
                         }})
                     }});
-                    
+
                     const data = await response.json();
-                    
+
                     if (data.success) {{
                         resultsContent.innerHTML = `
                             <div class="success-message">
@@ -473,7 +473,7 @@ class DashboardGenerator:
                 </div>
             </div>
             """
-        cases_html += '</div>'
+        cases_html += "</div>"
         return cases_html
 
     def _get_base_css(self) -> str:
