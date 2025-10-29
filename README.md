@@ -49,6 +49,16 @@ A civilian version of military-grade software assurance following proven ARCOS m
   - **Security Event Collection**: Real-time security event aggregation and analysis
   - **Performance Metrics**: Distributed tracing and performance monitoring
   - **IriusRisk/Threat Dragon**: Export threat models to industry-standard tools
+- **Advanced Visualization & Reporting**: Executive-friendly reports and risk visualization
+  - **Executive Reports**: Auto-generated PDF/HTML narrative reports with business language
+  - **Risk Heatmaps**: Interactive risk maps showing component-level risk visualization
+  - **Trend Analysis**: Visual analytics for quality and risk trends over time
+  - **Risk Hotspot Detection**: Automatic identification of high-risk components
+- **Plugin SDK & Developer Tools**: Extensibility framework for custom plugins
+  - **Plugin Development Kit**: Base classes and templates for 4 plugin types (collector, metric, compliance, visualization)
+  - **Plugin Scaffolding**: Automated plugin project generation with tests and documentation
+  - **Development Environment**: Docker-based sandbox for plugin development and testing
+  - **Plugin Documentation**: Comprehensive guides and API reference for plugin developers
 - **REST API**: Clean API endpoints for evidence collection, analysis, badge generation, assurance cases, and status queries
 - **Blockchain-like Integrity**: Immutable audit trails with cryptographic checksums for evidence authenticity
 - **Custom Web Framework**: Built from scratch without Django/FastAPI/Flask dependencies
@@ -354,6 +364,88 @@ Compare project metrics to benchmark
 
 **GET /api/ecosystem/documentation**
 Get comprehensive API ecosystem documentation
+
+### Advanced Visualization & Reporting
+
+**POST /api/reports/executive/generate**
+Generate executive narrative report:
+```json
+{
+  "project_name": "MyProject",
+  "project_metrics": {
+    "coverage": 85.0,
+    "code_quality": 82.0,
+    "vulnerability_count": 2
+  },
+  "trend_analysis": {...},
+  "risk_predictions": [...]
+}
+```
+
+**POST /api/reports/executive/html**
+Generate executive report as HTML (same request body as above)
+
+**POST /api/reports/executive/pdf**
+Generate executive report PDF data (same request body as above)
+
+**POST /api/visualization/risk-map/generate**
+Generate risk map with component analysis:
+```json
+{
+  "project_name": "MyProject",
+  "evidence_data": {
+    "complexity_score": 15,
+    "vulnerability_count": 2,
+    "coverage": 85
+  },
+  "component_metrics": [...]
+}
+```
+
+**POST /api/visualization/risk-map/html**
+Generate interactive risk map as HTML
+
+**POST /api/visualization/risk-map/svg**
+Generate risk heatmap as SVG
+
+**POST /api/visualization/risk-map/trend**
+Generate risk trend analysis:
+```json
+{
+  "project_name": "MyProject",
+  "historical_data": [
+    {"generated_at": "2024-01-01", "overall_risk_score": 50}
+  ]
+}
+```
+
+### Plugin SDK & Developer Tools
+
+**POST /api/plugin-sdk/scaffold**
+Scaffold a new plugin project:
+```json
+{
+  "output_dir": "/tmp/plugins",
+  "plugin_type": "collector",
+  "name": "My Collector",
+  "plugin_id": "my_collector",
+  "author": "Developer Name",
+  "description": "Plugin description"
+}
+```
+
+**POST /api/plugin-sdk/template/generate**
+Generate plugin code from template (same request body as scaffold)
+
+**GET /api/plugin-sdk/guide**
+Get plugin development guide (markdown format)
+
+**GET /api/plugin-sdk/types**
+Get available plugin types:
+- `collector` - Evidence collectors
+- `metric` - Custom metrics
+- `compliance` - Compliance checks
+- `visualization` - Custom visualizations
 
 ### Human-Centered Design & XAI Endpoints
 

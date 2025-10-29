@@ -75,6 +75,27 @@ from .threat_modeling import (
     ThreatDragonIntegration,
     get_threat_model_generator,
 )
+from .executive_reports import (
+    ExecutiveReportGenerator,
+    ExecutiveSummary,
+    NarrativeReport,
+)
+from .risk_maps import (
+    RiskMapVisualizer,
+    RiskMap,
+    RiskComponent,
+)
+from .plugin_sdk import (
+    BasePlugin,
+    CollectorPlugin,
+    MetricPlugin,
+    CompliancePlugin,
+    VisualizationPlugin,
+    PluginMetadata,
+    PluginTemplate,
+    PluginScaffolder,
+    PluginDevelopmentGuide,
+)
 
 __all__ = [
     "Config",
@@ -165,4 +186,19 @@ __all__ = [
     "IriusRiskIntegration",
     "ThreatDragonIntegration",
     "get_threat_model_generator",
+    "ExecutiveReportGenerator",
+    "ExecutiveSummary",
+    "NarrativeReport",
+    "RiskMapVisualizer",
+    "RiskMap",
+    "RiskComponent",
+    "BasePlugin",
+    "CollectorPlugin",
+    "MetricPlugin",
+    "CompliancePlugin",
+    "VisualizationPlugin",
+    "PluginMetadata",
+    "PluginTemplate",
+    "PluginScaffolder",
+    "PluginDevelopmentGuide",
 ]

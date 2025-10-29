@@ -1,0 +1,42 @@
+# Dockerfile for Plugin Development Environment
+# Includes development tools and plugin SDK
+
+FROM python:3.12-slim
+
+# Install development tools
+RUN apt-get update && apt-get install -y \
+    git \
+    vim \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements
+COPY requirements.txt requirements-dev.txt ./
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir -r requirements-dev.txt
+
+# Copy application code
+COPY civ_arcos/ ./civ_arcos/
+COPY setup.py ./
+
+# Install in development mode
+RUN pip install -e .
+
+# Create directories
+RUN mkdir -p /data/evidence /data/plugins /workspace
+
+# Set environment variables
+ENV ARCOS_STORAGE_PATH=/data/evidence
+ENV ARCOS_PORT=8000
+ENV PLUGIN_DEV_MODE=true
+ENV PYTHONPATH=/app:/workspace
+
+# Expose port
+EXPOSE 8000
+
+# Default command (can be overridden)
+CMD ["python", "-m", "civ_arcos.api"]
