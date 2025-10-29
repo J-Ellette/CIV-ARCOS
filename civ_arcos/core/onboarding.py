@@ -10,7 +10,7 @@ from enum import Enum
 
 class TooltipPosition(Enum):
     """Tooltip position relative to target element."""
-    
+
     TOP = "top"
     BOTTOM = "bottom"
     LEFT = "left"
@@ -20,7 +20,7 @@ class TooltipPosition(Enum):
 
 class OnboardingStepType(Enum):
     """Type of onboarding step."""
-    
+
     TOOLTIP = "tooltip"
     MODAL = "modal"
     HIGHLIGHT = "highlight"
@@ -30,7 +30,7 @@ class OnboardingStepType(Enum):
 @dataclass
 class OnboardingStep:
     """Single step in an onboarding flow."""
-    
+
     id: str
     title: str
     content: str
@@ -45,7 +45,7 @@ class OnboardingStep:
 @dataclass
 class OnboardingFlow:
     """Complete onboarding flow for a specific feature or role."""
-    
+
     id: str
     name: str
     description: str
@@ -60,21 +60,21 @@ class OnboardingManager:
     Manages onboarding flows and user progress.
     Provides guided tours for different features and user roles.
     """
-    
+
     def __init__(self):
         """Initialize onboarding manager with default flows."""
         self._flows = self._initialize_default_flows()
         self._user_progress: Dict[str, Dict[str, Any]] = {}
-        
+
     def _initialize_default_flows(self) -> Dict[str, OnboardingFlow]:
         """
         Initialize default onboarding flows.
-        
+
         Returns:
             Dictionary of onboarding flows
         """
         flows = {}
-        
+
         # General system overview
         flows["system_overview"] = OnboardingFlow(
             id="system_overview",
@@ -115,7 +115,7 @@ class OnboardingManager:
                 ),
             ],
         )
-        
+
         # Developer-specific onboarding
         flows["developer_workflow"] = OnboardingFlow(
             id="developer_workflow",
@@ -151,7 +151,7 @@ class OnboardingManager:
                 ),
             ],
         )
-        
+
         # QA-specific onboarding
         flows["qa_workflow"] = OnboardingFlow(
             id="qa_workflow",
@@ -186,7 +186,7 @@ class OnboardingManager:
                 ),
             ],
         )
-        
+
         # Auditor-specific onboarding
         flows["auditor_workflow"] = OnboardingFlow(
             id="auditor_workflow",
@@ -229,7 +229,7 @@ class OnboardingManager:
                 ),
             ],
         )
-        
+
         # Executive-specific onboarding
         flows["executive_workflow"] = OnboardingFlow(
             id="executive_workflow",
@@ -264,7 +264,7 @@ class OnboardingManager:
                 ),
             ],
         )
-        
+
         # Feature-specific: Assurance Cases
         flows["assurance_cases"] = OnboardingFlow(
             id="assurance_cases",
@@ -295,28 +295,28 @@ class OnboardingManager:
                 ),
             ],
         )
-        
+
         return flows
-    
+
     def get_flow(self, flow_id: str) -> Optional[OnboardingFlow]:
         """
         Get an onboarding flow by ID.
-        
+
         Args:
             flow_id: Flow identifier
-            
+
         Returns:
             Onboarding flow or None if not found
         """
         return self._flows.get(flow_id)
-    
+
     def get_flows_for_role(self, role: Optional[str] = None) -> List[OnboardingFlow]:
         """
         Get onboarding flows for a specific role.
-        
+
         Args:
             role: User role (developer, qa, auditor, executive) or None for all
-            
+
         Returns:
             List of relevant onboarding flows
         """
@@ -325,20 +325,20 @@ class OnboardingManager:
             if flow.target_role is None or flow.target_role == role:
                 flows.append(flow)
         return flows
-    
+
     def get_all_flows(self) -> List[OnboardingFlow]:
         """
         Get all available onboarding flows.
-        
+
         Returns:
             List of all flows
         """
         return list(self._flows.values())
-    
+
     def mark_step_complete(self, user_id: str, flow_id: str, step_id: str) -> None:
         """
         Mark an onboarding step as complete for a user.
-        
+
         Args:
             user_id: User identifier
             flow_id: Flow identifier
@@ -346,29 +346,29 @@ class OnboardingManager:
         """
         if user_id not in self._user_progress:
             self._user_progress[user_id] = {}
-        
+
         if flow_id not in self._user_progress[user_id]:
             self._user_progress[user_id][flow_id] = {
                 "completed_steps": [],
                 "current_step": 0,
                 "completed": False,
             }
-        
+
         progress = self._user_progress[user_id][flow_id]
         if step_id not in progress["completed_steps"]:
             progress["completed_steps"].append(step_id)
-    
+
     def mark_flow_complete(self, user_id: str, flow_id: str) -> None:
         """
         Mark an entire onboarding flow as complete for a user.
-        
+
         Args:
             user_id: User identifier
             flow_id: Flow identifier
         """
         if user_id not in self._user_progress:
             self._user_progress[user_id] = {}
-        
+
         if flow_id not in self._user_progress[user_id]:
             self._user_progress[user_id][flow_id] = {
                 "completed_steps": [],
@@ -377,15 +377,15 @@ class OnboardingManager:
             }
         else:
             self._user_progress[user_id][flow_id]["completed"] = True
-    
+
     def get_user_progress(self, user_id: str, flow_id: str) -> Dict[str, Any]:
         """
         Get user's progress through an onboarding flow.
-        
+
         Args:
             user_id: User identifier
             flow_id: Flow identifier
-            
+
         Returns:
             Progress dictionary
         """
@@ -395,7 +395,7 @@ class OnboardingManager:
                 "current_step": 0,
                 "completed": False,
             }
-        
+
         return self._user_progress[user_id].get(
             flow_id,
             {
@@ -404,29 +404,31 @@ class OnboardingManager:
                 "completed": False,
             },
         )
-    
+
     def is_flow_complete(self, user_id: str, flow_id: str) -> bool:
         """
         Check if a user has completed an onboarding flow.
-        
+
         Args:
             user_id: User identifier
             flow_id: Flow identifier
-            
+
         Returns:
             True if flow is complete
         """
         progress = self.get_user_progress(user_id, flow_id)
         return progress.get("completed", False)
-    
-    def get_next_required_flow(self, user_id: str, role: Optional[str] = None) -> Optional[OnboardingFlow]:
+
+    def get_next_required_flow(
+        self, user_id: str, role: Optional[str] = None
+    ) -> Optional[OnboardingFlow]:
         """
         Get the next required onboarding flow for a user.
-        
+
         Args:
             user_id: User identifier
             role: User role
-            
+
         Returns:
             Next required flow or None if all complete
         """
@@ -435,14 +437,14 @@ class OnboardingManager:
             if flow.is_required and not self.is_flow_complete(user_id, flow.id):
                 return flow
         return None
-    
+
     def serialize_flow(self, flow: OnboardingFlow) -> Dict[str, Any]:
         """
         Serialize an onboarding flow to dictionary.
-        
+
         Args:
             flow: Onboarding flow
-            
+
         Returns:
             Serialized flow
         """

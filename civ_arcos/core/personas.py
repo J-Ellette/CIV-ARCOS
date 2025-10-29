@@ -10,7 +10,7 @@ from typing import Dict, List, Any, Set
 
 class PersonaRole(Enum):
     """Available user persona roles."""
-    
+
     DEVELOPER = "developer"
     QA = "qa"
     AUDITOR = "auditor"
@@ -20,7 +20,7 @@ class PersonaRole(Enum):
 @dataclass
 class PersonaConfig:
     """Configuration for a specific persona."""
-    
+
     role: PersonaRole
     display_name: str
     description: str
@@ -36,15 +36,15 @@ class PersonaManager:
     Manages user personas and their configurations.
     Provides role-based dashboard customization and access control.
     """
-    
+
     def __init__(self):
         """Initialize persona manager with default persona configurations."""
         self._personas = self._initialize_default_personas()
-        
+
     def _initialize_default_personas(self) -> Dict[PersonaRole, PersonaConfig]:
         """
         Initialize default persona configurations.
-        
+
         Returns:
             Dictionary mapping roles to their configurations
         """
@@ -207,42 +207,42 @@ class PersonaManager:
                 },
             ),
         }
-    
+
     def get_persona(self, role: PersonaRole) -> PersonaConfig:
         """
         Get configuration for a specific persona role.
-        
+
         Args:
             role: Persona role
-            
+
         Returns:
             Persona configuration
         """
         return self._personas.get(role)
-    
+
     def get_all_personas(self) -> Dict[PersonaRole, PersonaConfig]:
         """
         Get all persona configurations.
-        
+
         Returns:
             Dictionary of all personas
         """
         return self._personas.copy()
-    
+
     def get_dashboard_config(self, role: PersonaRole) -> Dict[str, Any]:
         """
         Get dashboard configuration for a persona.
-        
+
         Args:
             role: Persona role
-            
+
         Returns:
             Dashboard configuration dictionary
         """
         persona = self.get_persona(role)
         if not persona:
             return {}
-            
+
         return {
             "role": persona.role.value,
             "display_name": persona.display_name,
@@ -251,15 +251,15 @@ class PersonaManager:
             "filters": persona.default_filters,
             "permissions": list(persona.permissions),
         }
-    
+
     def has_permission(self, role: PersonaRole, permission: str) -> bool:
         """
         Check if a persona has a specific permission.
-        
+
         Args:
             role: Persona role
             permission: Permission to check
-            
+
         Returns:
             True if persona has permission
         """
@@ -267,14 +267,14 @@ class PersonaManager:
         if not persona:
             return False
         return permission in persona.permissions
-    
+
     def get_kpis_for_role(self, role: PersonaRole) -> List[str]:
         """
         Get primary KPIs for a persona role.
-        
+
         Args:
             role: Persona role
-            
+
         Returns:
             List of KPI names
         """
@@ -282,14 +282,14 @@ class PersonaManager:
         if not persona:
             return []
         return persona.primary_kpis.copy()
-    
+
     def get_widgets_for_role(self, role: PersonaRole) -> List[str]:
         """
         Get dashboard widgets for a persona role.
-        
+
         Args:
             role: Persona role
-            
+
         Returns:
             List of widget names
         """

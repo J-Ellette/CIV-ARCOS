@@ -11,7 +11,7 @@ import re
 
 class WCAGLevel(Enum):
     """WCAG compliance levels."""
-    
+
     A = "A"
     AA = "AA"
     AAA = "AAA"
@@ -19,7 +19,7 @@ class WCAGLevel(Enum):
 
 class AccessibilityIssueType(Enum):
     """Types of accessibility issues."""
-    
+
     MISSING_ALT_TEXT = "missing_alt_text"
     LOW_CONTRAST = "low_contrast"
     MISSING_LABEL = "missing_label"
@@ -37,7 +37,7 @@ class AccessibilityIssueType(Enum):
 @dataclass
 class AccessibilityIssue:
     """Represents an accessibility issue found during testing."""
-    
+
     issue_type: AccessibilityIssueType
     severity: str  # "critical", "serious", "moderate", "minor"
     wcag_criteria: str  # e.g., "1.1.1", "1.4.3"
@@ -52,7 +52,7 @@ class AccessibilityIssue:
 @dataclass
 class AccessibilityTestResult:
     """Results of an accessibility test."""
-    
+
     passed: bool
     wcag_level: WCAGLevel
     total_issues: int
@@ -66,15 +66,15 @@ class AccessibilityTester:
     """
     Automated accessibility testing following WCAG guidelines.
     Performs programmatic checks on HTML/code for accessibility issues.
-    
+
     This is a software fallback that doesn't require external tools like
     Axe-core or Pa11y, but provides similar functionality.
     """
-    
+
     def __init__(self):
         """Initialize accessibility tester."""
         self._initialize_wcag_criteria()
-        
+
     def _initialize_wcag_criteria(self):
         """Initialize WCAG criteria mappings."""
         self.wcag_criteria = {
@@ -129,50 +129,50 @@ class AccessibilityTester:
                 "description": "UI components must have accessible names and roles",
             },
         }
-    
+
     def test_html_content(
         self, html_content: str, target_level: WCAGLevel = WCAGLevel.AA
     ) -> AccessibilityTestResult:
         """
         Test HTML content for accessibility issues.
-        
+
         Args:
             html_content: HTML content to test
             target_level: Target WCAG level
-            
+
         Returns:
             Test results with issues found
         """
         issues = []
-        
+
         # Check for missing alt text on images
         issues.extend(self._check_image_alt_text(html_content))
-        
+
         # Check for missing form labels
         issues.extend(self._check_form_labels(html_content))
-        
+
         # Check for proper heading structure
         issues.extend(self._check_heading_structure(html_content))
-        
+
         # Check for language attribute
         issues.extend(self._check_language_attribute(html_content))
-        
+
         # Check for ARIA attributes
         issues.extend(self._check_aria_attributes(html_content))
-        
+
         # Check for keyboard accessibility indicators
         issues.extend(self._check_keyboard_accessibility(html_content))
-        
+
         # Check for color contrast (basic checks)
         issues.extend(self._check_color_contrast_indicators(html_content))
-        
+
         # Filter issues by target level
         filtered_issues = [
             issue
             for issue in issues
             if self._level_includes(target_level, issue.wcag_level)
         ]
-        
+
         # Calculate severity counts
         issues_by_severity = {
             "critical": 0,
@@ -181,8 +181,10 @@ class AccessibilityTester:
             "minor": 0,
         }
         for issue in filtered_issues:
-            issues_by_severity[issue.severity] = issues_by_severity.get(issue.severity, 0) + 1
-        
+            issues_by_severity[issue.severity] = (
+                issues_by_severity.get(issue.severity, 0) + 1
+            )
+
         # Calculate compliance score (100 - weighted issue count)
         compliance_score = max(
             0,
@@ -194,7 +196,7 @@ class AccessibilityTester:
                 + issues_by_severity["minor"] * 1
             ),
         )
-        
+
         return AccessibilityTestResult(
             passed=len(filtered_issues) == 0,
             wcag_level=target_level,
@@ -203,18 +205,18 @@ class AccessibilityTester:
             issues=filtered_issues,
             compliance_score=compliance_score,
         )
-    
+
     def _check_image_alt_text(self, html: str) -> List[AccessibilityIssue]:
         """Check for images missing alt text."""
         issues = []
-        
+
         # Find img tags without alt attribute or with empty alt
-        img_pattern = r'<img\s+([^>]*?)>'
+        img_pattern = r"<img\s+([^>]*?)>"
         img_matches = re.finditer(img_pattern, html, re.IGNORECASE)
-        
+
         for match in img_matches:
             attributes = match.group(1)
-            if 'alt=' not in attributes.lower():
+            if "alt=" not in attributes.lower():
                 issues.append(
                     AccessibilityIssue(
                         issue_type=AccessibilityIssueType.MISSING_ALT_TEXT,
@@ -241,30 +243,35 @@ class AccessibilityTester:
                         impact_description="May indicate missing description for meaningful image",
                     )
                 )
-        
+
         return issues
-    
+
     def _check_form_labels(self, html: str) -> List[AccessibilityIssue]:
         """Check for form inputs missing labels."""
         issues = []
-        
+
         # Find input/select/textarea without associated labels
-        input_pattern = r'<(input|select|textarea)\s+([^>]*?)>'
+        input_pattern = r"<(input|select|textarea)\s+([^>]*?)>"
         input_matches = re.finditer(input_pattern, html, re.IGNORECASE)
-        
+
         for match in input_matches:
             tag_type = match.group(1)
             attributes = match.group(2)
-            
+
             # Skip if it has aria-label or aria-labelledby
-            if 'aria-label' in attributes.lower() or 'aria-labelledby' in attributes.lower():
+            if (
+                "aria-label" in attributes.lower()
+                or "aria-labelledby" in attributes.lower()
+            ):
                 continue
-            
+
             # Check if input has an id and if there's a corresponding label
             id_match = re.search(r'id=["\']([^"\']+)["\']', attributes, re.IGNORECASE)
             if id_match:
                 input_id = id_match.group(1)
-                label_pattern = rf'<label[^>]*for=["\']?{re.escape(input_id)}["\']?[^>]*>'
+                label_pattern = (
+                    rf'<label[^>]*for=["\']?{re.escape(input_id)}["\']?[^>]*>'
+                )
                 if not re.search(label_pattern, html, re.IGNORECASE):
                     issues.append(
                         AccessibilityIssue(
@@ -278,22 +285,22 @@ class AccessibilityTester:
                             impact_description="Screen reader users may not understand input purpose",
                         )
                     )
-        
+
         return issues
-    
+
     def _check_heading_structure(self, html: str) -> List[AccessibilityIssue]:
         """Check for proper heading hierarchy."""
         issues = []
-        
+
         # Extract all headings in order
-        heading_pattern = r'<h([1-6])[^>]*>'
+        heading_pattern = r"<h([1-6])[^>]*>"
         headings = re.findall(heading_pattern, html, re.IGNORECASE)
-        
+
         if headings:
             prev_level = 0
             for heading_level in headings:
                 level = int(heading_level)
-                
+
                 # Check for skipped heading levels
                 if prev_level > 0 and level > prev_level + 1:
                     issues.append(
@@ -307,9 +314,9 @@ class AccessibilityTester:
                             impact_description="Users may miss content structure navigation",
                         )
                     )
-                
+
                 prev_level = level
-            
+
             # Check if page starts with h1
             if headings and int(headings[0]) != 1:
                 issues.append(
@@ -323,18 +330,18 @@ class AccessibilityTester:
                         impact_description="Users may not understand page hierarchy",
                     )
                 )
-        
+
         return issues
-    
+
     def _check_language_attribute(self, html: str) -> List[AccessibilityIssue]:
         """Check for language attribute on html element."""
         issues = []
-        
-        html_tag_pattern = r'<html[^>]*>'
+
+        html_tag_pattern = r"<html[^>]*>"
         html_match = re.search(html_tag_pattern, html, re.IGNORECASE)
-        
+
         if html_match:
-            if 'lang=' not in html_match.group(0).lower():
+            if "lang=" not in html_match.group(0).lower():
                 issues.append(
                     AccessibilityIssue(
                         issue_type=AccessibilityIssueType.MISSING_LANG,
@@ -347,20 +354,21 @@ class AccessibilityTester:
                         impact_description="Screen readers cannot determine correct language pronunciation",
                     )
                 )
-        
+
         return issues
-    
+
     def _check_aria_attributes(self, html: str) -> List[AccessibilityIssue]:
         """Check for invalid or misused ARIA attributes."""
         issues = []
-        
+
         # Check for aria-hidden on focusable elements
         aria_hidden_pattern = r'<[^>]*aria-hidden=["\']true["\'][^>]*>'
         for match in re.finditer(aria_hidden_pattern, html, re.IGNORECASE):
             element = match.group(0)
             # Check if element is also focusable (has tabindex or is naturally focusable)
-            if 'tabindex' in element.lower() or any(
-                tag in element.lower() for tag in ['<a ', '<button ', '<input ', '<select ', '<textarea ']
+            if "tabindex" in element.lower() or any(
+                tag in element.lower()
+                for tag in ["<a ", "<button ", "<input ", "<select ", "<textarea "]
             ):
                 issues.append(
                     AccessibilityIssue(
@@ -374,19 +382,22 @@ class AccessibilityTester:
                         impact_description="Keyboard users can focus hidden content",
                     )
                 )
-        
+
         return issues
-    
+
     def _check_keyboard_accessibility(self, html: str) -> List[AccessibilityIssue]:
         """Check for keyboard accessibility indicators."""
         issues = []
-        
+
         # Check for click handlers on non-interactive elements without keyboard handlers
-        onclick_pattern = r'<(div|span)[^>]*onclick=[^>]*>'
+        onclick_pattern = r"<(div|span)[^>]*onclick=[^>]*>"
         for match in re.finditer(onclick_pattern, html, re.IGNORECASE):
             element = match.group(0)
-            if 'onkeypress' not in element.lower() and 'onkeydown' not in element.lower():
-                if 'tabindex' not in element.lower() and 'role=' not in element.lower():
+            if (
+                "onkeypress" not in element.lower()
+                and "onkeydown" not in element.lower()
+            ):
+                if "tabindex" not in element.lower() and "role=" not in element.lower():
                     issues.append(
                         AccessibilityIssue(
                             issue_type=AccessibilityIssueType.KEYBOARD_NAVIGATION,
@@ -399,20 +410,20 @@ class AccessibilityTester:
                             impact_description="Keyboard users cannot interact with this element",
                         )
                     )
-        
+
         return issues
-    
+
     def _check_color_contrast_indicators(self, html: str) -> List[AccessibilityIssue]:
         """Check for potential color contrast issues (basic checks)."""
         issues = []
-        
+
         # Look for inline styles with color but no background or vice versa
         style_pattern = r'style=["\']([^"\']*)["\']'
         for match in re.finditer(style_pattern, html, re.IGNORECASE):
             styles = match.group(1).lower()
-            has_color = 'color:' in styles
-            has_background = 'background' in styles
-            
+            has_color = "color:" in styles
+            has_background = "background" in styles
+
             if has_color and not has_background:
                 issues.append(
                     AccessibilityIssue(
@@ -426,9 +437,9 @@ class AccessibilityTester:
                         impact_description="Users with low vision may struggle to read text",
                     )
                 )
-        
+
         return issues
-    
+
     def _level_includes(self, target_level: WCAGLevel, issue_level: WCAGLevel) -> bool:
         """
         Check if target WCAG level includes the issue level.
@@ -436,14 +447,14 @@ class AccessibilityTester:
         """
         level_hierarchy = {WCAGLevel.A: 1, WCAGLevel.AA: 2, WCAGLevel.AAA: 3}
         return level_hierarchy[target_level] >= level_hierarchy[issue_level]
-    
+
     def generate_report(self, result: AccessibilityTestResult) -> Dict[str, Any]:
         """
         Generate a comprehensive accessibility report.
-        
+
         Args:
             result: Test result
-            
+
         Returns:
             Report dictionary
         """
@@ -468,20 +479,20 @@ class AccessibilityTester:
                 for issue in result.issues
             ],
         }
-    
+
     def _generate_summary(self, result: AccessibilityTestResult) -> str:
         """Generate a text summary of test results."""
         if result.passed:
             return f"Content passes WCAG {result.wcag_level.value} compliance with no issues found."
-        
+
         summary_parts = [
             f"Found {result.total_issues} accessibility issue(s) for WCAG {result.wcag_level.value}:"
         ]
-        
+
         for severity, count in result.issues_by_severity.items():
             if count > 0:
                 summary_parts.append(f"  - {count} {severity}")
-        
+
         summary_parts.append(f"Compliance score: {result.compliance_score:.1f}/100")
-        
+
         return "\n".join(summary_parts)

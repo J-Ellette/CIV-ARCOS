@@ -30,6 +30,14 @@ A civilian version of military-grade software assurance following proven ARCOS m
   - Badge showcase with API examples
   - Repository analyzer with GitHub integration
   - Assurance case viewer with GSN visualization
+- **Human-Centered Design**: Role-based experience tailored for different users
+  - **Persona Management**: 4 user personas (Developer, QA, Auditor, Executive) with custom KPIs and dashboards
+  - **Guided Onboarding**: Interactive walkthroughs and tooltips for new users
+  - **Accessibility Testing**: Automated WCAG A/AA/AAA compliance checking
+- **Explainable AI (XAI)**: Transparency and fairness in AI/ML predictions
+  - **Model Transparency**: Feature importance, decision paths, and narrative explanations
+  - **Bias Detection**: Fairness metrics and disparity analysis across groups
+  - **Software Fallbacks**: Rule-based alternatives for all AI features when ML is unavailable
 - **REST API**: Clean API endpoints for evidence collection, analysis, badge generation, assurance cases, and status queries
 - **Blockchain-like Integrity**: Immutable audit trails with cryptographic checksums for evidence authenticity
 - **Custom Web Framework**: Built from scratch without Django/FastAPI/Flask dependencies
@@ -336,6 +344,114 @@ Compare project metrics to benchmark
 **GET /api/ecosystem/documentation**
 Get comprehensive API ecosystem documentation
 
+### Human-Centered Design & XAI Endpoints
+
+**GET /api/personas/list**
+List all available persona roles (Developer, QA, Auditor, Executive):
+```json
+{
+  "success": true,
+  "personas": {
+    "developer": {...},
+    "qa": {...},
+    "auditor": {...},
+    "executive": {...}
+  }
+}
+```
+
+**GET /api/personas/{role}**
+Get detailed configuration for a specific persona:
+- `role`: developer, qa, auditor, or executive
+
+**GET /api/personas/{role}/kpis**
+Get primary KPIs for a specific persona role
+
+**GET /api/onboarding/flows**
+List all onboarding flows:
+- `?role=developer` - Filter by user role (optional)
+
+**GET /api/onboarding/flows/{flow_id}**
+Get detailed onboarding flow with steps
+
+**GET /api/onboarding/progress/{user_id}**
+Get user's onboarding progress:
+- `?flow_id=system_overview` - Get progress for specific flow
+- `?role=developer` - Get next required flow for role
+
+**POST /api/onboarding/progress/{user_id}/step**
+Mark an onboarding step as complete:
+```json
+{
+  "flow_id": "system_overview",
+  "step_id": "welcome"
+}
+```
+
+**POST /api/onboarding/progress/{user_id}/flow**
+Mark an entire onboarding flow as complete:
+```json
+{
+  "flow_id": "system_overview"
+}
+```
+
+**POST /api/accessibility/test**
+Test HTML content for WCAG accessibility compliance:
+```json
+{
+  "html_content": "<html>...</html>",
+  "wcag_level": "AA"
+}
+```
+
+**GET /api/accessibility/criteria**
+Get WCAG criteria information and requirements
+
+**POST /api/xai/explain**
+Generate explanation for an AI/ML prediction:
+```json
+{
+  "prediction": 85.0,
+  "features": {
+    "coverage": 90.0,
+    "complexity": 5.0,
+    "vulnerabilities": 1
+  },
+  "model_type": "quality_predictor",
+  "use_ai": true
+}
+```
+
+**POST /api/xai/detect-bias**
+Detect bias in predictions across different groups:
+```json
+{
+  "predictions": [90, 85, 75, 70],
+  "features_list": [
+    {"team": "A"},
+    {"team": "A"},
+    {"team": "B"},
+    {"team": "B"}
+  ],
+  "protected_attributes": ["team"],
+  "use_ai": true
+}
+```
+
+**POST /api/xai/transparency-report**
+Generate comprehensive transparency report:
+```json
+{
+  "prediction": 80.0,
+  "features": {"coverage": 85.0},
+  "include_bias": true,
+  "predictions_list": [...],
+  "features_list": [...],
+  "protected_attributes": ["team"]
+}
+```
+
 ## Architecture
 
 CIV-ARCOS is built with custom implementations of common frameworks:
@@ -385,8 +501,8 @@ civ_arcos/
 └── utils/          # Utility functions
 
 tests/
-├── unit/           # Unit tests (218 tests)
-└── integration/    # Integration tests (36 tests)
+├── unit/           # Unit tests (268 tests)
+└── integration/    # Integration tests (57 tests)
 ```
 
 ## Configuration
