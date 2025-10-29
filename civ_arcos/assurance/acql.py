@@ -5,12 +5,11 @@ A formal language for interrogating and assessing assurance cases,
 extending Object Constraint Language (OCL) concepts.
 """
 
-from typing import Any, Dict, List, Optional, Set, Callable
+from typing import Any, Dict, List, Optional, Callable
 from enum import Enum
-import re
 
 from .case import AssuranceCase
-from .fragments import AssuranceCaseFragment, FragmentLibrary
+from .fragments import AssuranceCaseFragment
 from .gsn import GSNNode, GSNNodeType
 
 
@@ -118,7 +117,7 @@ class ACQLEngine:
 
         # Simple contradiction detection
         for i, text1 in enumerate(goal_texts):
-            for text2 in goal_texts[i + 1 :]:
+            for text2 in goal_texts[i + 1:]:
                 if self._are_contradictory(text1, text2):
                     contradictions.append({"goal1": text1, "goal2": text2})
 
@@ -133,14 +132,14 @@ class ACQLEngine:
         # Simple heuristic: look for negation patterns
         negation_words = ["no", "not", "never"]
         affirmation_words = ["has", "is", "always"]
-        
+
         # Check if one text has negation and other has affirmation
         has_negation_1 = any(word in text1.lower() for word in negation_words)
         has_affirmation_2 = any(word in text2.lower() for word in affirmation_words)
-        
+
         has_negation_2 = any(word in text2.lower() for word in negation_words)
         has_affirmation_1 = any(word in text1.lower() for word in affirmation_words)
-        
+
         if (has_negation_1 and has_affirmation_2) or (has_negation_2 and has_affirmation_1):
             # Check if they're talking about similar things
             words1 = set(text1.lower().split())
