@@ -8,7 +8,7 @@ federated learning capabilities.
 
 import json
 import hashlib
-from typing import Dict, List, Any, Optional, Callable
+from typing import Dict, List, Any
 from dataclasses import dataclass, field
 from datetime import datetime
 import threading
@@ -355,16 +355,16 @@ class EdgeEvidenceCollector:
 
         # Remove or hash sensitive fields
         sensitive_fields = ["user_id", "email", "name", "ip_address"]
-        for field in sensitive_fields:
-            if field in filtered_data:
+        for field_name in sensitive_fields:
+            if field_name in filtered_data:
                 if config.privacy_level == "high":
                     # Hash sensitive data
-                    filtered_data[field] = hashlib.sha256(
-                        str(filtered_data[field]).encode()
+                    filtered_data[field_name] = hashlib.sha256(
+                        str(filtered_data[field_name]).encode()
                     ).hexdigest()[:16]
                 else:
                     # Partial anonymization
-                    filtered_data[field] = "***"
+                    filtered_data[field_name] = "***"
 
         return filtered_data
 
@@ -500,7 +500,9 @@ class EdgeEvidenceCollector:
             "privacy_preserved": True,
         }
 
-    def _federated_averaging(self, edge_updates: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def _federated_averaging(
+        self, edge_updates: List[Dict[str, Any]]
+    ) -> Dict[str, Any]:
         """
         Aggregate updates using federated averaging.
 

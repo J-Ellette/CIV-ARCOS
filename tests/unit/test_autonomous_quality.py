@@ -386,7 +386,10 @@ def test_generate_actions_for_metric():
     # Performance actions
     actions_perf = agent._generate_actions_for_metric("performance_score", 75)
     assert len(actions_perf) > 0
-    assert any("optim" in action.lower() or "cache" in action.lower() for action in actions_perf)
+    assert any(
+        "optim" in action.lower() or "cache" in action.lower()
+        for action in actions_perf
+    )
 
 
 def test_version_increment():
@@ -464,7 +467,9 @@ def test_learning_outcome_insights():
     )
 
     assert len(outcome.insights) > 0
-    assert any("broad positive impact" in insight.lower() for insight in outcome.insights)
+    assert any(
+        "broad positive impact" in insight.lower() for insight in outcome.insights
+    )
 
 
 def test_multiple_learning_rounds():

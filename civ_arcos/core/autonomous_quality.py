@@ -5,11 +5,10 @@ This module provides self-improving quality systems with continuous learning,
 autonomous quality improvement, and self-evolving standards.
 """
 
-import json
 import hashlib
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 
 
@@ -202,12 +201,14 @@ class ContinuousLearningEngine:
             # Identify which metrics improved most
             best_improvement = max(improvement_delta.items(), key=lambda x: x[1])
             insights.append(
-                f"Action '{action}' most improved {best_improvement[0]} by {best_improvement[1]:.2f}"
+                f"Action '{action}' most improved "
+                f"{best_improvement[0]} by {best_improvement[1]:.2f}"
             )
 
-            if len([v for v in improvement_delta.values() if v > 0]) > len(
-                improvement_delta
-            ) / 2:
+            if (
+                len([v for v in improvement_delta.values() if v > 0])
+                > len(improvement_delta) / 2
+            ):
                 insights.append(f"Action '{action}' shows broad positive impact")
         else:
             insights.append(f"Action '{action}' did not improve overall quality")
@@ -215,9 +216,7 @@ class ContinuousLearningEngine:
             # Identify negative impacts
             negative_impacts = [k for k, v in improvement_delta.items() if v < 0]
             if negative_impacts:
-                insights.append(
-                    f"Negative impact on: {', '.join(negative_impacts)}"
-                )
+                insights.append(f"Negative impact on: {', '.join(negative_impacts)}")
 
         return insights
 
@@ -435,7 +434,7 @@ class AutonomousQualityAgent:
 
         # Step 5: Learn from outcomes
         for implementation in implemented:
-            outcome = self.learning_engine.record_outcome(
+            self.learning_engine.record_outcome(
                 implementation["action"],
                 implementation["metrics_before"],
                 implementation["metrics_after"],
@@ -470,7 +469,9 @@ class AutonomousQualityAgent:
 
         # Evolve existing standards
         for standard_id, standard in self.standards.items():
-            evolution = self._evolve_standard(standard, technology_trends, compliance_data)
+            evolution = self._evolve_standard(
+                standard, technology_trends, compliance_data
+            )
 
             if evolution["changed"]:
                 # Update standard
@@ -491,7 +492,11 @@ class AutonomousQualityAgent:
                 )
                 self.standards[new_standard.standard_id] = new_standard
                 evolved_standards.append(
-                    {"standard_id": new_standard.standard_id, "new": True, "trend": trend}
+                    {
+                        "standard_id": new_standard.standard_id,
+                        "new": True,
+                        "trend": trend,
+                    }
                 )
 
         return {
@@ -691,9 +696,7 @@ class AutonomousQualityAgent:
                     if "min_security_score" in new_criteria:
                         old_value = new_criteria["min_security_score"]
                         new_criteria["min_security_score"] = min(old_value + 5, 95)
-                        changes.append(
-                            f"Increased security requirement due to {trend}"
-                        )
+                        changes.append(f"Increased security requirement due to {trend}")
                         changed = True
 
                 if "performance" in trend.lower():

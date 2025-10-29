@@ -9,7 +9,7 @@ suitable for the post-quantum era.
 import hashlib
 import hmac
 import secrets
-from typing import Dict, List, Any, Tuple, Optional
+from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 import json
@@ -224,9 +224,7 @@ class QuantumResistantSecurity:
         # Generate random key material
         key_material = secrets.token_hex(64)
 
-        return LatticeKey(
-            key_data=key_material, dimension=dimension, modulus=modulus
-        )
+        return LatticeKey(key_data=key_material, dimension=dimension, modulus=modulus)
 
     def _generate_key_id(self) -> str:
         """Generate unique key identifier."""
@@ -335,11 +333,14 @@ class QuantumResistantSecurity:
                 threat_indicators.append({"type": "anomaly", "pattern": pattern})
 
             # Check for security indicators
-            if "security" in str(pattern).lower() or "vulnerability" in str(
-                pattern
-            ).lower():
+            if (
+                "security" in str(pattern).lower()
+                or "vulnerability" in str(pattern).lower()
+            ):
                 threat_score += 0.4
-                threat_indicators.append({"type": "security_concern", "pattern": pattern})
+                threat_indicators.append(
+                    {"type": "security_concern", "pattern": pattern}
+                )
 
         threat_level = "low"
         if threat_score > 0.7:

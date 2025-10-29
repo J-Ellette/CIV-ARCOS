@@ -82,7 +82,11 @@ def demo_quantum_security():
     print("\n--- Quantum-Enhanced Threat Analysis ---")
     data_patterns = [
         {"type": "code_quality", "score": 85, "complexity": 50},
-        {"type": "security", "vulnerability": "potential SQL injection", "severity": "high"},
+        {
+            "type": "security",
+            "vulnerability": "potential SQL injection",
+            "severity": "high",
+        },
         {"type": "performance", "latency_ms": 150, "anomaly": True},
         {"type": "test_coverage", "percentage": 92, "trend": "increasing"},
     ]
@@ -90,7 +94,9 @@ def demo_quantum_security():
     analysis_result = qrs.quantum_enhanced_analysis(data_patterns)
     print(f"✓ Quantum-enhanced pattern analysis completed")
     print(f"  Patterns Detected: {len(analysis_result['patterns_detected'])}")
-    print(f"  Threat Level: {analysis_result['threat_analysis']['threat_level'].upper()}")
+    print(
+        f"  Threat Level: {analysis_result['threat_analysis']['threat_level'].upper()}"
+    )
     print(f"  Threat Score: {analysis_result['threat_analysis']['threat_score']:.2f}")
     print(f"  Optimization: {analysis_result['optimization_quality']}")
 
@@ -268,9 +274,11 @@ def demo_autonomous_quality():
     if result["recommendations"]:
         print(f"\n  Top Recommendations:")
         for rec in result["recommendations"][:3]:
-            print(f"    - {rec['action_type']}: "
-                  f"Confidence {rec['confidence']*100:.0f}%, "
-                  f"Expected +{rec['expected_improvement']:.2f}")
+            print(
+                f"    - {rec['action_type']}: "
+                f"Confidence {rec['confidence']*100:.0f}%, "
+                f"Expected +{rec['expected_improvement']:.2f}"
+            )
 
     # 2. Generate and Test Hypothesis
     print("\n--- Generate Quality Improvement Hypothesis ---")
