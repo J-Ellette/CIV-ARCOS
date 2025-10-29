@@ -38,6 +38,17 @@ A civilian version of military-grade software assurance following proven ARCOS m
   - **Model Transparency**: Feature importance, decision paths, and narrative explanations
   - **Bias Detection**: Fairness metrics and disparity analysis across groups
   - **Software Fallbacks**: Rule-based alternatives for all AI features when ML is unavailable
+- **Privacy & Data Governance**: Comprehensive privacy controls and data protection
+  - **Data Residency Controls**: Region-specific data storage (US, EU, UK, CA, AU, Global)
+  - **Evidence Redaction**: Automated redaction of sensitive information (emails, API keys, credentials)
+  - **Data Anonymization**: Pseudonymization and generalization for privacy-preserving sharing
+  - **Federated Evidence Sharing**: Privacy-preserving evidence sharing across organizations
+- **DevSecOps Expansion**: Runtime security and threat modeling automation
+  - **Runtime Monitoring**: Integration with Falco and OpenTelemetry for security/performance
+  - **Threat Modeling**: Automated STRIDE threat analysis from architecture and code
+  - **Security Event Collection**: Real-time security event aggregation and analysis
+  - **Performance Metrics**: Distributed tracing and performance monitoring
+  - **IriusRisk/Threat Dragon**: Export threat models to industry-standard tools
 - **REST API**: Clean API endpoints for evidence collection, analysis, badge generation, assurance cases, and status queries
 - **Blockchain-like Integrity**: Immutable audit trails with cryptographic checksums for evidence authenticity
 - **Custom Web Framework**: Built from scratch without Django/FastAPI/Flask dependencies
@@ -452,6 +463,140 @@ Generate comprehensive transparency report:
 }
 ```
 
+### Privacy & Data Governance
+
+**POST /api/tenants/create**
+Create a tenant with data residency controls:
+```json
+{
+  "tenant_id": "org_eu",
+  "config": {
+    "data_residency": "eu",
+    "weights": {"coverage": 0.3, "security": 0.3},
+    "standards": ["GDPR", "ISO27001"]
+  }
+}
+```
+
+**PUT /api/tenants/{tenant_id}/data-residency**
+Update tenant data residency:
+```json
+{
+  "region": "eu"
+}
+```
+
+**GET /api/tenants/{tenant_id}/data-residency**
+Get tenant data residency information
+
+**GET /api/privacy/regions**
+List available data residency regions (US, EU, UK, CA, AU, Global)
+
+**POST /api/privacy/redact**
+Redact sensitive information from evidence:
+```json
+{
+  "evidence": {
+    "data": {
+      "email": "user@example.com",
+      "api_key": "secret_key_123"
+    }
+  },
+  "redaction_level": "standard"
+}
+```
+
+**POST /api/privacy/anonymize**
+Anonymize evidence for privacy-preserving sharing:
+```json
+{
+  "evidence": {
+    "author": "john_doe",
+    "timestamp": "2024-01-15T10:30:00Z"
+  },
+  "level": "standard"
+}
+```
+
+### Runtime Monitoring & DevSecOps
+
+**POST /api/monitoring/events/collect**
+Collect runtime security events:
+```json
+{
+  "source": "falco",
+  "severity": "high",
+  "since": "2024-01-15T00:00:00Z"
+}
+```
+
+**POST /api/monitoring/metrics/collect**
+Collect performance metrics:
+```json
+{
+  "source": "opentelemetry",
+  "metric_type": "latency"
+}
+```
+
+**POST /api/monitoring/evidence/generate**
+Generate evidence from monitoring data:
+```json
+{
+  "time_window": "last_24h"
+}
+```
+
+**POST /api/threats/model/create**
+Create a threat model from architecture:
+```json
+{
+  "name": "MySystem",
+  "architecture": {
+    "components": [
+      {
+        "name": "WebApp",
+        "type": "web_application",
+        "trust_level": 3
+      }
+    ],
+    "data_flows": [
+      {
+        "source": "WebApp",
+        "destination": "Database",
+        "encrypted": false
+      }
+    ]
+  }
+}
+```
+
+**POST /api/threats/model/from-code**
+Generate threat model from code analysis:
+```json
+{
+  "project": "MyProject",
+  "code_analysis": {
+    "apis": [...],
+    "vulnerabilities": [...]
+  }
+}
+```
+
+**GET /api/threats/model/{model_id}**
+Get threat model details
+
+**GET /api/threats/model/{model_id}/summary**
+Get threat model summary with risk scores
+
+**POST /api/threats/model/{model_id}/export**
+Export threat model:
+```json
+{
+  "format": "iriusrisk"
+}
+```
+
 ## Architecture
 
 CIV-ARCOS is built with custom implementations of common frameworks:
@@ -693,6 +838,30 @@ flake8 civ_arcos/ tests/
   - [x] Technology trend adaptation
   - [x] Intelligent prioritization
 - [x] Comprehensive test suite (71 new tests, 678 total)
+
+## Step 11: Privacy, Data Governance & DevSecOps Expansion ✅
+- [x] Privacy & Data Governance
+  - [x] Data residency controls (US, EU, UK, CA, AU, Global)
+  - [x] Regional compliance mapping (GDPR, HIPAA, FedRAMP, etc.)
+  - [x] Evidence redaction engine (9 built-in rules)
+  - [x] Customizable redaction patterns
+  - [x] Data anonymization (pseudonymization, generalization)
+  - [x] Privacy-preserving federated sharing
+  - [x] Tenant-level data isolation by region
+- [x] DevSecOps Expansion
+  - [x] Runtime monitoring framework
+  - [x] Falco integration for security events
+  - [x] OpenTelemetry integration for performance metrics
+  - [x] Unified monitoring interface
+  - [x] Threat modeling automation
+  - [x] STRIDE threat category support
+  - [x] Automated threat detection from architecture
+  - [x] Automated threat detection from code analysis
+  - [x] IriusRisk export integration
+  - [x] OWASP Threat Dragon export integration
+  - [x] Risk scoring and prioritization
+- [x] REST API endpoints (12 new endpoints)
+- [x] Comprehensive test suite (92 new tests, 770 total)
 
 ## License
 

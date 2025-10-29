@@ -3,7 +3,7 @@
 from .config import Config, get_config
 from .cache import RedisEmulator, get_cache
 from .tasks import CeleryEmulator, get_task_processor, task, TaskStatus
-from .tenants import TenantManager, get_tenant_manager, init_tenant_manager
+from .tenants import TenantManager, get_tenant_manager, init_tenant_manager, DATA_RESIDENCY_REGIONS
 from .compliance import (
     ComplianceFramework,
     ComplianceManager,
@@ -44,6 +44,37 @@ from .personas import PersonaManager, PersonaRole, PersonaConfig
 from .onboarding import OnboardingManager, OnboardingFlow, OnboardingStep, OnboardingStepType
 from .accessibility import AccessibilityTester, AccessibilityTestResult, WCAGLevel, AccessibilityIssue
 from .xai import ExplainableAI, Explanation, BiasMetrics, FairnessReport, ExplanationType
+from .privacy import (
+    EvidenceRedactor,
+    DataAnonymizer,
+    RedactionRule,
+    get_redactor,
+    get_anonymizer,
+)
+from .runtime_monitoring import (
+    RuntimeMonitor,
+    FalcoIntegration,
+    OpenTelemetryIntegration,
+    RuntimeEvent,
+    PerformanceMetric,
+    MonitoringTool,
+    EventSeverity,
+    get_runtime_monitor,
+)
+from .threat_modeling import (
+    ThreatModel,
+    ThreatModelGenerator,
+    Threat,
+    Mitigation,
+    Asset,
+    DataFlow,
+    ThreatCategory,
+    ThreatSeverity,
+    AssetType,
+    IriusRiskIntegration,
+    ThreatDragonIntegration,
+    get_threat_model_generator,
+)
 
 __all__ = [
     "Config",
@@ -57,6 +88,7 @@ __all__ = [
     "TenantManager",
     "get_tenant_manager",
     "init_tenant_manager",
+    "DATA_RESIDENCY_REGIONS",
     "ComplianceFramework",
     "ComplianceManager",
     "get_compliance_manager",
@@ -108,4 +140,29 @@ __all__ = [
     "BiasMetrics",
     "FairnessReport",
     "ExplanationType",
+    "EvidenceRedactor",
+    "DataAnonymizer",
+    "RedactionRule",
+    "get_redactor",
+    "get_anonymizer",
+    "RuntimeMonitor",
+    "FalcoIntegration",
+    "OpenTelemetryIntegration",
+    "RuntimeEvent",
+    "PerformanceMetric",
+    "MonitoringTool",
+    "EventSeverity",
+    "get_runtime_monitor",
+    "ThreatModel",
+    "ThreatModelGenerator",
+    "Threat",
+    "Mitigation",
+    "Asset",
+    "DataFlow",
+    "ThreatCategory",
+    "ThreatSeverity",
+    "AssetType",
+    "IriusRiskIntegration",
+    "ThreatDragonIntegration",
+    "get_threat_model_generator",
 ]

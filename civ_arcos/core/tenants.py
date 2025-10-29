@@ -24,6 +24,40 @@ DEFAULT_TEMPLATES = {
     "tests": {"passing": 75, "good": 85, "excellent": 95},
 }
 
+# Supported data residency regions
+DATA_RESIDENCY_REGIONS = {
+    "us": {
+        "name": "United States",
+        "storage_prefix": "us",
+        "compliance": ["SOC2", "HIPAA", "FedRAMP"],
+    },
+    "eu": {
+        "name": "European Union",
+        "storage_prefix": "eu",
+        "compliance": ["GDPR", "ISO27001"],
+    },
+    "uk": {
+        "name": "United Kingdom",
+        "storage_prefix": "uk",
+        "compliance": ["GDPR", "UK-DPA"],
+    },
+    "ca": {
+        "name": "Canada",
+        "storage_prefix": "ca",
+        "compliance": ["PIPEDA"],
+    },
+    "au": {
+        "name": "Australia",
+        "storage_prefix": "au",
+        "compliance": ["Privacy Act"],
+    },
+    "global": {
+        "name": "Global (No Restriction)",
+        "storage_prefix": "global",
+        "compliance": [],
+    },
+}
+
 
 class TenantManager:
     """
@@ -34,6 +68,7 @@ class TenantManager:
     - Custom quality weights
     - Custom badge templates
     - Compliance standards configuration
+    - Data residency controls
     """
 
     def __init__(self, base_storage_path: str = "./data/tenants"):
@@ -69,8 +104,19 @@ class TenantManager:
         if tenant_id in self.tenant_configs:
             raise ValueError(f"Tenant {tenant_id} already exists")
 
-        # Create isolated evidence storage
-        tenant_storage_path = os.path.join(self.base_storage_path, f"tenant_{tenant_id}")
+        # Validate data residency region
+        data_residency = config.get("data_residency", "global")
+        if data_residency not in DATA_RESIDENCY_REGIONS:
+            raise ValueError(
+                f"Invalid data residency region: {data_residency}. "
+                f"Valid options: {', '.join(DATA_RESIDENCY_REGIONS.keys())}"
+            )
+
+        # Create isolated evidence storage with regional prefix
+        region_prefix = DATA_RESIDENCY_REGIONS[data_residency]["storage_prefix"]
+        tenant_storage_path = os.path.join(
+            self.base_storage_path, region_prefix, f"tenant_{tenant_id}"
+        )
         self.tenant_databases[tenant_id] = EvidenceGraph(tenant_storage_path)
 
         # Store tenant configuration
@@ -80,6 +126,13 @@ class TenantManager:
             "badge_templates": config.get("templates", DEFAULT_TEMPLATES),
             "compliance_standards": config.get("standards", []),
             "storage_path": tenant_storage_path,
+            "data_residency": data_residency,
+            "data_residency_info": DATA_RESIDENCY_REGIONS[data_residency],
+            "created_at": (
+                os.path.getmtime(self.base_storage_path)
+                if os.path.exists(self.base_storage_path)
+                else 0
+            ),
         }
 
         return self.tenant_configs[tenant_id]
@@ -201,6 +254,66 @@ class TenantManager:
         # For safety, we don't automatically delete files
 
         return True
+
+    def set_data_residency(self, tenant_id: str, region: str) -> Dict[str, Any]:
+        """
+        Update data residency region for a tenant.
+        Note: This requires data migration which is not automated.
+
+        Args:
+            tenant_id: Tenant identifier
+            region: Data residency region code
+
+        Returns:
+            Updated tenant configuration
+
+        Raises:
+            ValueError: If tenant not found or invalid region
+        """
+        if tenant_id not in self.tenant_configs:
+            raise ValueError(f"Tenant {tenant_id} not found")
+
+        if region not in DATA_RESIDENCY_REGIONS:
+            raise ValueError(
+                f"Invalid data residency region: {region}. "
+                f"Valid options: {', '.join(DATA_RESIDENCY_REGIONS.keys())}"
+            )
+
+        # Update configuration
+        self.tenant_configs[tenant_id]["data_residency"] = region
+        self.tenant_configs[tenant_id]["data_residency_info"] = DATA_RESIDENCY_REGIONS[region]
+
+        return self.tenant_configs[tenant_id]
+
+    def get_data_residency(self, tenant_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Get data residency information for a tenant.
+
+        Args:
+            tenant_id: Tenant identifier
+
+        Returns:
+            Data residency information or None if tenant not found
+        """
+        if tenant_id not in self.tenant_configs:
+            return None
+
+        config = self.tenant_configs[tenant_id]
+        return {
+            "tenant_id": tenant_id,
+            "region": config.get("data_residency", "global"),
+            "region_info": config.get("data_residency_info", DATA_RESIDENCY_REGIONS["global"]),
+            "storage_path": config.get("storage_path", ""),
+        }
+
+    def list_regions(self) -> Dict[str, Dict[str, Any]]:
+        """
+        List all available data residency regions.
+
+        Returns:
+            Dictionary of region codes to region information
+        """
+        return DATA_RESIDENCY_REGIONS.copy()
 
     def _resolve_tenant_from_api_key(self, api_key: str) -> Optional[str]:
         """

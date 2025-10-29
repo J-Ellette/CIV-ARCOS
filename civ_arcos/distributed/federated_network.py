@@ -222,6 +222,7 @@ class FederatedEvidenceNetwork:
         evidence: Dict[str, Any],
         organization_id: str,
         privacy_level: str = "anonymized",
+        redact_sensitive: bool = True,
     ) -> AnonymizedEvidence:
         """
         Share evidence with the network at specified privacy level.
@@ -230,12 +231,19 @@ class FederatedEvidenceNetwork:
             evidence: Evidence to share
             organization_id: ID of sharing organization
             privacy_level: Level of privacy (anonymized, aggregated, private)
+            redact_sensitive: Whether to redact sensitive information
 
         Returns:
             Anonymized evidence object
         """
         if organization_id not in self.nodes:
             raise ValueError(f"Organization {organization_id} not in network")
+
+        # Apply redaction if requested
+        if redact_sensitive:
+            from ..core.privacy import get_redactor
+            redactor = get_redactor()
+            evidence = redactor.redact_evidence(evidence, privacy_level)
 
         # Create anonymized version based on privacy level
         evidence_id = evidence.get("id", self._generate_id(evidence))

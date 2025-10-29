@@ -5,7 +5,7 @@ Tests for multi-tenant architecture.
 import pytest
 import os
 import tempfile
-from civ_arcos.core.tenants import TenantManager, get_tenant_manager, DEFAULT_WEIGHTS, DEFAULT_TEMPLATES
+from civ_arcos.core.tenants import TenantManager, get_tenant_manager, DEFAULT_WEIGHTS, DEFAULT_TEMPLATES, DATA_RESIDENCY_REGIONS
 
 
 @pytest.fixture
@@ -30,6 +30,7 @@ def test_create_tenant(tenant_manager):
     assert "quality_weights" in config
     assert "badge_templates" in config
     assert "compliance_standards" in config
+    assert "data_residency" in config
     assert tenant_id in tenant_manager.list_tenants()
 
 
@@ -45,6 +46,27 @@ def test_create_tenant_with_custom_config(tenant_manager):
     
     assert config["quality_weights"] == custom_config["weights"]
     assert config["compliance_standards"] == custom_config["standards"]
+
+
+def test_create_tenant_with_data_residency(tenant_manager):
+    """Test creating tenant with data residency."""
+    tenant_id = "org_eu"
+    custom_config = {"data_residency": "eu"}
+    
+    config = tenant_manager.create_tenant(tenant_id, custom_config)
+    
+    assert config["data_residency"] == "eu"
+    assert config["data_residency_info"]["name"] == "European Union"
+    assert "eu" in config["storage_path"]
+
+
+def test_create_tenant_with_invalid_region(tenant_manager):
+    """Test creating tenant with invalid region raises error."""
+    tenant_id = "org_invalid"
+    custom_config = {"data_residency": "invalid_region"}
+    
+    with pytest.raises(ValueError, match="Invalid data residency region"):
+        tenant_manager.create_tenant(tenant_id, custom_config)
 
 
 def test_create_duplicate_tenant(tenant_manager):
@@ -208,6 +230,69 @@ def test_delete_nonexistent_tenant(tenant_manager):
     assert result is False
 
 
+def test_set_data_residency(tenant_manager):
+    """Test updating data residency for a tenant."""
+    tenant_id = "org1"
+    tenant_manager.create_tenant(tenant_id)
+    
+    config = tenant_manager.set_data_residency(tenant_id, "eu")
+    
+    assert config["data_residency"] == "eu"
+    assert config["data_residency_info"]["name"] == "European Union"
+
+
+def test_set_invalid_data_residency(tenant_manager):
+    """Test setting invalid data residency raises error."""
+    tenant_id = "org1"
+    tenant_manager.create_tenant(tenant_id)
+    
+    with pytest.raises(ValueError, match="Invalid data residency region"):
+        tenant_manager.set_data_residency(tenant_id, "invalid")
+
+
+def test_get_data_residency(tenant_manager):
+    """Test getting data residency information."""
+    tenant_id = "org_us"
+    tenant_manager.create_tenant(tenant_id, {"data_residency": "us"})
+    
+    residency_info = tenant_manager.get_data_residency(tenant_id)
+    
+    assert residency_info is not None
+    assert residency_info["tenant_id"] == tenant_id
+    assert residency_info["region"] == "us"
+    assert residency_info["region_info"]["name"] == "United States"
+
+
+def test_get_data_residency_nonexistent_tenant(tenant_manager):
+    """Test getting data residency for nonexistent tenant."""
+    residency_info = tenant_manager.get_data_residency("nonexistent")
+    assert residency_info is None
+
+
+def test_list_regions(tenant_manager):
+    """Test listing available data residency regions."""
+    regions = tenant_manager.list_regions()
+    
+    assert "us" in regions
+    assert "eu" in regions
+    assert "uk" in regions
+    assert "ca" in regions
+    assert "au" in regions
+    assert "global" in regions
+    
+    # Check region structure
+    assert regions["us"]["name"] == "United States"
+    assert "compliance" in regions["us"]
+
+
+def test_data_residency_regions_constant():
+    """Test DATA_RESIDENCY_REGIONS constant."""
+    assert "us" in DATA_RESIDENCY_REGIONS
+    assert "eu" in DATA_RESIDENCY_REGIONS
+    assert DATA_RESIDENCY_REGIONS["us"]["storage_prefix"] == "us"
+    assert "GDPR" in DATA_RESIDENCY_REGIONS["eu"]["compliance"]
+
+
 def test_default_weights():
     """Test that default weights are reasonable."""
     assert DEFAULT_WEIGHTS["coverage"] > 0
@@ -236,3 +321,18 @@ def test_tenant_storage_path_creation(tenant_manager):
     
     storage_path = config["storage_path"]
     assert os.path.exists(storage_path)
+
+
+def test_regional_storage_paths(tenant_manager):
+    """Test that tenants with different regions have separate paths."""
+    tenant_us = "org_us"
+    tenant_eu = "org_eu"
+    
+    config_us = tenant_manager.create_tenant(tenant_us, {"data_residency": "us"})
+    config_eu = tenant_manager.create_tenant(tenant_eu, {"data_residency": "eu"})
+    
+    # Paths should include regional prefixes
+    assert "us" in config_us["storage_path"]
+    assert "eu" in config_eu["storage_path"]
+    assert config_us["storage_path"] != config_eu["storage_path"]
+
