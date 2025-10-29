@@ -77,11 +77,15 @@ def demo_interactive_viewer():
     print("\n1. Generate Interactive GSN Visualization")
     print("-" * 70)
     
-    interactive_gsn = viewer.generate_interactive_gsn(
-        case,
-        include_metadata=True,
-        enable_drill_down=True
-    )
+    try:
+        interactive_gsn = viewer.generate_interactive_gsn(
+            case,
+            include_metadata=True,
+            enable_drill_down=True
+        )
+    except Exception as e:
+        print(f"Error generating interactive GSN: {e}")
+        return None, viewer
     
     print(f"Case ID: {interactive_gsn['case_id']}")
     print(f"Title: {interactive_gsn['title']}")
@@ -338,24 +342,37 @@ def main():
     """Run all demos."""
     print("\n🎨 CIV-ARCOS Step 8 Demo: Advanced Visualization & UX\n")
     
-    # Demo 1: Interactive Viewer
-    case, viewer = demo_interactive_viewer()
-    
-    # Demo 2: Quality Dashboard
-    dashboard = demo_quality_dashboard()
-    
-    print("\n" + "="*70)
-    print("Demo Complete!")
-    print("="*70)
-    print("\nNew Features Demonstrated:")
-    print("  ✓ Interactive GSN Visualization with drill-down")
-    print("  ✓ Evidence Timeline with quality evolution tracking")
-    print("  ✓ Multiple export formats (JSON, HTML, SVG)")
-    print("  ✓ Real-time update subscriptions")
-    print("  ✓ Executive Dashboard with ROI analysis")
-    print("  ✓ Developer Dashboard with actionable insights")
-    print("  ✓ Quality widgets (trends, security, compliance, productivity, debt)")
-    print("\nCheck /tmp/demo_assurance_case.html for the exported visualization!")
+    try:
+        # Demo 1: Interactive Viewer
+        case, viewer = demo_interactive_viewer()
+        
+        if case is None:
+            print("\n⚠️  Interactive Viewer demo encountered errors")
+            return
+        
+        # Demo 2: Quality Dashboard
+        dashboard = demo_quality_dashboard()
+        
+        print("\n" + "="*70)
+        print("Demo Complete!")
+        print("="*70)
+        print("\nNew Features Demonstrated:")
+        print("  ✓ Interactive GSN Visualization with drill-down")
+        print("  ✓ Evidence Timeline with quality evolution tracking")
+        print("  ✓ Multiple export formats (JSON, HTML, SVG)")
+        print("  ✓ Real-time update subscriptions")
+        print("  ✓ Executive Dashboard with ROI analysis")
+        print("  ✓ Developer Dashboard with actionable insights")
+        print("  ✓ Quality widgets (trends, security, compliance, productivity, debt)")
+        
+        # Show where HTML file was saved (cross-platform)
+        output_file = os.path.join(tempfile.gettempdir(), "demo_assurance_case.html")
+        print(f"\nCheck {output_file} for the exported visualization!")
+        
+    except Exception as e:
+        print(f"\n❌ Demo failed with error: {e}")
+        import traceback
+        traceback.print_exc()
 
 
 if __name__ == "__main__":
