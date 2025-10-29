@@ -581,13 +581,13 @@ Runtime Monitoring Integration: Add support for tools like Falco or OpenTelemetr
 Threat Modeling Automation: Integrate tools like IriusRisk or OWASP Threat Dragon to auto-generate threat models from code and architecture.
 
 
-### 📊 5. Advanced Visualization & Reporting
+### 📊 5. Advanced Visualization & Reporting (COMPLETE)
 
 Narrative Reports for Executives: Auto-generate PDF/HTML reports summarizing assurance status in business language.
 Interactive Risk Maps: Visualize risk hotspots across codebases or system components.
 
 
-### 🧩 6. Plugin SDK & Developer Tools
+### 🧩 6. Plugin SDK & Developer Tools (COMPLETE)
 
 Plugin Development Kit (PDK): Provide SDKs and templates for third-party developers to build CIV-ARCOS plugins.
 Local Dev Environment: Docker-based sandbox for testing integrations and assurance workflows offline.
