@@ -96,6 +96,25 @@ from .plugin_sdk import (
     PluginScaffolder,
     PluginDevelopmentGuide,
 )
+from .i18n import (
+    Language,
+    Region,
+    ComplianceFramework as I18nComplianceFramework,
+    TranslationEngine,
+    LocalizationManager,
+    TRANSLATIONS,
+    REGIONAL_COMPLIANCE,
+)
+from .digital_twin import (
+    DigitalTwinPlatform,
+    SimulationType,
+    MaintenanceStatus,
+    SimulationEvidence,
+    QualityDegradationModel,
+    PredictiveMaintenanceEngine,
+    DigitalTwinConnector,
+    DigitalTwinIntegration,
+)
 
 __all__ = [
     "Config",
@@ -201,4 +220,19 @@ __all__ = [
     "PluginTemplate",
     "PluginScaffolder",
     "PluginDevelopmentGuide",
+    "Language",
+    "Region",
+    "I18nComplianceFramework",
+    "TranslationEngine",
+    "LocalizationManager",
+    "TRANSLATIONS",
+    "REGIONAL_COMPLIANCE",
+    "DigitalTwinPlatform",
+    "SimulationType",
+    "MaintenanceStatus",
+    "SimulationEvidence",
+    "QualityDegradationModel",
+    "PredictiveMaintenanceEngine",
+    "DigitalTwinConnector",
+    "DigitalTwinIntegration",
 ]

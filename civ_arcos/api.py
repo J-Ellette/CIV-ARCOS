@@ -39,6 +39,14 @@ from civ_arcos.core import (
     OnboardingManager,
     AccessibilityTester,
     ExplainableAI,
+    TranslationEngine,
+    LocalizationManager,
+    Language,
+    Region,
+    I18nComplianceFramework,
+    DigitalTwinIntegration,
+    DigitalTwinPlatform,
+    SimulationType,
 )
 from civ_arcos.api import CivARCOSAPI
 
@@ -93,6 +101,13 @@ accessibility_tester = AccessibilityTester()
 
 # Initialize explainable AI
 explainable_ai = ExplainableAI()
+
+# Initialize internationalization
+translation_engine = TranslationEngine()
+localization_manager = LocalizationManager()
+
+# Initialize digital twin integration
+digital_twin_integration = DigitalTwinIntegration()
 
 
 @app.get("/")
@@ -3635,6 +3650,437 @@ def get_plugin_types(request: Request) -> Response:
             ],
         })
         
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# Internationalization & Localization Endpoints
+# ============================================================================
+
+@app.get("/api/i18n/languages")
+def get_languages(request: Request) -> Response:
+    """Get list of supported languages."""
+    try:
+        languages = translation_engine.get_available_languages()
+        return Response({
+            "success": True,
+            "languages": [
+                {"code": lang.value, "name": lang.name}
+                for lang in languages
+            ],
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/i18n/translate")
+def translate_key(request: Request) -> Response:
+    """Translate a key to specified language."""
+    try:
+        key = request.params.get("key")
+        lang_code = request.params.get("language", "en-US")
+        
+        if not key:
+            return Response({"error": "Missing 'key' parameter"}, status_code=400)
+        
+        try:
+            language = Language(lang_code)
+        except ValueError:
+            return Response(
+                {"error": f"Unsupported language: {lang_code}"},
+                status_code=400
+            )
+        
+        translation = translation_engine.translate(key, language)
+        
+        return Response({
+            "success": True,
+            "key": key,
+            "language": lang_code,
+            "translation": translation,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/i18n/user/language")
+def set_user_language(request: Request) -> Response:
+    """Set language preference for a user."""
+    try:
+        user_id = request.body.get("user_id")
+        lang_code = request.body.get("language")
+        
+        if not user_id or not lang_code:
+            return Response(
+                {"error": "Missing user_id or language"},
+                status_code=400
+            )
+        
+        try:
+            language = Language(lang_code)
+        except ValueError:
+            return Response(
+                {"error": f"Unsupported language: {lang_code}"},
+                status_code=400
+            )
+        
+        localization_manager.set_user_language(user_id, language)
+        
+        return Response({
+            "success": True,
+            "user_id": user_id,
+            "language": lang_code,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/i18n/user/region")
+def set_user_region(request: Request) -> Response:
+    """Set region preference for a user."""
+    try:
+        user_id = request.body.get("user_id")
+        region_code = request.body.get("region")
+        
+        if not user_id or not region_code:
+            return Response(
+                {"error": "Missing user_id or region"},
+                status_code=400
+            )
+        
+        try:
+            region = Region(region_code)
+        except ValueError:
+            return Response(
+                {"error": f"Unsupported region: {region_code}"},
+                status_code=400
+            )
+        
+        localization_manager.set_user_region(user_id, region)
+        
+        return Response({
+            "success": True,
+            "user_id": user_id,
+            "region": region_code,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/i18n/regions")
+def get_regions(request: Request) -> Response:
+    """Get list of supported regions."""
+    try:
+        return Response({
+            "success": True,
+            "regions": [
+                {"code": region.value, "name": region.name}
+                for region in Region
+            ],
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/i18n/compliance/frameworks")
+def get_compliance_frameworks(request: Request) -> Response:
+    """Get list of compliance frameworks by region."""
+    try:
+        region_code = request.params.get("region")
+        
+        if region_code:
+            try:
+                region = Region(region_code)
+                frameworks = localization_manager.get_regional_compliance_frameworks(region)
+                return Response({
+                    "success": True,
+                    "region": region_code,
+                    "frameworks": [
+                        {"code": fw.value, "name": fw.name}
+                        for fw in frameworks
+                    ],
+                })
+            except ValueError:
+                return Response(
+                    {"error": f"Unsupported region: {region_code}"},
+                    status_code=400
+                )
+        else:
+            # Return all frameworks
+            return Response({
+                "success": True,
+                "frameworks": [
+                    {"code": fw.value, "name": fw.name}
+                    for fw in I18nComplianceFramework
+                ],
+            })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/i18n/compliance/requirements")
+def get_compliance_requirements(request: Request) -> Response:
+    """Get requirements for a compliance framework."""
+    try:
+        framework_code = request.params.get("framework")
+        
+        if not framework_code:
+            return Response(
+                {"error": "Missing 'framework' parameter"},
+                status_code=400
+            )
+        
+        try:
+            framework = I18nComplianceFramework(framework_code)
+        except ValueError:
+            return Response(
+                {"error": f"Unsupported framework: {framework_code}"},
+                status_code=400
+            )
+        
+        requirements = localization_manager.get_compliance_requirements(framework)
+        
+        return Response({
+            "success": True,
+            "framework": framework_code,
+            "requirements": requirements,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/i18n/localize/dashboard")
+def localize_dashboard(request: Request) -> Response:
+    """Localize dashboard data for a user."""
+    try:
+        user_id = request.body.get("user_id")
+        dashboard_data = request.body.get("dashboard_data")
+        
+        if not user_id or not dashboard_data:
+            return Response(
+                {"error": "Missing user_id or dashboard_data"},
+                status_code=400
+            )
+        
+        localized = localization_manager.localize_dashboard(dashboard_data, user_id)
+        
+        return Response({
+            "success": True,
+            "user_id": user_id,
+            "localized_data": localized,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/i18n/localize/report")
+def localize_report(request: Request) -> Response:
+    """Localize report data for a user."""
+    try:
+        user_id = request.body.get("user_id")
+        report_data = request.body.get("report_data")
+        
+        if not user_id or not report_data:
+            return Response(
+                {"error": "Missing user_id or report_data"},
+                status_code=400
+            )
+        
+        localized = localization_manager.localize_report(report_data, user_id)
+        
+        return Response({
+            "success": True,
+            "user_id": user_id,
+            "localized_data": localized,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/i18n/stats")
+def get_i18n_stats(request: Request) -> Response:
+    """Get internationalization statistics."""
+    try:
+        stats = localization_manager.get_localization_stats()
+        
+        return Response({
+            "success": True,
+            "stats": stats,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# Digital Twin Integration Endpoints
+# ============================================================================
+
+@app.post("/api/digital-twin/connector/add")
+def add_digital_twin_connector(request: Request) -> Response:
+    """Add a digital twin platform connector."""
+    try:
+        name = request.body.get("name")
+        platform_code = request.body.get("platform")
+        config = request.body.get("config", {})
+        
+        if not name or not platform_code:
+            return Response(
+                {"error": "Missing name or platform"},
+                status_code=400
+            )
+        
+        try:
+            platform = DigitalTwinPlatform(platform_code)
+        except ValueError:
+            return Response(
+                {"error": f"Unsupported platform: {platform_code}"},
+                status_code=400
+            )
+        
+        success = digital_twin_integration.add_connector(name, platform, config)
+        
+        if success:
+            return Response({
+                "success": True,
+                "connector_name": name,
+                "platform": platform_code,
+            })
+        else:
+            return Response(
+                {"error": "Failed to connect to platform"},
+                status_code=500
+            )
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/digital-twin/simulation/run")
+def run_simulation(request: Request) -> Response:
+    """Run a simulation on digital twin platform."""
+    try:
+        connector_name = request.body.get("connector_name")
+        simulation_type_code = request.body.get("simulation_type")
+        parameters = request.body.get("parameters", {})
+        
+        if not connector_name or not simulation_type_code:
+            return Response(
+                {"error": "Missing connector_name or simulation_type"},
+                status_code=400
+            )
+        
+        try:
+            simulation_type = SimulationType(simulation_type_code)
+        except ValueError:
+            return Response(
+                {"error": f"Unsupported simulation type: {simulation_type_code}"},
+                status_code=400
+            )
+        
+        evidence = digital_twin_integration.run_simulation(
+            connector_name, simulation_type, parameters
+        )
+        
+        return Response({
+            "success": True,
+            "simulation_evidence": evidence,
+        })
+    except ValueError as e:
+        return Response({"error": str(e)}, status_code=404)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/digital-twin/component/register")
+def register_component(request: Request) -> Response:
+    """Register a component for monitoring."""
+    try:
+        component_id = request.body.get("component_id")
+        component_data = request.body.get("component_data", {})
+        
+        if not component_id:
+            return Response(
+                {"error": "Missing component_id"},
+                status_code=400
+            )
+        
+        digital_twin_integration.register_component(component_id, component_data)
+        
+        return Response({
+            "success": True,
+            "component_id": component_id,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/digital-twin/component/analyze")
+def analyze_component(request: Request) -> Response:
+    """Analyze component health based on simulation data."""
+    try:
+        component_id = request.params.get("component_id")
+        
+        if not component_id:
+            return Response(
+                {"error": "Missing component_id parameter"},
+                status_code=400
+            )
+        
+        analysis = digital_twin_integration.analyze_component(component_id)
+        
+        return Response({
+            "success": True,
+            "analysis": analysis,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/digital-twin/quality/predict-degradation")
+def predict_quality_degradation(request: Request) -> Response:
+    """Predict quality degradation based on current metrics."""
+    try:
+        current_metrics = request.body.get("current_metrics", {})
+        forecast_days = request.body.get("forecast_days", 30)
+        
+        prediction = digital_twin_integration.analyze_quality_degradation(
+            current_metrics, forecast_days
+        )
+        
+        return Response({
+            "success": True,
+            "prediction": prediction,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/digital-twin/maintenance/forecast")
+def get_maintenance_forecast(request: Request) -> Response:
+    """Get predictive maintenance forecast."""
+    try:
+        forecast_days = int(request.params.get("forecast_days", 60))
+        
+        forecast = digital_twin_integration.get_maintenance_forecast(forecast_days)
+        
+        return Response({
+            "success": True,
+            "forecast": forecast,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/digital-twin/stats")
+def get_digital_twin_stats(request: Request) -> Response:
+    """Get digital twin integration statistics."""
+    try:
+        stats = digital_twin_integration.get_integration_stats()
+        
+        return Response({
+            "success": True,
+            "stats": stats,
+        })
     except Exception as e:
         return Response({"error": str(e)}, status_code=500)
 
