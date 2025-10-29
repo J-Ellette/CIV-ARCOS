@@ -8,7 +8,7 @@ def test_dashboard_generator_init():
     """Test dashboard generator initialization."""
     gen = DashboardGenerator()
     assert gen is not None
-    assert gen.base_css is not None
+    assert gen.uswds_version is not None
     assert gen.base_js is not None
 
 
@@ -168,21 +168,26 @@ def test_analyze_page_has_form():
 
 
 def test_css_is_embedded():
-    """Test that CSS is properly embedded."""
+    """Test that CSS is properly included (USWDS CDN + custom styles)."""
     gen = DashboardGenerator()
     html = gen.generate_home_page({"evidence_count": 0, "case_count": 0, "badge_types": 6})
     
+    # Check for USWDS CDN link
+    assert "uswds" in html and ".css" in html
+    # Check for custom CSS
     assert "<style>" in html
     assert "</style>" in html
-    assert "font-family" in html
-    assert "background" in html
+    assert "text-center" in html  # Custom CSS class
 
 
 def test_js_is_embedded():
-    """Test that JavaScript is properly embedded."""
+    """Test that JavaScript is properly included (USWDS CDN + custom scripts)."""
     gen = DashboardGenerator()
     html = gen.generate_home_page({"evidence_count": 0, "case_count": 0, "badge_types": 6})
     
+    # Check for USWDS CDN script
+    assert "uswds" in html and ".js" in html
+    # Check for custom JavaScript
     assert "<script>" in html
     assert "</script>" in html
     assert "CIV-ARCOS Dashboard loaded" in html
