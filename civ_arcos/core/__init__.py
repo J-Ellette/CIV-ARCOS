@@ -15,6 +15,16 @@ from .compliance import (
     NISTFramework,
 )
 from .analytics import AnalyticsEngine, get_analytics_engine, TrendAnalysis, BenchmarkResult, RiskPrediction
+from .plugin_marketplace import PluginMarketplace, PluginManifest, PluginValidator, PluginSandbox
+from .community_platform import (
+    CommunityPlatform,
+    EvidencePattern,
+    BestPractice,
+    ThreatIntelligence,
+    IndustryTemplate,
+    ComplianceTemplate,
+    BenchmarkDataset,
+)
 
 __all__ = [
     "Config",
@@ -41,5 +51,15 @@ __all__ = [
     "TrendAnalysis",
     "BenchmarkResult",
     "RiskPrediction",
+    "PluginMarketplace",
+    "PluginManifest",
+    "PluginValidator",
+    "PluginSandbox",
+    "CommunityPlatform",
+    "EvidencePattern",
+    "BestPractice",
+    "ThreatIntelligence",
+    "IndustryTemplate",
+    "ComplianceTemplate",
+    "BenchmarkDataset",
 ]
-
