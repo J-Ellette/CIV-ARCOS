@@ -171,6 +171,99 @@ fill="#010101" fill-opacity=".3">{value}</text>
 
         return svg
 
+    def generate_documentation_badge(self, score: float) -> str:
+        """
+        Generate a documentation quality badge.
+
+        Args:
+            score: Documentation score (0-100) based on:
+                   - API docs coverage
+                   - README quality
+                   - Inline comments
+
+        Returns:
+            SVG badge as string
+        """
+        label = "docs"
+
+        if score >= 90:
+            color = self.COLORS["green"]
+            status = "excellent"
+        elif score >= 75:
+            color = self.COLORS["blue"]
+            status = "good"
+        elif score >= 60:
+            color = self.COLORS["yellow"]
+            status = "fair"
+        else:
+            color = self.COLORS["red"]
+            status = "poor"
+
+        value = f"{score:.1f}% ({status})"
+        return self._create_badge_svg(label, value, color)
+
+    def generate_performance_badge(self, score: float) -> str:
+        """
+        Generate a performance badge.
+
+        Args:
+            score: Performance score (0-100) based on:
+                   - Load testing results
+                   - Response time metrics
+                   - Resource usage
+
+        Returns:
+            SVG badge as string
+        """
+        label = "performance"
+
+        if score >= 90:
+            color = self.COLORS["green"]
+            status = "excellent"
+        elif score >= 75:
+            color = self.COLORS["blue"]
+            status = "good"
+        elif score >= 60:
+            color = self.COLORS["yellow"]
+            status = "fair"
+        else:
+            color = self.COLORS["red"]
+            status = "poor"
+
+        value = f"{score:.1f}% ({status})"
+        return self._create_badge_svg(label, value, color)
+
+    def generate_accessibility_badge(self, compliance_level: str, issues: int = 0) -> str:
+        """
+        Generate an accessibility compliance badge.
+
+        Args:
+            compliance_level: WCAG compliance level (A, AA, AAA, or None)
+            issues: Number of accessibility issues found
+
+        Returns:
+            SVG badge as string
+        """
+        label = "accessibility"
+
+        if compliance_level == "AAA" and issues == 0:
+            value = "WCAG AAA"
+            color = self.COLORS["green"]
+        elif compliance_level == "AA" and issues == 0:
+            value = "WCAG AA"
+            color = self.COLORS["blue"]
+        elif compliance_level == "A" and issues == 0:
+            value = "WCAG A"
+            color = self.COLORS["yellow"]
+        elif issues > 0:
+            value = f"{issues} issues"
+            color = self.COLORS["red"]
+        else:
+            value = "not tested"
+            color = self.COLORS["gray"]
+
+        return self._create_badge_svg(label, value, color)
+
     def calculate_badge_tier(self, metric_type: str, value: float) -> Tuple[str, str]:
         """
         Calculate badge tier and color for a metric.
@@ -193,6 +286,16 @@ fill="#010101" fill-opacity=".3">{value}</text>
                 return "Low", self.COLORS["red"]
 
         elif metric_type == "quality":
+            if value >= 90:
+                return "Excellent", self.COLORS["green"]
+            elif value >= 75:
+                return "Good", self.COLORS["blue"]
+            elif value >= 60:
+                return "Fair", self.COLORS["yellow"]
+            else:
+                return "Poor", self.COLORS["red"]
+
+        elif metric_type in ["documentation", "performance"]:
             if value >= 90:
                 return "Excellent", self.COLORS["green"]
             elif value >= 75:

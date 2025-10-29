@@ -6,6 +6,7 @@ Provides REST endpoints for evidence collection, badge generation, and status qu
 import os
 from civ_arcos.web.framework import create_app, Request, Response
 from civ_arcos.web.badges import BadgeGenerator
+from civ_arcos.web.dashboard import DashboardGenerator
 from civ_arcos.storage.graph import EvidenceGraph
 from civ_arcos.evidence.collector import EvidenceStore
 from civ_arcos.adapters.github_adapter import GitHubCollector
@@ -39,6 +40,9 @@ evidence_store = EvidenceStore(graph)
 # Initialize badge generator
 badge_gen = BadgeGenerator()
 
+# Initialize dashboard generator
+dashboard_gen = DashboardGenerator()
+
 # Initialize assurance case components
 template_library = TemplateLibrary()
 pattern_instantiator = PatternInstantiator(template_library, graph, evidence_store)
@@ -69,6 +73,10 @@ def index(request: Request) -> Response:
                 "GET /api/badge/coverage/{owner}/{repo}": "Get coverage badge",
                 "GET /api/badge/quality/{owner}/{repo}": "Get quality badge",
                 "GET /api/badge/security/{owner}/{repo}": "Get security badge",
+                "GET /api/badge/documentation/{owner}/{repo}": "Get documentation badge",
+                "GET /api/badge/performance/{owner}/{repo}": "Get performance badge",
+                "GET /api/badge/accessibility/{owner}/{repo}": "Get accessibility badge",
+                "GET /api/dashboard": "Web dashboard home",
                 "GET /api/status": "Get system status",
             },
         }
@@ -244,6 +252,74 @@ def security_badge(request: Request, owner: str, repo: str) -> Response:
 
         # Generate badge
         svg = badge_gen.generate_security_badge(vulnerabilities)
+
+        return Response(svg, content_type="image/svg+xml")
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/badge/documentation/{owner}/{repo}")
+def documentation_badge(request: Request, owner: str, repo: str) -> Response:
+    """
+    Generate documentation quality badge for a repository.
+
+    Query parameters:
+    - score: Documentation score (default: 0)
+    """
+    try:
+        # Get score from query parameter
+        score_str = request.query.get("score", ["0"])[0]
+        score = float(score_str)
+
+        # Generate badge
+        svg = badge_gen.generate_documentation_badge(score)
+
+        return Response(svg, content_type="image/svg+xml")
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/badge/performance/{owner}/{repo}")
+def performance_badge(request: Request, owner: str, repo: str) -> Response:
+    """
+    Generate performance badge for a repository.
+
+    Query parameters:
+    - score: Performance score (default: 0)
+    """
+    try:
+        # Get score from query parameter
+        score_str = request.query.get("score", ["0"])[0]
+        score = float(score_str)
+
+        # Generate badge
+        svg = badge_gen.generate_performance_badge(score)
+
+        return Response(svg, content_type="image/svg+xml")
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/badge/accessibility/{owner}/{repo}")
+def accessibility_badge(request: Request, owner: str, repo: str) -> Response:
+    """
+    Generate accessibility compliance badge for a repository.
+
+    Query parameters:
+    - level: WCAG compliance level (A, AA, AAA, None) (default: None)
+    - issues: Number of accessibility issues (default: 0)
+    """
+    try:
+        # Get parameters from query
+        level = request.query.get("level", ["None"])[0]
+        issues_str = request.query.get("issues", ["0"])[0]
+        issues = int(issues_str)
+
+        # Generate badge
+        svg = badge_gen.generate_accessibility_badge(level, issues)
 
         return Response(svg, content_type="image/svg+xml")
 
@@ -695,6 +771,93 @@ def list_templates(request: Request) -> Response:
                 "count": len(templates),
             }
         )
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# Dashboard routes
+@app.get("/dashboard")
+def dashboard_home(request: Request) -> Response:
+    """Dashboard home page."""
+    try:
+        # Get system stats
+        all_evidence = evidence_store.find_evidence()
+        
+        # Count assurance cases in graph
+        case_count = 0
+        try:
+            # Search for AssuranceCase nodes in graph
+            case_nodes = graph.query(
+                "MATCH (n:AssuranceCase) RETURN count(n) as count"
+            )
+            if case_nodes:
+                case_count = case_nodes[0].get("count", 0)
+        except:
+            case_count = 0
+
+        stats = {
+            "evidence_count": len(all_evidence),
+            "case_count": case_count,
+            "badge_types": 6,  # coverage, quality, security, docs, perf, accessibility
+        }
+
+        html = dashboard_gen.generate_home_page(stats)
+        return Response(html, content_type="text/html")
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/badges")
+def dashboard_badges(request: Request) -> Response:
+    """Dashboard badges page."""
+    try:
+        badges = []  # Badge configurations could be loaded here
+        html = dashboard_gen.generate_badge_page(badges)
+        return Response(html, content_type="text/html")
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/analyze")
+def dashboard_analyze(request: Request) -> Response:
+    """Dashboard analyze page."""
+    try:
+        html = dashboard_gen.generate_analyze_page()
+        return Response(html, content_type="text/html")
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/assurance")
+def dashboard_assurance(request: Request) -> Response:
+    """Dashboard assurance cases page."""
+    try:
+        # Get list of assurance cases
+        cases = []
+        try:
+            # Query graph for assurance cases
+            case_nodes = graph.query(
+                "MATCH (n:AssuranceCase) RETURN n.case_id as case_id, "
+                "n.title as title, n.node_count as node_count LIMIT 20"
+            )
+            if case_nodes:
+                cases = [
+                    {
+                        "case_id": node.get("case_id", ""),
+                        "title": node.get("title", "Untitled"),
+                        "node_count": node.get("node_count", 0),
+                    }
+                    for node in case_nodes
+                ]
+        except:
+            cases = []
+
+        html = dashboard_gen.generate_assurance_page(cases)
+        return Response(html, content_type="text/html")
 
     except Exception as e:
         return Response({"error": str(e)}, status_code=500)

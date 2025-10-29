@@ -86,3 +86,85 @@ def test_badge_tier_calculation():
 
     tier, color = badge_gen.calculate_badge_tier("quality", 95.0)
     assert tier == "Excellent"
+
+
+def test_documentation_badge_excellent():
+    """Test generating excellent documentation badge."""
+    badge_gen = BadgeGenerator()
+    badge = badge_gen.generate_documentation_badge(95.0)
+
+    assert "svg" in badge
+    assert "docs" in badge
+    assert "excellent" in badge
+    assert "95.0" in badge
+
+
+def test_documentation_badge_fair():
+    """Test generating fair documentation badge."""
+    badge_gen = BadgeGenerator()
+    badge = badge_gen.generate_documentation_badge(65.0)
+
+    assert "svg" in badge
+    assert "docs" in badge
+    assert "fair" in badge
+
+
+def test_performance_badge_excellent():
+    """Test generating excellent performance badge."""
+    badge_gen = BadgeGenerator()
+    badge = badge_gen.generate_performance_badge(92.0)
+
+    assert "svg" in badge
+    assert "performance" in badge
+    assert "excellent" in badge
+    assert "92.0" in badge
+
+
+def test_performance_badge_poor():
+    """Test generating poor performance badge."""
+    badge_gen = BadgeGenerator()
+    badge = badge_gen.generate_performance_badge(45.0)
+
+    assert "svg" in badge
+    assert "performance" in badge
+    assert "poor" in badge
+
+
+def test_accessibility_badge_aaa():
+    """Test generating WCAG AAA accessibility badge."""
+    badge_gen = BadgeGenerator()
+    badge = badge_gen.generate_accessibility_badge("AAA", 0)
+
+    assert "svg" in badge
+    assert "accessibility" in badge
+    assert "WCAG AAA" in badge
+
+
+def test_accessibility_badge_aa():
+    """Test generating WCAG AA accessibility badge."""
+    badge_gen = BadgeGenerator()
+    badge = badge_gen.generate_accessibility_badge("AA", 0)
+
+    assert "svg" in badge
+    assert "accessibility" in badge
+    assert "WCAG AA" in badge
+
+
+def test_accessibility_badge_with_issues():
+    """Test generating accessibility badge with issues."""
+    badge_gen = BadgeGenerator()
+    badge = badge_gen.generate_accessibility_badge("AA", 5)
+
+    assert "svg" in badge
+    assert "accessibility" in badge
+    assert "5 issues" in badge
+
+
+def test_accessibility_badge_not_tested():
+    """Test generating not tested accessibility badge."""
+    badge_gen = BadgeGenerator()
+    badge = badge_gen.generate_accessibility_badge("None", 0)
+
+    assert "svg" in badge
+    assert "accessibility" in badge
+    assert "not tested" in badge
