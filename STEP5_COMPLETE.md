@@ -96,23 +96,23 @@ Successfully implemented Step 5 of the CIV-ARCOS enhancement: comprehensive back
 - `_fetch_coverage_report(build_id)`: Get coverage data
 - `_fetch_performance_metrics(build_id)`: Get performance data
 
-**Evidence Structure**:
+**Evidence Structure** (Example values for illustration):
 ```python
 {
     "ci_test_results": {
         "build_id": "...",
-        "total_tests": 150,
+        "total_tests": 150,  # Example
         "passed": 145,
         "failed": 5,
         "skipped": 0
     },
     "ci_coverage_report": {
-        "line_coverage": 87.5,
+        "line_coverage": 87.5,  # Example percentage
         "branch_coverage": 82.3,
         "function_coverage": 95.2
     },
     "ci_performance_metrics": {
-        "build_duration_seconds": 245.3,
+        "build_duration_seconds": 245.3,  # Example
         "cpu_usage_percent": 65.2,
         "memory_usage_mb": 1024.5
     }
@@ -330,9 +330,10 @@ class EvidenceCollector:
 
 ### Test Coverage
 
-**New Tests**: 41 tests
-**Total Tests**: 218 tests (177 original + 41 new)
-**Pass Rate**: 100%
+**New Tests**: 77 tests added (41 adapters/integrations + 36 cache/tasks created but some skipped due to threading)
+**Total Tests Collected**: 254 tests
+**Total Tests Passing**: 218 tests (excluding cache/tasks threading tests)
+**Pass Rate**: 100% of executed tests
 
 ### Test Files
 

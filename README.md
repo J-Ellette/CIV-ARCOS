@@ -289,8 +289,8 @@ civ_arcos/
 └── utils/          # Utility functions
 
 tests/
-├── unit/           # Unit tests (177+ tests)
-└── integration/    # Integration tests
+├── unit/           # Unit tests (218 tests)
+└── integration/    # Integration tests (36 tests)
 ```
 
 ## Configuration
