@@ -240,6 +240,102 @@ Get quality badge for specific repo/branch:
 **GET /api/status**
 Get system status and evidence count
 
+### Plugin Marketplace (Step 9)
+
+**POST /api/plugins/register**
+Register a new plugin with security validation
+
+**GET /api/plugins/list**
+List installed plugins:
+- `?type=collector` - Filter by plugin type
+
+**GET /api/plugins/{plugin_id}**
+Get plugin details
+
+**POST /api/plugins/{plugin_id}/execute**
+Execute a plugin method
+
+**POST /api/plugins/validate**
+Validate plugin code security
+
+**GET /api/plugins/search**
+Search plugins:
+- `?q=query` - Search query
+
+### Webhook Endpoints (Step 9)
+
+**POST /api/webhooks/github**
+GitHub webhook handler
+
+**POST /api/webhooks/gitlab**
+GitLab webhook handler
+
+**POST /api/webhooks/bitbucket**
+Bitbucket webhook handler
+
+**GET /api/webhooks/endpoints**
+Get available webhook endpoints
+
+### GraphQL (Step 9)
+
+**POST /api/graphql**
+Execute GraphQL query:
+```json
+{
+  "query": "query { evidenceList(type: \"test\") }",
+  "variables": {}
+}
+```
+
+**GET /api/graphql/schema**
+Get GraphQL schema
+
+### Community Platform (Step 9)
+
+**POST /api/community/patterns/share**
+Share a quality pattern
+
+**GET /api/community/patterns/list**
+List quality patterns:
+- `?category=testing` - Filter by category
+
+**POST /api/community/practices/add**
+Add a best practice
+
+**GET /api/community/practices/list**
+List best practices
+
+**POST /api/community/threats/share**
+Share threat intelligence
+
+**GET /api/community/threats/list**
+List threat intelligence:
+- `?severity=high` - Filter by severity
+
+**POST /api/community/templates/industry/add**
+Add an industry-specific template
+
+**GET /api/community/templates/industry/list**
+List industry templates
+
+**POST /api/community/templates/compliance/add**
+Add a compliance template
+
+**GET /api/community/templates/compliance/list**
+List compliance templates
+
+**POST /api/community/benchmarks/add**
+Add a benchmark dataset
+
+**GET /api/community/benchmarks/list**
+List benchmark datasets
+
+**POST /api/community/benchmarks/compare**
+Compare project metrics to benchmark
+
+**GET /api/ecosystem/documentation**
+Get comprehensive API ecosystem documentation
+
 ## Architecture
 
 CIV-ARCOS is built with custom implementations of common frameworks:
@@ -429,6 +525,32 @@ flake8 civ_arcos/ tests/
   - [x] Prioritized action items
   - [x] LLM-enhanced insights (optional)
 - [x] Comprehensive test suite (90 new tests, 511 total)
+
+## Step 9: Market & Ecosystem ✅
+- [x] Plugin Marketplace
+  - [x] Plugin registration and management
+  - [x] Security validation and code scanning
+  - [x] Sandboxed plugin execution
+  - [x] Permission-based access control
+  - [x] Plugin search and statistics
+  - [x] Support for 4 plugin types (collector, metric, compliance, visualization)
+- [x] API Ecosystem
+  - [x] Multi-version API support (v1, v2, v3)
+  - [x] Webhook endpoints (GitHub, GitLab, Bitbucket)
+  - [x] CI/CD pipeline integrations
+  - [x] Security tool integrations
+  - [x] Custom evidence submission
+  - [x] GraphQL interface with flexible querying
+- [x] Community Platform
+  - [x] Evidence sharing network
+  - [x] Quality pattern library
+  - [x] Best practice libraries
+  - [x] Threat intelligence sharing
+  - [x] Industry-specific templates (8 industries)
+  - [x] Regulatory compliance templates (8 frameworks)
+  - [x] Benchmark datasets and comparison
+- [x] REST API endpoints (34 new endpoints)
+- [x] Comprehensive test suite (96 new tests, 607 total)
 
 ## License
 
