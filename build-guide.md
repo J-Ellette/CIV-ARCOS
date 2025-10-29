@@ -569,13 +569,13 @@ Model Transparency: Provide visualizations or narratives explaining how ML model
 Bias Detection: Include fairness metrics and bias detection in ML pipelines to ensure equitable quality assessments.
 
 
-### 🛡️ 3. Privacy & Data Governance
+### 🛡️ 3. Privacy & Data Governance (COMPLETE)
 
 Data Residency Controls: Let tenants choose where their data is stored (e.g., US-only, EU-only).
 Evidence Redaction Tools: Enable selective redaction of sensitive evidence before sharing in federated networks.
 
 
-### 🔗 4. DevSecOps Expansion
+### 🔗 4. DevSecOps Expansion (COMPLETE)
 
 Runtime Monitoring Integration: Add support for tools like Falco or OpenTelemetry to collect runtime security and performance evidence.
 Threat Modeling Automation: Integrate tools like IriusRisk or OWASP Threat Dragon to auto-generate threat models from code and architecture.
