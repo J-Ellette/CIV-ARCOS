@@ -6,7 +6,6 @@ notifications, and quality reporting.
 """
 
 import sys
-import time
 from pathlib import Path
 
 # Add parent directory to path
@@ -258,7 +257,11 @@ def multiply(x, y):
             print(f"  Error: {report['error']}")
 
     finally:
-        Path(temp_path).unlink()
+        # Clean up temporary file safely
+        try:
+            Path(temp_path).unlink()
+        except (FileNotFoundError, PermissionError):
+            pass  # File already deleted or not accessible
 
     print("✓ Quality reporter demo complete")
 
