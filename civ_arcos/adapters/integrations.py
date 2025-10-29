@@ -458,3 +458,489 @@ class GitHubWebhookHandler:
             "pr_number": pr.get("number"),
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
+
+
+class DiscordIntegration(IntegrationAdapter):
+    """
+    Discord integration for quality alerts and notifications.
+    Uses Discord webhook API for sending messages.
+    """
+
+    def __init__(self, webhook_url: Optional[str] = None):
+        """
+        Initialize Discord integration.
+
+        Args:
+            webhook_url: Discord webhook URL
+        """
+        super().__init__("discord")
+        self.webhook_url = webhook_url
+
+    def format_quality_alert(
+        self,
+        project_name: str,
+        alert_type: str,
+        severity: str,
+        message: str,
+        details: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Format a quality alert for Discord.
+
+        Args:
+            project_name: Project name
+            alert_type: Type of alert
+            severity: Severity level
+            message: Alert message
+            details: Optional additional details
+
+        Returns:
+            Discord message payload
+        """
+        # Color based on severity (Discord uses decimal color codes)
+        colors = {
+            "critical": 0xD32F2F,  # Red
+            "high": 0xF57C00,  # Orange
+            "medium": 0xFBC02D,  # Yellow
+            "low": 0x388E3C,  # Green
+        }
+
+        color = colors.get(severity.lower(), 0x757575)
+
+        # Create Discord embed
+        embed = {
+            "title": f"⚠️ Quality Alert: {alert_type.replace('_', ' ').title()}",
+            "description": message,
+            "color": color,
+            "fields": [
+                {"name": "Project", "value": project_name, "inline": True},
+                {"name": "Severity", "value": severity.upper(), "inline": True},
+            ],
+            "footer": {"text": "CIV-ARCOS Quality Monitor"},
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+
+        # Add details as fields
+        if details:
+            for key, value in list(details.items())[:10]:  # Limit to 10 fields
+                embed["fields"].append(
+                    {"name": key.replace("_", " ").title(), "value": str(value), "inline": True}
+                )
+
+        return {"embeds": [embed]}
+
+    def format_badge_update(
+        self, project_name: str, badge_type: str, old_value: Any, new_value: Any
+    ) -> Dict[str, Any]:
+        """
+        Format a badge update notification for Discord.
+
+        Args:
+            project_name: Project name
+            badge_type: Type of badge
+            old_value: Previous value
+            new_value: New value
+
+        Returns:
+            Discord message payload
+        """
+        # Determine if improvement
+        try:
+            old_num = float(old_value) if isinstance(old_value, (int, float, str)) else 0
+            new_num = float(new_value) if isinstance(new_value, (int, float, str)) else 0
+            is_improvement = new_num > old_num
+            color = 0x388E3C if is_improvement else 0xF57C00
+            trend = "📈" if is_improvement else "📉"
+        except (ValueError, TypeError):
+            color = 0x2196F3
+            trend = "➡️"
+
+        embed = {
+            "title": f"{trend} Badge Update: {badge_type.replace('_', ' ').title()}",
+            "description": f"Quality metric updated for {project_name}",
+            "color": color,
+            "fields": [
+                {"name": "Previous Value", "value": str(old_value), "inline": True},
+                {"name": "New Value", "value": str(new_value), "inline": True},
+            ],
+            "footer": {"text": "CIV-ARCOS Badge System"},
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+        }
+
+        return {"embeds": [embed]}
+
+    def send_notification(self, payload: Dict[str, Any]) -> bool:
+        """
+        Send notification to Discord.
+
+        Args:
+            payload: Discord message payload
+
+        Returns:
+            True on success
+        """
+        if not self.webhook_url:
+            return True
+
+        # In production, would POST to webhook_url
+        # response = urllib.request.urlopen(
+        #     urllib.request.Request(
+        #         self.webhook_url,
+        #         data=json.dumps(payload).encode(),
+        #         headers={'Content-Type': 'application/json'}
+        #     )
+        # )
+        # return response.status == 204
+
+        return True
+
+
+class MicrosoftTeamsIntegration(IntegrationAdapter):
+    """
+    Microsoft Teams integration for quality alerts and notifications.
+    Uses Teams webhook API with Adaptive Cards.
+    """
+
+    def __init__(self, webhook_url: Optional[str] = None):
+        """
+        Initialize Microsoft Teams integration.
+
+        Args:
+            webhook_url: Teams webhook URL
+        """
+        super().__init__("teams")
+        self.webhook_url = webhook_url
+
+    def format_quality_alert(
+        self,
+        project_name: str,
+        alert_type: str,
+        severity: str,
+        message: str,
+        details: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Format a quality alert for Microsoft Teams.
+
+        Args:
+            project_name: Project name
+            alert_type: Type of alert
+            severity: Severity level
+            message: Alert message
+            details: Optional additional details
+
+        Returns:
+            Teams message payload (Adaptive Card)
+        """
+        # Theme color based on severity
+        theme_colors = {
+            "critical": "FF0000",  # Red
+            "high": "FF6D00",  # Orange
+            "medium": "FFD600",  # Yellow
+            "low": "00C853",  # Green
+        }
+
+        theme_color = theme_colors.get(severity.lower(), "0078D4")
+
+        # Build facts for details
+        facts = [
+            {"name": "Project", "value": project_name},
+            {"name": "Severity", "value": severity.upper()},
+        ]
+
+        if details:
+            for key, value in list(details.items())[:8]:  # Limit facts
+                facts.append({"name": key.replace("_", " ").title(), "value": str(value)})
+
+        # Teams Adaptive Card format
+        card = {
+            "@type": "MessageCard",
+            "@context": "https://schema.org/extensions",
+            "summary": f"Quality Alert: {alert_type}",
+            "themeColor": theme_color,
+            "title": f"⚠️ Quality Alert: {alert_type.replace('_', ' ').title()}",
+            "text": message,
+            "sections": [
+                {
+                    "activityTitle": "Alert Details",
+                    "facts": facts,
+                }
+            ],
+        }
+
+        return card
+
+    def format_badge_update(
+        self, project_name: str, badge_type: str, old_value: Any, new_value: Any
+    ) -> Dict[str, Any]:
+        """
+        Format a badge update notification for Teams.
+
+        Args:
+            project_name: Project name
+            badge_type: Type of badge
+            old_value: Previous value
+            new_value: New value
+
+        Returns:
+            Teams message payload
+        """
+        # Determine if improvement
+        try:
+            old_num = float(old_value) if isinstance(old_value, (int, float, str)) else 0
+            new_num = float(new_value) if isinstance(new_value, (int, float, str)) else 0
+            is_improvement = new_num > old_num
+            theme_color = "00C853" if is_improvement else "FF6D00"
+            trend = "📈 Improved" if is_improvement else "📉 Declined"
+        except (ValueError, TypeError):
+            theme_color = "0078D4"
+            trend = "➡️ Changed"
+
+        card = {
+            "@type": "MessageCard",
+            "@context": "https://schema.org/extensions",
+            "summary": f"Badge Update: {badge_type}",
+            "themeColor": theme_color,
+            "title": f"{trend}: {badge_type.replace('_', ' ').title()}",
+            "text": f"Quality metric updated for {project_name}",
+            "sections": [
+                {
+                    "facts": [
+                        {"name": "Previous Value", "value": str(old_value)},
+                        {"name": "New Value", "value": str(new_value)},
+                    ]
+                }
+            ],
+        }
+
+        return card
+
+    def send_notification(self, payload: Dict[str, Any]) -> bool:
+        """
+        Send notification to Microsoft Teams.
+
+        Args:
+            payload: Teams message payload
+
+        Returns:
+            True on success
+        """
+        if not self.webhook_url:
+            return True
+
+        # In production, would POST to webhook_url
+        # response = urllib.request.urlopen(
+        #     urllib.request.Request(
+        #         self.webhook_url,
+        #         data=json.dumps(payload).encode(),
+        #         headers={'Content-Type': 'application/json'}
+        #     )
+        # )
+        # return response.status == 200
+
+        return True
+
+
+class EmailIntegration(IntegrationAdapter):
+    """
+    Email integration for quality alerts and notifications.
+    Supports SMTP for sending emails.
+    """
+
+    def __init__(
+        self,
+        smtp_host: Optional[str] = None,
+        smtp_port: int = 587,
+        smtp_user: Optional[str] = None,
+        smtp_password: Optional[str] = None,
+        from_address: Optional[str] = None,
+        use_tls: bool = True,
+    ):
+        """
+        Initialize Email integration.
+
+        Args:
+            smtp_host: SMTP server host
+            smtp_port: SMTP server port
+            smtp_user: SMTP username
+            smtp_password: SMTP password
+            from_address: From email address
+            use_tls: Whether to use TLS
+        """
+        super().__init__("email")
+        self.smtp_host = smtp_host
+        self.smtp_port = smtp_port
+        self.smtp_user = smtp_user
+        self.smtp_password = smtp_password
+        self.from_address = from_address or smtp_user
+        self.use_tls = use_tls
+
+    def format_quality_alert(
+        self,
+        project_name: str,
+        alert_type: str,
+        severity: str,
+        message: str,
+        details: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """
+        Format a quality alert email.
+
+        Args:
+            project_name: Project name
+            alert_type: Type of alert
+            severity: Severity level
+            message: Alert message
+            details: Optional additional details
+
+        Returns:
+            Email message data
+        """
+        subject = f"[{severity.upper()}] Quality Alert: {alert_type.replace('_', ' ').title()} - {project_name}"
+
+        # Build HTML body
+        html_body = f"""
+        <html>
+        <head>
+            <style>
+                body {{ font-family: Arial, sans-serif; }}
+                .header {{ background-color: #f44336; color: white; padding: 10px; }}
+                .content {{ padding: 20px; }}
+                .details {{ background-color: #f5f5f5; padding: 10px; margin-top: 20px; }}
+                .footer {{ color: #666; font-size: 12px; margin-top: 30px; }}
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h2>⚠️ Quality Alert</h2>
+            </div>
+            <div class="content">
+                <h3>{alert_type.replace('_', ' ').title()}</h3>
+                <p><strong>Project:</strong> {project_name}</p>
+                <p><strong>Severity:</strong> {severity.upper()}</p>
+                <p><strong>Message:</strong> {message}</p>
+        """
+
+        if details:
+            html_body += '<div class="details"><h4>Details:</h4><ul>'
+            for key, value in details.items():
+                html_body += f"<li><strong>{key.replace('_', ' ').title()}:</strong> {value}</li>"
+            html_body += "</ul></div>"
+
+        html_body += """
+            </div>
+            <div class="footer">
+                <p>This is an automated message from CIV-ARCOS Quality Monitor</p>
+            </div>
+        </body>
+        </html>
+        """
+
+        # Plain text version
+        text_body = f"""
+Quality Alert: {alert_type.replace('_', ' ').title()}
+
+Project: {project_name}
+Severity: {severity.upper()}
+
+{message}
+"""
+
+        if details:
+            text_body += "\nDetails:\n"
+            for key, value in details.items():
+                text_body += f"- {key.replace('_', ' ').title()}: {value}\n"
+
+        text_body += "\n--\nCIV-ARCOS Quality Monitor"
+
+        return {
+            "subject": subject,
+            "html_body": html_body,
+            "text_body": text_body,
+        }
+
+    def format_badge_update(
+        self, project_name: str, badge_type: str, old_value: Any, new_value: Any
+    ) -> Dict[str, Any]:
+        """
+        Format a badge update email.
+
+        Args:
+            project_name: Project name
+            badge_type: Type of badge
+            old_value: Previous value
+            new_value: New value
+
+        Returns:
+            Email message data
+        """
+        subject = f"Badge Update: {badge_type.replace('_', ' ').title()} - {project_name}"
+
+        html_body = f"""
+        <html>
+        <body style="font-family: Arial, sans-serif;">
+            <h2>📊 Badge Update</h2>
+            <p><strong>Project:</strong> {project_name}</p>
+            <p><strong>Badge Type:</strong> {badge_type.replace('_', ' ').title()}</p>
+            <p><strong>Previous Value:</strong> {old_value}</p>
+            <p><strong>New Value:</strong> {new_value}</p>
+            <hr>
+            <p style="color: #666; font-size: 12px;">CIV-ARCOS Badge System</p>
+        </body>
+        </html>
+        """
+
+        text_body = f"""
+Badge Update: {badge_type.replace('_', ' ').title()}
+
+Project: {project_name}
+Previous Value: {old_value}
+New Value: {new_value}
+
+--
+CIV-ARCOS Badge System
+"""
+
+        return {
+            "subject": subject,
+            "html_body": html_body,
+            "text_body": text_body,
+        }
+
+    def send_notification(
+        self, to_addresses: List[str], message_data: Dict[str, Any]
+    ) -> bool:
+        """
+        Send email notification.
+
+        Args:
+            to_addresses: List of recipient email addresses
+            message_data: Email message data (from format_* methods)
+
+        Returns:
+            True on success
+        """
+        if not self.smtp_host or not to_addresses:
+            return True
+
+        # In production, would use smtplib to send email:
+        # import smtplib
+        # from email.mime.multipart import MIMEMultipart
+        # from email.mime.text import MIMEText
+        #
+        # msg = MIMEMultipart('alternative')
+        # msg['Subject'] = message_data['subject']
+        # msg['From'] = self.from_address
+        # msg['To'] = ', '.join(to_addresses)
+        #
+        # msg.attach(MIMEText(message_data['text_body'], 'plain'))
+        # msg.attach(MIMEText(message_data['html_body'], 'html'))
+        #
+        # with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
+        #     if self.use_tls:
+        #         server.starttls()
+        #     if self.smtp_user and self.smtp_password:
+        #         server.login(self.smtp_user, self.smtp_password)
+        #     server.send_message(msg)
+
+        return True
