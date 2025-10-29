@@ -3,8 +3,8 @@ Advanced analytics and reporting engine for CIV-ARCOS.
 Provides trend analysis, benchmarking, and risk prediction.
 """
 
-from typing import Any, Dict, List, Optional, Tuple
-from datetime import datetime, timezone, timedelta
+from typing import Any, Dict, List, Optional
+from datetime import datetime, timezone
 from dataclasses import dataclass, field
 import statistics
 
@@ -58,7 +58,7 @@ class RiskPrediction:
 class AnalyticsEngine:
     """
     Advanced analytics engine for quality metrics, trends, and predictions.
-    
+
     Provides:
     - Quality score trends over time
     - Technical debt accumulation analysis
@@ -117,9 +117,7 @@ class AnalyticsEngine:
         )
 
         # Analyze coverage trend
-        trends["coverage"] = self._analyze_metric_trend(
-            evidence_history, "coverage", timeframe
-        )
+        trends["coverage"] = self._analyze_metric_trend(evidence_history, "coverage", timeframe)
 
         # Analyze security vulnerability trend
         trends["vulnerability_count"] = self._analyze_metric_trend(
@@ -127,14 +125,10 @@ class AnalyticsEngine:
         )
 
         # Analyze technical debt
-        trends["technical_debt"] = self._analyze_technical_debt_trend(
-            evidence_history, timeframe
-        )
+        trends["technical_debt"] = self._analyze_technical_debt_trend(evidence_history, timeframe)
 
         # Analyze team productivity (commits, PRs)
-        trends["productivity"] = self._analyze_productivity_trend(
-            evidence_history, timeframe
-        )
+        trends["productivity"] = self._analyze_productivity_trend(evidence_history, timeframe)
 
         return trends
 
@@ -161,10 +155,10 @@ class AnalyticsEngine:
         for metric_name, project_value in project_metrics.items():
             if metric_name in benchmarks:
                 industry_avg = benchmarks[metric_name]
-                
+
                 # Calculate percentile (simplified)
                 percentile = self._calculate_percentile(project_value, industry_avg)
-                
+
                 # Determine comparison
                 if project_value > industry_avg * 1.1:
                     comparison = "above"
@@ -258,7 +252,9 @@ class AnalyticsEngine:
 
         # Determine trend direction
         if len(values) >= 2:
-            change_percentage = ((values[-1] - values[0]) / values[0]) * 100 if values[0] != 0 else 0
+            change_percentage = (
+                ((values[-1] - values[0]) / values[0]) * 100 if values[0] != 0 else 0
+            )
             if change_percentage > 5:
                 trend_direction = "increasing"
             elif change_percentage < -5:
@@ -285,27 +281,31 @@ class AnalyticsEngine:
     ) -> TrendAnalysis:
         """Analyze technical debt accumulation over time."""
         data_points = []
-        
+
         for evidence in evidence_history:
             timestamp = evidence.get("timestamp", datetime.now(timezone.utc).isoformat())
-            
+
             # Calculate technical debt score from multiple factors
             complexity = evidence.get("complexity_score", 0)
             vulnerabilities = evidence.get("vulnerability_count", 0)
             coverage = evidence.get("coverage", 100)
-            
+
             # Technical debt increases with complexity and vulnerabilities,
             # decreases with good coverage
             debt_score = (complexity * 10) + (vulnerabilities * 5) + max(0, (80 - coverage))
-            
+
             data_points.append(TrendPoint(timestamp=timestamp, value=debt_score))
 
         values = [dp.value for dp in data_points]
         if not values:
             values = [0.0]
 
-        change_percentage = ((values[-1] - values[0]) / values[0] * 100) if len(values) >= 2 and values[0] != 0 else 0
-        
+        change_percentage = (
+            ((values[-1] - values[0]) / values[0] * 100)
+            if len(values) >= 2 and values[0] != 0
+            else 0
+        )
+
         if change_percentage > 5:
             trend_direction = "increasing"
         elif change_percentage < -5:
@@ -329,10 +329,10 @@ class AnalyticsEngine:
     ) -> TrendAnalysis:
         """Analyze team productivity metrics."""
         data_points = []
-        
+
         for evidence in evidence_history:
             timestamp = evidence.get("timestamp", datetime.now(timezone.utc).isoformat())
-            
+
             # Productivity score based on commits, PRs, and test pass rate
             commits = len(evidence.get("commits", []))
             prs = len(evidence.get("pr_reviews", []))
@@ -340,17 +340,21 @@ class AnalyticsEngine:
             passed = test_results.get("passed", 0)
             total = test_results.get("total_tests", 1)
             pass_rate = (passed / total * 100) if total > 0 else 0
-            
+
             productivity_score = (commits * 2) + (prs * 5) + (pass_rate * 0.5)
-            
+
             data_points.append(TrendPoint(timestamp=timestamp, value=productivity_score))
 
         values = [dp.value for dp in data_points]
         if not values:
             values = [0.0]
 
-        change_percentage = ((values[-1] - values[0]) / values[0] * 100) if len(values) >= 2 and values[0] != 0 else 0
-        
+        change_percentage = (
+            ((values[-1] - values[0]) / values[0] * 100)
+            if len(values) >= 2 and values[0] != 0
+            else 0
+        )
+
         if change_percentage > 5:
             trend_direction = "increasing"
         elif change_percentage < -5:
@@ -395,7 +399,8 @@ class AnalyticsEngine:
         if comparison == "below":
             if metric_name == "coverage":
                 recommendations.append(
-                    f"Increase test coverage from {project_value:.1f}% to at least {industry_avg:.1f}%"
+                    f"Increase test coverage from {project_value:.1f}% "
+                    f"to at least {industry_avg:.1f}%"
                 )
                 recommendations.append("Focus on uncovered critical paths")
             elif metric_name == "security_score":
@@ -405,9 +410,7 @@ class AnalyticsEngine:
                 recommendations.append("Investigate and fix failing tests")
                 recommendations.append("Implement pre-commit testing")
         elif comparison == "above":
-            recommendations.append(
-                f"Excellent! Your {metric_name} is above industry average"
-            )
+            recommendations.append(f"Excellent! Your {metric_name} is above industry average")
             recommendations.append("Maintain current practices")
 
         return recommendations
@@ -416,26 +419,26 @@ class AnalyticsEngine:
         """Predict likelihood of security incidents."""
         vulnerabilities = evidence.get("security_vulnerabilities", {})
         severity_breakdown = vulnerabilities.get("severity_breakdown", {})
-        
+
         critical = severity_breakdown.get("critical", 0)
         high = severity_breakdown.get("high", 0)
-        
+
         if critical > 0 or high > 3:
             probability = min(1.0, (critical * 0.3 + high * 0.1))
             impact = "critical" if critical > 0 else "high"
-            
+
             factors = []
             if critical > 0:
                 factors.append(f"{critical} critical vulnerabilities")
             if high > 0:
                 factors.append(f"{high} high severity vulnerabilities")
-            
+
             recommendations = [
                 "Immediately address critical vulnerabilities",
                 "Implement automated security scanning",
                 "Schedule security audit",
             ]
-            
+
             return RiskPrediction(
                 risk_type="security_incident",
                 probability=probability,
@@ -443,30 +446,30 @@ class AnalyticsEngine:
                 factors=factors,
                 recommendations=recommendations,
             )
-        
+
         return None
 
     def _predict_maintenance_risk(self, evidence: Dict[str, Any]) -> Optional[RiskPrediction]:
         """Predict maintenance burden based on code quality."""
         complexity = evidence.get("complexity_score", 0)
         coverage = evidence.get("coverage", 100)
-        
+
         if complexity > 15 or coverage < 70:
             probability = min(1.0, (complexity / 20) + ((80 - coverage) / 100))
             impact = "high" if complexity > 20 or coverage < 60 else "medium"
-            
+
             factors = []
             if complexity > 15:
                 factors.append(f"High code complexity: {complexity}")
             if coverage < 70:
                 factors.append(f"Low test coverage: {coverage}%")
-            
+
             recommendations = [
                 "Refactor complex code sections",
                 "Increase test coverage",
                 "Add documentation",
             ]
-            
+
             return RiskPrediction(
                 risk_type="maintenance_burden",
                 probability=probability,
@@ -474,7 +477,7 @@ class AnalyticsEngine:
                 factors=factors,
                 recommendations=recommendations,
             )
-        
+
         return None
 
     def _predict_quality_degradation(self, evidence: Dict[str, Any]) -> Optional[RiskPrediction]:
@@ -482,22 +485,22 @@ class AnalyticsEngine:
         test_results = evidence.get("ci_test_results", {})
         total = test_results.get("total_tests", 0)
         failed = test_results.get("failed", 0)
-        
+
         if total > 0:
             fail_rate = (failed / total) * 100
-            
+
             if fail_rate > 5:
                 probability = min(1.0, fail_rate / 20)
                 impact = "high" if fail_rate > 10 else "medium"
-                
+
                 factors = [f"{failed} failing tests out of {total}"]
-                
+
                 recommendations = [
                     "Fix failing tests immediately",
                     "Review test suite stability",
                     "Implement stricter pre-merge testing",
                 ]
-                
+
                 return RiskPrediction(
                     risk_type="quality_degradation",
                     probability=probability,
@@ -505,31 +508,31 @@ class AnalyticsEngine:
                     factors=factors,
                     recommendations=recommendations,
                 )
-        
+
         return None
 
     def _predict_technical_debt_risk(self, evidence: Dict[str, Any]) -> Optional[RiskPrediction]:
         """Predict technical debt accumulation risk."""
         complexity = evidence.get("complexity_score", 0)
         vulnerabilities = evidence.get("vulnerability_count", 0)
-        
+
         debt_score = (complexity * 10) + (vulnerabilities * 5)
-        
+
         if debt_score > 100:
             probability = min(1.0, debt_score / 200)
             impact = "high" if debt_score > 150 else "medium"
-            
+
             factors = [
                 f"Code complexity: {complexity}",
                 f"Vulnerabilities: {vulnerabilities}",
             ]
-            
+
             recommendations = [
                 "Schedule refactoring sprints",
                 "Address technical debt in backlog",
                 "Implement code quality gates",
             ]
-            
+
             return RiskPrediction(
                 risk_type="technical_debt_accumulation",
                 probability=probability,
@@ -537,7 +540,7 @@ class AnalyticsEngine:
                 factors=factors,
                 recommendations=recommendations,
             )
-        
+
         return None
 
 

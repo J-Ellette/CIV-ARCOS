@@ -28,7 +28,7 @@ DEFAULT_TEMPLATES = {
 class TenantManager:
     """
     Manages multiple tenants (organizations) with isolated configurations and data.
-    
+
     Each tenant has:
     - Isolated evidence storage
     - Custom quality weights
@@ -46,11 +46,13 @@ class TenantManager:
         self.base_storage_path = base_storage_path
         self.tenant_configs: Dict[str, Dict[str, Any]] = {}
         self.tenant_databases: Dict[str, EvidenceGraph] = {}
-        
+
         # Ensure base storage exists
         os.makedirs(base_storage_path, exist_ok=True)
 
-    def create_tenant(self, tenant_id: str, config: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def create_tenant(
+        self, tenant_id: str, config: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
         """
         Create a new tenant with isolated evidence storage.
 

@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 class ComplianceFramework(ABC):
     """
     Base class for compliance frameworks.
-    
+
     Each framework defines controls and assessment methods
     to evaluate evidence against industry standards.
     """
@@ -61,7 +61,7 @@ class ComplianceFramework(ABC):
 class ISO27001Framework(ComplianceFramework):
     """
     ISO/IEC 27001 Information Security Management System framework.
-    
+
     Focuses on:
     - Vulnerability management (A.12.6.1)
     - Secure development lifecycle (A.14.2.1)
@@ -104,7 +104,7 @@ class ISO27001Framework(ComplianceFramework):
         vulnerabilities = evidence.get("security_vulnerabilities", {})
         high_severity = vulnerabilities.get("severity_breakdown", {}).get("high", 0)
         critical_severity = vulnerabilities.get("severity_breakdown", {}).get("critical", 0)
-        
+
         # Pass if no critical and less than 3 high severity vulnerabilities
         return critical_severity == 0 and high_severity < 3
 
@@ -113,11 +113,11 @@ class ISO27001Framework(ComplianceFramework):
         # Check for security scanning in CI/CD
         security_scan = evidence.get("security_scan_summary", {})
         has_security_scan = security_scan.get("tool") is not None
-        
+
         # Check for code review
         pr_reviews = evidence.get("pr_reviews", [])
         has_code_review = len(pr_reviews) > 0
-        
+
         return has_security_scan and has_code_review
 
     def check_change_management(self, evidence: Dict[str, Any]) -> bool:
@@ -126,7 +126,7 @@ class ISO27001Framework(ComplianceFramework):
         commits = evidence.get("commits", [])
         if not commits:
             return False
-        
+
         # All commits should have non-empty messages
         documented_commits = sum(1 for c in commits if c.get("message", "").strip())
         return documented_commits == len(commits)
@@ -148,7 +148,7 @@ class ISO27001Framework(ComplianceFramework):
 class SOXComplianceFramework(ComplianceFramework):
     """
     Sarbanes-Oxley Act (SOX) compliance framework.
-    
+
     Focuses on:
     - Access controls
     - Change management
@@ -207,7 +207,7 @@ class SOXComplianceFramework(ComplianceFramework):
 class HIPAAFramework(ComplianceFramework):
     """
     Health Insurance Portability and Accountability Act (HIPAA) framework.
-    
+
     Focuses on:
     - Access controls (§164.312(a)(1))
     - Audit controls (§164.312(b))
@@ -265,7 +265,7 @@ class HIPAAFramework(ComplianceFramework):
 class PCIDSSFramework(ComplianceFramework):
     """
     Payment Card Industry Data Security Standard (PCI-DSS) framework.
-    
+
     Focuses on:
     - Secure development (Requirement 6)
     - Access control (Requirement 7)
@@ -322,7 +322,7 @@ class PCIDSSFramework(ComplianceFramework):
 class NISTFramework(ComplianceFramework):
     """
     NIST 800-53 Security and Privacy Controls framework.
-    
+
     Focuses on:
     - Access Control (AC family)
     - Configuration Management (CM family)
@@ -405,9 +405,7 @@ class ComplianceManager:
             "nist_800_53": NISTFramework(),
         }
 
-    def evaluate_compliance(
-        self, evidence: Dict[str, Any], framework_name: str
-    ) -> Dict[str, Any]:
+    def evaluate_compliance(self, evidence: Dict[str, Any], framework_name: str) -> Dict[str, Any]:
         """
         Evaluate evidence against a specific framework.
 
