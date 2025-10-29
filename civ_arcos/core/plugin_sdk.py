@@ -130,7 +130,7 @@ class CollectorPlugin(BasePlugin):
     
     def execute(self, *args, **kwargs) -> Any:
         """Execute collector plugin."""
-        source = kwargs.get("source", "")
+        source = kwargs.pop("source", "")
         return self.collect(source, **kwargs)
 
 
