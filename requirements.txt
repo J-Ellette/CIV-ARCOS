@@ -1,0 +1,9 @@
+# Testing and Quality Tools (Allowed by requirements)
+pytest>=7.4.0
+coverage>=7.3.0
+black>=23.7.0
+mypy>=1.5.0
+flake8>=6.1.0
+
+# Core dependencies (minimal, standard library preferred)
+# We're building our own web framework and ORM equivalents

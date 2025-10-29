@@ -1,0 +1,6 @@
+# Development dependencies
+-r requirements.txt
+
+# Additional dev tools
+pytest-cov>=4.1.0
+pytest-asyncio>=0.21.0
