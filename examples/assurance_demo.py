@@ -8,6 +8,10 @@ with evidence collection, template instantiation, and visualization.
 
 import sys
 import os
+import tempfile
+import traceback
+
+# For demo purposes only - in production, use proper package installation
 sys.path.insert(0, os.path.abspath('.'))
 
 from civ_arcos.assurance import (
@@ -17,6 +21,7 @@ from civ_arcos.assurance import (
     PatternInstantiator,
     ProjectType,
 )
+from civ_arcos.assurance.gsn import GSNNodeType
 from civ_arcos.assurance.visualizer import GSNVisualizer
 from civ_arcos.storage.graph import EvidenceGraph
 from civ_arcos.evidence.collector import EvidenceStore, Evidence
@@ -129,7 +134,6 @@ def demo_template_based_creation():
     print(f"Total Nodes: {len(final_case.nodes)}")
 
     # Show node breakdown
-    from civ_arcos.assurance.gsn import GSNNodeType
     print("\nNode Breakdown:")
     for node_type in GSNNodeType:
         nodes = final_case.get_nodes_by_type(node_type)
@@ -169,7 +173,6 @@ def demo_evidence_based_generation():
     print("\n=== Demo 4: Evidence-Based Generation ===\n")
 
     # Create temporary storage
-    import tempfile
     with tempfile.TemporaryDirectory() as tmpdir:
         graph = EvidenceGraph(tmpdir)
         evidence_store = EvidenceStore(graph)
@@ -297,7 +300,6 @@ def main():
 
     except Exception as e:
         print(f"\nError during demonstration: {e}")
-        import traceback
         traceback.print_exc()
         sys.exit(1)
 
