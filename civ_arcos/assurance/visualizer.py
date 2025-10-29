@@ -3,7 +3,7 @@ GSN visualization for assurance cases.
 Generates visual representations of argument structures in SVG and DOT formats.
 """
 
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Tuple
 from .case import AssuranceCase
 from .gsn import GSNNodeType
 
@@ -106,8 +106,8 @@ class GSNVisualizer:
 
         svg_parts = [
             '<?xml version="1.0" encoding="UTF-8"?>',
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" '
-            f'viewBox="0 0 800 600">',
+            '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" '
+            'viewBox="0 0 800 600">',
             f'  <title>{case.title}</title>',
             "",
             "  <!-- Title -->",
@@ -194,14 +194,14 @@ class GSNVisualizer:
             Dictionary mapping node IDs to (x, y) positions
         """
         layout = {}
-        
+
         root = case.get_root_goal()
         if not root:
             return layout
 
         # Simple tree layout: root at top, children below
         self._layout_subtree(case, root.id, 400, 80, 800, layout, level=0)
-        
+
         return layout
 
     def _layout_subtree(

@@ -12,9 +12,14 @@ A civilian version of military-grade software assurance following proven ARCOS m
   - **Security Scanning**: SAST vulnerability detection (SQL injection, XSS, hardcoded secrets, etc.)
   - **Test Generation**: Automated test case suggestions with code-driven approach
   - **Coverage Analysis**: Integration with coverage.py for tracking code and branch coverage
+- **Digital Assurance Case Builder**: CertGATE-style assurance cases with GSN notation
+  - **Argument Templates**: 5 built-in templates (code quality, test coverage, security, maintainability, comprehensive)
+  - **Evidence Linking**: Automatic connection of evidence to argument nodes
+  - **GSN Visualization**: SVG, DOT, and summary formats for visual argument representation
+  - **Pattern Instantiation**: Auto-generate cases for 8 project types (web app, API, library, mobile app, CLI tool, microservice, desktop app, general)
 - **GitHub Integration**: Automated evidence collection from GitHub repositories
 - **Quality Badges**: Dynamic SVG badge generation for test coverage, code quality, and security metrics
-- **REST API**: Clean API endpoints for evidence collection, analysis, badge generation, and status queries
+- **REST API**: Clean API endpoints for evidence collection, analysis, badge generation, assurance cases, and status queries
 - **Blockchain-like Integrity**: Immutable audit trails with cryptographic checksums for evidence authenticity
 - **Custom Web Framework**: Built from scratch without Django/FastAPI/Flask dependencies
 
@@ -115,6 +120,41 @@ Run all analyses (static, security, tests):
 }
 ```
 
+### Assurance Cases
+
+**POST /api/assurance/create**
+Create an assurance case using templates:
+```json
+{
+  "project_name": "MyProject",
+  "project_type": "api",
+  "template": "comprehensive",
+  "description": "Optional description"
+}
+```
+
+**GET /api/assurance/{case_id}**
+Get assurance case details with full argument structure
+
+**GET /api/assurance/{case_id}/visualize**
+Visualize assurance case:
+- `?format=svg` - SVG visualization (default)
+- `?format=dot` - Graphviz DOT format
+- `?format=summary` - JSON summary
+
+**POST /api/assurance/auto-generate**
+Auto-generate case from collected evidence:
+```json
+{
+  "project_name": "MyProject",
+  "project_type": "api",
+  "evidence_ids": []
+}
+```
+
+**GET /api/assurance/templates**
+List available argument templates
+
 ### System Status
 
 **GET /api/status**
@@ -142,6 +182,12 @@ civ_arcos/
 │   ├── test_generator.py       # Automated test generation
 │   ├── coverage_analyzer.py    # Code coverage analysis
 │   └── collectors.py           # Evidence collectors
+├── assurance/      # Digital assurance case builder
+│   ├── gsn.py                  # Goal Structuring Notation types
+│   ├── case.py                 # AssuranceCase and builder
+│   ├── templates.py            # Argument templates
+│   ├── patterns.py             # Pattern instantiation
+│   └── visualizer.py           # GSN visualization
 ├── web/            # Web framework and API
 ├── adapters/       # Integration adapters (GitHub, etc.)
 └── utils/          # Utility functions
@@ -197,11 +243,14 @@ flake8 civ_arcos/ tests/
 - [x] REST API endpoints for analysis
 - [x] Comprehensive test suite (85 tests)
 
-### Step 3: Digital Assurance Case Builder (Planned)
-- [ ] Argument templates
-- [ ] Evidence linking
-- [ ] GSN (Goal Structuring Notation)
-- [ ] Pattern instantiation
+### Step 3: Digital Assurance Case Builder ✅
+- [x] Argument templates (5 built-in templates)
+- [x] Evidence linking (automatic connection of evidence to argument nodes)
+- [x] GSN (Goal Structuring Notation) implementation
+- [x] Pattern instantiation (8 project types supported)
+- [x] GSN visualization (SVG, DOT, summary formats)
+- [x] REST API endpoints for assurance cases
+- [x] Comprehensive test suite (71 tests: 58 unit + 13 integration)
 
 ### Step 4: Enhanced Quality Badge System (Planned)
 - [ ] Documentation quality metrics

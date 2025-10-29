@@ -4,7 +4,6 @@ Provides tools to build and manage digital assurance cases.
 """
 
 import hashlib
-import json
 from typing import Any, Dict, List, Optional, Set
 from datetime import datetime, timezone
 

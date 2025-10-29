@@ -7,8 +7,7 @@ from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional
 from dataclasses import dataclass
 
-from .case import AssuranceCase, AssuranceCaseBuilder
-from .gsn import GSNNodeType
+from .case import AssuranceCaseBuilder
 
 
 @dataclass

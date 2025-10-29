@@ -77,7 +77,10 @@ class PatternInstantiator:
         case = AssuranceCase(
             case_id=f"case_{project_name}_{project_type.value}",
             title=f"Quality Assurance Case for {project_name}",
-            description=f"Comprehensive quality assurance for {project_name} ({project_type.value})",
+            description=(
+                f"Comprehensive quality assurance for {project_name} "
+                f"({project_type.value})"
+            ),
             project_type=project_type.value,
         )
 
@@ -230,7 +233,7 @@ class PatternInstantiator:
         case = AssuranceCase(
             case_id=f"case_{project_name}_evidence_based",
             title=f"Quality Assurance Case for {project_name}",
-            description=f"Assurance case generated from available evidence",
+            description="Assurance case generated from available evidence",
             project_type=project_type.value,
         )
 
@@ -286,8 +289,14 @@ class PatternInstantiator:
             evidence: Evidence object
         """
         evidence_type_to_nodes = {
-            "static_analysis": ["G_complexity", "G_maintainability", "G_code_smells", "G_low_complexity"],
-            "security_scan": ["G_no_critical_vulns", "G_no_high_vulns", "G_no_secrets", "G_no_sql_injection"],
+            "static_analysis": [
+                "G_complexity", "G_maintainability",
+                "G_code_smells", "G_low_complexity"
+            ],
+            "security_scan": [
+                "G_no_critical_vulns", "G_no_high_vulns",
+                "G_no_secrets", "G_no_sql_injection"
+            ],
             "security_score": ["G_no_critical_vulns", "G_no_high_vulns"],
             "coverage_analysis": ["G_line_coverage", "G_branch_coverage"],
             "test_suggestions": ["G_critical_tests"],
