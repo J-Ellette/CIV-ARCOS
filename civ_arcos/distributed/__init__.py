@@ -1,5 +1,9 @@
 """
 Distributed and federated systems for CIV-ARCOS.
+
+Civilian Assurance-based Risk Computation and Orchestration System
+"Military-grade assurance for civilian code"
+
 Implements Step 7: Distributed & Federated Systems.
 """
 

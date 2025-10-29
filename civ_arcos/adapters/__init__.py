@@ -1,4 +1,9 @@
-"""Adapters for external tool integration."""
+"""
+Adapters for external tool integration.
+
+Civilian Assurance-based Risk Computation and Orchestration System
+"Military-grade assurance for civilian code"
+"""
 
 from .github_adapter import GitHubCollector
 from .ci_adapter import CICollector, GitHubActionsCollector, JenkinsCollector

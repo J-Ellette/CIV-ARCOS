@@ -1,5 +1,9 @@
 """
-Assurance case builder module.
+Assurance case builder module for CIV-ARCOS.
+
+Civilian Assurance-based Risk Computation and Orchestration System
+"Military-grade assurance for civilian code"
+
 Implements CertGATE-style Digital Assurance Cases (DACs) with GSN notation.
 
 Includes advanced ARCOS features:

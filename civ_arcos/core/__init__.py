@@ -1,4 +1,9 @@
-"""Core module for CIV-ARCOS."""
+"""
+Core module for CIV-ARCOS.
+
+Civilian Assurance-based Risk Computation and Orchestration System
+"Military-grade assurance for civilian code"
+"""
 
 from .config import Config, get_config
 from .cache import RedisEmulator, get_cache

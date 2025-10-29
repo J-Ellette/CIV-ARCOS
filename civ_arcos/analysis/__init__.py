@@ -1,4 +1,9 @@
-"""Analysis modules for automated test evidence generation."""
+"""
+Analysis modules for automated test evidence generation.
+
+Civilian Assurance-based Risk Computation and Orchestration System
+"Military-grade assurance for civilian code"
+"""
 
 from .static_analyzer import StaticAnalyzer, PythonComplexityAnalyzer
 from .coverage_analyzer import CoverageAnalyzer
