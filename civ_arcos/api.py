@@ -122,6 +122,7 @@ def index(request: Request) -> Response:
             "name": "CIV-ARCOS API",
             "version": "0.1.0",
             "description": "Civilian Assurance-based Risk Computation and Orchestration System",
+            "tagline": "Military-grade assurance for civilian code",
             "endpoints": {
                 "POST /api/evidence/collect": "Collect evidence from a repository",
                 "GET /api/evidence/list": "List collected evidence",
