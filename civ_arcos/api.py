@@ -23,6 +23,7 @@ from civ_arcos.assurance import (
     TemplateLibrary,
     PatternInstantiator,
     ProjectType,
+    InteractiveACViewer,
 )
 from civ_arcos.assurance.visualizer import GSNVisualizer
 from civ_arcos.distributed import (
@@ -30,6 +31,7 @@ from civ_arcos.distributed import (
     EvidenceLedger,
     EvidenceSyncEngine,
 )
+from civ_arcos.web import QualityDashboard
 
 
 # Initialize application
@@ -52,11 +54,15 @@ dashboard_gen = DashboardGenerator()
 template_library = TemplateLibrary()
 pattern_instantiator = PatternInstantiator(template_library, graph, evidence_store)
 gsn_visualizer = GSNVisualizer()
+interactive_viewer = InteractiveACViewer(graph)
 
 # Initialize distributed systems
 federated_network = FederatedEvidenceNetwork()
 blockchain_ledger = EvidenceLedger()
 sync_engine = EvidenceSyncEngine()
+
+# Initialize quality dashboard
+quality_dashboard = QualityDashboard()
 
 
 @app.get("/")
@@ -120,6 +126,12 @@ def index(request: Request) -> Response:
                 "GET /api/sync/timeline": "Get unified evidence timeline",
                 "POST /api/sync/deduplicate": "Remove duplicate evidence",
                 "GET /api/sync/status": "Get synchronization status",
+                "POST /api/visualization/interactive-gsn": "Generate interactive GSN visualization",
+                "POST /api/visualization/evidence-timeline": "Create evidence timeline visualization",
+                "POST /api/visualization/export": "Export assurance case to various formats",
+                "POST /api/dashboard/executive": "Generate executive dashboard",
+                "POST /api/dashboard/developer": "Generate developer dashboard",
+                "GET /api/dashboard/widgets": "Get all dashboard widgets data",
             },
         }
     )
@@ -1843,6 +1855,299 @@ def sync_status(request: Request) -> Response:
         return Response({
             "success": True,
             "sync_status": status
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ==================== Visualization Endpoints ====================
+
+@app.post("/api/visualization/interactive-gsn")
+def interactive_gsn(request: Request) -> Response:
+    """Generate interactive GSN visualization for an assurance case."""
+    try:
+        data = request.json_body
+        case_id = data.get("case_id")
+        
+        if not case_id:
+            return Response(
+                {"error": "case_id is required"},
+                status_code=400
+            )
+        
+        # Get the assurance case from the graph (same pattern as get_assurance_case)
+        case_nodes = graph.find_nodes(label="AssuranceCase", properties={"case_id": case_id})
+        
+        if not case_nodes:
+            return Response(
+                {"error": f"Assurance case {case_id} not found"},
+                status_code=404
+            )
+        
+        case_data = case_nodes[0]
+        
+        # Reconstruct the AssuranceCase object
+        case = AssuranceCase(
+            case_id=case_data["case_id"],
+            title=case_data["title"],
+            description=case_data.get("description", ""),
+            project_type=case_data.get("project_type")
+        )
+        
+        # Load nodes from graph
+        gsn_nodes = graph.find_nodes(label="GSNNode", properties={"case_id": case_id})
+        for node_data in gsn_nodes:
+            from civ_arcos.assurance.gsn import (
+                GSNGoal, GSNStrategy, GSNSolution,
+                GSNContext, GSNAssumption, GSNJustification
+            )
+            
+            node_type = node_data.get("node_type", "")
+            node_id = node_data.get("node_id", "")
+            statement = node_data.get("statement", "")
+            
+            if node_type == "goal":
+                node = GSNGoal(node_id, statement)
+            elif node_type == "strategy":
+                node = GSNStrategy(node_id, statement)
+            elif node_type == "solution":
+                node = GSNSolution(node_id, statement)
+            elif node_type == "context":
+                node = GSNContext(node_id, statement)
+            elif node_type == "assumption":
+                node = GSNAssumption(node_id, statement)
+            elif node_type == "justification":
+                node = GSNJustification(node_id, statement)
+            else:
+                continue
+            
+            # Restore relationships
+            node.parent_ids = node_data.get("parent_ids", [])
+            node.child_ids = node_data.get("child_ids", [])
+            node.evidence_ids = node_data.get("evidence_ids", [])
+            
+            case.add_node(node)
+        
+        # Generate interactive visualization
+        include_metadata = data.get("include_metadata", True)
+        enable_drill_down = data.get("enable_drill_down", True)
+        
+        interactive_data = interactive_viewer.generate_interactive_gsn(
+            case,
+            include_metadata=include_metadata,
+            enable_drill_down=enable_drill_down
+        )
+        
+        return Response({
+            "success": True,
+            "visualization": interactive_data
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/visualization/evidence-timeline")
+def evidence_timeline(request: Request) -> Response:
+    """Create evidence timeline visualization."""
+    try:
+        data = request.json_body
+        evidence_ids = data.get("evidence_ids", [])
+        include_correlations = data.get("include_correlations", True)
+        
+        # Gather evidence items
+        project_evidence = []
+        
+        if evidence_ids:
+            # Use specific evidence IDs
+            for evidence_id in evidence_ids:
+                evidence = graph.get_node(evidence_id)
+                if evidence:
+                    project_evidence.append(evidence)
+        else:
+            # Get all evidence
+            all_evidence = graph.list_nodes()
+            project_evidence = [e for e in all_evidence if e.get("type") in [
+                "test", "security", "static_analysis", "code_review", 
+                "coverage", "performance", "documentation"
+            ]]
+        
+        # Generate timeline
+        timeline_data = interactive_viewer.create_evidence_timeline(
+            project_evidence,
+            include_correlations=include_correlations
+        )
+        
+        return Response({
+            "success": True,
+            "timeline": timeline_data
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/visualization/export")
+def export_visualization(request: Request) -> Response:
+    """Export assurance case to various formats."""
+    try:
+        data = request.json_body
+        case_id = data.get("case_id")
+        format = data.get("format", "html")
+        
+        if not case_id:
+            return Response(
+                {"error": "case_id is required"},
+                status_code=400
+            )
+        
+        # Get the assurance case from graph (same pattern as interactive_gsn)
+        case_nodes = graph.find_nodes(label="AssuranceCase", properties={"case_id": case_id})
+        
+        if not case_nodes:
+            return Response(
+                {"error": f"Assurance case {case_id} not found"},
+                status_code=404
+            )
+        
+        case_data = case_nodes[0]
+        
+        # Reconstruct the AssuranceCase object
+        case = AssuranceCase(
+            case_id=case_data["case_id"],
+            title=case_data["title"],
+            description=case_data.get("description", ""),
+            project_type=case_data.get("project_type")
+        )
+        
+        # Load nodes from graph
+        gsn_nodes = graph.find_nodes(label="GSNNode", properties={"case_id": case_id})
+        for node_data in gsn_nodes:
+            from civ_arcos.assurance.gsn import (
+                GSNGoal, GSNStrategy, GSNSolution,
+                GSNContext, GSNAssumption, GSNJustification
+            )
+            
+            node_type = node_data.get("node_type", "")
+            node_id = node_data.get("node_id", "")
+            statement = node_data.get("statement", "")
+            
+            if node_type == "goal":
+                node = GSNGoal(node_id, statement)
+            elif node_type == "strategy":
+                node = GSNStrategy(node_id, statement)
+            elif node_type == "solution":
+                node = GSNSolution(node_id, statement)
+            elif node_type == "context":
+                node = GSNContext(node_id, statement)
+            elif node_type == "assumption":
+                node = GSNAssumption(node_id, statement)
+            elif node_type == "justification":
+                node = GSNJustification(node_id, statement)
+            else:
+                continue
+            
+            # Restore relationships
+            node.parent_ids = node_data.get("parent_ids", [])
+            node.child_ids = node_data.get("child_ids", [])
+            node.evidence_ids = node_data.get("evidence_ids", [])
+            
+            case.add_node(node)
+        
+        # Export to requested format
+        exported_content = interactive_viewer.export_to_format(case, format)
+        
+        # Determine content type
+        content_types = {
+            "html": "text/html",
+            "svg": "image/svg+xml",
+            "json": "application/json",
+            "pdf": "application/pdf"
+        }
+        
+        content_type = content_types.get(format.lower(), "text/plain")
+        
+        return Response(
+            {"success": True, "format": format, "content": exported_content},
+            headers={"Content-Type": content_type}
+        )
+        
+    except ValueError as e:
+        return Response({"error": str(e)}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ==================== Quality Dashboard Endpoints ====================
+
+@app.post("/api/dashboard/executive")
+def executive_dashboard(request: Request) -> Response:
+    """Generate executive dashboard for leadership."""
+    try:
+        data = request.json_body
+        organization_data = data.get("organization_data", {})
+        
+        if not organization_data:
+            # Use sample data if none provided
+            organization_data = {
+                "quality_history": [],
+                "security_scans": [],
+                "compliance_data": {"standards": {}},
+                "team_metrics": {},
+                "code_metrics": {},
+                "quality_investment_hours": 0,
+                "cost_per_hour": 100,
+                "defects_prevented": 0,
+                "cost_per_defect": 500
+            }
+        
+        # Generate dashboard
+        dashboard = quality_dashboard.create_executive_dashboard(organization_data)
+        
+        return Response({
+            "success": True,
+            "dashboard": dashboard
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/dashboard/developer")
+def developer_dashboard(request: Request) -> Response:
+    """Generate developer dashboard for team members."""
+    try:
+        data = request.json_body
+        team_data = data.get("team_data", {})
+        
+        if not team_data:
+            return Response(
+                {"error": "team_data is required"},
+                status_code=400
+            )
+        
+        # Generate dashboard
+        dashboard = quality_dashboard.create_developer_dashboard(team_data)
+        
+        return Response({
+            "success": True,
+            "dashboard": dashboard
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/dashboard/widgets")
+def dashboard_widgets(request: Request) -> Response:
+    """Get all dashboard widgets data."""
+    try:
+        widgets_data = quality_dashboard.get_all_widgets_data()
+        
+        return Response({
+            "success": True,
+            "widgets": widgets_data
         })
         
     except Exception as e:

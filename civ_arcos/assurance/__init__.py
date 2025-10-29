@@ -59,6 +59,9 @@ from .dependency_tracker import (
     DependencyType,
 )
 
+# Interactive visualization
+from .interactive_viewer import InteractiveACViewer
+
 __all__ = [
     # GSN
     "GSNNode",
@@ -105,4 +108,6 @@ __all__ = [
     "Dependency",
     "ResourceType",
     "DependencyType",
+    # Interactive visualization
+    "InteractiveACViewer",
 ]
