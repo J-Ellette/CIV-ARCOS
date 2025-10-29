@@ -1,5 +1,9 @@
 """
 Main API server for CIV-ARCOS.
+
+CIV-ARCOS: Civilian Assurance-based Risk Computation and Orchestration System
+"Military-grade assurance for civilian code"
+
 Provides REST endpoints for evidence collection, badge generation, and status queries.
 """
 

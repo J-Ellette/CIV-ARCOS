@@ -53,6 +53,7 @@ class DashboardGenerator:
             <div class="grid-container">
                 <h1 class="usa-prose">🛡️ CIV-ARCOS Dashboard</h1>
                 <p class="usa-intro">Civilian Assurance-based Risk Computation and Orchestration System</p>
+                <p class="text-italic text-base-dark margin-top-1"><em>"Military-grade assurance for civilian code"</em></p>
                 
                 <div class="grid-row grid-gap margin-top-4">
                     <div class="tablet:grid-col-3">
@@ -716,6 +717,7 @@ class DashboardGenerator:
                                 <section class="usa-footer__primary-content usa-footer__primary-content--collapsible">
                                     <h4 class="usa-footer__primary-link">CIV-ARCOS</h4>
                                     <p class="text-base-light">Civilian Assurance-based Risk Computation and Orchestration System</p>
+                                    <p class="text-base-light text-italic margin-top-1">"Military-grade assurance for civilian code"</p>
                                 </section>
                             </div>
                             <div class="mobile-lg:grid-col-6 desktop:grid-col-3">

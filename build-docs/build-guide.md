@@ -1,5 +1,9 @@
 # CIV-ARCOS Build Guide
 
+**Civilian Assurance-based Risk Computation and Orchestration System**
+
+*"Military-grade assurance for civilian code"*
+
 ## Project Overview
 
 We are laying the foundation to build a "civilian" version of military-grade software assurance, while following proven ARCOS methodologies - perfect for open source projects, enterprise development teams, or as a SaaS offering. We will be creating the various parts of the system by emulating and perfecting existing technologies.
