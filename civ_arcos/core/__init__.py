@@ -40,6 +40,10 @@ from .autonomous_quality import (
     LearningOutcome,
     ImprovementStatus,
 )
+from .personas import PersonaManager, PersonaRole, PersonaConfig
+from .onboarding import OnboardingManager, OnboardingFlow, OnboardingStep, OnboardingStepType
+from .accessibility import AccessibilityTester, AccessibilityTestResult, WCAGLevel, AccessibilityIssue
+from .xai import ExplainableAI, Explanation, BiasMetrics, FairnessReport, ExplanationType
 
 __all__ = [
     "Config",
@@ -88,4 +92,20 @@ __all__ = [
     "QualityStandard",
     "LearningOutcome",
     "ImprovementStatus",
+    "PersonaManager",
+    "PersonaRole",
+    "PersonaConfig",
+    "OnboardingManager",
+    "OnboardingFlow",
+    "OnboardingStep",
+    "OnboardingStepType",
+    "AccessibilityTester",
+    "AccessibilityTestResult",
+    "WCAGLevel",
+    "AccessibilityIssue",
+    "ExplainableAI",
+    "Explanation",
+    "BiasMetrics",
+    "FairnessReport",
+    "ExplanationType",
 ]
