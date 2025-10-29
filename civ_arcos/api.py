@@ -32,6 +32,8 @@ from civ_arcos.distributed import (
     EvidenceSyncEngine,
 )
 from civ_arcos.web import QualityDashboard
+from civ_arcos.core import PluginMarketplace, CommunityPlatform
+from civ_arcos.api import CivARCOSAPI
 
 
 # Initialize application
@@ -63,6 +65,15 @@ sync_engine = EvidenceSyncEngine()
 
 # Initialize quality dashboard
 quality_dashboard = QualityDashboard()
+
+# Initialize plugin marketplace
+plugin_marketplace = PluginMarketplace()
+
+# Initialize community platform
+community_platform = CommunityPlatform()
+
+# Initialize API ecosystem
+api_ecosystem = CivARCOSAPI()
 
 
 @app.get("/")
@@ -132,6 +143,38 @@ def index(request: Request) -> Response:
                 "POST /api/dashboard/executive": "Generate executive dashboard",
                 "POST /api/dashboard/developer": "Generate developer dashboard",
                 "GET /api/dashboard/widgets": "Get all dashboard widgets data",
+                # Step 9: Market & Ecosystem
+                "POST /api/plugins/register": "Register a new plugin",
+                "DELETE /api/plugins/{plugin_id}": "Unregister a plugin",
+                "GET /api/plugins/list": "List installed plugins",
+                "GET /api/plugins/{plugin_id}": "Get plugin details",
+                "POST /api/plugins/{plugin_id}/execute": "Execute plugin method",
+                "POST /api/plugins/validate": "Validate plugin security",
+                "GET /api/plugins/search": "Search plugins",
+                "GET /api/plugins/stats": "Get plugin marketplace statistics",
+                "POST /api/webhooks/github": "GitHub webhook handler",
+                "POST /api/webhooks/gitlab": "GitLab webhook handler",
+                "POST /api/webhooks/bitbucket": "Bitbucket webhook handler",
+                "GET /api/webhooks/endpoints": "Get available webhook endpoints",
+                "POST /api/graphql": "Execute GraphQL query",
+                "GET /api/graphql/schema": "Get GraphQL schema",
+                "POST /api/community/patterns/share": "Share quality pattern",
+                "GET /api/community/patterns/list": "List quality patterns",
+                "GET /api/community/patterns/search": "Search quality patterns",
+                "POST /api/community/practices/add": "Add best practice",
+                "GET /api/community/practices/list": "List best practices",
+                "POST /api/community/practices/{practice_id}/upvote": "Upvote best practice",
+                "POST /api/community/threats/share": "Share threat intelligence",
+                "GET /api/community/threats/list": "List threat intelligence",
+                "POST /api/community/templates/industry/add": "Add industry template",
+                "GET /api/community/templates/industry/list": "List industry templates",
+                "POST /api/community/templates/compliance/add": "Add compliance template",
+                "GET /api/community/templates/compliance/list": "List compliance templates",
+                "POST /api/community/benchmarks/add": "Add benchmark dataset",
+                "GET /api/community/benchmarks/list": "List benchmark datasets",
+                "POST /api/community/benchmarks/compare": "Compare to benchmark",
+                "GET /api/community/stats": "Get community platform statistics",
+                "GET /api/ecosystem/documentation": "Get API ecosystem documentation",
             },
         }
     )
@@ -2148,6 +2191,598 @@ def dashboard_widgets(request: Request) -> Response:
         return Response({
             "success": True,
             "widgets": widgets_data
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# Plugin Marketplace Endpoints
+# ============================================================================
+
+@app.post("/api/plugins/register")
+def register_plugin(request: Request) -> Response:
+    """Register a new plugin."""
+    try:
+        data = request.json_body
+        manifest_data = data.get("manifest", {})
+        plugin_code = data.get("code", "")
+        
+        if not manifest_data or not plugin_code:
+            return Response(
+                {"error": "manifest and code are required"},
+                status_code=400
+            )
+        
+        from civ_arcos.core import PluginManifest
+        manifest = PluginManifest(manifest_data)
+        result = plugin_marketplace.register_plugin(manifest, plugin_code)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.delete("/api/plugins/{plugin_id}")
+def unregister_plugin(request: Request) -> Response:
+    """Unregister a plugin."""
+    try:
+        plugin_id = request.path_params.get("plugin_id")
+        result = plugin_marketplace.unregister_plugin(plugin_id)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/plugins/list")
+def list_plugins(request: Request) -> Response:
+    """List installed plugins."""
+    try:
+        plugin_type = request.query_params.get("type")
+        plugins = plugin_marketplace.list_plugins(plugin_type)
+        
+        return Response({
+            "success": True,
+            "plugins": plugins
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/plugins/{plugin_id}")
+def get_plugin(request: Request) -> Response:
+    """Get plugin details."""
+    try:
+        plugin_id = request.path_params.get("plugin_id")
+        plugin = plugin_marketplace.get_plugin(plugin_id)
+        
+        if not plugin:
+            return Response(
+                {"error": "Plugin not found"},
+                status_code=404
+            )
+        
+        return Response({
+            "success": True,
+            "plugin": plugin
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/plugins/{plugin_id}/execute")
+def execute_plugin(request: Request) -> Response:
+    """Execute a plugin method."""
+    try:
+        plugin_id = request.path_params.get("plugin_id")
+        data = request.json_body
+        method = data.get("method")
+        args = data.get("args", [])
+        kwargs = data.get("kwargs", {})
+        
+        if not method:
+            return Response(
+                {"error": "method is required"},
+                status_code=400
+            )
+        
+        result = plugin_marketplace.execute_plugin(plugin_id, method, *args, **kwargs)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/plugins/validate")
+def validate_plugin(request: Request) -> Response:
+    """Validate plugin security."""
+    try:
+        data = request.json_body
+        plugin_code = data.get("code", "")
+        
+        if not plugin_code:
+            return Response(
+                {"error": "code is required"},
+                status_code=400
+            )
+        
+        result = plugin_marketplace.validate_plugin_security(plugin_code)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/plugins/search")
+def search_plugins(request: Request) -> Response:
+    """Search plugins."""
+    try:
+        query = request.query_params.get("q", "")
+        
+        if not query:
+            return Response(
+                {"error": "query parameter 'q' is required"},
+                status_code=400
+            )
+        
+        results = plugin_marketplace.search_plugins(query)
+        
+        return Response({
+            "success": True,
+            "results": results
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/plugins/stats")
+def plugin_stats(request: Request) -> Response:
+    """Get plugin marketplace statistics."""
+    try:
+        stats = plugin_marketplace.get_plugin_stats()
+        
+        return Response({
+            "success": True,
+            "stats": stats
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# Webhook Endpoints
+# ============================================================================
+
+@app.post("/api/webhooks/github")
+def github_webhook(request: Request) -> Response:
+    """Handle GitHub webhook."""
+    try:
+        event_type = request.headers.get("X-GitHub-Event", "push")
+        payload = request.json_body
+        
+        result = api_ecosystem.handle_webhook("github", event_type, payload)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/webhooks/gitlab")
+def gitlab_webhook(request: Request) -> Response:
+    """Handle GitLab webhook."""
+    try:
+        event_type = request.headers.get("X-Gitlab-Event", "push")
+        payload = request.json_body
+        
+        result = api_ecosystem.handle_webhook("gitlab", event_type, payload)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/webhooks/bitbucket")
+def bitbucket_webhook(request: Request) -> Response:
+    """Handle Bitbucket webhook."""
+    try:
+        event_type = request.headers.get("X-Event-Key", "repo:push")
+        payload = request.json_body
+        
+        result = api_ecosystem.handle_webhook("bitbucket", event_type, payload)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/webhooks/endpoints")
+def webhook_endpoints(request: Request) -> Response:
+    """Get available webhook endpoints."""
+    try:
+        endpoints = api_ecosystem.webhook_endpoints()
+        
+        return Response({
+            "success": True,
+            "endpoints": endpoints
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# GraphQL Endpoint
+# ============================================================================
+
+@app.post("/api/graphql")
+def graphql_endpoint(request: Request) -> Response:
+    """Execute GraphQL query."""
+    try:
+        data = request.json_body
+        query = data.get("query", "")
+        variables = data.get("variables")
+        
+        if not query:
+            return Response(
+                {"error": "query is required"},
+                status_code=400
+            )
+        
+        result = api_ecosystem.execute_graphql(query, variables)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"errors": [{"message": str(e)}]}, status_code=500)
+
+
+@app.get("/api/graphql/schema")
+def graphql_schema(request: Request) -> Response:
+    """Get GraphQL schema."""
+    try:
+        interface = api_ecosystem.graphql_interface()
+        
+        return Response({
+            "success": True,
+            "schema": interface
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# Community Platform Endpoints
+# ============================================================================
+
+@app.post("/api/community/patterns/share")
+def share_quality_pattern(request: Request) -> Response:
+    """Share a quality pattern."""
+    try:
+        data = request.json_body
+        pattern_data = data.get("pattern", {})
+        permission = data.get("permission", "community")
+        
+        if not pattern_data:
+            return Response(
+                {"error": "pattern is required"},
+                status_code=400
+            )
+        
+        result = community_platform.share_quality_pattern(pattern_data, permission)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/community/patterns/list")
+def list_quality_patterns(request: Request) -> Response:
+    """List quality patterns."""
+    try:
+        category = request.query_params.get("category")
+        limit = int(request.query_params.get("limit", "50"))
+        
+        patterns = community_platform.get_quality_patterns(category, limit)
+        
+        return Response({
+            "success": True,
+            "patterns": patterns
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/community/patterns/search")
+def search_patterns(request: Request) -> Response:
+    """Search quality patterns."""
+    try:
+        query = request.query_params.get("q", "")
+        
+        if not query:
+            return Response(
+                {"error": "query parameter 'q' is required"},
+                status_code=400
+            )
+        
+        results = community_platform.search_patterns(query)
+        
+        return Response({
+            "success": True,
+            "results": results
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/community/practices/add")
+def add_best_practice(request: Request) -> Response:
+    """Add a best practice."""
+    try:
+        data = request.json_body
+        practice_data = data.get("practice", {})
+        
+        if not practice_data:
+            return Response(
+                {"error": "practice is required"},
+                status_code=400
+            )
+        
+        result = community_platform.add_best_practice(practice_data)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/community/practices/list")
+def list_best_practices(request: Request) -> Response:
+    """List best practices."""
+    try:
+        category = request.query_params.get("category")
+        industry = request.query_params.get("industry")
+        
+        practices = community_platform.get_best_practices(category, industry)
+        
+        return Response({
+            "success": True,
+            "practices": practices
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/community/practices/{practice_id}/upvote")
+def upvote_practice(request: Request) -> Response:
+    """Upvote a best practice."""
+    try:
+        practice_id = request.path_params.get("practice_id")
+        result = community_platform.upvote_best_practice(practice_id)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/community/threats/share")
+def share_threat(request: Request) -> Response:
+    """Share threat intelligence."""
+    try:
+        data = request.json_body
+        threat_data = data.get("threat", {})
+        
+        if not threat_data:
+            return Response(
+                {"error": "threat is required"},
+                status_code=400
+            )
+        
+        result = community_platform.share_threat_intelligence(threat_data)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/community/threats/list")
+def list_threats(request: Request) -> Response:
+    """List threat intelligence."""
+    try:
+        severity = request.query_params.get("severity")
+        limit = int(request.query_params.get("limit", "50"))
+        
+        threats = community_platform.get_threat_intelligence(severity, limit)
+        
+        return Response({
+            "success": True,
+            "threats": threats
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/community/templates/industry/add")
+def add_industry_template(request: Request) -> Response:
+    """Add an industry-specific template."""
+    try:
+        data = request.json_body
+        template_data = data.get("template", {})
+        
+        if not template_data:
+            return Response(
+                {"error": "template is required"},
+                status_code=400
+            )
+        
+        result = community_platform.add_industry_template(template_data)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/community/templates/industry/list")
+def list_industry_templates(request: Request) -> Response:
+    """List industry-specific templates."""
+    try:
+        industry = request.query_params.get("industry")
+        
+        templates = community_platform.get_industry_templates(industry)
+        
+        return Response({
+            "success": True,
+            "templates": templates
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/community/templates/compliance/add")
+def add_compliance_template(request: Request) -> Response:
+    """Add a compliance template."""
+    try:
+        data = request.json_body
+        template_data = data.get("template", {})
+        
+        if not template_data:
+            return Response(
+                {"error": "template is required"},
+                status_code=400
+            )
+        
+        result = community_platform.add_compliance_template(template_data)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/community/templates/compliance/list")
+def list_compliance_templates(request: Request) -> Response:
+    """List compliance templates."""
+    try:
+        framework = request.query_params.get("framework")
+        
+        templates = community_platform.get_compliance_templates(framework)
+        
+        return Response({
+            "success": True,
+            "templates": templates
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/community/benchmarks/add")
+def add_benchmark(request: Request) -> Response:
+    """Add a benchmark dataset."""
+    try:
+        data = request.json_body
+        dataset_data = data.get("dataset", {})
+        
+        if not dataset_data:
+            return Response(
+                {"error": "dataset is required"},
+                status_code=400
+            )
+        
+        result = community_platform.add_benchmark_dataset(dataset_data)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/community/benchmarks/list")
+def list_benchmarks(request: Request) -> Response:
+    """List benchmark datasets."""
+    try:
+        industry = request.query_params.get("industry")
+        project_type = request.query_params.get("project_type")
+        
+        datasets = community_platform.get_benchmark_datasets(industry, project_type)
+        
+        return Response({
+            "success": True,
+            "benchmarks": datasets
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/community/benchmarks/compare")
+def compare_benchmark(request: Request) -> Response:
+    """Compare project to benchmark."""
+    try:
+        data = request.json_body
+        project_metrics = data.get("metrics", {})
+        benchmark_id = data.get("benchmark_id", "")
+        
+        if not project_metrics or not benchmark_id:
+            return Response(
+                {"error": "metrics and benchmark_id are required"},
+                status_code=400
+            )
+        
+        result = community_platform.compare_to_benchmark(project_metrics, benchmark_id)
+        
+        return Response(result)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/community/stats")
+def community_stats(request: Request) -> Response:
+    """Get community platform statistics."""
+    try:
+        stats = community_platform.get_platform_stats()
+        
+        return Response({
+            "success": True,
+            "stats": stats
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/ecosystem/documentation")
+def ecosystem_documentation(request: Request) -> Response:
+    """Get comprehensive API ecosystem documentation."""
+    try:
+        docs = api_ecosystem.get_api_documentation()
+        
+        return Response({
+            "success": True,
+            "documentation": docs
         })
         
     except Exception as e:
