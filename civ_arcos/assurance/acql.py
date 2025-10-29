@@ -111,7 +111,7 @@ class ACQLEngine:
 
         # Check for contradictory claims
         goal_texts = [
-            n.description.lower()
+            n.statement.lower()
             for n in nodes
             if n.node_type == GSNNodeType.GOAL
         ]
@@ -165,7 +165,7 @@ class ACQLEngine:
             nodes = list(case.nodes.values())
             # Get evidence from nodes
             for node in nodes:
-                evidence_ids.update(node.evidence_refs)
+                evidence_ids.update(node.evidence_ids)
         elif fragment:
             nodes = list(fragment.nodes.values())
             evidence_ids = fragment.evidence_ids
@@ -187,7 +187,7 @@ class ACQLEngine:
 
         # Check for orphan nodes (except root)
         root_id = case.root_goal_id if case else fragment.root_goal_id if fragment else None
-        orphans = [n.id for n in nodes if len(n.parents) == 0 and n.id != root_id]
+        orphans = [n.id for n in nodes if len(n.parent_ids) == 0 and n.id != root_id]
 
         if orphans:
             missing_elements.append(f"{len(orphans)} orphan nodes")
@@ -196,8 +196,8 @@ class ACQLEngine:
         leaves_without_evidence = [
             n.id
             for n in nodes
-            if len(n.children) == 0
-            and len(n.evidence_refs) == 0
+            if len(n.child_ids) == 0
+            and len(n.evidence_ids) == 0
             and n.node_type != GSNNodeType.CONTEXT
         ]
 
@@ -239,13 +239,13 @@ class ACQLEngine:
 
         # Check each strategy has children
         for node in nodes:
-            if node.node_type == GSNNodeType.STRATEGY and len(node.children) == 0:
+            if node.node_type == GSNNodeType.STRATEGY and len(node.child_ids) == 0:
                 soundness_issues.append(f"Strategy '{node.id}' has no sub-goals")
 
             # Check goals have support (strategy or solution)
-            if node.node_type == GSNNodeType.GOAL and len(node.children) == 0:
+            if node.node_type == GSNNodeType.GOAL and len(node.child_ids) == 0:
                 # Leaf goal should have evidence
-                if len(node.evidence_refs) == 0:
+                if len(node.evidence_ids) == 0:
                     soundness_issues.append(f"Goal '{node.id}' lacks support")
 
         return {
@@ -272,14 +272,14 @@ class ACQLEngine:
         if case:
             nodes = list(case.nodes.values())
             for node in nodes:
-                evidence_ids.update(node.evidence_refs)
+                evidence_ids.update(node.evidence_ids)
         elif fragment:
             nodes = list(fragment.nodes.values())
             evidence_ids = fragment.evidence_ids
 
         # Count leaf nodes
-        leaf_nodes = [n for n in nodes if len(n.children) == 0]
-        supported_leaves = [n for n in leaf_nodes if len(n.evidence_refs) > 0]
+        leaf_nodes = [n for n in nodes if len(n.child_ids) == 0]
+        supported_leaves = [n for n in leaf_nodes if len(n.evidence_ids) > 0]
 
         coverage_ratio = (
             len(supported_leaves) / len(leaf_nodes) if len(leaf_nodes) > 0 else 0.0
@@ -347,11 +347,11 @@ class ACQLEngine:
             path = path + [current_id]
 
             # If has evidence, record path
-            if len(current.evidence_refs) > 0:
+            if len(current.evidence_ids) > 0:
                 paths.append(path)
 
             # Continue to children
-            for child_id in current.children:
+            for child_id in current.child_ids:
                 dfs(child_id, path)
 
         dfs(start_id, [])
@@ -427,8 +427,8 @@ class ACQLEngine:
             dependency_chains = []
 
             for node in nodes:
-                if len(node.parents) > 0:
-                    for parent_id in node.parents:
+                if len(node.parent_ids) > 0:
+                    for parent_id in node.parent_ids:
                         dependency_chains.append(
                             {"from": parent_id, "to": node.id}
                         )
@@ -462,7 +462,7 @@ class ACQLEngine:
         for node in nodes:
             if node.node_type == GSNNodeType.GOAL:
                 # Check if claim is absolute vs qualified
-                text = node.description.lower()
+                text = node.statement.lower()
 
                 if any(
                     word in text
@@ -471,18 +471,18 @@ class ACQLEngine:
                     potential_defeaters.append(
                         {
                             "node_id": node.id,
-                            "claim": node.description,
+                            "claim": node.statement,
                             "reason": "Absolute claim vulnerable to counterexample",
                         }
                     )
 
                 # Check for unsupported security claims
                 if "secure" in text or "safe" in text:
-                    if len(node.evidence_refs) == 0:
+                    if len(node.evidence_ids) == 0:
                         potential_defeaters.append(
                             {
                                 "node_id": node.id,
-                                "claim": node.description,
+                                "claim": node.statement,
                                 "reason": "Security claim without evidence",
                             }
                         )

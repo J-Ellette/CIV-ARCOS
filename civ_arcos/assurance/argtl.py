@@ -222,7 +222,7 @@ class ArgTLEngine:
                 prev_leaves = [
                     n
                     for n in prev_source.nodes.values()
-                    if len(n.children) == 0
+                    if len(n.child_ids) == 0
                 ]
                 if prev_leaves:
                     for leaf in prev_leaves:
@@ -248,7 +248,7 @@ class ArgTLEngine:
             target.set_root_goal(parent.root_goal_id)
 
         # Attach children to parent's leaf nodes
-        parent_leaves = [n for n in parent.nodes.values() if len(n.children) == 0]
+        parent_leaves = [n for n in parent.nodes.values() if len(n.child_ids) == 0]
 
         for i, child in enumerate(children):
             if child.root_goal_id:
@@ -370,7 +370,7 @@ class ArgTLEngine:
         for evidence_id in composed.evidence_ids:
             # Find appropriate nodes to link evidence to
             for node in composed.nodes.values():
-                if len(node.children) == 0:  # Leaf nodes
+                if len(node.child_ids) == 0:  # Leaf nodes
                     case.link_evidence(node.id, evidence_id)
 
         return case

@@ -246,21 +246,23 @@ class ReasoningEngine:
         """Evaluate a premise against context."""
         # Simple premise evaluation
         # Format: "variable operator value"
-        parts = premise.replace(">=", " >= ").replace("<=", " <= ").replace("=", " = ").split()
-
-        if len(parts) < 3:
+        import re
+        
+        # Use regex to parse premise properly
+        match = re.match(r'(\w+)\s*(>=|<=|==|=|>|<)\s*(.+)', premise.strip())
+        if not match:
             return False
-
-        var_name = parts[0]
-        operator = parts[1]
-        expected = " ".join(parts[2:])
+        
+        var_name = match.group(1)
+        operator = match.group(2)
+        expected = match.group(3).strip()
 
         actual = context.get(var_name)
         if actual is None:
             return False
 
         try:
-            if operator == "=":
+            if operator in ["=", "=="]:
                 return str(actual).lower() == expected.lower()
             elif operator == ">=":
                 return float(actual) >= float(expected.rstrip("%"))
@@ -279,19 +281,36 @@ class ReasoningEngine:
         self, defeater: Defeater, context: Dict[str, Any], case: AssuranceCase
     ) -> bool:
         """Check if a defeater is active."""
-        # Check if any condition is met
-        for condition in defeater.conditions:
-            if self._evaluate_premise(condition, context):
-                return True
-
-        # Check if target claim exists in case
+        # Check if target claim exists in case (flexible matching)
+        # Extract key words from target
+        target_words = set(defeater.target_claim.lower().replace("_", " ").split())
         target_found = False
+        
         for node in case.nodes.values():
-            if defeater.target_claim.lower() in node.description.lower():
+            statement_words = set(node.statement.lower().split())
+            # If most target words appear in statement, it's a match
+            common_words = target_words & statement_words
+            if len(common_words) >= len(target_words) * 0.7:  # 70% word overlap
                 target_found = True
                 break
-
-        return target_found and len(defeater.conditions) == 0
+        
+        if not target_found:
+            return False
+        
+        # If no conditions, defeater is active when target exists
+        if len(defeater.conditions) == 0:
+            return True
+        
+        # Check if any condition is met (conditions can be variable names or premises)
+        for condition in defeater.conditions:
+            # Try as a premise first
+            if self._evaluate_premise(condition, context):
+                return True
+            # Try as a simple variable name (check if truthy)
+            if condition in context and context[condition]:
+                return True
+        
+        return False
 
     def _generate_recommendations(self, reasoning_results: Dict[str, Any]) -> List[str]:
         """Generate recommendations based on reasoning."""
@@ -341,7 +360,7 @@ class ReasoningEngine:
                             "type": "contradiction",
                             "goal1": goal1.id,
                             "goal2": goal2.id,
-                            "description": f"Goals '{goal1.description}' and '{goal2.description}' appear contradictory",
+                            "description": f"Goals '{goal1.statement}' and '{goal2.statement}' appear contradictory",
                         }
                     )
 
@@ -349,8 +368,8 @@ class ReasoningEngine:
 
     def _goals_contradict(self, goal1: GSNNode, goal2: GSNNode) -> bool:
         """Check if two goals contradict each other."""
-        text1 = goal1.description.lower()
-        text2 = goal2.description.lower()
+        text1 = goal1.statement.lower()
+        text2 = goal2.statement.lower()
 
         # Simple contradiction detection
         contradiction_pairs = [
