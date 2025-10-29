@@ -25,6 +25,11 @@ from civ_arcos.assurance import (
     ProjectType,
 )
 from civ_arcos.assurance.visualizer import GSNVisualizer
+from civ_arcos.distributed import (
+    FederatedEvidenceNetwork,
+    EvidenceLedger,
+    EvidenceSyncEngine,
+)
 
 
 # Initialize application
@@ -47,6 +52,11 @@ dashboard_gen = DashboardGenerator()
 template_library = TemplateLibrary()
 pattern_instantiator = PatternInstantiator(template_library, graph, evidence_store)
 gsn_visualizer = GSNVisualizer()
+
+# Initialize distributed systems
+federated_network = FederatedEvidenceNetwork()
+blockchain_ledger = EvidenceLedger()
+sync_engine = EvidenceSyncEngine()
 
 
 @app.get("/")
@@ -91,6 +101,25 @@ def index(request: Request) -> Response:
                 "POST /api/github/quality-check": "GitHub webhook for quality checks",
                 "POST /api/slack/quality-alerts": "Send quality alerts to Slack",
                 "POST /api/jira/quality-issues": "Create Jira issues for quality problems",
+                "POST /api/federated/join": "Join federated evidence network",
+                "POST /api/federated/share": "Share evidence with network",
+                "GET /api/federated/evidence": "Get shared evidence from network",
+                "POST /api/federated/benchmark": "Contribute to industry benchmarking",
+                "GET /api/federated/benchmark/{metric}": "Get benchmark statistics",
+                "POST /api/federated/threat": "Share threat intelligence",
+                "GET /api/federated/threat": "Get threat intelligence",
+                "GET /api/federated/status": "Get federated network status",
+                "POST /api/blockchain/add": "Add evidence to blockchain",
+                "GET /api/blockchain/validate": "Validate blockchain integrity",
+                "GET /api/blockchain/block/{index}": "Get block by index",
+                "GET /api/blockchain/search": "Search evidence in blockchain",
+                "GET /api/blockchain/info": "Get blockchain information",
+                "POST /api/sync/configure": "Configure platform connector",
+                "POST /api/sync/source": "Sync evidence from a source",
+                "POST /api/sync/all": "Sync evidence from all sources",
+                "GET /api/sync/timeline": "Get unified evidence timeline",
+                "POST /api/sync/deduplicate": "Remove duplicate evidence",
+                "GET /api/sync/status": "Get synchronization status",
             },
         }
     )
@@ -1389,6 +1418,431 @@ def analyze_risks(request: Request) -> Response:
             "success": True,
             "risks": risks_list,
             "count": len(risks_list)
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ==================== Federated Network Endpoints ====================
+
+@app.post("/api/federated/join")
+def federated_join(request: Request) -> Response:
+    """Join the federated evidence network."""
+    try:
+        data = request.json_body
+        organization_id = data.get("organization_id")
+        evidence_endpoint = data.get("evidence_endpoint")
+        public_key = data.get("public_key")
+        metadata = data.get("metadata", {})
+        
+        if not organization_id or not evidence_endpoint:
+            return Response(
+                {"error": "organization_id and evidence_endpoint are required"},
+                status_code=400
+            )
+        
+        node = federated_network.join_network(
+            organization_id, evidence_endpoint, public_key, metadata
+        )
+        
+        return Response({
+            "success": True,
+            "node": node.to_dict(),
+            "message": f"Organization {organization_id} joined the network"
+        })
+        
+    except ValueError as e:
+        return Response({"error": str(e)}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/federated/share")
+def federated_share(request: Request) -> Response:
+    """Share evidence with the federated network."""
+    try:
+        data = request.json_body
+        evidence = data.get("evidence")
+        organization_id = data.get("organization_id")
+        privacy_level = data.get("privacy_level", "anonymized")
+        
+        if not evidence or not organization_id:
+            return Response(
+                {"error": "evidence and organization_id are required"},
+                status_code=400
+            )
+        
+        anonymized = federated_network.share_evidence(
+            evidence, organization_id, privacy_level
+        )
+        
+        return Response({
+            "success": True,
+            "evidence": anonymized.to_dict(),
+            "message": "Evidence shared with network"
+        })
+        
+    except ValueError as e:
+        return Response({"error": str(e)}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/federated/evidence")
+def federated_get_evidence(request: Request) -> Response:
+    """Get shared evidence from the federated network."""
+    try:
+        evidence_type = request.query_params.get("type")
+        evidence_list = federated_network.get_shared_evidence(evidence_type)
+        
+        return Response({
+            "success": True,
+            "evidence": [e.to_dict() for e in evidence_list],
+            "count": len(evidence_list)
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/federated/benchmark")
+def federated_benchmark(request: Request) -> Response:
+    """Contribute to industry benchmarking."""
+    try:
+        data = request.json_body
+        organization_id = data.get("organization_id")
+        metrics = data.get("metrics", {})
+        
+        if not organization_id or not metrics:
+            return Response(
+                {"error": "organization_id and metrics are required"},
+                status_code=400
+            )
+        
+        federated_network.contribute_to_benchmarking(organization_id, metrics)
+        
+        return Response({
+            "success": True,
+            "message": "Metrics contributed to benchmarking"
+        })
+        
+    except ValueError as e:
+        return Response({"error": str(e)}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/federated/benchmark/{metric}")
+def federated_get_benchmark(request: Request, metric: str) -> Response:
+    """Get benchmark statistics for a metric."""
+    try:
+        stats = federated_network.get_benchmark_stats(metric)
+        
+        return Response({
+            "success": True,
+            "statistics": stats
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/federated/threat")
+def federated_share_threat(request: Request) -> Response:
+    """Share threat intelligence with the network."""
+    try:
+        data = request.json_body
+        organization_id = data.get("organization_id")
+        threat_info = data.get("threat_info", {})
+        
+        if not organization_id or not threat_info:
+            return Response(
+                {"error": "organization_id and threat_info are required"},
+                status_code=400
+            )
+        
+        federated_network.share_threat_intelligence(organization_id, threat_info)
+        
+        return Response({
+            "success": True,
+            "message": "Threat intelligence shared"
+        })
+        
+    except ValueError as e:
+        return Response({"error": str(e)}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/federated/threat")
+def federated_get_threat(request: Request) -> Response:
+    """Get threat intelligence from the network."""
+    try:
+        threat_type = request.query_params.get("type")
+        threats = federated_network.get_threat_intelligence(threat_type)
+        
+        return Response({
+            "success": True,
+            "threats": threats,
+            "count": len(threats)
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/federated/status")
+def federated_status(request: Request) -> Response:
+    """Get federated network status."""
+    try:
+        stats = federated_network.get_network_stats()
+        
+        return Response({
+            "success": True,
+            "network_stats": stats
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ==================== Blockchain Ledger Endpoints ====================
+
+@app.post("/api/blockchain/add")
+def blockchain_add(request: Request) -> Response:
+    """Add evidence to the blockchain."""
+    try:
+        data = request.json_body
+        evidence_batch = data.get("evidence")
+        
+        if not evidence_batch:
+            return Response(
+                {"error": "evidence is required"},
+                status_code=400
+            )
+        
+        if not isinstance(evidence_batch, list):
+            evidence_batch = [evidence_batch]
+        
+        block = blockchain_ledger.add_evidence_block(evidence_batch)
+        
+        return Response({
+            "success": True,
+            "block": block.to_dict(),
+            "message": f"Evidence added to block {block.index}"
+        })
+        
+    except ValueError as e:
+        return Response({"error": str(e)}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/blockchain/validate")
+def blockchain_validate(request: Request) -> Response:
+    """Validate the blockchain integrity."""
+    try:
+        validation_result = blockchain_ledger.validate_evidence_chain()
+        
+        return Response({
+            "success": True,
+            "validation": validation_result
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/blockchain/block/{index}")
+def blockchain_get_block(request: Request, index: str) -> Response:
+    """Get a block by its index."""
+    try:
+        block_index = int(index)
+        block = blockchain_ledger.get_block(block_index)
+        
+        if block is None:
+            return Response(
+                {"error": f"Block {block_index} not found"},
+                status_code=404
+            )
+        
+        return Response({
+            "success": True,
+            "block": block.to_dict()
+        })
+        
+    except ValueError:
+        return Response({"error": "Invalid block index"}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/blockchain/search")
+def blockchain_search(request: Request) -> Response:
+    """Search for evidence in the blockchain."""
+    try:
+        evidence_type = request.query_params.get("type")
+        limit = int(request.query_params.get("limit", 100))
+        
+        results = blockchain_ledger.search_evidence(evidence_type, limit)
+        
+        return Response({
+            "success": True,
+            "results": results,
+            "count": len(results)
+        })
+        
+    except ValueError:
+        return Response({"error": "Invalid limit parameter"}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/blockchain/info")
+def blockchain_info(request: Request) -> Response:
+    """Get blockchain information."""
+    try:
+        info = blockchain_ledger.get_chain_info()
+        
+        return Response({
+            "success": True,
+            "blockchain": info
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ==================== Sync Engine Endpoints ====================
+
+@app.post("/api/sync/configure")
+def sync_configure(request: Request) -> Response:
+    """Configure a platform connector."""
+    try:
+        data = request.json_body
+        platform = data.get("platform")
+        config = data.get("config", {})
+        
+        if not platform:
+            return Response(
+                {"error": "platform is required"},
+                status_code=400
+            )
+        
+        success = sync_engine.configure_connector(platform, config)
+        
+        return Response({
+            "success": success,
+            "message": f"Connector {platform} configured"
+        })
+        
+    except ValueError as e:
+        return Response({"error": str(e)}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/sync/source")
+def sync_source(request: Request) -> Response:
+    """Sync evidence from a single source."""
+    try:
+        data = request.json_body
+        platform = data.get("platform")
+        project_id = data.get("project_id")
+        since = data.get("since")
+        
+        if not platform or not project_id:
+            return Response(
+                {"error": "platform and project_id are required"},
+                status_code=400
+            )
+        
+        status = sync_engine.sync_source(platform, project_id, since)
+        
+        return Response({
+            "success": status.success,
+            "sync_status": status.to_dict()
+        })
+        
+    except ValueError as e:
+        return Response({"error": str(e)}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/sync/all")
+def sync_all(request: Request) -> Response:
+    """Sync evidence from all configured sources."""
+    try:
+        data = request.json_body
+        project_config = data.get("project_config", {})
+        
+        if not project_config:
+            return Response(
+                {"error": "project_config is required"},
+                status_code=400
+            )
+        
+        statuses = sync_engine.sync_all_sources(project_config)
+        
+        return Response({
+            "success": True,
+            "sync_statuses": [s.to_dict() for s in statuses],
+            "total": len(statuses)
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/sync/timeline")
+def sync_timeline(request: Request) -> Response:
+    """Get unified evidence timeline."""
+    try:
+        start_time = request.query_params.get("start_time")
+        end_time = request.query_params.get("end_time")
+        evidence_type = request.query_params.get("type")
+        
+        timeline = sync_engine.get_unified_timeline(
+            start_time, end_time, evidence_type
+        )
+        
+        return Response({
+            "success": True,
+            "timeline": timeline,
+            "count": len(timeline)
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/sync/deduplicate")
+def sync_deduplicate(request: Request) -> Response:
+    """Remove duplicate evidence from timeline."""
+    try:
+        removed = sync_engine.deduplicate_evidence()
+        
+        return Response({
+            "success": True,
+            "duplicates_removed": removed,
+            "message": f"Removed {removed} duplicate evidence items"
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/sync/status")
+def sync_status(request: Request) -> Response:
+    """Get synchronization status."""
+    try:
+        status = sync_engine.get_sync_status()
+        
+        return Response({
+            "success": True,
+            "sync_status": status
         })
         
     except Exception as e:
