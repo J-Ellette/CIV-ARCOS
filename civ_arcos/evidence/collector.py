@@ -51,6 +51,11 @@ class EvidenceCollector(ABC):
     """
     Abstract base class for evidence collectors.
     Each collector implements evidence collection from a specific source.
+    
+    Following the pattern from the problem statement, collectors should implement:
+    - collect_from_github(repo_url, commit_hash) - For code metrics, commits, PR reviews
+    - collect_from_ci(build_id) - For test results, coverage, performance
+    - collect_from_security_tools(scan_results) - For vulnerabilities, dependencies
     """
 
     def __init__(self, collector_id: str):
@@ -72,6 +77,58 @@ class EvidenceCollector(ABC):
             List of collected evidence
         """
         pass
+    
+    def collect_from_github(self, repo_url: str, commit_hash: Optional[str] = None) -> List[Evidence]:
+        """
+        Collect evidence from GitHub repository.
+        Pulls code metrics, commit history, and PR reviews.
+        
+        Args:
+            repo_url: GitHub repository URL or owner/repo format
+            commit_hash: Optional specific commit to analyze
+            
+        Returns:
+            List of evidence collected from GitHub
+        """
+        # Default implementation - subclasses can override
+        return self.collect(repo_url=repo_url, commit_hash=commit_hash, source="github")
+    
+    def collect_from_ci(self, build_id: str) -> List[Evidence]:
+        """
+        Collect evidence from CI/CD pipeline.
+        Pulls test results, coverage reports, and performance metrics.
+        
+        Args:
+            build_id: CI/CD build identifier
+            
+        Returns:
+            List of evidence collected from CI
+        """
+        # Default implementation - subclasses can override
+        return self.collect(build_id=build_id, source="ci")
+    
+    def collect_from_security_tools(self, scan_results: Dict[str, Any]) -> List[Evidence]:
+        """
+        Collect evidence from security scanning tools.
+        Processes vulnerability reports and dependency analysis.
+        
+        Args:
+            scan_results: Security scan results dictionary
+            
+        Returns:
+            List of evidence collected from security tools
+        """
+        # Default implementation - create evidence from scan results
+        evidence = self.create_evidence(
+            evidence_type="security_scan",
+            data=scan_results,
+            source="security_tools",
+            provenance={
+                "scan_type": scan_results.get("scan_type", "unknown"),
+                "tool": scan_results.get("tool", "unknown"),
+            }
+        )
+        return [evidence]
 
     def create_evidence(
         self,

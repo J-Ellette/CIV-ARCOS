@@ -40,38 +40,65 @@ class GitHubCollector(EvidenceCollector):
         Returns:
             List of collected evidence
         """
+        return self.collect_from_github(repo_url, commit_hash)
+    
+    def collect_from_github(self, repo_url: str, commit_hash: Optional[str] = None) -> List[Evidence]:
+        """
+        Collect evidence from GitHub repository.
+        Implements the pattern from the problem statement:
+        - Pull code metrics
+        - Pull commit history
+        - Pull PR reviews
+        
+        Args:
+            repo_url: GitHub repository URL or owner/repo format
+            commit_hash: Optional specific commit to analyze
+
+        Returns:
+            List of collected evidence
+        """
         # Parse repository information
         owner, repo = self._parse_repo_url(repo_url)
 
         evidence_list = []
 
-        # Collect repository metadata
+        # Collect repository metadata (code metrics)
         repo_metadata = self._fetch_repo_metadata(owner, repo)
         if repo_metadata:
             evidence = self.create_evidence(
                 evidence_type="repository_metadata",
                 data=repo_metadata,
-                provenance={"owner": owner, "repo": repo},
+                provenance={"owner": owner, "repo": repo, "method": "collect_from_github"},
             )
             evidence_list.append(evidence)
 
-        # Collect recent commits
+        # Collect recent commits (commit history)
         commits = self._fetch_recent_commits(owner, repo, commit_hash)
         if commits:
             evidence = self.create_evidence(
                 evidence_type="commit_history",
-                data={"commits": commits},
-                provenance={"owner": owner, "repo": repo},
+                data={"commits": commits, "commit_count": len(commits)},
+                provenance={"owner": owner, "repo": repo, "method": "collect_from_github"},
             )
             evidence_list.append(evidence)
 
-        # Collect repository statistics
+        # Collect repository statistics (code metrics)
         stats = self._fetch_repo_stats(owner, repo)
         if stats:
             evidence = self.create_evidence(
                 evidence_type="repository_statistics",
                 data=stats,
-                provenance={"owner": owner, "repo": repo},
+                provenance={"owner": owner, "repo": repo, "method": "collect_from_github"},
+            )
+            evidence_list.append(evidence)
+        
+        # Collect PR reviews if available
+        pr_reviews = self._fetch_pr_reviews(owner, repo)
+        if pr_reviews:
+            evidence = self.create_evidence(
+                evidence_type="pr_reviews",
+                data={"reviews": pr_reviews, "review_count": len(pr_reviews)},
+                provenance={"owner": owner, "repo": repo, "method": "collect_from_github"},
             )
             evidence_list.append(evidence)
 
@@ -197,3 +224,46 @@ class GitHubCollector(EvidenceCollector):
             "languages": languages or {},
             "total_lines_of_code": total_loc,
         }
+    
+    def _fetch_pr_reviews(self, owner: str, repo: str, max_prs: int = 5) -> Optional[List[Dict[str, Any]]]:
+        """
+        Fetch recent pull request reviews.
+        
+        Args:
+            owner: Repository owner
+            repo: Repository name
+            max_prs: Maximum number of PRs to fetch reviews for
+            
+        Returns:
+            List of PR reviews or None on error
+        """
+        # First, get recent closed PRs
+        prs_endpoint = f"/repos/{owner}/{repo}/pulls?state=closed&per_page={max_prs}"
+        prs_data = self._make_api_request(prs_endpoint)
+        
+        if not prs_data or not isinstance(prs_data, list):
+            return None
+        
+        all_reviews = []
+        for pr in prs_data[:max_prs]:
+            pr_number = pr.get("number")
+            if not pr_number:
+                continue
+            
+            # Fetch reviews for this PR
+            reviews_endpoint = f"/repos/{owner}/{repo}/pulls/{pr_number}/reviews"
+            reviews_data = self._make_api_request(reviews_endpoint)
+            
+            if reviews_data and isinstance(reviews_data, list):
+                for review in reviews_data:
+                    all_reviews.append({
+                        "pr_number": pr_number,
+                        "pr_title": pr.get("title"),
+                        "review_id": review.get("id"),
+                        "state": review.get("state"),
+                        "user": review.get("user", {}).get("login"),
+                        "submitted_at": review.get("submitted_at"),
+                        "body": review.get("body", "")[:200] if review.get("body") else "",  # Truncate
+                    })
+        
+        return all_reviews if all_reviews else None
