@@ -249,3 +249,230 @@ class JenkinsCollector(CICollector):
             "failed": 0,
             "note": "Jenkins integration placeholder",
         }
+
+
+class GitLabCICollector(CICollector):
+    """
+    Specialized collector for GitLab CI.
+    """
+
+    def __init__(self, gitlab_url: str = "https://gitlab.com", token: Optional[str] = None):
+        """
+        Initialize GitLab CI collector.
+
+        Args:
+            gitlab_url: GitLab instance URL
+            token: GitLab API token
+        """
+        super().__init__(ci_type="gitlab_ci")
+        self.gitlab_url = gitlab_url.rstrip("/")
+        self.token = token
+
+    def _fetch_test_results(self, build_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Fetch test results from GitLab CI.
+
+        Args:
+            build_id: GitLab CI pipeline ID or job ID
+
+        Returns:
+            Test results or None
+        """
+        # Placeholder for GitLab CI API integration
+        # Would use GitLab API: /api/v4/projects/{project_id}/pipelines/{pipeline_id}/jobs
+        return {
+            "build_id": build_id,
+            "platform": "gitlab_ci",
+            "gitlab_url": self.gitlab_url,
+            "status": "unknown",
+            "total_tests": 0,
+            "passed": 0,
+            "failed": 0,
+            "note": "GitLab CI integration placeholder - connect to GitLab API",
+        }
+
+    def _fetch_coverage_report(self, build_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Fetch coverage report from GitLab CI.
+
+        Args:
+            build_id: GitLab CI pipeline ID
+
+        Returns:
+            Coverage data or None
+        """
+        # Placeholder for GitLab CI coverage API
+        # Would parse coverage from job artifacts or use coverage regex
+        return {
+            "build_id": build_id,
+            "platform": "gitlab_ci",
+            "line_coverage": 0.0,
+            "branch_coverage": 0.0,
+            "covered_lines": 0,
+            "total_lines": 0,
+            "note": "GitLab CI coverage integration placeholder",
+        }
+
+
+class CircleCICollector(CICollector):
+    """
+    Specialized collector for CircleCI.
+    """
+
+    def __init__(self, token: Optional[str] = None):
+        """
+        Initialize CircleCI collector.
+
+        Args:
+            token: CircleCI API token
+        """
+        super().__init__(ci_type="circleci")
+        self.token = token
+        self.api_url = "https://circleci.com/api/v2"
+
+    def _fetch_test_results(self, build_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Fetch test results from CircleCI.
+
+        Args:
+            build_id: CircleCI workflow ID or job number
+
+        Returns:
+            Test results or None
+        """
+        # Placeholder for CircleCI API integration
+        # Would use CircleCI API v2: /project/{project-slug}/job/{job-number}
+        return {
+            "build_id": build_id,
+            "platform": "circleci",
+            "status": "unknown",
+            "total_tests": 0,
+            "passed": 0,
+            "failed": 0,
+            "note": "CircleCI integration placeholder - connect to CircleCI API v2",
+        }
+
+    def _fetch_coverage_report(self, build_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Fetch coverage report from CircleCI.
+
+        Args:
+            build_id: CircleCI job number
+
+        Returns:
+            Coverage data or None
+        """
+        # Placeholder for CircleCI coverage
+        # Would fetch from artifacts or test metadata
+        return {
+            "build_id": build_id,
+            "platform": "circleci",
+            "line_coverage": 0.0,
+            "branch_coverage": 0.0,
+            "covered_lines": 0,
+            "total_lines": 0,
+            "note": "CircleCI coverage integration placeholder",
+        }
+
+    def _fetch_performance_metrics(self, build_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Fetch performance metrics from CircleCI.
+
+        Args:
+            build_id: CircleCI job number
+
+        Returns:
+            Performance metrics or None
+        """
+        # CircleCI provides build timing information
+        return {
+            "build_id": build_id,
+            "platform": "circleci",
+            "build_duration_seconds": 0.0,
+            "queue_time_seconds": 0.0,
+            "credits_used": 0,
+            "note": "CircleCI performance integration placeholder",
+        }
+
+
+class TravisCICollector(CICollector):
+    """
+    Specialized collector for Travis CI.
+    """
+
+    def __init__(self, token: Optional[str] = None, api_url: str = "https://api.travis-ci.com"):
+        """
+        Initialize Travis CI collector.
+
+        Args:
+            token: Travis CI API token
+            api_url: Travis CI API URL (travis-ci.com or travis-ci.org)
+        """
+        super().__init__(ci_type="travis_ci")
+        self.token = token
+        self.api_url = api_url.rstrip("/")
+
+    def _fetch_test_results(self, build_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Fetch test results from Travis CI.
+
+        Args:
+            build_id: Travis CI build ID
+
+        Returns:
+            Test results or None
+        """
+        # Placeholder for Travis CI API integration
+        # Would use Travis CI API v3: /build/{build_id}
+        return {
+            "build_id": build_id,
+            "platform": "travis_ci",
+            "api_url": self.api_url,
+            "status": "unknown",
+            "state": "unknown",
+            "total_tests": 0,
+            "passed": 0,
+            "failed": 0,
+            "note": "Travis CI integration placeholder - connect to Travis API v3",
+        }
+
+    def _fetch_coverage_report(self, build_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Fetch coverage report from Travis CI.
+
+        Args:
+            build_id: Travis CI build ID
+
+        Returns:
+            Coverage data or None
+        """
+        # Placeholder for Travis CI coverage
+        # Would parse from build logs or artifacts
+        return {
+            "build_id": build_id,
+            "platform": "travis_ci",
+            "line_coverage": 0.0,
+            "branch_coverage": 0.0,
+            "covered_lines": 0,
+            "total_lines": 0,
+            "note": "Travis CI coverage integration placeholder",
+        }
+
+    def _fetch_performance_metrics(self, build_id: str) -> Optional[Dict[str, Any]]:
+        """
+        Fetch performance metrics from Travis CI.
+
+        Args:
+            build_id: Travis CI build ID
+
+        Returns:
+            Performance metrics or None
+        """
+        # Travis provides build duration and job information
+        return {
+            "build_id": build_id,
+            "platform": "travis_ci",
+            "build_duration_seconds": 0.0,
+            "jobs_count": 0,
+            "note": "Travis CI performance integration placeholder",
+        }
