@@ -32,7 +32,14 @@ from civ_arcos.distributed import (
     EvidenceSyncEngine,
 )
 from civ_arcos.web import QualityDashboard
-from civ_arcos.core import PluginMarketplace, CommunityPlatform
+from civ_arcos.core import (
+    PluginMarketplace,
+    CommunityPlatform,
+    PersonaManager,
+    OnboardingManager,
+    AccessibilityTester,
+    ExplainableAI,
+)
 from civ_arcos.api import CivARCOSAPI
 
 
@@ -74,6 +81,18 @@ community_platform = CommunityPlatform()
 
 # Initialize API ecosystem
 api_ecosystem = CivARCOSAPI()
+
+# Initialize persona management
+persona_manager = PersonaManager()
+
+# Initialize onboarding system
+onboarding_manager = OnboardingManager()
+
+# Initialize accessibility tester
+accessibility_tester = AccessibilityTester()
+
+# Initialize explainable AI
+explainable_ai = ExplainableAI()
 
 
 @app.get("/")
@@ -175,6 +194,20 @@ def index(request: Request) -> Response:
                 "POST /api/community/benchmarks/compare": "Compare to benchmark",
                 "GET /api/community/stats": "Get community platform statistics",
                 "GET /api/ecosystem/documentation": "Get API ecosystem documentation",
+                # Human-Centered Design & XAI
+                "GET /api/personas/list": "List all persona roles",
+                "GET /api/personas/{role}": "Get persona configuration",
+                "GET /api/personas/{role}/kpis": "Get persona KPIs",
+                "GET /api/onboarding/flows": "List onboarding flows",
+                "GET /api/onboarding/flows/{flow_id}": "Get onboarding flow details",
+                "GET /api/onboarding/progress/{user_id}": "Get user onboarding progress",
+                "POST /api/onboarding/progress/{user_id}/step": "Mark onboarding step complete",
+                "POST /api/onboarding/progress/{user_id}/flow": "Mark onboarding flow complete",
+                "POST /api/accessibility/test": "Test HTML for accessibility issues",
+                "GET /api/accessibility/criteria": "Get WCAG criteria information",
+                "POST /api/xai/explain": "Explain AI/ML prediction",
+                "POST /api/xai/detect-bias": "Detect bias in predictions",
+                "POST /api/xai/transparency-report": "Generate comprehensive transparency report",
             },
         }
     )
@@ -2783,6 +2816,439 @@ def ecosystem_documentation(request: Request) -> Response:
         return Response({
             "success": True,
             "documentation": docs
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# Persona Management Endpoints
+# ============================================================================
+
+@app.get("/api/personas/list")
+def list_personas(request: Request) -> Response:
+    """List all available persona roles and their configurations."""
+    try:
+        personas = persona_manager.get_all_personas()
+        
+        result = {
+            role.value: {
+                "display_name": config.display_name,
+                "description": config.description,
+                "primary_kpis": config.primary_kpis,
+                "dashboard_widgets": config.dashboard_widgets,
+            }
+            for role, config in personas.items()
+        }
+        
+        return Response({
+            "success": True,
+            "personas": result
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/personas/{role}")
+def get_persona(request: Request, role: str) -> Response:
+    """Get detailed configuration for a specific persona role."""
+    try:
+        from civ_arcos.core.personas import PersonaRole
+        
+        # Convert string to PersonaRole enum
+        try:
+            persona_role = PersonaRole(role)
+        except ValueError:
+            return Response(
+                {"error": f"Invalid role: {role}"},
+                status_code=400
+            )
+        
+        config = persona_manager.get_dashboard_config(persona_role)
+        
+        if not config:
+            return Response(
+                {"error": f"Persona not found: {role}"},
+                status_code=404
+            )
+        
+        return Response({
+            "success": True,
+            "persona": config
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/personas/{role}/kpis")
+def get_persona_kpis(request: Request, role: str) -> Response:
+    """Get KPIs for a specific persona role."""
+    try:
+        from civ_arcos.core.personas import PersonaRole
+        
+        try:
+            persona_role = PersonaRole(role)
+        except ValueError:
+            return Response(
+                {"error": f"Invalid role: {role}"},
+                status_code=400
+            )
+        
+        kpis = persona_manager.get_kpis_for_role(persona_role)
+        
+        return Response({
+            "success": True,
+            "role": role,
+            "kpis": kpis
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# Onboarding Endpoints
+# ============================================================================
+
+@app.get("/api/onboarding/flows")
+def list_onboarding_flows(request: Request) -> Response:
+    """List all available onboarding flows."""
+    try:
+        role = request.query_params.get("role")
+        
+        if role:
+            flows = onboarding_manager.get_flows_for_role(role)
+        else:
+            flows = onboarding_manager.get_all_flows()
+        
+        serialized_flows = [
+            onboarding_manager.serialize_flow(flow)
+            for flow in flows
+        ]
+        
+        return Response({
+            "success": True,
+            "flows": serialized_flows
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/onboarding/flows/{flow_id}")
+def get_onboarding_flow(request: Request, flow_id: str) -> Response:
+    """Get a specific onboarding flow."""
+    try:
+        flow = onboarding_manager.get_flow(flow_id)
+        
+        if not flow:
+            return Response(
+                {"error": f"Flow not found: {flow_id}"},
+                status_code=404
+            )
+        
+        serialized = onboarding_manager.serialize_flow(flow)
+        
+        return Response({
+            "success": True,
+            "flow": serialized
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/onboarding/progress/{user_id}")
+def get_user_onboarding_progress(request: Request, user_id: str) -> Response:
+    """Get onboarding progress for a user."""
+    try:
+        flow_id = request.query_params.get("flow_id")
+        role = request.query_params.get("role")
+        
+        if flow_id:
+            # Get progress for specific flow
+            progress = onboarding_manager.get_user_progress(user_id, flow_id)
+            return Response({
+                "success": True,
+                "user_id": user_id,
+                "flow_id": flow_id,
+                "progress": progress
+            })
+        else:
+            # Get next required flow
+            next_flow = onboarding_manager.get_next_required_flow(user_id, role)
+            return Response({
+                "success": True,
+                "user_id": user_id,
+                "next_required_flow": onboarding_manager.serialize_flow(next_flow) if next_flow else None
+            })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/onboarding/progress/{user_id}/step")
+def mark_onboarding_step_complete(request: Request, user_id: str) -> Response:
+    """Mark an onboarding step as complete."""
+    try:
+        data = request.get_json()
+        flow_id = data.get("flow_id")
+        step_id = data.get("step_id")
+        
+        if not flow_id or not step_id:
+            return Response(
+                {"error": "flow_id and step_id are required"},
+                status_code=400
+            )
+        
+        onboarding_manager.mark_step_complete(user_id, flow_id, step_id)
+        
+        return Response({
+            "success": True,
+            "message": "Step marked as complete"
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/onboarding/progress/{user_id}/flow")
+def mark_onboarding_flow_complete(request: Request, user_id: str) -> Response:
+    """Mark an entire onboarding flow as complete."""
+    try:
+        data = request.get_json()
+        flow_id = data.get("flow_id")
+        
+        if not flow_id:
+            return Response(
+                {"error": "flow_id is required"},
+                status_code=400
+            )
+        
+        onboarding_manager.mark_flow_complete(user_id, flow_id)
+        
+        return Response({
+            "success": True,
+            "message": "Flow marked as complete"
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# Accessibility Testing Endpoints
+# ============================================================================
+
+@app.post("/api/accessibility/test")
+def test_accessibility(request: Request) -> Response:
+    """Test HTML content for accessibility issues."""
+    try:
+        data = request.get_json()
+        html_content = data.get("html_content", "")
+        target_level = data.get("wcag_level", "AA")
+        
+        if not html_content:
+            return Response(
+                {"error": "html_content is required"},
+                status_code=400
+            )
+        
+        from civ_arcos.core.accessibility import WCAGLevel
+        
+        # Convert string to WCAGLevel enum
+        try:
+            wcag_level = WCAGLevel(target_level)
+        except ValueError:
+            wcag_level = WCAGLevel.AA
+        
+        result = accessibility_tester.test_html_content(html_content, wcag_level)
+        report = accessibility_tester.generate_report(result)
+        
+        return Response({
+            "success": True,
+            "report": report
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/accessibility/criteria")
+def get_wcag_criteria(request: Request) -> Response:
+    """Get WCAG criteria information."""
+    try:
+        return Response({
+            "success": True,
+            "criteria": accessibility_tester.wcag_criteria
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# Explainable AI (XAI) Endpoints
+# ============================================================================
+
+@app.post("/api/xai/explain")
+def explain_prediction(request: Request) -> Response:
+    """Generate explanation for an AI/ML prediction."""
+    try:
+        data = request.get_json()
+        prediction = data.get("prediction")
+        features = data.get("features", {})
+        model_type = data.get("model_type", "quality_predictor")
+        use_ai = data.get("use_ai", True)
+        
+        if prediction is None:
+            return Response(
+                {"error": "prediction is required"},
+                status_code=400
+            )
+        
+        if not isinstance(features, dict):
+            return Response(
+                {"error": "features must be a dictionary"},
+                status_code=400
+            )
+        
+        explanation = explainable_ai.explain_prediction(
+            prediction, features, model_type, use_ai
+        )
+        
+        # Serialize explanation
+        result = {
+            "prediction": explanation.prediction,
+            "confidence": explanation.confidence,
+            "explanation_type": explanation.explanation_type.value,
+            "feature_importances": [
+                {
+                    "feature": fi.feature_name,
+                    "importance": fi.importance_score,
+                    "contribution": fi.contribution,
+                    "value": fi.value,
+                }
+                for fi in explanation.feature_importances
+            ],
+            "decision_path": explanation.decision_path,
+            "narrative": explanation.narrative,
+            "counterfactuals": explanation.counterfactuals,
+            "metadata": explanation.metadata,
+        }
+        
+        return Response({
+            "success": True,
+            "explanation": result
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/xai/detect-bias")
+def detect_bias(request: Request) -> Response:
+    """Detect bias in predictions across different groups."""
+    try:
+        data = request.get_json()
+        predictions = data.get("predictions", [])
+        features_list = data.get("features_list", [])
+        protected_attributes = data.get("protected_attributes", [])
+        use_ai = data.get("use_ai", True)
+        
+        if not predictions or not features_list:
+            return Response(
+                {"error": "predictions and features_list are required"},
+                status_code=400
+            )
+        
+        if len(predictions) != len(features_list):
+            return Response(
+                {"error": "predictions and features_list must have same length"},
+                status_code=400
+            )
+        
+        if not protected_attributes:
+            return Response(
+                {"error": "protected_attributes is required"},
+                status_code=400
+            )
+        
+        report = explainable_ai.detect_bias(
+            predictions, features_list, protected_attributes, use_ai
+        )
+        
+        # Serialize report
+        result = {
+            "overall_fairness_score": report.overall_fairness_score,
+            "bias_detected": report.bias_detected,
+            "bias_metrics": [
+                {
+                    "bias_type": bm.bias_type.value,
+                    "affected_groups": bm.affected_groups,
+                    "disparity_score": bm.disparity_score,
+                    "fairness_score": bm.fairness_score,
+                    "details": bm.details,
+                    "recommendations": bm.recommendations,
+                }
+                for bm in report.bias_metrics
+            ],
+            "group_metrics": report.group_metrics,
+            "recommendations": report.recommendations,
+        }
+        
+        return Response({
+            "success": True,
+            "bias_report": result
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/xai/transparency-report")
+def generate_transparency_report(request: Request) -> Response:
+    """Generate comprehensive transparency report for a prediction."""
+    try:
+        data = request.get_json()
+        prediction = data.get("prediction")
+        features = data.get("features", {})
+        model_type = data.get("model_type", "quality_predictor")
+        use_ai = data.get("use_ai", True)
+        
+        # Optional: include bias detection
+        include_bias = data.get("include_bias", False)
+        predictions_list = data.get("predictions_list", [])
+        features_list = data.get("features_list", [])
+        protected_attributes = data.get("protected_attributes", [])
+        
+        if prediction is None:
+            return Response(
+                {"error": "prediction is required"},
+                status_code=400
+            )
+        
+        # Generate explanation
+        explanation = explainable_ai.explain_prediction(
+            prediction, features, model_type, use_ai
+        )
+        
+        # Optionally generate bias report
+        bias_report = None
+        if include_bias and predictions_list and features_list and protected_attributes:
+            bias_report = explainable_ai.detect_bias(
+                predictions_list, features_list, protected_attributes, use_ai
+            )
+        
+        # Generate transparency report
+        report = explainable_ai.generate_transparency_report(explanation, bias_report)
+        
+        return Response({
+            "success": True,
+            "transparency_report": report
         })
         
     except Exception as e:
