@@ -6,7 +6,7 @@ Includes evidence redaction and privacy-preserving transformations.
 import re
 import hashlib
 from typing import Any, Dict, List, Optional, Set
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass
@@ -146,18 +146,24 @@ class EvidenceRedactor:
 
             matches = re.findall(rule.pattern, redacted_text, re.MULTILINE)
             if matches:
-                redacted_text = re.sub(rule.pattern, rule.replacement, redacted_text, flags=re.MULTILINE)
-                redactions_made.append({
-                    "rule": rule.name,
-                    "count": len(matches),
-                })
+                redacted_text = re.sub(
+                    rule.pattern, rule.replacement, redacted_text, flags=re.MULTILINE
+                )
+                redactions_made.append(
+                    {
+                        "rule": rule.name,
+                        "count": len(matches),
+                    }
+                )
 
         if track and redactions_made:
-            self.redaction_log.append({
-                "redactions": redactions_made,
-                "original_length": len(text),
-                "redacted_length": len(redacted_text),
-            })
+            self.redaction_log.append(
+                {
+                    "redactions": redactions_made,
+                    "original_length": len(text),
+                    "redacted_length": len(redacted_text),
+                }
+            )
 
         return redacted_text
 
@@ -203,11 +209,11 @@ class EvidenceRedactor:
             elif isinstance(value, list) and recursive:
                 # Redact items in lists
                 redacted[key] = [
-                    self.redact_dict(item, fields_to_redact, recursive)
-                    if isinstance(item, dict)
-                    else self.redact_text(item, track=False)
-                    if isinstance(item, str)
-                    else item
+                    (
+                        self.redact_dict(item, fields_to_redact, recursive)
+                        if isinstance(item, dict)
+                        else self.redact_text(item, track=False) if isinstance(item, str) else item
+                    )
                     for item in value
                 ]
             else:
@@ -237,15 +243,17 @@ class EvidenceRedactor:
 
         if redaction_level == "aggressive":
             # Remove all identifying information
-            sensitive_fields.update({
-                "author",
-                "committer",
-                "email",
-                "username",
-                "file_path",
-                "source",
-                "repo_url",
-            })
+            sensitive_fields.update(
+                {
+                    "author",
+                    "committer",
+                    "email",
+                    "username",
+                    "file_path",
+                    "source",
+                    "repo_url",
+                }
+            )
         elif redaction_level == "standard":
             # Remove personal information
             sensitive_fields.update({"email", "ssn", "credit_card"})

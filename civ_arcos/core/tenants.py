@@ -128,7 +128,11 @@ class TenantManager:
             "storage_path": tenant_storage_path,
             "data_residency": data_residency,
             "data_residency_info": DATA_RESIDENCY_REGIONS[data_residency],
-            "created_at": os.path.getmtime(self.base_storage_path) if os.path.exists(self.base_storage_path) else 0,
+            "created_at": (
+                os.path.getmtime(self.base_storage_path)
+                if os.path.exists(self.base_storage_path)
+                else 0
+            ),
         }
 
         return self.tenant_configs[tenant_id]

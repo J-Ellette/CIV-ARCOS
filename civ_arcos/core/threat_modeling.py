@@ -163,9 +163,7 @@ class ThreatModel:
         for mitigation in self.mitigations.values():
             mitigated_threats.update(mitigation.threats_addressed)
 
-        return [
-            t for t_id, t in self.threats.items() if t_id not in mitigated_threats
-        ]
+        return [t for t_id, t in self.threats.items() if t_id not in mitigated_threats]
 
     def generate_summary(self) -> Dict[str, Any]:
         """Generate threat model summary."""
@@ -214,9 +212,7 @@ class ThreatModelGenerator:
         """Initialize threat model generator."""
         self.threat_patterns: Dict[str, List[Threat]] = self._load_threat_patterns()
 
-    def generate_from_architecture(
-        self, architecture: Dict[str, Any]
-    ) -> ThreatModel:
+    def generate_from_architecture(self, architecture: Dict[str, Any]) -> ThreatModel:
         """
         Generate threat model from architecture description.
 
@@ -382,10 +378,7 @@ class ThreatModelGenerator:
 
         # Check for low-trust external services
         for name, asset in model.assets.items():
-            if (
-                asset.asset_type == AssetType.EXTERNAL_SERVICE
-                and asset.trust_level < 3
-            ):
+            if asset.asset_type == AssetType.EXTERNAL_SERVICE and asset.trust_level < 3:
                 threat = Threat(
                     threat_id=f"T_{len(threats):03d}",
                     title="Untrusted External Service",
@@ -542,25 +535,23 @@ class ThreatDragonIntegration:
 
         # Add assets as processes/data stores
         for asset in model.assets.values():
-            cell_type = (
-                "tm.Store"
-                if asset.asset_type == AssetType.DATA_STORE
-                else "tm.Process"
+            cell_type = "tm.Store" if asset.asset_type == AssetType.DATA_STORE else "tm.Process"
+            cells.append(
+                {
+                    "type": cell_type,
+                    "attrs": {"text": {"text": asset.name}},
+                    "threats": [
+                        {
+                            "title": t.title,
+                            "status": "Open",
+                            "severity": t.severity.value,
+                            "description": t.description,
+                        }
+                        for t in model.threats.values()
+                        if asset.name in t.affected_assets
+                    ],
+                }
             )
-            cells.append({
-                "type": cell_type,
-                "attrs": {"text": {"text": asset.name}},
-                "threats": [
-                    {
-                        "title": t.title,
-                        "status": "Open",
-                        "severity": t.severity.value,
-                        "description": t.description,
-                    }
-                    for t in model.threats.values()
-                    if asset.name in t.affected_assets
-                ],
-            })
 
         return cells
 

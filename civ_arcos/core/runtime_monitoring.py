@@ -94,17 +94,13 @@ class FalcoIntegration:
             "Debug": EventSeverity.INFO,
         }
 
-        severity = severity_map.get(
-            event_data.get("priority", "Info"), EventSeverity.INFO
-        )
+        severity = severity_map.get(event_data.get("priority", "Info"), EventSeverity.INFO)
 
         return RuntimeEvent(
             event_id=event_data.get("uuid", str(hash(str(event_data)))),
             event_type="security",
             severity=severity,
-            timestamp=event_data.get(
-                "time", datetime.now(timezone.utc).isoformat()
-            ),
+            timestamp=event_data.get("time", datetime.now(timezone.utc).isoformat()),
             source=MonitoringTool.FALCO,
             description=event_data.get("output", ""),
             metadata={
@@ -142,9 +138,7 @@ class FalcoIntegration:
 
         return events
 
-    def add_custom_rule(
-        self, rule_name: str, rule_config: Dict[str, Any]
-    ) -> None:
+    def add_custom_rule(self, rule_name: str, rule_config: Dict[str, Any]) -> None:
         """
         Add custom Falco rule configuration.
 
@@ -202,9 +196,7 @@ class OpenTelemetryIntegration:
             metric_name=metric_data.get("name", ""),
             value=float(metric_data.get("value", 0)),
             unit=metric_data.get("unit", ""),
-            timestamp=metric_data.get(
-                "timestamp", datetime.now(timezone.utc).isoformat()
-            ),
+            timestamp=metric_data.get("timestamp", datetime.now(timezone.utc).isoformat()),
             source=MonitoringTool.OPENTELEMETRY,
             labels=metric_data.get("labels", {}),
             metadata={
@@ -245,12 +237,14 @@ class OpenTelemetryIntegration:
         Args:
             trace_data: Trace data including spans
         """
-        self.traces.append({
-            "trace_id": trace_data.get("trace_id", ""),
-            "spans": trace_data.get("spans", []),
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "service": self.service_name,
-        })
+        self.traces.append(
+            {
+                "trace_id": trace_data.get("trace_id", ""),
+                "spans": trace_data.get("spans", []),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "service": self.service_name,
+            }
+        )
 
     def get_service_health(self) -> Dict[str, Any]:
         """
@@ -264,9 +258,7 @@ class OpenTelemetryIntegration:
 
         # Calculate basic health indicators
         error_metrics = [m for m in self.metrics if "error" in m.metric_name.lower()]
-        latency_metrics = [
-            m for m in self.metrics if "latency" in m.metric_name.lower()
-        ]
+        latency_metrics = [m for m in self.metrics if "latency" in m.metric_name.lower()]
 
         return {
             "status": "healthy",
@@ -350,9 +342,7 @@ class RuntimeMonitor:
 
         return metrics
 
-    def generate_monitoring_evidence(
-        self, time_window: Optional[str] = None
-    ) -> Dict[str, Any]:
+    def generate_monitoring_evidence(self, time_window: Optional[str] = None) -> Dict[str, Any]:
         """
         Generate evidence from runtime monitoring data.
 
@@ -368,9 +358,7 @@ class RuntimeMonitor:
         # Aggregate by severity
         severity_counts = {}
         for event in security_events:
-            severity_counts[event.severity.value] = (
-                severity_counts.get(event.severity.value, 0) + 1
-            )
+            severity_counts[event.severity.value] = severity_counts.get(event.severity.value, 0) + 1
 
         # Calculate performance summary
         avg_metrics = {}
