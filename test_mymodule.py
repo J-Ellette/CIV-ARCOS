@@ -1,4 +1,4 @@
-"""Generated tests for /tmp/tmpqkyflh8p/mymodule.py."""
+"""Generated tests for /tmp/tmp39y931vr/mymodule.py."""
 
 import pytest
 # TODO: Import your module here
@@ -9,10 +9,10 @@ def test_add_basic():
     # TODO: Implement test
     # Arrange
     a, b = ...  # Set up test data
-    
+
     # Act
     result = add(a, b)
-    
+
     # Assert
     assert result is not None  # TODO: Add proper assertions
 
@@ -35,10 +35,10 @@ def test_subtract_basic():
     # TODO: Implement test
     # Arrange
     a, b = ...  # Set up test data
-    
+
     # Act
     result = subtract(a, b)
-    
+
     # Assert
     assert result is not None  # TODO: Add proper assertions
 

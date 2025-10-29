@@ -4,7 +4,6 @@ Provides code-driven test generation with optional AI support.
 """
 
 import ast
-import inspect
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -197,18 +196,15 @@ class TestGenerator:
         # Remove 'self' or 'cls' from args if present
         args = [arg for arg in args if arg not in ["self", "cls"]]
 
-        # Generate argument placeholders
-        arg_str = ", ".join([f"{arg}=None" for arg in args]) if args else ""
-
         template = f'''def test_{func_name}_basic():
     """Test basic functionality of {func_name}."""
     # TODO: Implement test
     # Arrange
     {", ".join(args)} = ...  # Set up test data
-    
+
     # Act
     result = {func_name}({", ".join(args)})
-    
+
     # Assert
     assert result is not None  # TODO: Add proper assertions
 

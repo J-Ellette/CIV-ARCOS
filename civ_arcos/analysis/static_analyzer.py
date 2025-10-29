@@ -4,9 +4,8 @@ Emulates tools like ESLint, Pylint, and SonarQube without external dependencies.
 """
 
 import ast
-import os
 from abc import ABC, abstractmethod
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 from pathlib import Path
 
 
@@ -96,7 +95,9 @@ class PythonComplexityAnalyzer(StaticAnalyzer):
                 "functions": self._count_functions(tree),
                 "classes": self._count_classes(tree),
                 "complexity": self._calculate_complexity(tree),
-                "maintainability_index": self._calculate_maintainability(tree, source_code),
+                "maintainability_index": self._calculate_maintainability(
+                    tree, source_code
+                ),
                 "code_smells": self._detect_code_smells(tree),
             }
 
@@ -211,7 +212,9 @@ class PythonComplexityAnalyzer(StaticAnalyzer):
                 count += 1
             elif isinstance(node, (ast.And, ast.Or, ast.Not)):
                 count += 1
-            elif isinstance(node, (ast.Eq, ast.NotEq, ast.Lt, ast.Gt, ast.LtE, ast.GtE)):
+            elif isinstance(
+                node, (ast.Eq, ast.NotEq, ast.Lt, ast.Gt, ast.LtE, ast.GtE)
+            ):
                 count += 1
         return max(1, count)
 
@@ -238,18 +241,24 @@ class PythonComplexityAnalyzer(StaticAnalyzer):
                 if hasattr(node, "end_lineno") and hasattr(node, "lineno"):
                     func_length = node.end_lineno - node.lineno
                     if func_length > 50:
-                        smells.append(f"Long function: {node.name} ({func_length} lines)")
+                        smells.append(
+                            f"Long function: {node.name} ({func_length} lines)"
+                        )
 
                 # Too many parameters (>5)
                 if len(node.args.args) > 5:
-                    smells.append(f"Too many parameters: {node.name} ({len(node.args.args)} params)")
+                    smells.append(
+                        f"Too many parameters: {node.name} ({len(node.args.args)} params)"
+                    )
 
             # Large classes (>500 lines)
             if isinstance(node, ast.ClassDef):
                 if hasattr(node, "end_lineno") and hasattr(node, "lineno"):
                     class_length = node.end_lineno - node.lineno
                     if class_length > 500:
-                        smells.append(f"Large class: {node.name} ({class_length} lines)")
+                        smells.append(
+                            f"Large class: {node.name} ({class_length} lines)"
+                        )
 
             # Deeply nested blocks (>4 levels)
             if isinstance(node, (ast.If, ast.For, ast.While)):

@@ -35,7 +35,7 @@ def safe_command():
 @pytest.fixture
 def vulnerable_code():
     """Code with various vulnerabilities."""
-    return '''
+    return """
 import subprocess
 import os
 
@@ -62,7 +62,7 @@ def load_data(data):
 def dynamic_code(code):
     eval(code)
     exec(code)
-'''
+"""
 
 
 def test_scanner_initialization():
@@ -83,7 +83,9 @@ def test_scan_safe_code(temp_dir, safe_code):
     assert "error" not in result
     assert result["file"] == str(test_file)
     # Safe code should have no or very few vulnerabilities
-    assert result["vulnerabilities_found"] <= 1  # subprocess.run might trigger a warning
+    assert (
+        result["vulnerabilities_found"] <= 1
+    )  # subprocess.run might trigger a warning
 
 
 def test_scan_vulnerable_code(temp_dir, vulnerable_code):
@@ -104,11 +106,11 @@ def test_scan_vulnerable_code(temp_dir, vulnerable_code):
 
 def test_sql_injection_detection(temp_dir):
     """Test SQL injection detection."""
-    code = '''
+    code = """
 def query(user_id):
     sql = "SELECT * FROM users WHERE id = %s" % user_id
     execute(sql)
-'''
+"""
 
     test_file = Path(temp_dir) / "sql.py"
     test_file.write_text(code)
@@ -124,10 +126,10 @@ def query(user_id):
 
 def test_command_injection_detection(temp_dir):
     """Test command injection detection."""
-    code = '''
+    code = """
 import subprocess
 subprocess.run("ls -la", shell=True)
-'''
+"""
 
     test_file = Path(temp_dir) / "cmd.py"
     test_file.write_text(code)
@@ -142,10 +144,10 @@ subprocess.run("ls -la", shell=True)
 
 def test_hardcoded_secrets_detection(temp_dir):
     """Test hardcoded secrets detection."""
-    code = '''
+    code = """
 API_KEY = "sk_live_real_secret_key"
 password = "MyPassword123"
-'''
+"""
 
     test_file = Path(temp_dir) / "secrets.py"
     test_file.write_text(code)
@@ -161,12 +163,12 @@ password = "MyPassword123"
 
 def test_secrets_with_placeholders_not_detected(temp_dir):
     """Test that placeholder secrets are not flagged."""
-    code = '''
+    code = """
 # These should not trigger warnings
 API_KEY = "your_api_key_here"
 password = "example_password"
 token = "test_token_xxx"
-'''
+"""
 
     test_file = Path(temp_dir) / "placeholders.py"
     test_file.write_text(code)
@@ -182,12 +184,12 @@ token = "test_token_xxx"
 
 def test_insecure_functions_detection(temp_dir):
     """Test detection of insecure functions."""
-    code = '''
+    code = """
 import pickle
 
 def load(data):
     return pickle.loads(data)
-'''
+"""
 
     test_file = Path(temp_dir) / "insecure.py"
     test_file.write_text(code)
@@ -226,7 +228,9 @@ def test_severity_breakdown(temp_dir, vulnerable_code):
 
     assert "severity_breakdown" in result
     breakdown = result["severity_breakdown"]
-    assert all(severity in breakdown for severity in ["Critical", "High", "Medium", "Low"])
+    assert all(
+        severity in breakdown for severity in ["Critical", "High", "Medium", "Low"]
+    )
 
 
 def test_security_score_calculation():
@@ -250,13 +254,13 @@ def test_security_score_calculation():
 
 def test_bare_except_detection(temp_dir):
     """Test detection of bare except clauses."""
-    code = '''
+    code = """
 def risky():
     try:
         something()
     except:
         pass
-'''
+"""
 
     test_file = Path(temp_dir) / "except.py"
     test_file.write_text(code)

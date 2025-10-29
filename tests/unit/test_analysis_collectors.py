@@ -70,10 +70,10 @@ def test_security_scan_collector_initialization():
 
 def test_security_scan_collector_collect(temp_dir):
     """Test collecting security scan evidence."""
-    code = '''
+    code = """
 def safe_function():
     return 42
-'''
+"""
 
     test_file = Path(temp_dir) / "safe.py"
     test_file.write_text(code)
@@ -94,14 +94,14 @@ def safe_function():
 
 def test_security_scan_with_vulnerabilities(temp_dir):
     """Test security scan with vulnerabilities."""
-    vulnerable_code = '''
+    vulnerable_code = """
 import os
 
 def unsafe(cmd):
     os.system(cmd)  # Command injection
 
 API_KEY = "sk_live_secret123"  # Hardcoded secret
-'''
+"""
 
     test_file = Path(temp_dir) / "vuln.py"
     test_file.write_text(vulnerable_code)

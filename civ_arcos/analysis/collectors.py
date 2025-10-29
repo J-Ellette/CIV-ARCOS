@@ -3,7 +3,7 @@ Evidence collectors for automated test evidence generation.
 Connects analysis modules with the evidence collection system.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 from ..evidence.collector import EvidenceCollector, Evidence
 from .static_analyzer import PythonComplexityAnalyzer
 from .coverage_analyzer import CoverageAnalyzer
@@ -307,9 +307,9 @@ class ComprehensiveAnalysisCollector(EvidenceCollector):
                 "static_analysis_run": len(static_evidence) > 0,
                 "security_scan_run": len(security_evidence) > 0,
                 "test_generation_run": len(test_evidence) > 0,
-                "coverage_analysis_run": run_coverage and len(all_evidence) > len(
-                    static_evidence + security_evidence + test_evidence
-                ),
+                "coverage_analysis_run": run_coverage
+                and len(all_evidence)
+                > len(static_evidence + security_evidence + test_evidence),
             },
             provenance={
                 "collector": "ComprehensiveAnalysisCollector",

@@ -209,21 +209,21 @@ def test_discover_untested_code(temp_dir):
     test_dir.mkdir()
 
     # Create source file
-    source_code = '''
+    source_code = """
 def tested_function():
     return 42
 
 def untested_function():
     return 99
-'''
+"""
     source_file = source_dir / "module.py"
     source_file.write_text(source_code)
 
     # Create test file (only tests one function)
-    test_code = '''
+    test_code = """
 def test_tested_function():
     assert tested_function() == 42
-'''
+"""
     test_file = test_dir / "test_module.py"
     test_file.write_text(test_code)
 
@@ -239,7 +239,7 @@ def test_tested_function():
 
 def test_skip_private_functions(temp_dir):
     """Test that private functions are skipped."""
-    code = '''
+    code = """
 def public_function():
     return 1
 
@@ -248,7 +248,7 @@ def _private_function():
 
 def __very_private():
     return 3
-'''
+"""
 
     test_file = Path(temp_dir) / "private.py"
     test_file.write_text(code)
@@ -263,7 +263,7 @@ def __very_private():
 
 def test_skip_test_functions(temp_dir):
     """Test that test functions are skipped."""
-    code = '''
+    code = """
 def test_something():
     pass
 
@@ -272,7 +272,7 @@ def test_another():
 
 def actual_function():
     return 1
-'''
+"""
 
     test_file = Path(temp_dir) / "tests.py"
     test_file.write_text(code)

@@ -5,7 +5,6 @@ Uses coverage.py as the underlying engine while providing evidence collection.
 
 import json
 import subprocess
-import tempfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -43,7 +42,7 @@ class CoverageAnalyzer:
 
         try:
             # Run coverage
-            result = self._run_coverage(source_dir, test_command, config_file)
+            self._run_coverage(source_dir, test_command, config_file)
 
             # Parse coverage data
             coverage_data = self._parse_coverage_results(source_dir)
@@ -70,7 +69,7 @@ class CoverageAnalyzer:
         cmd.extend(["-m", "pytest"])
 
         # Execute coverage
-        result = subprocess.run(
+        subprocess.run(
             cmd, capture_output=True, text=True, cwd=source_dir, timeout=300
         )
 
@@ -83,7 +82,7 @@ class CoverageAnalyzer:
             timeout=60,
         )
 
-        return result
+        return subprocess.CompletedProcess(cmd, 0)
 
     def _parse_coverage_results(self, source_dir: str) -> Dict[str, Any]:
         """Parse coverage.json results."""

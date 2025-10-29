@@ -4,10 +4,9 @@ Implements basic security checks without external dependencies.
 """
 
 import ast
-import json
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 
 class SecurityScanner:
@@ -23,7 +22,10 @@ class SecurityScanner:
 
         # Patterns for detecting security issues
         self.secret_patterns = [
-            (r"(?i)(password|passwd|pwd)\s*=\s*['\"][^'\"]+['\"]", "Hardcoded Password"),
+            (
+                r"(?i)(password|passwd|pwd)\s*=\s*['\"][^'\"]+['\"]",
+                "Hardcoded Password",
+            ),
             (r"(?i)(api[_-]?key|apikey)\s*=\s*['\"][^'\"]+['\"]", "Hardcoded API Key"),
             (r"(?i)(secret|token)\s*=\s*['\"][^'\"]+['\"]", "Hardcoded Secret"),
             (r"(?i)aws_secret_access_key\s*=\s*['\"][^'\"]+['\"]", "AWS Secret Key"),
@@ -78,7 +80,9 @@ class SecurityScanner:
                 "file": str(file_path),
                 "vulnerabilities_found": len(self.vulnerabilities),
                 "vulnerabilities": self.vulnerabilities.copy(),
-                "severity_breakdown": self._calculate_severity_breakdown(self.vulnerabilities),
+                "severity_breakdown": self._calculate_severity_breakdown(
+                    self.vulnerabilities
+                ),
             }
 
         except Exception as e:
@@ -105,7 +109,9 @@ class SecurityScanner:
             "files_scanned": files_scanned,
             "total_vulnerabilities": total_vulnerabilities,
             "vulnerabilities": all_vulnerabilities,
-            "severity_breakdown": self._calculate_severity_breakdown(all_vulnerabilities),
+            "severity_breakdown": self._calculate_severity_breakdown(
+                all_vulnerabilities
+            ),
         }
 
     def _check_sql_injection(self, source_code: str, file_path: str) -> None:
@@ -138,7 +144,10 @@ class SecurityScanner:
         """Check for command injection vulnerabilities."""
         # Look for shell=True or unsafe command execution
         patterns = [
-            (r"subprocess\.\w+\(.*?shell\s*=\s*True.*?\)", "Command injection via shell=True"),
+            (
+                r"subprocess\.\w+\(.*?shell\s*=\s*True.*?\)",
+                "Command injection via shell=True",
+            ),
             (r"os\.system\(", "Unsafe command execution with os.system"),
             (r"eval\(", "Dangerous use of eval()"),
             (r"exec\(", "Dangerous use of exec()"),
@@ -168,7 +177,15 @@ class SecurityScanner:
                 matched_text = match.group(0)
                 if any(
                     placeholder in matched_text.lower()
-                    for placeholder in ["example", "test", "dummy", "placeholder", "xxx", "your_", "here"]
+                    for placeholder in [
+                        "example",
+                        "test",
+                        "dummy",
+                        "placeholder",
+                        "xxx",
+                        "your_",
+                        "here",
+                    ]
                 ):
                     continue
 
