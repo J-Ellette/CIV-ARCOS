@@ -14,6 +14,12 @@ from .sync_engine import (
     JenkinsConnector,
     CircleCIConnector,
 )
+from .edge_computing import (
+    EdgeEvidenceCollector,
+    EdgeDeploymentConfig,
+    EdgeEvidence,
+    FederatedModel,
+)
 
 __all__ = [
     "FederatedEvidenceNetwork",
@@ -28,4 +34,8 @@ __all__ = [
     "AzureDevOpsConnector",
     "JenkinsConnector",
     "CircleCIConnector",
+    "EdgeEvidenceCollector",
+    "EdgeDeploymentConfig",
+    "EdgeEvidence",
+    "FederatedModel",
 ]

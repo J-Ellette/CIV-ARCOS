@@ -25,6 +25,21 @@ from .community_platform import (
     ComplianceTemplate,
     BenchmarkDataset,
 )
+from .quantum_security import (
+    QuantumResistantSecurity,
+    QuantumSignature,
+    LatticeKey,
+)
+from .autonomous_quality import (
+    AutonomousQualityAgent,
+    ContinuousLearningEngine,
+    QualityDecisionEngine,
+    QualityHypothesis,
+    QualityImprovement,
+    QualityStandard,
+    LearningOutcome,
+    ImprovementStatus,
+)
 
 __all__ = [
     "Config",
@@ -62,4 +77,15 @@ __all__ = [
     "IndustryTemplate",
     "ComplianceTemplate",
     "BenchmarkDataset",
+    "QuantumResistantSecurity",
+    "QuantumSignature",
+    "LatticeKey",
+    "AutonomousQualityAgent",
+    "ContinuousLearningEngine",
+    "QualityDecisionEngine",
+    "QualityHypothesis",
+    "QualityImprovement",
+    "QualityStandard",
+    "LearningOutcome",
+    "ImprovementStatus",
 ]
