@@ -70,6 +70,15 @@ def index(request: Request) -> Response:
                 "GET /api/assurance/{case_id}/visualize": "Visualize assurance case",
                 "POST /api/assurance/auto-generate": "Auto-generate assurance case from evidence",
                 "GET /api/assurance/templates": "List available argument templates",
+                "POST /api/tenants/create": "Create a new tenant (organization)",
+                "GET /api/tenants/list": "List all tenants",
+                "GET /api/tenants/{tenant_id}": "Get tenant configuration",
+                "GET /api/compliance/frameworks": "List compliance frameworks",
+                "POST /api/compliance/evaluate": "Evaluate evidence against compliance framework",
+                "POST /api/compliance/evaluate-all": "Evaluate evidence against all frameworks",
+                "POST /api/analytics/trends": "Generate trend analysis",
+                "POST /api/analytics/benchmark": "Compare against industry benchmarks",
+                "POST /api/analytics/risks": "Predict project risks",
                 "GET /api/badge/coverage/{owner}/{repo}": "Get coverage badge",
                 "GET /api/badge/quality/{owner}/{repo}": "Get quality badge",
                 "GET /api/badge/security/{owner}/{repo}": "Get security badge",
@@ -1071,6 +1080,316 @@ def get_quality_badge(request: Request, repo: str, branch: str) -> Response:
                 "badge_type": badge_type,
                 "badge_url": f"/api/badge/{repo}/{branch}?type={badge_type}",
             })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# Multi-tenant API endpoints
+@app.post("/api/tenants/create")
+def create_tenant(request: Request) -> Response:
+    """
+    Create a new tenant (organization) with isolated storage.
+    
+    Request body:
+    {
+        "tenant_id": "org1",
+        "config": {
+            "weights": {...},
+            "templates": {...},
+            "standards": [...]
+        }
+    }
+    """
+    try:
+        from civ_arcos.core.tenants import get_tenant_manager
+        
+        data = request.json()
+        tenant_id = data.get("tenant_id")
+        config = data.get("config", {})
+        
+        if not tenant_id:
+            return Response({"error": "tenant_id required"}, status_code=400)
+        
+        tenant_manager = get_tenant_manager()
+        tenant_config = tenant_manager.create_tenant(tenant_id, config)
+        
+        return Response({
+            "success": True,
+            "tenant": tenant_config
+        })
+        
+    except ValueError as e:
+        return Response({"error": str(e)}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/tenants/list")
+def list_tenants(request: Request) -> Response:
+    """List all tenants."""
+    try:
+        from civ_arcos.core.tenants import get_tenant_manager
+        
+        tenant_manager = get_tenant_manager()
+        tenants = tenant_manager.list_tenants()
+        
+        return Response({
+            "success": True,
+            "tenants": tenants,
+            "count": len(tenants)
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/tenants/{tenant_id}")
+def get_tenant(request: Request, tenant_id: str) -> Response:
+    """Get tenant configuration."""
+    try:
+        from civ_arcos.core.tenants import get_tenant_manager
+        
+        tenant_manager = get_tenant_manager()
+        config = tenant_manager.get_tenant_config(tenant_id)
+        
+        if not config:
+            return Response({"error": "Tenant not found"}, status_code=404)
+        
+        return Response({
+            "success": True,
+            "tenant": config
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# Compliance API endpoints
+@app.get("/api/compliance/frameworks")
+def list_compliance_frameworks(request: Request) -> Response:
+    """List all available compliance frameworks."""
+    try:
+        from civ_arcos.core.compliance import get_compliance_manager
+        
+        compliance_manager = get_compliance_manager()
+        frameworks = compliance_manager.list_frameworks()
+        
+        return Response({
+            "success": True,
+            "frameworks": frameworks
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/compliance/evaluate")
+def evaluate_compliance(request: Request) -> Response:
+    """
+    Evaluate evidence against a compliance framework.
+    
+    Request body:
+    {
+        "framework": "iso27001",  // or "sox", "hipaa", "pci_dss", "nist_800_53"
+        "evidence": {...}
+    }
+    """
+    try:
+        from civ_arcos.core.compliance import get_compliance_manager
+        
+        data = request.json()
+        framework_name = data.get("framework")
+        evidence = data.get("evidence", {})
+        
+        if not framework_name:
+            return Response({"error": "framework required"}, status_code=400)
+        
+        compliance_manager = get_compliance_manager()
+        result = compliance_manager.evaluate_compliance(evidence, framework_name)
+        
+        return Response({
+            "success": True,
+            "assessment": result
+        })
+        
+    except ValueError as e:
+        return Response({"error": str(e)}, status_code=400)
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/compliance/evaluate-all")
+def evaluate_all_compliance(request: Request) -> Response:
+    """
+    Evaluate evidence against all compliance frameworks.
+    
+    Request body:
+    {
+        "evidence": {...}
+    }
+    """
+    try:
+        from civ_arcos.core.compliance import get_compliance_manager
+        
+        data = request.json()
+        evidence = data.get("evidence", {})
+        
+        compliance_manager = get_compliance_manager()
+        results = compliance_manager.evaluate_all_frameworks(evidence)
+        
+        return Response({
+            "success": True,
+            "assessments": results
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# Analytics API endpoints
+@app.post("/api/analytics/trends")
+def analyze_trends(request: Request) -> Response:
+    """
+    Generate trend analysis for a project.
+    
+    Request body:
+    {
+        "project_id": "myproject",
+        "timeframe": "30d",  // or "90d", "1y"
+        "evidence_history": [...]
+    }
+    """
+    try:
+        from civ_arcos.core.analytics import get_analytics_engine
+        
+        data = request.json()
+        project_id = data.get("project_id")
+        timeframe = data.get("timeframe", "30d")
+        evidence_history = data.get("evidence_history", [])
+        
+        if not project_id:
+            return Response({"error": "project_id required"}, status_code=400)
+        
+        analytics_engine = get_analytics_engine()
+        trends = analytics_engine.generate_trend_analysis(
+            project_id, timeframe, evidence_history
+        )
+        
+        # Convert TrendAnalysis objects to dictionaries
+        trends_dict = {}
+        for metric_name, trend in trends.items():
+            trends_dict[metric_name] = {
+                "metric_name": trend.metric_name,
+                "time_period": trend.time_period,
+                "trend_direction": trend.trend_direction,
+                "average_value": trend.average_value,
+                "min_value": trend.min_value,
+                "max_value": trend.max_value,
+                "change_percentage": trend.change_percentage,
+                "data_points_count": len(trend.data_points),
+            }
+        
+        return Response({
+            "success": True,
+            "trends": trends_dict
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/analytics/benchmark")
+def analyze_benchmark(request: Request) -> Response:
+    """
+    Compare project metrics against industry benchmarks.
+    
+    Request body:
+    {
+        "project_id": "myproject",
+        "metrics": {
+            "coverage": 85.0,
+            "security_score": 90.0,
+            ...
+        },
+        "industry": "software"  // or "web_app", "api"
+    }
+    """
+    try:
+        from civ_arcos.core.analytics import get_analytics_engine
+        
+        data = request.json()
+        project_id = data.get("project_id")
+        metrics = data.get("metrics", {})
+        industry = data.get("industry", "software")
+        
+        if not project_id:
+            return Response({"error": "project_id required"}, status_code=400)
+        
+        analytics_engine = get_analytics_engine()
+        results = analytics_engine.benchmark_analysis(project_id, metrics, industry)
+        
+        # Convert BenchmarkResult objects to dictionaries
+        results_dict = {}
+        for metric_name, result in results.items():
+            results_dict[metric_name] = {
+                "metric_name": result.metric_name,
+                "project_value": result.project_value,
+                "industry_average": result.industry_average,
+                "percentile": result.percentile,
+                "comparison": result.comparison,
+                "recommendations": result.recommendations,
+            }
+        
+        return Response({
+            "success": True,
+            "benchmarks": results_dict
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/analytics/risks")
+def analyze_risks(request: Request) -> Response:
+    """
+    Predict risks based on project evidence.
+    
+    Request body:
+    {
+        "project_id": "myproject",
+        "evidence": {...}
+    }
+    """
+    try:
+        from civ_arcos.core.analytics import get_analytics_engine
+        
+        data = request.json()
+        project_id = data.get("project_id")
+        evidence = data.get("evidence", {})
+        
+        if not project_id:
+            return Response({"error": "project_id required"}, status_code=400)
+        
+        analytics_engine = get_analytics_engine()
+        risks = analytics_engine.risk_prediction(project_id, evidence)
+        
+        # Convert RiskPrediction objects to dictionaries
+        risks_list = []
+        for risk in risks:
+            risks_list.append({
+                "risk_type": risk.risk_type,
+                "probability": risk.probability,
+                "impact": risk.impact,
+                "factors": risk.factors,
+                "recommendations": risk.recommendations,
+            })
+        
+        return Response({
+            "success": True,
+            "risks": risks_list,
+            "count": len(risks_list)
+        })
         
     except Exception as e:
         return Response({"error": str(e)}, status_code=500)
