@@ -19,7 +19,7 @@ import os
 @dataclass
 class PluginMetadata:
     """Plugin metadata structure."""
-    
+
     plugin_id: str
     name: str
     version: str
@@ -34,59 +34,59 @@ class PluginMetadata:
 class BasePlugin(ABC):
     """
     Base class for all CIV-ARCOS plugins.
-    
+
     All plugins must inherit from this class and implement required methods.
     """
-    
+
     def __init__(self, metadata: PluginMetadata):
         """
         Initialize plugin with metadata.
-        
+
         Args:
             metadata: Plugin metadata
         """
         self.metadata = metadata
         self.initialized = False
         self.config = {}
-    
+
     @abstractmethod
     def initialize(self, config: Dict[str, Any]) -> bool:
         """
         Initialize the plugin with configuration.
-        
+
         Args:
             config: Configuration dictionary
-            
+
         Returns:
             True if initialization successful, False otherwise
         """
         pass
-    
+
     @abstractmethod
     def execute(self, *args, **kwargs) -> Any:
         """
         Execute main plugin functionality.
-        
+
         Returns:
             Plugin execution result
         """
         pass
-    
+
     def validate(self) -> tuple[bool, str]:
         """
         Validate plugin state and configuration.
-        
+
         Returns:
             Tuple of (is_valid, error_message)
         """
         if not self.initialized:
             return False, "Plugin not initialized"
         return True, ""
-    
+
     def get_info(self) -> Dict[str, Any]:
         """
         Get plugin information.
-        
+
         Returns:
             Plugin metadata dictionary
         """
@@ -104,30 +104,30 @@ class BasePlugin(ABC):
 class CollectorPlugin(BasePlugin):
     """
     Base class for evidence collector plugins.
-    
+
     Collector plugins gather evidence from external sources.
     """
-    
+
     def __init__(self, metadata: PluginMetadata):
         """Initialize collector plugin."""
         super().__init__(metadata)
         if metadata.plugin_type != "collector":
             raise ValueError("Plugin type must be 'collector'")
-    
+
     @abstractmethod
     def collect(self, source: str, **kwargs) -> List[Dict[str, Any]]:
         """
         Collect evidence from source.
-        
+
         Args:
             source: Source identifier
             **kwargs: Additional parameters
-            
+
         Returns:
             List of evidence items
         """
         pass
-    
+
     def execute(self, *args, **kwargs) -> Any:
         """Execute collector plugin."""
         source = kwargs.pop("source", "")
@@ -137,29 +137,29 @@ class CollectorPlugin(BasePlugin):
 class MetricPlugin(BasePlugin):
     """
     Base class for custom metric plugins.
-    
+
     Metric plugins calculate custom quality or performance metrics.
     """
-    
+
     def __init__(self, metadata: PluginMetadata):
         """Initialize metric plugin."""
         super().__init__(metadata)
         if metadata.plugin_type != "metric":
             raise ValueError("Plugin type must be 'metric'")
-    
+
     @abstractmethod
     def calculate(self, evidence: Dict[str, Any]) -> Dict[str, float]:
         """
         Calculate metrics from evidence.
-        
+
         Args:
             evidence: Evidence data
-            
+
         Returns:
             Dictionary of metric_name -> value
         """
         pass
-    
+
     def execute(self, *args, **kwargs) -> Any:
         """Execute metric plugin."""
         evidence = kwargs.get("evidence", {})
@@ -169,16 +169,16 @@ class MetricPlugin(BasePlugin):
 class CompliancePlugin(BasePlugin):
     """
     Base class for compliance check plugins.
-    
+
     Compliance plugins verify adherence to standards and regulations.
     """
-    
+
     def __init__(self, metadata: PluginMetadata):
         """Initialize compliance plugin."""
         super().__init__(metadata)
         if metadata.plugin_type != "compliance":
             raise ValueError("Plugin type must be 'compliance'")
-    
+
     @abstractmethod
     def check_compliance(
         self,
@@ -187,16 +187,16 @@ class CompliancePlugin(BasePlugin):
     ) -> Dict[str, Any]:
         """
         Check compliance against standard.
-        
+
         Args:
             project_data: Project data to check
             standard: Compliance standard identifier
-            
+
         Returns:
             Compliance check results
         """
         pass
-    
+
     def execute(self, *args, **kwargs) -> Any:
         """Execute compliance plugin."""
         project_data = kwargs.get("project_data", {})
@@ -207,30 +207,30 @@ class CompliancePlugin(BasePlugin):
 class VisualizationPlugin(BasePlugin):
     """
     Base class for visualization plugins.
-    
+
     Visualization plugins create custom charts and reports.
     """
-    
+
     def __init__(self, metadata: PluginMetadata):
         """Initialize visualization plugin."""
         super().__init__(metadata)
         if metadata.plugin_type != "visualization":
             raise ValueError("Plugin type must be 'visualization'")
-    
+
     @abstractmethod
     def render(self, data: Dict[str, Any], format: str = "html") -> str:
         """
         Render visualization.
-        
+
         Args:
             data: Data to visualize
             format: Output format ("html", "svg", "json")
-            
+
         Returns:
             Rendered visualization
         """
         pass
-    
+
     def execute(self, *args, **kwargs) -> Any:
         """Execute visualization plugin."""
         data = kwargs.get("data", {})
@@ -240,7 +240,7 @@ class VisualizationPlugin(BasePlugin):
 
 class PluginTemplate:
     """Plugin template generator for scaffolding new plugins."""
-    
+
     TEMPLATES = {
         "collector": """
 \"\"\"
@@ -309,7 +309,6 @@ def create_plugin():
     \"\"\"Create and return plugin instance.\"\"\"
     return {class_name}()
 """,
-        
         "metric": """
 \"\"\"
 {name} - Metric Calculator Plugin for CIV-ARCOS
@@ -371,7 +370,6 @@ def create_plugin():
     \"\"\"Create and return plugin instance.\"\"\"
     return {class_name}()
 """,
-        
         "compliance": """
 \"\"\"
 {name} - Compliance Check Plugin for CIV-ARCOS
@@ -447,7 +445,6 @@ def create_plugin():
     \"\"\"Create and return plugin instance.\"\"\"
     return {class_name}()
 """,
-        
         "visualization": """
 \"\"\"
 {name} - Visualization Plugin for CIV-ARCOS
@@ -528,7 +525,7 @@ def create_plugin():
     return {class_name}()
 """,
     }
-    
+
     @classmethod
     def generate(
         cls,
@@ -541,7 +538,7 @@ def create_plugin():
     ) -> str:
         """
         Generate plugin code from template.
-        
+
         Args:
             plugin_type: Type of plugin ("collector", "metric", "compliance", "visualization")
             name: Plugin name
@@ -549,18 +546,18 @@ def create_plugin():
             author: Plugin author
             description: Plugin description
             **kwargs: Additional template parameters
-            
+
         Returns:
             Generated plugin code
         """
         if plugin_type not in cls.TEMPLATES:
             raise ValueError(f"Unknown plugin type: {plugin_type}")
-        
+
         # Generate class name from plugin name
         class_name = "".join(word.capitalize() for word in name.split())
         if not class_name.endswith("Plugin"):
             class_name += "Plugin"
-        
+
         template_vars = {
             "name": name,
             "class_name": class_name,
@@ -574,14 +571,14 @@ def create_plugin():
                 "visualization_description", "custom visualizations"
             ),
         }
-        
+
         template = cls.TEMPLATES[plugin_type]
         return template.format(**template_vars)
 
 
 class PluginScaffolder:
     """Creates complete plugin project structure."""
-    
+
     def scaffold_plugin(
         self,
         output_dir: str,
@@ -594,7 +591,7 @@ class PluginScaffolder:
     ) -> Dict[str, str]:
         """
         Create complete plugin project structure.
-        
+
         Args:
             output_dir: Directory to create plugin in
             plugin_type: Type of plugin
@@ -603,16 +600,16 @@ class PluginScaffolder:
             author: Plugin author
             description: Plugin description
             **kwargs: Additional parameters
-            
+
         Returns:
             Dictionary of created files
         """
         # Create directory structure
         plugin_dir = os.path.join(output_dir, plugin_id)
         os.makedirs(plugin_dir, exist_ok=True)
-        
+
         created_files = {}
-        
+
         # Generate plugin code
         plugin_code = PluginTemplate.generate(
             plugin_type, name, plugin_id, author, description, **kwargs
@@ -621,7 +618,7 @@ class PluginScaffolder:
         with open(plugin_file, "w") as f:
             f.write(plugin_code)
         created_files["plugin.py"] = plugin_file
-        
+
         # Generate manifest
         manifest = self._generate_manifest(
             plugin_type, name, plugin_id, author, description
@@ -630,30 +627,30 @@ class PluginScaffolder:
         with open(manifest_file, "w") as f:
             json.dump(manifest, f, indent=2)
         created_files["manifest.json"] = manifest_file
-        
+
         # Generate README
         readme = self._generate_readme(name, description, plugin_type)
         readme_file = os.path.join(plugin_dir, "README.md")
         with open(readme_file, "w") as f:
             f.write(readme)
         created_files["README.md"] = readme_file
-        
+
         # Generate tests
         test_code = self._generate_test(name, plugin_type)
         test_file = os.path.join(plugin_dir, "test_plugin.py")
         with open(test_file, "w") as f:
             f.write(test_code)
         created_files["test_plugin.py"] = test_file
-        
+
         # Generate requirements.txt
         requirements = self._generate_requirements()
         req_file = os.path.join(plugin_dir, "requirements.txt")
         with open(req_file, "w") as f:
             f.write(requirements)
         created_files["requirements.txt"] = req_file
-        
+
         return created_files
-    
+
     def _generate_manifest(
         self,
         plugin_type: str,
@@ -675,7 +672,7 @@ class PluginScaffolder:
             "dependencies": [],
             "created_at": datetime.now(timezone.utc).isoformat(),
         }
-    
+
     def _generate_readme(self, name: str, description: str, plugin_type: str) -> str:
         """Generate README.md."""
         return f"""# {name}
@@ -721,13 +718,13 @@ pytest test_plugin.py
 
 Specify your license here.
 """
-    
+
     def _generate_test(self, name: str, plugin_type: str) -> str:
         """Generate test file."""
         class_name = "".join(word.capitalize() for word in name.split())
         if not class_name.endswith("Plugin"):
             class_name += "Plugin"
-        
+
         return f'''"""
 Tests for {name} plugin.
 """
@@ -779,7 +776,7 @@ def test_plugin_info():
     assert "version" in info
     assert info["type"] == "{plugin_type}"
 '''
-    
+
     def _generate_requirements(self) -> str:
         """Generate requirements.txt."""
         return """# Plugin dependencies
@@ -792,7 +789,7 @@ pytest>=7.4.0
 
 class PluginDevelopmentGuide:
     """Generates comprehensive plugin development documentation."""
-    
+
     @staticmethod
     def generate_guide() -> str:
         """Generate complete plugin development guide."""
