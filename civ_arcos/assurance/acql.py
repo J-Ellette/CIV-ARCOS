@@ -131,16 +131,24 @@ class ACQLEngine:
     def _are_contradictory(self, text1: str, text2: str) -> bool:
         """Check if two texts are contradictory."""
         # Simple heuristic: look for negation patterns
-        negation_patterns = [
-            (r"no\s+(\w+)", r"has\s+\1"),
-            (r"not\s+(\w+)", r"is\s+\1"),
-            (r"never\s+(\w+)", r"always\s+\1"),
-        ]
-
-        for neg_pattern, pos_pattern in negation_patterns:
-            if re.search(neg_pattern, text1) and re.search(pos_pattern, text2):
-                return True
-            if re.search(neg_pattern, text2) and re.search(pos_pattern, text1):
+        negation_words = ["no", "not", "never"]
+        affirmation_words = ["has", "is", "always"]
+        
+        # Check if one text has negation and other has affirmation
+        has_negation_1 = any(word in text1.lower() for word in negation_words)
+        has_affirmation_2 = any(word in text2.lower() for word in affirmation_words)
+        
+        has_negation_2 = any(word in text2.lower() for word in negation_words)
+        has_affirmation_1 = any(word in text1.lower() for word in affirmation_words)
+        
+        if (has_negation_1 and has_affirmation_2) or (has_negation_2 and has_affirmation_1):
+            # Check if they're talking about similar things
+            words1 = set(text1.lower().split())
+            words2 = set(text2.lower().split())
+            common = words1 & words2
+            
+            # If they share significant words, likely contradictory
+            if len(common) >= 2:
                 return True
 
         return False
