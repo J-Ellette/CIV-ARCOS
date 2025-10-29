@@ -5,7 +5,7 @@ Allows organizations to share evidence while maintaining privacy.
 
 import hashlib
 import json
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional
 from datetime import datetime, timezone
 from dataclasses import dataclass, field
 

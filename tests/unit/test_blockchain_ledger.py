@@ -207,7 +207,7 @@ def test_block_validator():
     validator = BlockValidator(min_validators=2)
     
     v1 = validator.add_validator("v1", "pubkey1", 100.0)
-    v2 = validator.add_validator("v2", "pubkey2", 100.0)
+    validator.add_validator("v2", "pubkey2", 100.0)  # noqa: F841
     
     assert len(validator.validators) == 2
     assert isinstance(v1, Validator)
