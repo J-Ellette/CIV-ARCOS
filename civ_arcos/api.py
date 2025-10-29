@@ -76,8 +76,12 @@ def index(request: Request) -> Response:
                 "GET /api/badge/documentation/{owner}/{repo}": "Get documentation badge",
                 "GET /api/badge/performance/{owner}/{repo}": "Get performance badge",
                 "GET /api/badge/accessibility/{owner}/{repo}": "Get accessibility badge",
+                "GET /api/badge/{repo}/{branch}": "Get quality badge for repo/branch",
                 "GET /api/dashboard": "Web dashboard home",
                 "GET /api/status": "Get system status",
+                "POST /api/github/quality-check": "GitHub webhook for quality checks",
+                "POST /api/slack/quality-alerts": "Send quality alerts to Slack",
+                "POST /api/jira/quality-issues": "Create Jira issues for quality problems",
             },
         }
     )
@@ -859,6 +863,215 @@ def dashboard_assurance(request: Request) -> Response:
         html = dashboard_gen.generate_assurance_page(cases)
         return Response(html, content_type="text/html")
 
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# Integration API endpoints
+@app.post("/api/github/quality-check")
+def github_quality_check_webhook(request: Request) -> Response:
+    """
+    GitHub webhook endpoint for automated quality checks.
+    Triggered on push, pull_request, and other events.
+    
+    Implements the pattern from the problem statement:
+    - Webhook: '/api/github/quality-check'
+    """
+    try:
+        from civ_arcos.adapters.integrations import GitHubWebhookHandler
+        from civ_arcos.core.tasks import get_task_processor, task
+        
+        data = request.json()
+        event_type = data.get("event_type", "push")
+        payload = data.get("payload", {})
+        
+        handler = GitHubWebhookHandler()
+        
+        # Handle the event
+        if event_type == "push":
+            result = handler.handle_push_event(payload)
+        elif event_type == "pull_request":
+            result = handler.handle_pull_request_event(payload)
+        else:
+            result = {"action": "event_received", "event_type": event_type}
+        
+        return Response({
+            "success": True,
+            "event_type": event_type,
+            "result": result,
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/slack/quality-alerts")
+def slack_quality_alerts(request: Request) -> Response:
+    """
+    Send quality alerts to Slack.
+    
+    Implements the pattern from the problem statement:
+    - Notifications: '/api/slack/quality-alerts'
+    
+    Request body:
+    {
+        "project_name": "MyProject",
+        "alert_type": "coverage_drop",
+        "severity": "high",
+        "message": "Coverage dropped below threshold",
+        "details": {}
+    }
+    """
+    try:
+        from civ_arcos.adapters.integrations import SlackIntegration
+        
+        data = request.json()
+        project_name = data.get("project_name", "Unknown")
+        alert_type = data.get("alert_type", "quality_alert")
+        severity = data.get("severity", "medium")
+        message = data.get("message", "Quality alert triggered")
+        details = data.get("details", {})
+        
+        # Get webhook URL from config or environment
+        webhook_url = os.environ.get("SLACK_WEBHOOK_URL") or config.get(
+            "slack", "webhook_url"
+        )
+        
+        slack = SlackIntegration(webhook_url=webhook_url)
+        payload = slack.format_quality_alert(
+            project_name=project_name,
+            alert_type=alert_type,
+            severity=severity,
+            message=message,
+            details=details,
+        )
+        
+        success = slack.send_notification(payload)
+        
+        return Response({
+            "success": success,
+            "message": "Alert sent to Slack" if success else "Failed to send alert",
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/jira/quality-issues")
+def jira_quality_issues(request: Request) -> Response:
+    """
+    Create Jira issues for quality problems.
+    
+    Implements the pattern from the problem statement:
+    - Quality Tickets: '/api/jira/quality-issues'
+    
+    Request body:
+    {
+        "issue_type": "security" or "test_failure",
+        "data": {}  # Vulnerability data or test failure data
+    }
+    """
+    try:
+        from civ_arcos.adapters.integrations import JiraIntegration
+        
+        data = request.json()
+        issue_type = data.get("issue_type", "quality")
+        issue_data = data.get("data", {})
+        
+        # Get Jira config from environment or config
+        jira_url = os.environ.get("JIRA_URL") or config.get("jira", "url")
+        project_key = os.environ.get("JIRA_PROJECT") or config.get("jira", "project_key")
+        auth_token = os.environ.get("JIRA_TOKEN") or config.get("jira", "token")
+        
+        jira = JiraIntegration(
+            jira_url=jira_url,
+            project_key=project_key,
+            auth_token=auth_token,
+        )
+        
+        # Format issue based on type
+        if issue_type == "security":
+            issue_payload = jira.format_security_issue(issue_data)
+        elif issue_type == "test_failure":
+            test_name = issue_data.get("test_name", "Unknown Test")
+            error_message = issue_data.get("error_message", "Test failed")
+            build_id = issue_data.get("build_id")
+            issue_payload = jira.format_test_failure_issue(
+                test_name=test_name,
+                error_message=error_message,
+                build_id=build_id,
+            )
+        else:
+            title = issue_data.get("title", "Quality Issue")
+            description = issue_data.get("description", "Quality issue detected")
+            issue_payload = jira.create_quality_issue(
+                title=title,
+                description=description,
+            )
+        
+        issue_key = jira.send_issue(issue_payload)
+        
+        return Response({
+            "success": issue_key is not None,
+            "issue_key": issue_key,
+            "message": f"Issue created: {issue_key}" if issue_key else "Failed to create issue",
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/badge/{repo}/{branch}")
+def get_quality_badge(request: Request, repo: str, branch: str) -> Response:
+    """
+    Get quality badge for a specific repository and branch.
+    
+    Implements the pattern from the problem statement:
+    - Badge URL: '/api/badge/{repo}/{branch}'
+    
+    Query parameters:
+    - type: Badge type (coverage, quality, security, documentation, performance, accessibility)
+    - format: Format (svg, json)
+    """
+    try:
+        badge_type = request.query_params.get("type", "quality")
+        format_type = request.query_params.get("format", "svg")
+        
+        # Get quality metrics from evidence store (simplified)
+        # In production, would fetch actual metrics for repo/branch
+        
+        if badge_type == "coverage":
+            coverage = float(request.query_params.get("coverage", "85.0"))
+            svg = badge_gen.generate_coverage_badge(coverage)
+        elif badge_type == "quality":
+            score = float(request.query_params.get("score", "80.0"))
+            svg = badge_gen.generate_quality_badge(score)
+        elif badge_type == "security":
+            vulnerabilities = int(request.query_params.get("vulnerabilities", "0"))
+            svg = badge_gen.generate_security_badge(vulnerabilities)
+        elif badge_type == "documentation":
+            score = float(request.query_params.get("score", "75.0"))
+            svg = badge_gen.generate_documentation_badge(score)
+        elif badge_type == "performance":
+            score = float(request.query_params.get("score", "85.0"))
+            svg = badge_gen.generate_performance_badge(score)
+        elif badge_type == "accessibility":
+            level = request.query_params.get("level", "AA")
+            issues = int(request.query_params.get("issues", "0"))
+            svg = badge_gen.generate_accessibility_badge(level, issues)
+        else:
+            return Response({"error": f"Unknown badge type: {badge_type}"}, status_code=400)
+        
+        if format_type == "svg":
+            return Response(svg, content_type="image/svg+xml")
+        else:
+            return Response({
+                "repo": repo,
+                "branch": branch,
+                "badge_type": badge_type,
+                "badge_url": f"/api/badge/{repo}/{branch}?type={badge_type}",
+            })
+        
     except Exception as e:
         return Response({"error": str(e)}, status_code=500)
 

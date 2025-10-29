@@ -1,4 +1,4 @@
-"""Generated tests for /tmp/tmpk6tpqu0p/mymodule.py."""
+"""Generated tests for /tmp/tmpmoxm1_u0/mymodule.py."""
 
 import pytest
 # TODO: Import your module here
