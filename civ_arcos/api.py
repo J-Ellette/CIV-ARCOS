@@ -3255,6 +3255,390 @@ def generate_transparency_report(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+# Advanced Visualization & Reporting Endpoints
+
+@app.post("/api/reports/executive/generate")
+def generate_executive_report(request: Request) -> Response:
+    """Generate executive narrative report."""
+    try:
+        from civ_arcos.core import ExecutiveReportGenerator, AnalyticsEngine
+        
+        data = request.get_json()
+        project_name = data.get("project_name", "Unknown Project")
+        project_metrics = data.get("project_metrics", {})
+        trend_analysis = data.get("trend_analysis")
+        risk_predictions = data.get("risk_predictions")
+        evidence_history = data.get("evidence_history")
+        
+        # Generate report
+        report_gen = ExecutiveReportGenerator()
+        report = report_gen.generate_report(
+            project_name,
+            project_metrics,
+            trend_analysis,
+            risk_predictions,
+            evidence_history,
+        )
+        
+        return Response({
+            "success": True,
+            "report": {
+                "summary": {
+                    "project_name": report.summary.project_name,
+                    "report_date": report.summary.report_date,
+                    "overall_health": report.summary.overall_health,
+                    "health_score": report.summary.health_score,
+                    "key_metrics": report.summary.key_metrics,
+                    "trends": report.summary.trends,
+                    "top_risks": report.summary.top_risks,
+                    "recommendations": report.summary.recommendations,
+                    "achievements": report.summary.achievements,
+                },
+                "detailed_sections": report.detailed_sections,
+                "charts": report.charts,
+                "metadata": report.metadata,
+            },
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/reports/executive/html")
+def generate_executive_report_html(request: Request) -> Response:
+    """Generate executive report as HTML."""
+    try:
+        from civ_arcos.core import ExecutiveReportGenerator
+        
+        data = request.get_json()
+        project_name = data.get("project_name", "Unknown Project")
+        project_metrics = data.get("project_metrics", {})
+        trend_analysis = data.get("trend_analysis")
+        risk_predictions = data.get("risk_predictions")
+        evidence_history = data.get("evidence_history")
+        
+        # Generate report
+        report_gen = ExecutiveReportGenerator()
+        report = report_gen.generate_report(
+            project_name,
+            project_metrics,
+            trend_analysis,
+            risk_predictions,
+            evidence_history,
+        )
+        
+        # Convert to HTML
+        html = report_gen.to_html(report)
+        
+        return Response(html, content_type="text/html")
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/reports/executive/pdf")
+def generate_executive_report_pdf(request: Request) -> Response:
+    """Generate executive report PDF data."""
+    try:
+        from civ_arcos.core import ExecutiveReportGenerator
+        
+        data = request.get_json()
+        project_name = data.get("project_name", "Unknown Project")
+        project_metrics = data.get("project_metrics", {})
+        trend_analysis = data.get("trend_analysis")
+        risk_predictions = data.get("risk_predictions")
+        evidence_history = data.get("evidence_history")
+        
+        # Generate report
+        report_gen = ExecutiveReportGenerator()
+        report = report_gen.generate_report(
+            project_name,
+            project_metrics,
+            trend_analysis,
+            risk_predictions,
+            evidence_history,
+        )
+        
+        # Get PDF data
+        pdf_data = report_gen.to_pdf_data(report)
+        
+        return Response({
+            "success": True,
+            "pdf_data": pdf_data,
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/visualization/risk-map/generate")
+def generate_risk_map(request: Request) -> Response:
+    """Generate interactive risk map."""
+    try:
+        from civ_arcos.core import RiskMapVisualizer
+        
+        data = request.get_json()
+        project_name = data.get("project_name", "Unknown Project")
+        evidence_data = data.get("evidence_data", {})
+        component_metrics = data.get("component_metrics")
+        
+        # Generate risk map
+        visualizer = RiskMapVisualizer()
+        risk_map = visualizer.generate_risk_map(
+            project_name,
+            evidence_data,
+            component_metrics,
+        )
+        
+        return Response({
+            "success": True,
+            "risk_map": {
+                "project_name": risk_map.project_name,
+                "generated_at": risk_map.generated_at,
+                "overall_risk_score": risk_map.overall_risk_score,
+                "components": [
+                    {
+                        "component_id": c.component_id,
+                        "component_name": c.component_name,
+                        "component_type": c.component_type,
+                        "risk_score": c.risk_score,
+                        "risk_level": c.risk_level,
+                        "risk_factors": c.risk_factors,
+                        "location": c.location,
+                    }
+                    for c in risk_map.components
+                ],
+                "hotspots": [
+                    {
+                        "component_id": c.component_id,
+                        "component_name": c.component_name,
+                        "risk_score": c.risk_score,
+                        "risk_level": c.risk_level,
+                    }
+                    for c in risk_map.hotspots
+                ],
+                "risk_distribution": risk_map.risk_distribution,
+                "recommendations": risk_map.recommendations,
+            },
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/visualization/risk-map/html")
+def generate_risk_map_html(request: Request) -> Response:
+    """Generate risk map as interactive HTML."""
+    try:
+        from civ_arcos.core import RiskMapVisualizer
+        
+        data = request.get_json()
+        project_name = data.get("project_name", "Unknown Project")
+        evidence_data = data.get("evidence_data", {})
+        component_metrics = data.get("component_metrics")
+        interactive = data.get("interactive", True)
+        
+        # Generate risk map
+        visualizer = RiskMapVisualizer()
+        risk_map = visualizer.generate_risk_map(
+            project_name,
+            evidence_data,
+            component_metrics,
+        )
+        
+        # Convert to HTML
+        html = visualizer.to_html(risk_map, interactive=interactive)
+        
+        return Response(html, content_type="text/html")
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/visualization/risk-map/svg")
+def generate_risk_map_svg(request: Request) -> Response:
+    """Generate risk map as SVG."""
+    try:
+        from civ_arcos.core import RiskMapVisualizer
+        
+        data = request.get_json()
+        project_name = data.get("project_name", "Unknown Project")
+        evidence_data = data.get("evidence_data", {})
+        component_metrics = data.get("component_metrics")
+        
+        # Generate risk map
+        visualizer = RiskMapVisualizer()
+        risk_map = visualizer.generate_risk_map(
+            project_name,
+            evidence_data,
+            component_metrics,
+        )
+        
+        # Convert to SVG
+        svg = visualizer.to_svg(risk_map)
+        
+        return Response(svg, content_type="image/svg+xml")
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/visualization/risk-map/trend")
+def generate_risk_trend(request: Request) -> Response:
+    """Generate risk trend analysis."""
+    try:
+        from civ_arcos.core import RiskMapVisualizer
+        
+        data = request.get_json()
+        project_name = data.get("project_name", "Unknown Project")
+        historical_data = data.get("historical_data", [])
+        
+        # Generate risk trend
+        visualizer = RiskMapVisualizer()
+        trend = visualizer.generate_risk_trend(project_name, historical_data)
+        
+        return Response({
+            "success": True,
+            "risk_trend": trend,
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# Plugin SDK Endpoints
+
+@app.post("/api/plugin-sdk/scaffold")
+def scaffold_plugin(request: Request) -> Response:
+    """Scaffold a new plugin project."""
+    try:
+        from civ_arcos.core import PluginScaffolder
+        
+        data = request.get_json()
+        output_dir = data.get("output_dir", "/tmp/plugins")
+        plugin_type = data.get("plugin_type")
+        name = data.get("name")
+        plugin_id = data.get("plugin_id")
+        author = data.get("author", "Unknown")
+        description = data.get("description", "")
+        
+        if not all([plugin_type, name, plugin_id]):
+            return Response(
+                {"error": "plugin_type, name, and plugin_id are required"},
+                status_code=400
+            )
+        
+        # Scaffold plugin
+        scaffolder = PluginScaffolder()
+        created_files = scaffolder.scaffold_plugin(
+            output_dir,
+            plugin_type,
+            name,
+            plugin_id,
+            author,
+            description,
+            **data.get("extra_params", {})
+        )
+        
+        return Response({
+            "success": True,
+            "plugin_id": plugin_id,
+            "created_files": created_files,
+            "message": f"Plugin scaffolded successfully at {output_dir}/{plugin_id}",
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/plugin-sdk/template/generate")
+def generate_plugin_template(request: Request) -> Response:
+    """Generate plugin code from template."""
+    try:
+        from civ_arcos.core import PluginTemplate
+        
+        data = request.get_json()
+        plugin_type = data.get("plugin_type")
+        name = data.get("name")
+        plugin_id = data.get("plugin_id")
+        author = data.get("author", "Unknown")
+        description = data.get("description", "")
+        
+        if not all([plugin_type, name, plugin_id]):
+            return Response(
+                {"error": "plugin_type, name, and plugin_id are required"},
+                status_code=400
+            )
+        
+        # Generate template
+        code = PluginTemplate.generate(
+            plugin_type,
+            name,
+            plugin_id,
+            author,
+            description,
+            **data.get("extra_params", {})
+        )
+        
+        return Response({
+            "success": True,
+            "plugin_type": plugin_type,
+            "plugin_id": plugin_id,
+            "code": code,
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/plugin-sdk/guide")
+def get_plugin_development_guide(request: Request) -> Response:
+    """Get plugin development guide."""
+    try:
+        from civ_arcos.core import PluginDevelopmentGuide
+        
+        guide = PluginDevelopmentGuide.generate_guide()
+        
+        return Response(guide, content_type="text/markdown")
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/plugin-sdk/types")
+def get_plugin_types(request: Request) -> Response:
+    """Get available plugin types."""
+    try:
+        return Response({
+            "success": True,
+            "plugin_types": [
+                {
+                    "type": "collector",
+                    "description": "Collect evidence from external sources",
+                    "base_class": "CollectorPlugin",
+                },
+                {
+                    "type": "metric",
+                    "description": "Calculate custom quality or performance metrics",
+                    "base_class": "MetricPlugin",
+                },
+                {
+                    "type": "compliance",
+                    "description": "Verify adherence to standards and regulations",
+                    "base_class": "CompliancePlugin",
+                },
+                {
+                    "type": "visualization",
+                    "description": "Create custom charts and reports",
+                    "base_class": "VisualizationPlugin",
+                },
+            ],
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
 def main():
     """Main entry point."""
     # Get server configuration
