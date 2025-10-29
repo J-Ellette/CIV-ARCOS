@@ -10,6 +10,12 @@ from civ_arcos.storage.graph import EvidenceGraph
 from civ_arcos.evidence.collector import EvidenceStore
 from civ_arcos.adapters.github_adapter import GitHubCollector
 from civ_arcos.core.config import get_config
+from civ_arcos.analysis.collectors import (
+    StaticAnalysisCollector,
+    SecurityScanCollector,
+    TestGenerationCollector,
+    ComprehensiveAnalysisCollector,
+)
 
 
 # Initialize application
@@ -38,6 +44,10 @@ def index(request: Request) -> Response:
                 "POST /api/evidence/collect": "Collect evidence from a repository",
                 "GET /api/evidence/list": "List collected evidence",
                 "GET /api/evidence/{id}": "Get specific evidence",
+                "POST /api/analysis/static": "Run static code analysis",
+                "POST /api/analysis/security": "Run security scan",
+                "POST /api/analysis/tests": "Generate test suggestions",
+                "POST /api/analysis/comprehensive": "Run comprehensive analysis",
                 "GET /api/badge/coverage/{owner}/{repo}": "Get coverage badge",
                 "GET /api/badge/quality/{owner}/{repo}": "Get quality badge",
                 "GET /api/badge/security/{owner}/{repo}": "Get security badge",
@@ -218,6 +228,197 @@ def security_badge(request: Request, owner: str, repo: str) -> Response:
         svg = badge_gen.generate_security_badge(vulnerabilities)
 
         return Response(svg, content_type="image/svg+xml")
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/analysis/static")
+def run_static_analysis(request: Request) -> Response:
+    """
+    Run static code analysis on source code.
+
+    Request body:
+    {
+        "source_path": "path/to/code"
+    }
+    """
+    try:
+        data = request.json()
+        source_path = data.get("source_path")
+
+        if not source_path:
+            return Response({"error": "source_path is required"}, status_code=400)
+
+        # Run static analysis
+        collector = StaticAnalysisCollector()
+        evidence_list = collector.collect(source_path)
+
+        # Store evidence
+        stored_ids = []
+        for evidence in evidence_list:
+            evidence_id = evidence_store.store_evidence(evidence)
+            stored_ids.append(evidence_id)
+
+        # Get the analysis results
+        if evidence_list:
+            analysis_data = evidence_list[0].data
+
+            return Response(
+                {
+                    "success": True,
+                    "evidence_collected": len(evidence_list),
+                    "evidence_ids": stored_ids,
+                    "results": analysis_data,
+                }
+            )
+
+        return Response({"error": "Analysis failed"}, status_code=500)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/analysis/security")
+def run_security_scan(request: Request) -> Response:
+    """
+    Run security scan on source code.
+
+    Request body:
+    {
+        "source_path": "path/to/code"
+    }
+    """
+    try:
+        data = request.json()
+        source_path = data.get("source_path")
+
+        if not source_path:
+            return Response({"error": "source_path is required"}, status_code=400)
+
+        # Run security scan
+        collector = SecurityScanCollector()
+        evidence_list = collector.collect(source_path)
+
+        # Store evidence
+        stored_ids = []
+        for evidence in evidence_list:
+            evidence_id = evidence_store.store_evidence(evidence)
+            stored_ids.append(evidence_id)
+
+        # Get the scan results
+        if evidence_list:
+            scan_data = evidence_list[0].data
+            score_data = evidence_list[1].data if len(evidence_list) > 1 else {}
+
+            return Response(
+                {
+                    "success": True,
+                    "evidence_collected": len(evidence_list),
+                    "evidence_ids": stored_ids,
+                    "scan_results": scan_data,
+                    "security_score": score_data,
+                }
+            )
+
+        return Response({"error": "Security scan failed"}, status_code=500)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/analysis/tests")
+def generate_test_suggestions(request: Request) -> Response:
+    """
+    Generate test suggestions for source code.
+
+    Request body:
+    {
+        "source_path": "path/to/code",
+        "use_ai": false (optional)
+    }
+    """
+    try:
+        data = request.json()
+        source_path = data.get("source_path")
+        use_ai = data.get("use_ai", False)
+
+        if not source_path:
+            return Response({"error": "source_path is required"}, status_code=400)
+
+        # Generate test suggestions
+        collector = TestGenerationCollector(use_ai=use_ai)
+        evidence_list = collector.collect(source_path)
+
+        # Store evidence
+        stored_ids = []
+        for evidence in evidence_list:
+            evidence_id = evidence_store.store_evidence(evidence)
+            stored_ids.append(evidence_id)
+
+        # Get the suggestions
+        if evidence_list:
+            suggestions_data = evidence_list[0].data
+
+            return Response(
+                {
+                    "success": True,
+                    "evidence_collected": len(evidence_list),
+                    "evidence_ids": stored_ids,
+                    "suggestions": suggestions_data,
+                }
+            )
+
+        return Response({"error": "Test generation failed"}, status_code=500)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/analysis/comprehensive")
+def run_comprehensive_analysis(request: Request) -> Response:
+    """
+    Run comprehensive analysis (static, security, tests) on source code.
+
+    Request body:
+    {
+        "source_path": "path/to/code",
+        "run_coverage": false (optional)
+    }
+    """
+    try:
+        data = request.json()
+        source_path = data.get("source_path")
+        run_coverage = data.get("run_coverage", False)
+
+        if not source_path:
+            return Response({"error": "source_path is required"}, status_code=400)
+
+        # Run comprehensive analysis
+        collector = ComprehensiveAnalysisCollector()
+        evidence_list = collector.collect(source_path, run_coverage=run_coverage)
+
+        # Store evidence
+        stored_ids = []
+        results = {}
+
+        for evidence in evidence_list:
+            evidence_id = evidence_store.store_evidence(evidence)
+            stored_ids.append(evidence_id)
+
+            # Organize results by type
+            if evidence.type not in results:
+                results[evidence.type] = []
+            results[evidence.type].append(evidence.data)
+
+        return Response(
+            {
+                "success": True,
+                "evidence_collected": len(evidence_list),
+                "evidence_ids": stored_ids,
+                "results": results,
+            }
+        )
 
     except Exception as e:
         return Response({"error": str(e)}, status_code=500)
