@@ -16,6 +16,14 @@ from civ_arcos.analysis.collectors import (
     TestGenerationCollector,
     ComprehensiveAnalysisCollector,
 )
+from civ_arcos.assurance import (
+    AssuranceCase,
+    AssuranceCaseBuilder,
+    TemplateLibrary,
+    PatternInstantiator,
+    ProjectType,
+)
+from civ_arcos.assurance.visualizer import GSNVisualizer
 
 
 # Initialize application
@@ -30,6 +38,11 @@ evidence_store = EvidenceStore(graph)
 
 # Initialize badge generator
 badge_gen = BadgeGenerator()
+
+# Initialize assurance case components
+template_library = TemplateLibrary()
+pattern_instantiator = PatternInstantiator(template_library, graph, evidence_store)
+gsn_visualizer = GSNVisualizer()
 
 
 @app.get("/")
@@ -48,6 +61,11 @@ def index(request: Request) -> Response:
                 "POST /api/analysis/security": "Run security scan",
                 "POST /api/analysis/tests": "Generate test suggestions",
                 "POST /api/analysis/comprehensive": "Run comprehensive analysis",
+                "POST /api/assurance/create": "Create an assurance case",
+                "GET /api/assurance/{case_id}": "Get assurance case details",
+                "GET /api/assurance/{case_id}/visualize": "Visualize assurance case",
+                "POST /api/assurance/auto-generate": "Auto-generate assurance case from evidence",
+                "GET /api/assurance/templates": "List available argument templates",
                 "GET /api/badge/coverage/{owner}/{repo}": "Get coverage badge",
                 "GET /api/badge/quality/{owner}/{repo}": "Get quality badge",
                 "GET /api/badge/security/{owner}/{repo}": "Get security badge",
@@ -417,6 +435,264 @@ def run_comprehensive_analysis(request: Request) -> Response:
                 "evidence_collected": len(evidence_list),
                 "evidence_ids": stored_ids,
                 "results": results,
+            }
+        )
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/assurance/create")
+def create_assurance_case(request: Request) -> Response:
+    """
+    Create an assurance case using a template.
+
+    Request body:
+    {
+        "project_name": "MyProject",
+        "project_type": "api",  # api, web_app, library, etc.
+        "template": "comprehensive",  # Optional: comprehensive, code_quality, security, etc.
+        "description": "Optional description"
+    }
+    """
+    try:
+        data = request.json()
+        project_name = data.get("project_name")
+        project_type_str = data.get("project_type", "general")
+        template_name = data.get("template", "comprehensive")
+        description = data.get("description", "")
+
+        if not project_name:
+            return Response({"error": "project_name is required"}, status_code=400)
+
+        # Convert project type string to enum
+        try:
+            project_type = ProjectType[project_type_str.upper()]
+        except KeyError:
+            return Response(
+                {"error": f"Invalid project_type: {project_type_str}"}, status_code=400
+            )
+
+        # Create assurance case using pattern instantiator
+        case = pattern_instantiator.instantiate_for_project(
+            project_name, project_type, context={"description": description}
+        )
+
+        # Save to graph
+        builder = AssuranceCaseBuilder(case, graph)
+        builder.save_to_graph()
+
+        # Validate case
+        validation = case.validate()
+
+        return Response(
+            {
+                "success": True,
+                "case_id": case.case_id,
+                "title": case.title,
+                "node_count": len(case.nodes),
+                "validation": validation,
+            }
+        )
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/assurance/{case_id}")
+def get_assurance_case(request: Request, case_id: str) -> Response:
+    """
+    Get assurance case details.
+
+    Query parameters:
+    - include_nodes: Include full node details (default: true)
+    """
+    try:
+        # Try to find the case in the graph
+        case_nodes = graph.find_nodes(label="AssuranceCase", properties={"case_id": case_id})
+        
+        if not case_nodes:
+            return Response({"error": "Assurance case not found"}, status_code=404)
+
+        case_node = case_nodes[0]
+        case_data = case_node.properties
+
+        # Get include_nodes parameter
+        include_nodes = request.query.get("include_nodes", ["true"])[0].lower() == "true"
+
+        response_data = {
+            "case_id": case_data.get("case_id"),
+            "title": case_data.get("title"),
+            "description": case_data.get("description"),
+            "project_type": case_data.get("project_type"),
+            "root_goal_id": case_data.get("root_goal_id"),
+            "created_at": case_data.get("created_at"),
+            "updated_at": case_data.get("updated_at"),
+            "node_count": len(case_data.get("nodes", {})),
+        }
+
+        if include_nodes:
+            response_data["nodes"] = case_data.get("nodes", {})
+
+        return Response(response_data)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/assurance/{case_id}/visualize")
+def visualize_assurance_case(request: Request, case_id: str) -> Response:
+    """
+    Visualize an assurance case.
+
+    Query parameters:
+    - format: svg or dot (default: svg)
+    """
+    try:
+        # Find the case in the graph
+        case_nodes = graph.find_nodes(label="AssuranceCase", properties={"case_id": case_id})
+        
+        if not case_nodes:
+            return Response({"error": "Assurance case not found"}, status_code=404)
+
+        case_node = case_nodes[0]
+        case_data = case_node.properties
+
+        # Reconstruct AssuranceCase object
+        case = AssuranceCase(
+            case_id=case_data["case_id"],
+            title=case_data["title"],
+            description=case_data["description"],
+            project_type=case_data.get("project_type"),
+        )
+        case.root_goal_id = case_data.get("root_goal_id")
+
+        # Reconstruct nodes
+        from civ_arcos.assurance.gsn import GSNNodeType, GSNGoal, GSNStrategy, GSNSolution, GSNContext, GSNAssumption, GSNJustification
+        
+        node_type_map = {
+            "goal": GSNGoal,
+            "strategy": GSNStrategy,
+            "solution": GSNSolution,
+            "context": GSNContext,
+            "assumption": GSNAssumption,
+            "justification": GSNJustification,
+        }
+
+        for node_id, node_data in case_data.get("nodes", {}).items():
+            node_type_str = node_data.get("node_type")
+            node_class = node_type_map.get(node_type_str)
+            
+            if node_class:
+                node = node_class(
+                    id=node_data["id"],
+                    statement=node_data["statement"],
+                    description=node_data.get("description"),
+                    properties=node_data.get("properties", {}),
+                )
+                node.parent_ids = node_data.get("parent_ids", [])
+                node.child_ids = node_data.get("child_ids", [])
+                node.evidence_ids = node_data.get("evidence_ids", [])
+                case.nodes[node_id] = node
+
+        # Get format parameter
+        viz_format = request.query.get("format", ["svg"])[0].lower()
+
+        if viz_format == "dot":
+            output = gsn_visualizer.to_dot(case)
+            content_type = "text/plain"
+        elif viz_format == "summary":
+            output = gsn_visualizer.generate_summary(case)
+            return Response(output)
+        else:  # svg
+            output = gsn_visualizer.to_svg(case)
+            content_type = "image/svg+xml"
+
+        return Response(output, content_type=content_type)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/assurance/auto-generate")
+def auto_generate_assurance_case(request: Request) -> Response:
+    """
+    Auto-generate an assurance case from collected evidence.
+
+    Request body:
+    {
+        "project_name": "MyProject",
+        "project_type": "api",  # Optional
+        "evidence_ids": []  # Optional: specific evidence IDs, or use all available
+    }
+    """
+    try:
+        data = request.json()
+        project_name = data.get("project_name")
+        project_type_str = data.get("project_type")
+        evidence_ids = data.get("evidence_ids")
+
+        if not project_name:
+            return Response({"error": "project_name is required"}, status_code=400)
+
+        # If no evidence IDs provided, use all available evidence
+        if not evidence_ids:
+            all_evidence = evidence_store.find_evidence()
+            evidence_ids = [e.id for e in all_evidence]
+
+        if not evidence_ids:
+            return Response(
+                {"error": "No evidence available. Collect evidence first."}, 
+                status_code=400
+            )
+
+        # Determine project type
+        if project_type_str:
+            try:
+                project_type = ProjectType[project_type_str.upper()]
+            except KeyError:
+                project_type = ProjectType.GENERAL
+        else:
+            project_type = ProjectType.GENERAL
+
+        # Auto-generate case with evidence linking
+        case = pattern_instantiator.instantiate_and_link_evidence(
+            project_name, project_type, evidence_filters={}
+        )
+
+        # Save to graph
+        builder = AssuranceCaseBuilder(case, graph)
+        builder.save_to_graph()
+
+        # Validate and generate summary
+        validation = case.validate()
+        summary = gsn_visualizer.generate_summary(case)
+
+        return Response(
+            {
+                "success": True,
+                "case_id": case.case_id,
+                "title": case.title,
+                "validation": validation,
+                "summary": summary,
+                "evidence_linked": len(evidence_ids),
+            }
+        )
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/assurance/templates")
+def list_templates(request: Request) -> Response:
+    """List available argument templates."""
+    try:
+        templates = template_library.list_templates()
+        
+        return Response(
+            {
+                "templates": templates,
+                "count": len(templates),
             }
         )
 
