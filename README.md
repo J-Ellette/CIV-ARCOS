@@ -91,6 +91,33 @@ pytest
 pytest --cov=civ_arcos --cov-report=html
 ```
 
+## Repository Structure
+
+```
+CIV-ARCOS/
+├── civ_arcos/          # Main source code
+│   ├── analysis/       # Static analysis, security scanning, test generation
+│   ├── assurance/      # Assurance case components (CertGATE, CLARISSA, etc.)
+│   ├── core/           # Core infrastructure (cache, tasks, config)
+│   ├── evidence/       # Evidence collection system
+│   ├── storage/        # Graph database
+│   ├── web/            # Web framework, dashboard, badges
+│   └── ...
+├── emu-soft/           # Copies of emulated software with documentation
+│   ├── details.md      # Comprehensive documentation of all emulations
+│   └── *.py            # 16 emulated components (Redis, Celery, Neo4j, etc.)
+├── build-docs/         # Implementation guides and step documentation
+│   ├── build-guide.md  # Main build guide
+│   └── STEP*.md        # Step-by-step completion guides
+├── tests/              # Test suite
+├── examples/           # Example code and demonstrations
+└── README.md           # This file
+```
+
+**Key Directories:**
+- **`emu-soft/`**: Contains copies of all software created by emulating existing tools (Redis, Celery, FastAPI, Neo4j, ESLint, CodeQL, CertGATE, CLARISSA, etc.) with comprehensive documentation
+- **`build-docs/`**: All implementation guides, STEP completion documents, and architectural summaries
+
 ## API Endpoints
 
 ### Evidence Collection
