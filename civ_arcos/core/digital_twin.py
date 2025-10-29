@@ -5,11 +5,10 @@ Provides integration with digital twin platforms for collecting simulated eviden
 and predictive maintenance based on simulation data.
 """
 
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, List, Optional, Any
 from enum import Enum
 from datetime import datetime, timedelta
 import hashlib
-import json
 
 
 class DigitalTwinPlatform(Enum):
