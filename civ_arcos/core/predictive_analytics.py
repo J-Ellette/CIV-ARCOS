@@ -1119,7 +1119,7 @@ class PredictiveAnalytics:
             "attack_probability", 0
         )
 
-        plan = {
+        plan: Dict[str, List[Dict[str, str]]] = {
             "immediate_actions": [],
             "short_term_goals": [],
             "long_term_strategy": [],
