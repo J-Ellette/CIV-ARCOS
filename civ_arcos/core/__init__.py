@@ -120,6 +120,18 @@ from .digital_twin import (
     DigitalTwinConnector,
     DigitalTwinIntegration,
 )
+from .predictive_analytics import (
+    PredictiveAnalytics,
+    TechnicalDebtPredictor,
+    QualityDegradationModel as PredictiveQualityDegradationModel,
+    SecurityRiskPredictor,
+    TeamVelocityForecaster,
+    TimeSeriesAnalyzer,
+    DebtForecast,
+    VelocityImpact,
+    SecurityPrediction,
+    get_predictive_analytics,
+)
 
 __all__ = [
     "Config",
@@ -240,4 +252,14 @@ __all__ = [
     "PredictiveMaintenanceEngine",
     "DigitalTwinConnector",
     "DigitalTwinIntegration",
+    "PredictiveAnalytics",
+    "TechnicalDebtPredictor",
+    "PredictiveQualityDegradationModel",
+    "SecurityRiskPredictor",
+    "TeamVelocityForecaster",
+    "TimeSeriesAnalyzer",
+    "DebtForecast",
+    "VelocityImpact",
+    "SecurityPrediction",
+    "get_predictive_analytics",
 ]
