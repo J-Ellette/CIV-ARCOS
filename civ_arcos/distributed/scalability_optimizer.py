@@ -8,10 +8,10 @@ and graph traversal optimization for handling massive evidence workloads.
 import time
 import hashlib
 from typing import Any, Dict, List, Optional, Callable, Set
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass
 from datetime import datetime, timezone
-from threading import Thread, Lock
-from queue import Queue, Empty
+from threading import Lock
+from queue import Queue
 import multiprocessing
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
