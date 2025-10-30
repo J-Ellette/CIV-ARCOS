@@ -57,16 +57,21 @@ Each subdirectory contains a detailed README.md with usage examples, API documen
 **What it does:** Automated test case generation using code-driven analysis. Analyzes function signatures, parameters, and complexity to suggest unit test cases. Supports both pure code-driven approach and optional AI-powered test generation.  
 **Original location:** `civ_arcos/analysis/test_generator.py`
 
+### 8. analysis/supply_chain_security.py - Supply Chain Security Module
+**Emulates:** OWASP Dependency-Check, Snyk, GitHub Dependabot, Sonatype Nexus, JFrog Xray  
+**What it does:** Comprehensive software supply chain security analysis including SBOM (Software Bill of Materials) generation, vulnerability propagation analysis, license compliance checking, dependency risk scoring with maintainer reputation assessment, typosquatting detection, malicious code pattern scanning, and supply chain attack detection. Supports multiple ecosystems (npm, PyPI, Maven, NuGet, Go, Cargo) and integrates with vulnerability databases (NVD, OSV, GitHub Advisory, Snyk). Generates executive and technical reports with compliance mapping to Executive Order 14028, NIST SP 800-161, and ISO/IEC 29147.  
+**Original location:** `civ_arcos/analysis/supply_chain_security.py`
+
 ## Web Components Emulations
 
 ## Web Components
 
-### 8. web/badges.py - Badge Generator
+### 9. web/badges.py - Badge Generator
 **Emulates:** shields.io (badge generation service)  
 **What it does:** Generates SVG badges for quality metrics including test coverage (Bronze/Silver/Gold), code quality scores, security vulnerability counts, documentation completeness, performance metrics, and accessibility compliance (WCAG A/AA/AAA).  
 **Original location:** `civ_arcos/web/badges.py`
 
-### 9. web/dashboard.py - Web Dashboard with USWDS
+### 10. web/dashboard.py - Web Dashboard with USWDS
 **Emulates:** United States Web Design System (USWDS)  
 **What it does:** Web dashboard generator using USWDS design patterns for federal-standard accessibility and consistency. Generates HTML pages programmatically without template engines (no Jinja2/Django templates). Provides quality metrics visualization, badge showcase, repository analysis, and assurance case viewing interfaces.  
 **Original location:** `civ_arcos/web/dashboard.py`
@@ -77,32 +82,32 @@ These components emulate advanced ARCOS (Automated Rapid Certification of Softwa
 
 ## Assurance Case Components
 
-### 10. assurance/fragments.py - CertGATE Assurance Case Fragments
+### 11. assurance/fragments.py - CertGATE Assurance Case Fragments
 **Emulates:** CertGATE (part of ARCOS toolset)  
 **What it does:** Provides self-contained arguments for individual components or subsystems (Assurance Case Fragments). These fragments can be linked to evidence artifacts, giving continuous feedback on certifiability strengths and weaknesses throughout the development lifecycle. Supports pattern-based fragment creation, evidence linking, strength assessment, and fragment composition.  
 **Original location:** `civ_arcos/assurance/fragments.py`
 
-### 11. assurance/argtl.py - Argument Transformation Language
+### 12. assurance/argtl.py - Argument Transformation Language
 **Emulates:** ArgTL from CertGATE  
 **What it does:** Domain-specific language (DSL) for assembling and transforming assurance case fragments. Enables composition of fragments into complete assurance cases through operations like compose, decompose, refine, abstract, substitute, link, validate, and merge. Provides scripting capabilities for automated assurance case assembly.  
 **Original location:** `civ_arcos/assurance/argtl.py`
 
-### 12. assurance/acql.py - Assurance Case Query Language
+### 13. assurance/acql.py - Assurance Case Query Language
 **Emulates:** ACQL from CertGATE  
 **What it does:** Formal language for interrogating and assessing assurance cases, extending Object Constraint Language (OCL) concepts. Supports queries for consistency checking, completeness verification, soundness assessment, evidence coverage analysis, requirement traceability, weakness identification, dependency checking, and defeater detection.  
 **Original location:** `civ_arcos/assurance/acql.py`
 
-### 13. assurance/reasoning.py - CLARISSA Reasoning Engine
+### 14. assurance/reasoning.py - CLARISSA Reasoning Engine
 **Emulates:** CLARISSA (Constraint Logic Assurance Reasoning with Inquisitive Satisfiability Solving and Answer-sets)  
 **What it does:** Semantic reasoning engine for assurance cases following s(CASP) approach. Implements constraint logic programming with inquisitive reasoning, theory-based reasoning (structural, behavioral, probabilistic, domain-specific), defeater detection, and confidence scoring for assurance arguments.  
 **Original location:** `civ_arcos/assurance/reasoning.py`
 
-### 14. assurance/dependency_tracker.py - CAID-tools Dependency Tracking
+### 15. assurance/dependency_tracker.py - CAID-tools Dependency Tracking
 **Emulates:** CAID-tools (Change Analysis and Impact Determination)  
 **What it does:** Tracks dependencies between assurance case elements, evidence, and system components. Performs change impact analysis, identifies affected components when evidence or requirements change, maintains dependency graphs, and detects circular dependencies. Essential for maintaining assurance cases during system evolution.  
 **Original location:** `civ_arcos/assurance/dependency_tracker.py`
 
-### 15. assurance/architecture.py - A-CERT Architecture Mapping
+### 16. assurance/architecture.py - A-CERT Architecture Mapping
 **Emulates:** A-CERT (Architecture-Centric Evaluation and Risk Traceability)  
 **What it does:** Architecture mapping and traceability system. Links system architecture to assurance arguments, maps components to evidence and requirements, performs traceability analysis, generates architecture-based assurance views, and validates architectural patterns against assurance claims.  
 **Original location:** `civ_arcos/assurance/architecture.py`
@@ -111,7 +116,7 @@ These components emulate advanced ARCOS (Automated Rapid Certification of Softwa
 
 ## Evidence Collection
 
-### 16. evidence/collector.py - RACK-like Evidence Collection
+### 17. evidence/collector.py - RACK-like Evidence Collection
 **Emulates:** RACK (Rapid Assurance Curation Kit)  
 **What it does:** Core evidence collection system implementing RACK-style data provenance tracking. Provides evidence collection interfaces, evidence storage with checksums for integrity, provenance chain tracking, and evidence retrieval. Serves as the foundation for the entire evidence collection pipeline.  
 **Original location:** `civ_arcos/evidence/collector.py`
