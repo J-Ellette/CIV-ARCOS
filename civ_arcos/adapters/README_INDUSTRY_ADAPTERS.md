@@ -70,6 +70,8 @@ The `IndustryAdapters` system allows you to assess compliance for different indu
 
 **Regulations**:
 - NIST 800-53 (Security and privacy controls)
+- FedRAMP considerations (Federal Risk and Authorization Management Program)
+- FISMA considerations (Federal Information Security Management Act)
 
 **Key Features**:
 - Federal compliance assessment
@@ -322,6 +324,10 @@ When adding new industry adapters:
 
 ## References
 
-- [CIV-ARCOS Documentation](../../README.md)
-- [Compliance Framework Documentation](../core/compliance.py)
-- [Evidence Collection Documentation](../evidence/collector.py)
+For more information about the CIV-ARCOS system and related components, see:
+
+- **CIV-ARCOS Documentation**: [../../README.md](../../README.md) - Main project documentation
+- **Compliance Framework Documentation**: [../core/compliance.py](../core/compliance.py) - Base compliance framework implementations
+- **Evidence Collection Documentation**: [../evidence/collector.py](../evidence/collector.py) - Evidence collection system
+
+Note: These paths are relative to the `civ_arcos/adapters/` directory.
