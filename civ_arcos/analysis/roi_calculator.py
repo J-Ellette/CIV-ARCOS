@@ -16,6 +16,7 @@ MINUTES_PER_HOUR = 60.0
 REVIEW_MINUTES_PER_FINDING = 10.0
 WORKING_WEEKS_PER_YEAR = 50
 WORKING_HOURS_PER_YEAR = 2000
+MONTHS_PER_YEAR = 12
 IMPLEMENTATION_COST_PER_DEVELOPER = 1000.0
 ESTIMATED_ANNUAL_SAVINGS_PER_DEVELOPER = 10000.0
 
@@ -462,7 +463,7 @@ class ROICalculator:
     def _calculate_payback_period(self, organization_profile: OrganizationProfile) -> float:
         """Calculate payback period in months."""
         implementation_cost = organization_profile.dev_team_size * IMPLEMENTATION_COST_PER_DEVELOPER
-        monthly_savings = (organization_profile.dev_team_size * ESTIMATED_ANNUAL_SAVINGS_PER_DEVELOPER) / 12
+        monthly_savings = (organization_profile.dev_team_size * ESTIMATED_ANNUAL_SAVINGS_PER_DEVELOPER) / MONTHS_PER_YEAR
         
         if monthly_savings == 0:
             return 999.0  # Return a large number if no savings
