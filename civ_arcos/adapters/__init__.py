@@ -18,6 +18,18 @@ from .integrations import (
     JiraIntegration,
     GitHubWebhookHandler,
 )
+from .industry_adapters import (
+    IndustryAdapters,
+    FintechComplianceAdapter,
+    HealthcareAdapter,
+    AutomotiveAdapter,
+    AerospaceAdapter,
+    GovernmentAdapter,
+    EnergyUtilitiesAdapter,
+    RetailEcommerceAdapter,
+    ManufacturingAdapter,
+    GenericAdapter,
+)
 
 __all__ = [
     "GitHubCollector",
@@ -31,5 +43,15 @@ __all__ = [
     "SlackIntegration",
     "JiraIntegration",
     "GitHubWebhookHandler",
+    "IndustryAdapters",
+    "FintechComplianceAdapter",
+    "HealthcareAdapter",
+    "AutomotiveAdapter",
+    "AerospaceAdapter",
+    "GovernmentAdapter",
+    "EnergyUtilitiesAdapter",
+    "RetailEcommerceAdapter",
+    "ManufacturingAdapter",
+    "GenericAdapter",
 ]
 
