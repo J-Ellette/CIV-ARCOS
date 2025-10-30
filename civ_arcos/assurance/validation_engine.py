@@ -442,7 +442,7 @@ class ValidationEngine:
 
     def _correlate_with_bug_reports(
         self, quality_scores: Any, bug_reports: Any
-    ) -> Dict[str, float]:
+    ) -> Dict[str, Any]:
         """Correlate quality scores with bug reports."""
         return {
             "correlation_coefficient": 0.82,
@@ -452,7 +452,7 @@ class ValidationEngine:
 
     def _correlate_with_security_events(
         self, security_scores: Any, incidents: Any
-    ) -> Dict[str, float]:
+    ) -> Dict[str, Any]:
         """Correlate security scores with incidents."""
         return {
             "correlation_coefficient": 0.87,
@@ -462,7 +462,7 @@ class ValidationEngine:
 
     def _correlate_with_maintenance(
         self, technical_debt_scores: Any, maintenance_hours: Any
-    ) -> Dict[str, float]:
+    ) -> Dict[str, Any]:
         """Correlate technical debt scores with maintenance effort."""
         return {
             "correlation_coefficient": 0.79,
@@ -472,7 +472,7 @@ class ValidationEngine:
 
     def _correlate_with_velocity(
         self, code_quality_scores: Any, team_velocity: Any
-    ) -> Dict[str, float]:
+    ) -> Dict[str, Any]:
         """Correlate code quality with team velocity."""
         return {
             "correlation_coefficient": 0.73,
