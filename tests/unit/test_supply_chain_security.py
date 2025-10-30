@@ -294,7 +294,11 @@ def test_vulnerability_propagation(security_module):
     security_module.vulnerability_databases["nvd"].add_vulnerability(
         "vulnerable-lib",
         "1.0.0",
-        {"id": "CVE-2023-9999", "severity": "high", "description": "Test vulnerability"},
+        {
+            "id": "CVE-2023-9999",
+            "severity": "high",
+            "description": "Test vulnerability",
+        },
     )
 
     sbom = {
@@ -380,7 +384,8 @@ def test_supply_chain_risk_assessment(security_module):
             {"parent": "lib1", "child": "dep1"},
             {"parent": "lib1", "child": "dep2"},
             # ... more dependencies to exceed threshold
-        ] + [{"parent": "lib1", "child": f"dep{i}"} for i in range(3, 12)],
+        ]
+        + [{"parent": "lib1", "child": f"dep{i}"} for i in range(3, 12)],
     }
 
     result = security_module._assess_supply_chain_risks(sbom)
@@ -400,7 +405,9 @@ def test_overall_risk_score_calculation(security_module):
     """Test overall risk score calculation."""
     sbom = {
         "components": [{"name": f"lib{i}", "version": "1.0.0"} for i in range(50)],
-        "dependencies": [{"parent": f"lib{i}", "child": f"lib{i+1}"} for i in range(49)],
+        "dependencies": [
+            {"parent": f"lib{i}", "child": f"lib{i+1}"} for i in range(49)
+        ],
     }
 
     risk_score = security_module._calculate_overall_supply_chain_risk(sbom)
