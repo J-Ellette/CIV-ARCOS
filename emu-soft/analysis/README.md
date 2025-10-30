@@ -236,6 +236,140 @@ generator_ai = TestGenerator(use_ai=True, ai_model="ollama")
 results_ai = generator_ai.analyze_and_suggest("path/to/code.py")
 ```
 
+### 5. supply_chain_security.py - Supply Chain Security Module
+
+**Emulates:** OWASP Dependency-Check, Snyk, GitHub Dependabot, Sonatype Nexus, JFrog Xray  
+**Original Location:** `civ_arcos/analysis/supply_chain_security.py`
+
+**What it does:**
+- **SBOM Generation:** Creates comprehensive Software Bill of Materials for all dependencies
+- **Vulnerability Analysis:** Detects vulnerabilities across multiple databases (NVD, OSV, GitHub Advisory, Snyk)
+- **Dependency Risk Scoring:** Multi-factor risk assessment based on:
+  - Maintainer reputation (commits, community standing)
+  - Maintenance health (release frequency, security response time)
+  - Security track record (CVE history, incident responses)
+  - Dependency complexity (direct/transitive/circular dependencies)
+  - Supply chain integrity (signatures, reproducible builds, source availability)
+- **Supply Chain Attack Detection:**
+  - Typosquatting detection with similarity matching
+  - Behavioral anomaly detection (sudden size increases)
+  - Malicious code pattern scanning
+  - Maintainer compromise detection
+- **License Compliance:** Identifies problematic licenses (GPL-3.0, AGPL-3.0, SSPL)
+- **Executive Reporting:** Generates compliance-ready reports with business language
+- **Multi-ecosystem Support:** npm, PyPI, Maven, NuGet, Go Modules, Cargo
+
+**Key Features:**
+- **Vulnerability Propagation Tracing:** Maps how vulnerabilities spread through dependency trees
+- **Attack Probability Calculation:** Quantifies supply chain attack risk (0-100%)
+- **Compliance Mapping:** Maps to Executive Order 14028, NIST SP 800-161, ISO/IEC 29147
+- **Risk Heat Maps:** Visual risk categorization (critical/high/medium/low)
+- **Remediation Roadmaps:** Prioritized action plans with timelines
+- **Continuous Monitoring:** Automated scanning recommendations
+
+**Ecosystem Support:**
+- **npm** - Node.js packages
+- **PyPI** - Python packages
+- **Maven** - Java packages
+- **NuGet** - .NET packages
+- **Go Modules** - Go packages
+- **Cargo** - Rust crates
+
+**Usage Example:**
+```python
+from civ_arcos.analysis.supply_chain_security import (
+    SupplyChainSecurityModule,
+    PackageEvidence,
+    DependencyChanges,
+)
+
+# Initialize the module
+security = SupplyChainSecurityModule()
+
+# SBOM Analysis
+project_dependencies = {
+    "project_name": "MyProject",
+    "dependencies": {
+        "pypi": [
+            {
+                "name": "requests",
+                "version": "2.28.0",
+                "license": "Apache-2.0",
+                "source": "pypi",
+            },
+            {
+                "name": "django",
+                "version": "3.2.0",
+                "license": "BSD-3-Clause",
+                "source": "pypi",
+                "dependencies": ["sqlparse", "asgiref"],
+            },
+        ],
+    },
+}
+
+result = security.sbom_analysis(project_dependencies)
+print(f"Risk Score: {result['risk_score']}")
+print(f"Components: {len(result['sbom_document']['components'])}")
+print(f"Vulnerabilities: {len(result['vulnerability_analysis']['direct_vulnerabilities'])}")
+
+# Dependency Risk Scoring
+evidence = PackageEvidence("example-package", "1.0.0")
+evidence.maintainer_info = ["maintainer1"]
+evidence.commit_history = {"maintainer1": {"commits": 150, "years_active": 3}}
+evidence.community_metrics = {"maintainer1": {"followers": 500, "projects": 10}}
+evidence.cve_history = [{"id": "CVE-2023-1234", "severity": "medium"}]
+evidence.cryptographic_signatures = {"verified": True}
+evidence.reproducible_builds = True
+
+risk_score = security.dependency_risk_scoring(evidence)
+print(f"Package Risk Score: {risk_score}/100")
+
+# Supply Chain Attack Detection
+changes = DependencyChanges()
+changes.known_good_packages = {"lodash", "requests"}
+changes.newly_added_packages = {"lodosh", "requets"}  # Typosquatting
+changes.recent_updates = [{"package": "lodash", "size": 2000}]
+changes.historical_behavior = {"lodash": {"size": 500}}
+
+attack_result = security.supply_chain_attack_detection(changes)
+print(f"Attack Probability: {attack_result['attack_probability']}%")
+print(f"Typosquatting: {attack_result['threat_indicators']['typosquatting']['detected']}")
+
+# Generate Comprehensive Report
+sbom_analysis = security.sbom_analysis(project_dependencies)
+risk_scores = {"requests": 45.0, "django": 30.0}
+
+report = security.generate_supply_chain_report(sbom_analysis, risk_scores)
+print(f"Overall Risk: {report['executive_summary']['overall_risk_level']}")
+print(f"High Risk Components: {len(report['risk_heat_map']['high_risk'])}")
+```
+
+**Detection Capabilities:**
+
+*Typosquatting Patterns:*
+- String similarity > 70% but < 100%
+- Common character substitutions
+- Missing/added characters
+
+*Malicious Code Patterns:*
+- `eval()` and `exec()` usage
+- Dynamic imports with `__import__()`
+- File system access to sensitive paths (`/etc/passwd`)
+- Network socket operations
+- Base64 decode operations
+- `compile()` usage
+
+*Behavioral Anomalies:*
+- Package size increases >= 2x
+- Unexpected code changes
+- Pattern deviations from history
+
+*Maintainer Compromise:*
+- Dormant package transfers (>365 days inactive)
+- Sudden ownership changes
+- Unusual timing patterns
+
 ## Integration with Evidence System
 
 All analysis results are stored as evidence in the CIV-ARCOS evidence graph:
@@ -311,12 +445,14 @@ All analysis tools have comprehensive unit tests:
 - `tests/unit/test_security_scanner.py`
 - `tests/unit/test_test_generator.py`
 - `tests/unit/test_analysis_collectors.py`
+- `tests/unit/test_supply_chain_security.py` (47 tests)
 
 Run tests:
 ```bash
 pytest tests/unit/test_static_analyzer.py -v
 pytest tests/unit/test_security_scanner.py -v
 pytest tests/unit/test_test_generator.py -v
+pytest tests/unit/test_supply_chain_security.py -v
 ```
 
 ## Contributing
