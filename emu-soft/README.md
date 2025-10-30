@@ -4,58 +4,108 @@
 
 *"Military-grade assurance for civilian code"*
 
-This directory contains copies of all software, scripts, and code that were created by emulating existing tools and technologies.
+This directory contains copies of all software, scripts, and code that were created by emulating existing tools and technologies. Components are organized by category for easy navigation and reference.
 
-## Quick Reference
+## Directory Structure
 
-| File | Emulates | Category |
-|------|----------|----------|
-| cache.py | Redis | Infrastructure |
-| tasks.py | Celery | Infrastructure |
-| framework.py | FastAPI/Flask | Infrastructure |
-| graph.py | Neo4j | Infrastructure |
-| static_analyzer.py | ESLint/Pylint/SonarQube | Analysis Tools |
-| security_scanner.py | CodeQL/Semgrep | Analysis Tools |
-| test_generator.py | Test generation tools | Analysis Tools |
-| badges.py | shields.io | Web Components |
-| dashboard.py | USWDS Design System | Web Components |
-| fragments.py | CertGATE Fragments | ARCOS Tools |
-| argtl.py | ArgTL | ARCOS Tools |
-| acql.py | ACQL | ARCOS Tools |
-| reasoning.py | CLARISSA | ARCOS Tools |
-| dependency_tracker.py | CAID-tools | ARCOS Tools |
-| architecture.py | A-CERT | ARCOS Tools |
-| collector.py | RACK | Evidence System |
+```
+emu-soft/
+├── analysis/           # Code analysis and quality tools
+│   ├── static_analyzer.py
+│   ├── security_scanner.py
+│   └── test_generator.py
+├── assurance/          # ARCOS assurance case components
+│   ├── fragments.py
+│   ├── argtl.py
+│   ├── acql.py
+│   ├── reasoning.py
+│   ├── dependency_tracker.py
+│   └── architecture.py
+├── evidence/           # Evidence collection system
+│   └── collector.py
+├── infrastructure/     # Core infrastructure emulations
+│   ├── cache.py
+│   ├── tasks.py
+│   ├── framework.py
+│   └── graph.py
+└── web/               # Web components and visualization
+    ├── badges.py
+    └── dashboard.py
+```
+
+## Quick Reference by Category
+
+### Analysis Tools (`analysis/`)
+| Component | Emulates | Purpose |
+|-----------|----------|---------|
+| static_analyzer.py | ESLint, Pylint, SonarQube | Static code analysis and metrics |
+| security_scanner.py | CodeQL, Semgrep, Bandit | Security vulnerability detection |
+| test_generator.py | AI test generators | Automated test case generation |
+
+### Assurance Components (`assurance/`)
+| Component | Emulates | Purpose |
+|-----------|----------|---------|
+| fragments.py | CertGATE Fragments | Modular assurance case fragments |
+| argtl.py | ArgTL | Argument transformation language |
+| acql.py | ACQL | Assurance case query language |
+| reasoning.py | CLARISSA | Semantic reasoning engine |
+| dependency_tracker.py | CAID-tools | Change impact analysis |
+| architecture.py | A-CERT | Architecture-centric traceability |
+
+### Evidence System (`evidence/`)
+| Component | Emulates | Purpose |
+|-----------|----------|---------|
+| collector.py | RACK | Evidence collection with provenance |
+
+### Infrastructure (`infrastructure/`)
+| Component | Emulates | Purpose |
+|-----------|----------|---------|
+| cache.py | Redis | In-memory caching and pub/sub |
+| tasks.py | Celery | Background task processing |
+| framework.py | FastAPI/Flask | Web framework and routing |
+| graph.py | Neo4j | Graph database for relationships |
+
+### Web Components (`web/`)
+| Component | Emulates | Purpose |
+|-----------|----------|---------|
+| badges.py | shields.io | SVG badge generation |
+| dashboard.py | USWDS | Federal-compliant dashboards |
 
 ## Documentation
 
-See **details.md** in this directory for comprehensive documentation of each emulated component including:
-- What each file emulates
-- Detailed functionality description
-- Original location in the codebase
-- Design philosophy and purpose
+Each subdirectory contains a detailed README.md with:
+- Component descriptions and features
+- Usage examples
+- API documentation
+- Integration guides
+- Performance characteristics
+
+**See also:**
+- **details.md** - Comprehensive documentation of all components
+- **Subdirectory READMEs** - Category-specific documentation
+- **build-docs/** - Step completion documentation
 
 ## Using These Files
 
 These are **copies** of the actual implementation files for reference and documentation purposes. The working versions are located in their respective directories within the `civ_arcos/` package:
 
-- `civ_arcos/core/` - Infrastructure emulations
-- `civ_arcos/analysis/` - Analysis tool emulations
-- `civ_arcos/web/` - Web component emulations
-- `civ_arcos/assurance/` - ARCOS methodology emulations
-- `civ_arcos/evidence/` - Evidence system emulations
+- `civ_arcos/core/` → Infrastructure emulations
+- `civ_arcos/analysis/` → Analysis tool emulations
+- `civ_arcos/web/` → Web component emulations
+- `civ_arcos/assurance/` → ARCOS methodology emulations
+- `civ_arcos/evidence/` → Evidence system emulations
+- `civ_arcos/storage/` → Graph database
+- `civ_arcos/adapters/` → External service adapters
 
 ## Adding New Emulations
 
 When creating new software by emulating existing tools:
 
-1. **Copy the file** to this directory
-2. **Update details.md** with:
-   - File name
-   - What it emulates
-   - What it does (detailed description)
-   - Original location in codebase
-3. **Update this README** with a new entry in the Quick Reference table
+1. **Determine the category** (analysis, assurance, evidence, infrastructure, web)
+2. **Copy the file** to the appropriate subdirectory
+3. **Update the subdirectory README** with component details
+4. **Update details.md** with comprehensive documentation
+5. **Update this README** with a new entry in the Quick Reference table
 
 This ensures we maintain a complete record of all emulated components.
 
