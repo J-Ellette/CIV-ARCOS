@@ -66,6 +66,21 @@ from .dependency_tracker import (
 # Interactive visualization
 from .interactive_viewer import InteractiveACViewer
 
+# Validation engine
+from .validation_engine import (
+    ValidationEngine,
+    ValidationMetrics,
+    FalsePositiveTracker,
+    FalsePositiveReductionModel,
+    IndustryToolValidator,
+    SonarQubeValidator,
+    VeracodeValidator,
+    CheckmarxValidator,
+    SnykValidator,
+    GitHubSecurityValidator,
+    ComparisonResult,
+)
+
 __all__ = [
     # GSN
     "GSNNode",
@@ -114,4 +129,16 @@ __all__ = [
     "DependencyType",
     # Interactive visualization
     "InteractiveACViewer",
+    # Validation engine
+    "ValidationEngine",
+    "ValidationMetrics",
+    "FalsePositiveTracker",
+    "FalsePositiveReductionModel",
+    "IndustryToolValidator",
+    "SonarQubeValidator",
+    "VeracodeValidator",
+    "CheckmarxValidator",
+    "SnykValidator",
+    "GitHubSecurityValidator",
+    "ComparisonResult",
 ]
