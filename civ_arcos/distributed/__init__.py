@@ -4,7 +4,7 @@ Distributed and federated systems for CIV-ARCOS.
 Civilian Assurance-based Risk Computation and Orchestration System
 "Military-grade assurance for civilian code"
 
-Implements Step 7: Distributed & Federated Systems.
+Implements Step 7: Distributed & Federated Systems and Step 5: Performance at Scale.
 """
 
 from .federated_network import FederatedEvidenceNetwork, EvidenceConsensus
@@ -24,6 +24,15 @@ from .edge_computing import (
     EdgeEvidence,
     FederatedModel,
 )
+from .scalability_optimizer import (
+    ScalabilityOptimizer,
+    DistributedProcessingCluster,
+    StreamProcessor,
+    GraphTraversalOptimizer,
+    DistributedCacheManager,
+    StreamPipeline,
+    TraversalIndex,
+)
 
 __all__ = [
     "FederatedEvidenceNetwork",
@@ -42,4 +51,11 @@ __all__ = [
     "EdgeDeploymentConfig",
     "EdgeEvidence",
     "FederatedModel",
+    "ScalabilityOptimizer",
+    "DistributedProcessingCluster",
+    "StreamProcessor",
+    "GraphTraversalOptimizer",
+    "DistributedCacheManager",
+    "StreamPipeline",
+    "TraversalIndex",
 ]
