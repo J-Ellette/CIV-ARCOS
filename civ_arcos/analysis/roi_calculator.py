@@ -11,6 +11,15 @@ from datetime import datetime, timezone
 import math
 
 
+# Constants for calculations
+MINUTES_PER_HOUR = 60.0
+REVIEW_MINUTES_PER_FINDING = 10.0
+WORKING_WEEKS_PER_YEAR = 50
+WORKING_HOURS_PER_YEAR = 2000
+IMPLEMENTATION_COST_PER_DEVELOPER = 1000.0
+ESTIMATED_ANNUAL_SAVINGS_PER_DEVELOPER = 10000.0
+
+
 @dataclass
 class OrganizationProfile:
     """Profile of an organization for ROI calculations."""
@@ -171,7 +180,7 @@ class ProductivityCostModel:
         quality_improvement: float,
         team_size: int,
         hourly_cost: float,
-        working_hours_per_year: int = 2000
+        working_hours_per_year: int = WORKING_HOURS_PER_YEAR
     ) -> float:
         """Calculate productivity gains from improved code quality."""
         # Convert quality improvement to productivity percentage
@@ -333,11 +342,10 @@ class ROICalculator:
         findings_count = automated_findings.get('total_issues', 0)
         
         # Each automated finding saves ~10 minutes of manual review time
-        hours_saved_per_week = (findings_count / 60.0) * 10.0
+        hours_saved_per_week = (findings_count / MINUTES_PER_HOUR) * REVIEW_MINUTES_PER_FINDING
         
         # Calculate annual savings
-        weeks_per_year = 50  # Accounting for vacation
-        annual_hours_saved = hours_saved_per_week * weeks_per_year * team_size
+        annual_hours_saved = hours_saved_per_week * WORKING_WEEKS_PER_YEAR * team_size
         annual_savings = annual_hours_saved * avg_hourly_rate
         
         return annual_savings
@@ -440,10 +448,10 @@ class ROICalculator:
     def _calculate_roi_percentage(self, organization_profile: OrganizationProfile) -> float:
         """Calculate ROI percentage."""
         # Estimate implementation cost
-        implementation_cost = organization_profile.dev_team_size * 1000.0  # Rough estimate
+        implementation_cost = organization_profile.dev_team_size * IMPLEMENTATION_COST_PER_DEVELOPER
         
         # Rough estimate of annual savings
-        estimated_annual_savings = organization_profile.dev_team_size * 10000.0
+        estimated_annual_savings = organization_profile.dev_team_size * ESTIMATED_ANNUAL_SAVINGS_PER_DEVELOPER
         
         if implementation_cost == 0:
             return 0.0
@@ -453,8 +461,8 @@ class ROICalculator:
     
     def _calculate_payback_period(self, organization_profile: OrganizationProfile) -> float:
         """Calculate payback period in months."""
-        implementation_cost = organization_profile.dev_team_size * 1000.0
-        monthly_savings = organization_profile.dev_team_size * 833.33  # ~10k annual / 12
+        implementation_cost = organization_profile.dev_team_size * IMPLEMENTATION_COST_PER_DEVELOPER
+        monthly_savings = (organization_profile.dev_team_size * ESTIMATED_ANNUAL_SAVINGS_PER_DEVELOPER) / 12
         
         if monthly_savings == 0:
             return 999.0  # Return a large number if no savings
@@ -469,7 +477,7 @@ class ROICalculator:
         discount_rate: float = 0.10
     ) -> float:
         """Calculate Net Present Value over 5 years."""
-        implementation_cost = organization_profile.dev_team_size * 1000.0
+        implementation_cost = organization_profile.dev_team_size * IMPLEMENTATION_COST_PER_DEVELOPER
         
         # Calculate NPV for 5 years
         npv = -implementation_cost
