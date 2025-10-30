@@ -1,0 +1,39 @@
+{
+  "title": "Test Assurance Case",
+  "description": "A test case for improved Drakon visualization",
+  "root_goal_id": "G1",
+  "nodes": {
+    "G1": {
+      "id": "G1",
+      "node_type": "GOAL",
+      "title": "System operates safely in all normal operating conditions",
+      "description": "Top-level goal ensuring comprehensive system safety",
+      "child_ids": ["S1"],
+      "evidence_ids": []
+    },
+    "S1": {
+      "id": "S1", 
+      "node_type": "STRATEGY",
+      "title": "Argument by systematic hazard analysis and risk assessment",
+      "description": "Strategy using comprehensive analysis methodology",
+      "child_ids": ["G2"],
+      "evidence_ids": []
+    },
+    "G2": {
+      "id": "G2",
+      "node_type": "GOAL", 
+      "title": "All identified hazards have been eliminated or mitigated to acceptable levels",
+      "description": "Sub-goal for comprehensive hazard management and control",
+      "child_ids": ["Sn1"],
+      "evidence_ids": []
+    },
+    "Sn1": {
+      "id": "Sn1",
+      "node_type": "SOLUTION",
+      "title": "Hazard Analysis Report v2.1",
+      "description": "Evidence from comprehensive hazard analysis and assessment",
+      "child_ids": [],
+      "evidence_ids": []
+    }
+  }
+}
