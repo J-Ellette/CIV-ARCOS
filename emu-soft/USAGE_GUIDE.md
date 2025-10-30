@@ -205,7 +205,7 @@ emu-soft/
 
 ### 3. Added Verification and Examples
 
-- **test_all_modules.py**: Tests that all 23 Python files can be imported and instantiated
+- **test_all_modules.py**: Tests that all 27 Python files can be imported and instantiated
 - **infrastructure/example_usage.py**: Working examples for all infrastructure components
 - **assurance/example_usage.py**: Working examples for all assurance components
 
@@ -263,4 +263,4 @@ These complete, working modules serve multiple purposes:
 
 ## License
 
-All files in this directory are original implementations for the CIV-ARCOS project. While they emulate functionality of existing tools, they contain no copied code. See LICENSE and details.md for full attribution.
+All files in this directory are original implementations for the CIV-ARCOS project. While they emulate functionality of existing tools, they contain no copied code. See ../LICENSE and details.md for full attribution.
