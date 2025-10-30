@@ -84,7 +84,107 @@ for vuln in results['vulnerabilities']:
     print(f"{vuln['severity']}: {vuln['type']} at line {vuln['line']}")
 ```
 
-### 3. test_generator.py - Automated Test Generator
+### 3. roi_calculator.py - Economic Impact Measurement
+
+**Emulates:** Business intelligence and financial analysis tools  
+**Original Location:** `civ_arcos/analysis/roi_calculator.py`
+
+**What it does:**
+- Quantifies concrete cost savings from using CIV-ARCOS
+- Calculates Return on Investment (ROI) and payback periods
+- Estimates risk mitigation value
+- Generates executive-ready business case documentation
+- Provides industry benchmark comparisons
+- Performs Monte Carlo simulations for risk projections
+
+**Key Features:**
+- **Cost Savings Analysis:**
+  - Manual code review time savings
+  - Defect prevention value (with stage multipliers)
+  - Compliance audit preparation efficiency
+  - Security vulnerability prevention value
+  - Developer productivity improvements
+- **Risk Cost Analysis:**
+  - Data breach prevention value
+  - Technical debt interest calculation
+  - Regulatory fine prevention
+  - Brand reputation protection
+- **Business Case Generation:**
+  - Executive summary with key benefits
+  - 5-year financial projections
+  - Implementation roadmap
+  - Success metrics and KPIs
+  - Sensitivity analysis
+  - Competitive advantage assessment
+
+**Cost Models:**
+- `DefectCostModel` - Calculates defect costs with stage multipliers (1x dev, 100x production)
+- `SecurityCostModel` - Estimates security incident costs with exploitation probabilities
+- `ComplianceCostModel` - Calculates compliance efficiency savings
+- `ProductivityCostModel` - Estimates productivity gains from quality improvements
+
+**Usage Example:**
+```python
+from civ_arcos.analysis.roi_calculator import (
+    ROICalculator, OrganizationProfile, EvidenceData
+)
+
+# Create calculator
+calculator = ROICalculator()
+
+# Define organization profile
+org_profile = OrganizationProfile(
+    dev_team_size=10,
+    developer_hourly_cost=100.0,
+    historical_bugs={'monthly_average': 15, 'avg_hourly_cost': 100.0},
+    audit_schedule={'annual_audits': 2},
+    audit_prep_costs=20000.0,
+    company_size='medium',
+    industry_sector='technology',
+    current_velocity=50.0,
+    codebase_metrics={'total_lines': 50000, 'hourly_cost': 100.0},
+    applicable_regulations=['SOC2', 'ISO27001'],
+    annual_revenue=5000000.0,
+    public_exposure=True,
+    estimated_brand_value=10000000.0,
+    data_classification='confidential'
+)
+
+# Define evidence data
+evidence_data = EvidenceData(
+    static_analysis_results={'total_issues': 50},
+    overall_quality_score=85.0,
+    compliance_evidence={'total_types': 10, 'automated_types': 7},
+    security_findings={'vulnerability_count': 10, 'severity_breakdown': {'high': 2}},
+    code_quality_metrics={'quality_score': 85.0, 'baseline_quality': 70.0}
+)
+
+# Calculate cost savings
+cost_savings = calculator.calculate_cost_savings(evidence_data, org_profile)
+print(f"Total Annual ROI: ${cost_savings['total_annual_roi']:,.2f}")
+print(f"ROI Percentage: {cost_savings['roi_percentage']:.1f}%")
+print(f"Payback Period: {cost_savings['payback_period_months']:.1f} months")
+
+# Analyze risk costs
+risk_analysis = calculator.risk_cost_analysis(
+    security_evidence={
+        'vulnerability_count': 10,
+        'severity_breakdown': {'critical': 1, 'high': 3},
+        'technical_debt_score': 30.0
+    },
+    organization_profile=org_profile
+)
+print(f"Risk Value Protected: ${risk_analysis['total_risk_value_protected']:,.2f}")
+
+# Generate business case
+business_case = calculator.generate_business_case(
+    cost_savings,
+    risk_analysis,
+    investment_costs={'implementation': 50000, 'annual_operating': 10000}
+)
+```
+
+### 4. test_generator.py - Automated Test Generator
 
 **Emulates:** AI-powered test generation tools, GitHub Copilot for tests  
 **Original Location:** `civ_arcos/analysis/test_generator.py`
