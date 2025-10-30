@@ -706,7 +706,12 @@ def create_assurance_case(request: Request) -> Response:
 
         # Save to graph
         builder = AssuranceCaseBuilder(case, graph)
-        builder.save_to_graph()
+        case_node_id = builder.save_to_graph()
+        print(f"DEBUG: Saved assurance case {case.case_id} to graph with node ID: {case_node_id}")
+        
+        # Force save to disk to ensure persistence
+        graph.save_to_disk()
+        print(f"DEBUG: Graph saved to disk")
 
         # Validate case
         validation = case.validate()
@@ -989,21 +994,38 @@ def dashboard_assurance(request: Request) -> Response:
         # Get list of assurance cases
         cases = []
         try:
-            # Query graph for assurance cases
-            case_nodes = graph.query(
-                "MATCH (n:AssuranceCase) RETURN n.case_id as case_id, "
-                "n.title as title, n.node_count as node_count LIMIT 20"
-            )
-            if case_nodes:
-                cases = [
-                    {
-                        "case_id": node.get("case_id", ""),
-                        "title": node.get("title", "Untitled"),
-                        "node_count": node.get("node_count", 0),
-                    }
-                    for node in case_nodes
-                ]
-        except:
+            # Find AssuranceCase nodes using find_nodes method
+            case_nodes = graph.find_nodes(label="AssuranceCase")
+            
+            for case_node in case_nodes:
+                case_props = case_node.properties
+                case_id = case_props.get("case_id", case_node.id)
+                title = case_props.get("title", "Untitled")
+                description = case_props.get("description", "")
+                project_type = case_props.get("project_type", "general")
+                created_at = case_props.get("created_at", "")
+                
+                # Count GSN nodes for this case by finding relationships
+                node_count = 0
+                try:
+                    # Find all relationships where this case is the source (CONTAINS relationships)
+                    relationships = graph.get_relationships(source_id=case_id, rel_type="CONTAINS")
+                    node_count = len(relationships)
+                except Exception as e:
+                    print(f"Error counting nodes for case {case_id}: {e}")
+                    node_count = 0
+                
+                cases.append({
+                    "case_id": case_id,
+                    "title": title,
+                    "description": description,
+                    "project_type": project_type,
+                    "node_count": node_count,
+                    "created_at": created_at,
+                })
+                
+        except Exception as e:
+            print(f"Error finding assurance cases: {e}")
             cases = []
 
         html = dashboard_gen.generate_assurance_page(cases)
