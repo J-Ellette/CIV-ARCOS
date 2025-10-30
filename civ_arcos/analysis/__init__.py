@@ -16,6 +16,16 @@ from .collectors import (
     TestGenerationCollector,
     ComprehensiveAnalysisCollector,
 )
+from .roi_calculator import (
+    ROICalculator,
+    DefectCostModel,
+    SecurityCostModel,
+    ComplianceCostModel,
+    ProductivityCostModel,
+    IndustryBenchmarks,
+    OrganizationProfile,
+    EvidenceData,
+)
 
 __all__ = [
     "StaticAnalyzer",
@@ -28,4 +38,12 @@ __all__ = [
     "SecurityScanCollector",
     "TestGenerationCollector",
     "ComprehensiveAnalysisCollector",
+    "ROICalculator",
+    "DefectCostModel",
+    "SecurityCostModel",
+    "ComplianceCostModel",
+    "ProductivityCostModel",
+    "IndustryBenchmarks",
+    "OrganizationProfile",
+    "EvidenceData",
 ]

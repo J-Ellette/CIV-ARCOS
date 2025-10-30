@@ -41,6 +41,7 @@ emu-soft/
 | static_analyzer.py | ESLint, Pylint, SonarQube | Static code analysis and metrics |
 | security_scanner.py | CodeQL, Semgrep, Bandit | Security vulnerability detection |
 | test_generator.py | AI test generators | Automated test case generation |
+| roi_calculator.py | Business intelligence tools | Economic impact measurement and ROI analysis |
 
 ### Assurance Components (`assurance/`)
 | Component | Emulates | Purpose |
