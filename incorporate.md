@@ -7,7 +7,7 @@ Before using publically available scripts for this build, we will look to: https
 If there isn't one, we will first determine if we can make it by emulating and recreating it, and do so if possible.
 Any newly created, recreated, emulated software will also need to be copied https://github.com/J-Ellette/Emu-Soft/tree/main in the appropriate folder, with readme, ect. following the existing standards of that repo.
 
-Ignore redundancies if I have double listed, or already integrated something into CIV-ARCOS. 
+Skip redundancies if I have double listed, or already integrated something into CIV-ARCOS. 
 When complete with each round of implementation, update this md to note the item as (COMPLETE)
 
 ## CIV-SCAP:
