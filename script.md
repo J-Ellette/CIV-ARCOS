@@ -23,7 +23,7 @@ This document identifies scripts in the repository that use off-the-shelf models
   - API: HTTP API to local Ollama server (http://localhost:11434)
   
 - **OpenAI** - Cloud-based LLM
-  - Models: `gpt-3.5-turbo` (default), other GPT models
+  - Models: `gpt-3.5-turbo` (default), configurable to any OpenAI model
   - Purpose: Advanced code analysis, test generation, documentation generation
   - API: OpenAI REST API (https://api.openai.com/v1/chat/completions)
 
@@ -96,7 +96,7 @@ These models are integrated through a well-structured abstraction layer that all
 
 ### Test Files Referencing Models:
 1. `tests/unit/test_llm_integration.py` - Comprehensive tests for LLM integration backends
-2. `tests/unit/test_test_generator.py` - Tests for test generator including AI model configuration (e.g., testing `use_ai=True, ai_model="ollama"`)
+2. `tests/unit/test_test_generator.py` - Tests for test generator including AI model configuration (supports both `ai_model="ollama"` and `ai_model="openai"`)
 
 ## Notes on Architecture
 
