@@ -1,8 +1,8 @@
 CIV-ARCOS needs a front-end representation for every module, even if it is just a page that lists the function, use, usage, etc.
-All should be incorporated into the current web gui that is used for repo scanning, assessment, and badge issuance. Expand that page to accomodate the additions.
+All should be incorporated into the current web gui that is used for repo url scanning, assessment, and badge issuance. Expand that page to accomodate the additions.
 Any forward facing elements will need follow the U.S. Web Design System (USWDS), found at: https://designsystem.digital.gov/ 
 
-The following will need to be emulated, recreated and built into into CIV-ARCOS (Add as Modules, ot integral to the software):
+The following items will need to be emulated, recreated and built into into CIV-ARCOS (Add as Modules, or integral to the software):
 Before using publically available scripts for this build, we will look to: https://github.com/J-Ellette/Emu-Soft for a script that we made, that does the same thing, 
 If there isn't one, we will first determine if we can make it by emulating and recreating it, and do so if possible.
 Any newly created, recreated, emulated software will also need to be copied https://github.com/J-Ellette/Emu-Soft/tree/main in the appropriate folder, with readme, ect. following the existing standards of that repo.
