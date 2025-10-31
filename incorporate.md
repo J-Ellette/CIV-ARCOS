@@ -666,11 +666,35 @@ Build automated evidence generation
 ### Microsoft 365 Dynamics for Government - CRM with process automation and compliance tools
 
 ****************************************
-
+https://github.com/eBay/sbom-scorecard
 ### OpenGov EAM - Enterprise asset management for public agencies
 
 ****************************************
 
 ### Cheqroom - Government asset tracking with audit trails and automated maintenance
+
+****************************************
+
+## Automated Cryptographic Validation Protocol 
+(https://csrc.nist.gov/projects/cryptographic-algorithm-validation-program) (https://github.com/usnistgov/ACVP)
+
+****************************************
+
+## NIST Resource Metadata Management (RMM) API
+(https://github.com/usnistgov/oar-rmm-python) 
+
+****************************************
+
+## Dioptra: Test Software for the Characterization of AI Technologies
+(https://pages.nist.gov/dioptra/) (https://github.com/usnistgov/dioptra)
+
+****************************************
+
+## A software bill of materials (SBOM)
+https://github.com/spdx/ntia-conformance-checker
+https://github.com/snyk/parlay
+https://github.com/eBay/sbom-scorecard
+https://github.com/devops-kung-fu/bomber
+https://github.com/awesomeSBOM/awesome-sbom
 
 ****************************************
