@@ -1035,6 +1035,143 @@ def dashboard_assurance(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+@app.get("/dashboard/compliance")
+def dashboard_compliance(request: Request) -> Response:
+    """Dashboard compliance modules page."""
+    try:
+        html = dashboard_gen.generate_compliance_page()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# Compliance API endpoints
+@app.post("/api/compliance/scap/scan")
+def scap_scan(request: Request) -> Response:
+    """
+    Perform SCAP compliance scan.
+    
+    Request body:
+    {
+        "system_info": {
+            "os": "Ubuntu",
+            "version": "22.04",
+            "configuration": {...},
+            "state": {...}
+        },
+        "checklist": "default" (optional)
+    }
+    """
+    try:
+        from civ_arcos.compliance import SCAPEngine
+        
+        data = request.json()
+        system_info = data.get("system_info", {})
+        checklist = data.get("checklist", "default")
+        
+        if not system_info:
+            return Response({"error": "system_info is required"}, status_code=400)
+        
+        # Initialize SCAP engine
+        scap_engine = SCAPEngine()
+        
+        # Perform scan
+        results = scap_engine.scan_system(system_info, checklist)
+        
+        # Calculate compliance score
+        compliance_score = scap_engine.get_compliance_score(results)
+        
+        # Count statuses
+        from civ_arcos.compliance.scap import ComplianceStatus
+        passed = sum(1 for r in results if r.status == ComplianceStatus.PASS)
+        failed = sum(1 for r in results if r.status == ComplianceStatus.FAIL)
+        
+        return Response({
+            "success": True,
+            "compliance_score": round(compliance_score, 2),
+            "total_results": len(results),
+            "passed": passed,
+            "failed": failed,
+            "results": [
+                {
+                    "rule_id": r.rule_id,
+                    "status": r.status.value,
+                    "severity": r.severity.value,
+                    "message": r.message,
+                    "timestamp": r.timestamp.isoformat(),
+                }
+                for r in results
+            ],
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/compliance/scap/report/<scan_id>")
+def scap_report(request: Request) -> Response:
+    """
+    Generate SCAP compliance report.
+    
+    Query params:
+    - report_type: executive, technical, or compliance (default: technical)
+    - project_name: Name of the scanned system (default: System)
+    """
+    try:
+        from civ_arcos.compliance import SCAPEngine
+        
+        # Get query parameters
+        report_type = request.query.get("report_type", "technical")
+        project_name = request.query.get("project_name", "System")
+        
+        # For demo purposes, run a quick scan
+        # In production, would retrieve stored scan results by scan_id
+        scap_engine = SCAPEngine()
+        results = scap_engine.scan_system({
+            "os": "Ubuntu",
+            "version": "22.04",
+            "configuration": {},
+            "state": {},
+        })
+        
+        # Generate report
+        report = scap_engine.generate_report(results, report_type, project_name)
+        
+        return Response(report)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/compliance/scap/docs")
+def scap_docs(request: Request) -> Response:
+    """Get SCAP module API documentation."""
+    return Response({
+        "module": "CIV-SCAP",
+        "description": "Security Content Automation Protocol implementation",
+        "endpoints": {
+            "POST /api/compliance/scap/scan": {
+                "description": "Perform SCAP compliance scan",
+                "parameters": {
+                    "system_info": "System information including OS, version, configuration, state",
+                    "checklist": "Optional checklist profile (default: default)"
+                },
+                "returns": "Scan results with compliance score"
+            },
+            "GET /api/compliance/scap/report/:scan_id": {
+                "description": "Generate compliance report",
+                "query_params": {
+                    "report_type": "executive, technical, or compliance (default: technical)",
+                    "project_name": "Name of scanned system (default: System)"
+                },
+                "returns": "Formatted compliance report"
+            }
+        },
+        "standards": ["XCCDF", "OVAL", "CPE", "CVE", "CVSS"],
+        "frameworks": ["NIST 800-53", "CIS Benchmarks", "PCI DSS", "FedRAMP"]
+    })
+
+
 # Integration API endpoints
 @app.post("/api/github/quality-check")
 def github_quality_check_webhook(request: Request) -> Response:
