@@ -42,7 +42,7 @@ This document identifies scripts in the repository that use off-the-shelf models
 
 ### 2. Test Generator Module
 **File:** `civ_arcos/analysis/test_generator.py`
-**File:** `emu-soft/analysis/test_generator.py`
+**Duplicate:** `emu-soft/analysis/test_generator.py` (identical copy)
 
 **Off-the-shelf models used:**
 - **Optional AI model support** - Can use Ollama or OpenAI via the LLM integration
@@ -50,7 +50,7 @@ This document identifies scripts in the repository that use off-the-shelf models
   - Models: "ollama", "openai"
   - Purpose: AI-powered test generation suggestions
 
-**Note:** This module primarily uses AST-based static analysis but has hooks for AI-enhanced test generation.
+**Note:** This module primarily uses AST-based static analysis but has hooks for AI-enhanced test generation. The `emu-soft/analysis/test_generator.py` file is an exact duplicate of the main implementation.
 
 ### 3. Quality Reporter Module
 **File:** `civ_arcos/analysis/reporter.py`
@@ -95,8 +95,8 @@ These models are integrated through a well-structured abstraction layer that all
 4. `emu-soft/analysis/test_generator.py` - Duplicate test generator with AI support
 
 ### Test Files Referencing Models:
-1. `tests/unit/test_llm_integration.py` - Tests for LLM integration
-2. `tests/unit/test_test_generator.py` - Tests for AI-enabled test generator
+1. `tests/unit/test_llm_integration.py` - Comprehensive tests for LLM integration backends
+2. `tests/unit/test_test_generator.py` - Tests for test generator including AI model configuration (e.g., testing `use_ai=True, ai_model="ollama"`)
 
 ## Notes on Architecture
 
