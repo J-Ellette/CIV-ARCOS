@@ -2,7 +2,7 @@ CIV-ARCOS needs a front-end representation for every module, even if it is just 
 All should be incorporated into the current web gui that is used for repo url scanning, assessment, and badge issuance. Expand that page to accomodate the additions.
 Any forward facing elements will need follow the U.S. Web Design System (USWDS), found at: https://designsystem.digital.gov/ 
 
-The following items will need to be emulated, recreated and built into into CIV-ARCOS (Add as Modules, or integral to the software):
+The following items will need to be emulated, recreated and built into into CIV-ARCOS (Add as Modules, or integral to the software). Not a standalone features, per se, but as extensions of CIV-ARCOS core functionality:
 Before using publically available scripts for this build, we will look to: https://github.com/J-Ellette/Emu-Soft for a script that we made, that does the same thing, 
 If there isn't one, we will first determine if we can make it by emulating and recreating it, and do so if possible.
 Any newly created, recreated, emulated software will also need to be copied https://github.com/J-Ellette/Emu-Soft/tree/main in the appropriate folder, with readme, ect. following the existing standards of that repo.
@@ -439,14 +439,6 @@ Military Heritage: "Based on DoD-proven technology" Integrated Compliance: Built
 
 ****************************************
 
-### ARP-4754A - System development and safety assessment
-
-****************************************
-
-### CMMC 2.0 - Cybersecurity Maturity Model Certification (mandated for DoD contractors)
-
-****************************************
-
 ### Software Supply Chain Security - OMB's new federal software security requirements
 
 ************************************
@@ -484,14 +476,6 @@ Military Heritage: "Based on DoD-proven technology" Integrated Compliance: Built
 ****************************************
 
 ### AWS/Azure/GCP Compliance - Cloud platform certifications
-
-****************************************
-
-### SOX 404 - Sarbanes-Oxley IT controls
-
-****************************************
-
-### GDPR - European data protection regulation
 
 ****************************************
 
@@ -663,15 +647,11 @@ Build automated evidence generation
 
 ****************************************
 
-### ARMATURE Fabric - Directly addresses complex accreditation/certification processes on a cloud platform
+### ARMATURE Fabric - Directly addresses complex accreditation/certification processes
 
 ****************************************
 
 ### Qualtrax - Quality and compliance software with automated processes and real-time regulatory compliance
-
-****************************************
-
-### MetricStream ConnectedGRC - AI-based regulatory change tracking and automated compliance processes
 
 ****************************************
 
