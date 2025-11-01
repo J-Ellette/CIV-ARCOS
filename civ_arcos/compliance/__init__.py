@@ -19,6 +19,9 @@ Implements various compliance and security automation frameworks:
 - CMMC: Cybersecurity Maturity Model Certification ecosystem
 - GCM: UL Solutions Global Compliance Management
 - Game Warden: DevSecOps platform for DoD ATO
+- DoD Cyber Exchange: CMMC framework tools and resources
+- HACMS: High-Assurance Cyber Military Systems with formal methods
+- SafeDocs: Parser vulnerability prevention and secure document processing
 """
 
 from .scap import (
@@ -225,6 +228,25 @@ from .game_warden import (
     SecurityControlStatus,
 )
 
+from .dod_cyber_exchange import (
+    DoDCyberExchange,
+    ResourceType as CyberExchangeResourceType,
+    SecurityDomain as CyberExchangeSecurityDomain,
+)
+
+from .hacms import (
+    HACMSPlatform,
+    AssuranceLevel,
+    ProofStatus,
+    FormalMethodType,
+)
+
+from .safedocs import (
+    SafeDocsEngine,
+    DocumentFormat,
+    VulnerabilityType as ParserVulnerabilityType,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -392,4 +414,17 @@ __all__ = [
     "GameWardenATOStatus",
     "ImpactLevel",
     "SecurityControlStatus",
+    # DoD Cyber Exchange
+    "DoDCyberExchange",
+    "CyberExchangeResourceType",
+    "CyberExchangeSecurityDomain",
+    # HACMS
+    "HACMSPlatform",
+    "AssuranceLevel",
+    "ProofStatus",
+    "FormalMethodType",
+    # SafeDocs
+    "SafeDocsEngine",
+    "DocumentFormat",
+    "ParserVulnerabilityType",
 ]

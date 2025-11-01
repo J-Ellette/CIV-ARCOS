@@ -769,19 +769,19 @@ This commercial DevSecOps platform is designed specifically for defense contract
 
 ****************************************
 
-## DoD Cyber Exchange: 
+## DoD Cyber Exchange: (COMPLETE) 
 This resource provides automated tools and information for the Cybersecurity Maturity Model Certification (CMMC) framework. It helps defense contractors adhere to security standards and demonstrate compliance. 
 (https://www.cyber.mil/)
 
 ****************************************
 
-## High-Assurance Cyber Military Systems (HACMS): 
+## High-Assurance Cyber Military Systems (HACMS): (COMPLETE) 
 This program used formal methods to create high-assurance software capable of withstanding cyber threats. The tools developed under HACMS generated machine-checkable proofs that demonstrated the safety and security of code.
 (https://www.darpa.mil/research/programs/high-assurance-cyber-military-systems)
 
 ****************************************
 
-## SafeDocs: 
+## SafeDocs: (COMPLETE) 
 This effort developed tools to address vulnerabilities in software parsers that process electronic documents. The goal was to create safer documents for more secure computing.
 (https://www.darpa.mil/research/programs/safe-documents)
 
