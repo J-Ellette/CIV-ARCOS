@@ -1317,15 +1317,15 @@ class DashboardGenerator:
                     </div>
                 </div>
 
-                <!-- FedRAMP Module -->
+                <!-- CIV-RAMP Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">FedRAMP</h3>
+                            <h3 class="usa-card__heading">CIV-RAMP</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>Federal Risk and Authorization Management Program</strong></p>
+                            <p><strong>Civilian Risk and Authorization Management Program</strong></p>
                             <p>Federal cloud authorization for government cloud services. Standardized approach to
                             security assessment, authorization, and continuous monitoring for federal agencies.</p>
                             
@@ -1374,21 +1374,21 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('fedramp')">Test FedRAMP</button>
+                            <button class="usa-button" onclick="testModule('fedramp')">Test CIV-RAMP</button>
                             <a href="/api/compliance/fedramp/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- CSA STAR Module -->
+                <!-- CIV-STAR Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CSA STAR</h3>
+                            <h3 class="usa-card__heading">CIV-STAR</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>Cloud Security Alliance STAR Registry</strong></p>
+                            <p><strong>Civilian Security, Trust, Assurance, and Risk Registry</strong></p>
                             <p>Cloud Security, Trust, Assurance, and Risk registry. Public documentation of security
                             and privacy controls using CSA Cloud Controls Matrix (CCM).</p>
                             
@@ -1444,7 +1444,7 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('csa_star')">Test CSA STAR</button>
+                            <button class="usa-button" onclick="testModule('csa_star')">Test CIV-STAR</button>
                             <a href="/api/compliance/csa-star/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
@@ -1510,15 +1510,15 @@ class DashboardGenerator:
                     </div>
                 </div>
 
-                <!-- Qualtrax Module -->
+                <!-- CIV-TRAX Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">Qualtrax</h3>
+                            <h3 class="usa-card__heading">CIV-TRAX</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>Quality and Compliance Software</strong></p>
+                            <p><strong>Civilian Quality and Compliance Software</strong></p>
                             <p>Manages documentation, automates processes, and streamlines internal and external 
                             audits to ensure real-time regulatory compliance for quality management systems.</p>
                             
@@ -1574,21 +1574,21 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('qualtrax')">Test Qualtrax</button>
+                            <button class="usa-button" onclick="testModule('qualtrax')">Test CIV-TRAX</button>
                             <a href="/api/compliance/qualtrax/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Hyland Digital Government Solutions Module -->
+                <!-- CIV-LAND Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">Hyland Digital Government</h3>
+                            <h3 class="usa-card__heading">CIV-LAND</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>Document Management and Workflow Automation</strong></p>
+                            <p><strong>Civilian Digital Government Solutions</strong></p>
                             <p>Modernizes government operations by digitizing and automating document capture, 
                             workflows, and records management to meet federal compliance requirements.</p>
                             
@@ -1648,21 +1648,21 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('hyland')">Test Hyland</button>
+                            <button class="usa-button" onclick="testModule('hyland')">Test CIV-LAND</button>
                             <a href="/api/compliance/hyland/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- DISS Module -->
+                <!-- CIV-DISS Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">DISS (Defense Information System for Security)</h3>
+                            <h3 class="usa-card__heading">CIV-DISS</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>Personnel Security and Clearance Management</strong></p>
+                            <p><strong>Civilian Defense Information System for Security</strong></p>
                             <p>Enterprise-wide system for personnel security, suitability, and credentialing for 
                             military, civilian, and contractor personnel. Replaced JPAS for security clearances.</p>
                             
@@ -1723,21 +1723,21 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('diss')">Test DISS</button>
+                            <button class="usa-button" onclick="testModule('diss')">Test CIV-DISS</button>
                             <a href="/api/compliance/diss/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- CMMC Ecosystem Module -->
+                <!-- CIV-CMMC Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CMMC Ecosystem</h3>
+                            <h3 class="usa-card__heading">CIV-CMMC</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>Cybersecurity Maturity Model Certification</strong></p>
+                            <p><strong>Civilian Cybersecurity Maturity Model Certification</strong></p>
                             <p>Automated tools and platforms supporting the CMMC framework to help defense 
                             contractors achieve and demonstrate compliance with DoD security standards.</p>
                             
@@ -1787,21 +1787,21 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('cmmc')">Test CMMC</button>
+                            <button class="usa-button" onclick="testModule('cmmc')">Test CIV-CMMC</button>
                             <a href="/api/compliance/cmmc/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- GCM (UL Solutions Global Compliance Management) Module -->
+                <!-- CIV-UL Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">UL Global Compliance Management</h3>
+                            <h3 class="usa-card__heading">CIV-UL</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>Global Regulatory Compliance Platform</strong></p>
+                            <p><strong>Civilian Global Regulatory Compliance Platform</strong></p>
                             <p>Proactively manage regulatory compliance from product design to production launch with 
                             real-time alerts from 7,000+ sources in 200+ countries.</p>
                             
@@ -1861,21 +1861,21 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('gcm')">Test GCM</button>
+                            <button class="usa-button" onclick="testModule('gcm')">Test CIV-UL</button>
                             <a href="/api/compliance/gcm/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Game Warden (2F Second Front Systems) Module -->
+                <!-- CIV-WARDEN Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">2F Game Warden</h3>
+                            <h3 class="usa-card__heading">CIV-WARDEN</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>DevSecOps Platform for DoD ATO</strong></p>
+                            <p><strong>Civilian DevSecOps Platform for Authorization</strong></p>
                             <p>Commercial DevSecOps platform designed for defense contractors to rapidly achieve 
                             Authority to Operate (ATO) with automated DoD security compliance.</p>
                             
@@ -1932,21 +1932,21 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('game_warden')">Test Game Warden</button>
+                            <button class="usa-button" onclick="testModule('game_warden')">Test CIV-WARDEN</button>
                             <a href="/api/compliance/game-warden/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- DoD Cyber Exchange Module -->
+                <!-- CIV-EXCHANGE Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">DoD Cyber Exchange</h3>
+                            <h3 class="usa-card__heading">CIV-EXCHANGE</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>CMMC Framework Tools and Resources</strong></p>
+                            <p><strong>Cybersecurity Maturity Model Certification Framework Tools and Resources</strong></p>
                             <p>Centralized cybersecurity information and tools for defense contractors 
                             and the defense industrial base. Provides automated tools and resources for 
                             Cybersecurity Maturity Model Certification (CMMC) framework compliance.</p>
@@ -1992,21 +1992,21 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('dod_cyber_exchange')">Test DoD Cyber Exchange</button>
+                            <button class="usa-button" onclick="testModule('dod_cyber_exchange')">Test CIV-EXCHANGE</button>
                             <a href="/api/compliance/dod-cyber-exchange/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- HACMS Module -->
+                <!-- CIV-HAC Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">HACMS</h3>
+                            <h3 class="usa-card__heading">CIV-HAC</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>High-Assurance Cyber Military Systems</strong></p>
+                            <p><strong>Civilian High-Assurance Cyber Systems</strong></p>
                             <p>Uses formal methods to create provably secure software capable of withstanding 
                             cyber threats. Generates machine-checkable proofs that demonstrate the safety and 
                             security of code. DARPA program focused on creating high-assurance software systems.</p>
@@ -2060,21 +2060,21 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('hacms')">Test HACMS</button>
+                            <button class="usa-button" onclick="testModule('hacms')">Test CIV-HAC</button>
                             <a href="/api/compliance/hacms/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- SafeDocs Module -->
+                <!-- CIV-DOCS Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">SafeDocs</h3>
+                            <h3 class="usa-card__heading">CIV-DOCS</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>Parser Vulnerability Prevention</strong></p>
+                            <p><strong>Civilian Parser Vulnerability Prevention</strong></p>
                             <p>Addresses vulnerabilities in software parsers that process electronic documents. 
                             Creates safer documents for more secure computing. DARPA program focused on preventing 
                             exploitation of parser vulnerabilities in document processing systems.</p>
@@ -2127,21 +2127,21 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('safedocs')">Test SafeDocs</button>
+                            <button class="usa-button" onclick="testModule('safedocs')">Test CIV-DOCS</button>
                             <a href="/api/compliance/safedocs/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- V-SPELLs Module -->
+                <!-- CIV-SPELLS Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">V-SPELLs</h3>
+                            <h3 class="usa-card__heading">CIV-SPELLS</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>Verified Security and Performance Enhancement of Large Legacy Software</strong></p>
+                            <p><strong>Civilian Verified Security and Performance Enhancement of Large Legacy Software</strong></p>
                             <p>Automatically enhances security and performance of legacy software through binary 
                             analysis, verification, and transformation without requiring source code. DARPA program 
                             focused on improving legacy systems without extensive manual effort.</p>
@@ -2192,7 +2192,7 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('vspells')">Test V-SPELLs</button>
+                            <button class="usa-button" onclick="testModule('vspells')">Test CIV-SPELLS</button>
                             <a href="/api/compliance/vspells/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
@@ -2212,9 +2212,9 @@ class DashboardGenerator:
                             
                             <h4 class="margin-top-2">Features:</h4>
                             <ul class="usa-list">
-                                <li><strong>CASE-Analyst:</strong> Automated software design and documentation generation</li>
-                                <li><strong>NIKA-Plan:</strong> Project planning and resource management with critical path analysis</li>
-                                <li><strong>SPRUT:</strong> Specification and requirements tracking with traceability matrices</li>
+                                <li><strong>CIV-CASE:</strong> Automated software design and documentation generation</li>
+                                <li><strong>CIV-NIKA:</strong> Project planning and resource management with critical path analysis</li>
+                                <li><strong>CIV-SPRUT:</strong> Specification and requirements tracking with traceability matrices</li>
                                 <li><strong>Documentation Engine:</strong> Automated generation of SRS, SDD, STD, VDD documents</li>
                                 <li><strong>Artifact Management:</strong> Data flow diagrams, ERDs, state transitions, structure charts</li>
                                 <li><strong>Evidence Generation:</strong> Compliance documentation artifacts for audits</li>
@@ -2241,13 +2241,13 @@ class DashboardGenerator:
                             <h4 class="margin-top-2">Emulated Tools:</h4>
                             <div class="grid-row grid-gap margin-top-1">
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">CASE-Analyst</span>
+                                    <span class="usa-tag">CIV-CASE</span>
                                 </div>
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">NIKA-Plan</span>
+                                    <span class="usa-tag">CIV-NIKA</span>
                                 </div>
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">SPRUT</span>
+                                    <span class="usa-tag">CIV-SPRUT</span>
                                 </div>
                             </div>
                         </div>
@@ -2272,10 +2272,10 @@ class DashboardGenerator:
                             
                             <h4 class="margin-top-2">Features:</h4>
                             <ul class="usa-list">
-                                <li><strong>SOKRAT Engine:</strong> Automated test case generation and execution (functional, integration, system)</li>
-                                <li><strong>SPECTRUM Analyzer:</strong> Static code analysis with MISRA-C, CERT-C compliance checking</li>
-                                <li><strong>FORTRAN Analyzer:</strong> Legacy code quality analysis and modernization recommendations</li>
-                                <li><strong>Parallel Execution:</strong> High-performance automated test execution</li>
+                                <li><strong>CIV-KRAT:</strong> Automated test case generation and execution (functional, integration, system)</li>
+                                <li><strong>CIV-SPEC:</strong> Static code analysis with MISRA-C, CERT-C compliance checking</li>
+                                <li><strong>CIV-TRAN:</strong> Legacy code quality analysis and modernization recommendations</li>
+                                <li><strong>CIV-PAR:</strong> High-performance automated test execution</li>
                                 <li><strong>Standards Compliance:</strong> MISRA, CERT, ISO coding standards verification</li>
                                 <li><strong>Modernization Planning:</strong> Automated legacy code refactoring roadmaps</li>
                             </ul>
@@ -2301,13 +2301,13 @@ class DashboardGenerator:
                             <h4 class="margin-top-2">Emulated Tools:</h4>
                             <div class="grid-row grid-gap margin-top-1">
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">SOKRAT</span>
+                                    <span class="usa-tag">CIV-KRAT</span>
                                 </div>
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">SPECTRUM</span>
+                                    <span class="usa-tag">CIV-SPEC</span>
                                 </div>
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">FORTRAN Analyzer</span>
+                                    <span class="usa-tag">CIV-TRAN</span>
                                 </div>
                             </div>
                         </div>
@@ -2332,9 +2332,9 @@ class DashboardGenerator:
                             
                             <h4 class="margin-top-2">Features:</h4>
                             <ul class="usa-list">
-                                <li><strong>SCCS (Soviet Configuration Control System):</strong> Version control with immutable audit trails</li>
-                                <li><strong>DELTA Engine:</strong> Change management with automated approval routing</li>
-                                <li><strong>ARCHIVE-M:</strong> Immutable document and artifact storage with provenance</li>
+                                <li><strong>CIV-SCCS (Civilian Soviet Configuration Control System):</strong> Version control with immutable audit trails</li>
+                                <li><strong>CIV-DEL:</strong> Change management with automated approval routing</li>
+                                <li><strong>CIV-ARCH:</strong> Immutable document and artifact storage with provenance</li>
                                 <li><strong>Baseline Management:</strong> Configuration baseline tracking and comparison</li>
                                 <li><strong>Impact Analysis:</strong> Automated change impact assessment</li>
                                 <li><strong>Compliance Tracking:</strong> Regulatory change management workflows</li>
@@ -2361,13 +2361,13 @@ class DashboardGenerator:
                             <h4 class="margin-top-2">Emulated Systems:</h4>
                             <div class="grid-row grid-gap margin-top-1">
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">SCCS</span>
+                                    <span class="usa-tag">CIV-SCCS</span>
                                 </div>
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">DELTA</span>
+                                    <span class="usa-tag">CIV-DEL</span>
                                 </div>
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">ARCHIVE-M</span>
+                                    <span class="usa-tag">CIV-ARCH</span>
                                 </div>
                             </div>
                         </div>
@@ -2392,9 +2392,9 @@ class DashboardGenerator:
                             
                             <h4 class="margin-top-2">Features:</h4>
                             <ul class="usa-list">
-                                <li><strong>SADT-M:</strong> Structured Analysis and Design Technique with ICOM diagrams</li>
-                                <li><strong>KESKAR:</strong> Computer-aided architecture design with quality attributes</li>
-                                <li><strong>METAN:</strong> Rigorous process modeling with state machines</li>
+                                <li><strong>CIV-SADT:</strong> Structured Analysis and Design Technique with ICOM diagrams</li>
+                                <li><strong>CIV-KESK:</strong> Computer-aided architecture design with quality attributes</li>
+                                <li><strong>CIV-MET:</strong> Rigorous process modeling with state machines</li>
                                 <li><strong>Model Validation:</strong> Automated consistency and completeness checking</li>
                                 <li><strong>Architecture Patterns:</strong> Layered, microservices, event-driven, pipe-filter</li>
                                 <li><strong>Process Analysis:</strong> Performance metrics and bottleneck identification</li>
@@ -2421,13 +2421,13 @@ class DashboardGenerator:
                             <h4 class="margin-top-2">Emulated Tools:</h4>
                             <div class="grid-row grid-gap margin-top-1">
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">SADT-M</span>
+                                    <span class="usa-tag">CIV-SADT</span>
                                 </div>
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">KESKAR</span>
+                                    <span class="usa-tag">CIV-KESK</span>
                                 </div>
                                 <div class="tablet:grid-col">
-                                    <span class="usa-tag">METAN</span>
+                                    <span class="usa-tag">CIV-MET</span>
                                 </div>
                             </div>
                         </div>
@@ -2438,15 +2438,15 @@ class DashboardGenerator:
                     </div>
                 </div>
 
-                <!-- OpenGov EAM -->
+                <!-- CIV-EAM Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">OpenGov EAM</h3>
+                            <h3 class="usa-card__heading">CIV-EAM</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>Enterprise Asset Management for Public Agencies</strong></p>
+                            <p><strong>Civilian Enterprise Asset Management for Public Agencies</strong></p>
                             <p>Comprehensive asset tracking, maintenance scheduling, lifecycle management, and 
                             work order automation for government organizations.</p>
                             
@@ -2491,21 +2491,21 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('opengov')">Test OpenGov EAM</button>
+                            <button class="usa-button" onclick="testModule('opengov')">Test CIV-EAM</button>
                             <a href="/api/compliance/opengov/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Cheqroom -->
+                <!-- CIV-CHEQ Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
-                            <h3 class="usa-card__heading">Cheqroom</h3>
+                            <h3 class="usa-card__heading">CIV-CHEQ</h3>
                             <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
-                            <p><strong>Government Asset Tracking with Audit Trails</strong></p>
+                            <p><strong>Civilian Government Asset Tracking with Audit Trails</strong></p>
                             <p>Specialized equipment check-in/check-out tracking with QR/RFID support, 
                             automated maintenance alerts, and comprehensive audit trails.</p>
                             
@@ -2554,7 +2554,7 @@ class DashboardGenerator:
                             </div>
                         </div>
                         <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('cheqroom')">Test Cheqroom</button>
+                            <button class="usa-button" onclick="testModule('cheqroom')">Test CIV-CHEQ</button>
                             <a href="/api/compliance/cheqroom/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
@@ -3127,17 +3127,17 @@ const results = await response.json();</code></pre>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PowerShell Security Analysis - CIV-ARCOS</title>
+    <title>PowerShield - CIV-ARCOS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/css/uswds.min.css">
     <style>{self._get_custom_css()}</style>
 </head>
 <body>
-    {self._get_header("PowerShell Security")}
+    {self._get_header("PowerShield")}
     
     <main id="main-content">
         <section class="usa-section">
             <div class="grid-container">
-                <h1 class="usa-prose">⚡ PowerShell Security Analysis</h1>
+                <h1 class="usa-prose">⚡ PowerShield</h1>
                 <p class="usa-intro">Comprehensive security scanning for PowerShell scripts</p>
                 
                 <div class="usa-alert usa-alert--info margin-top-4">
@@ -3597,7 +3597,7 @@ or
             "Analyze Repository": "/dashboard/analyze",
             "Assurance Cases": "/dashboard/assurance",
             "Badges": "/dashboard/badges",
-            "PowerShell Security": "/dashboard/powershell",
+            "PowerShield": "/dashboard/powershell",
             "Compliance Modules": "/dashboard/compliance"
         }
         
