@@ -104,8 +104,8 @@ class GSNVisualizer:
 
     def _generate_basic_svg(self, case: AssuranceCase) -> str:
         """
-        Generate basic SVG representation as fallback.
-        Uses a simple tree layout algorithm.
+        Generate custom SVG representation of the assurance case.
+        Uses an optimized tree layout algorithm for clear visualization.
 
         Args:
             case: AssuranceCase to visualize
