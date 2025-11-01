@@ -781,6 +781,36 @@ class DashboardGenerator:
                 "title": "Network Security Scanner",
                 "description": "Tenable Nessus Professional-inspired vulnerability assessment platform for comprehensive network security scanning."
             },
+            {
+                "name": "CIV-RAMP",
+                "url": "/dashboard/compliance/civ-ramp",
+                "title": "Federal Risk and Authorization Management",
+                "description": "FedRAMP-inspired authorization program for cloud services. Standardized security assessment, authorization, and continuous monitoring for federal cloud deployments."
+            },
+            {
+                "name": "CIV-STAR",
+                "url": "/dashboard/compliance/civ-star",
+                "title": "Cloud Security Trust, Assurance, and Risk Registry",
+                "description": "CSA STAR-inspired certification program for cloud security assurance. Transparent security attestation using CCM framework for cloud service providers."
+            },
+            {
+                "name": "CIV-CMMC",
+                "url": "/dashboard/compliance/civ-cmmc",
+                "title": "Cybersecurity Maturity Model Certification",
+                "description": "CMMC 2.0-inspired cybersecurity framework for defense contractors. Protection of Federal Contract Information and Controlled Unclassified Information."
+            },
+            {
+                "name": "CIV-DISS",
+                "url": "/dashboard/compliance/civ-diss",
+                "title": "Personnel Security and Clearance Management",
+                "description": "DISS-inspired personnel security management. Comprehensive tracking of security clearances, investigations, and continuous evaluation for cleared personnel."
+            },
+            {
+                "name": "SOC 2 Type II",
+                "url": "/dashboard/compliance/soc2",
+                "title": "Trust Services Certification",
+                "description": "AICPA SOC 2 Type II compliance framework for SaaS providers. Demonstrates security, availability, and privacy controls through independent attestation."
+            },
         ]
         
         # Generate module cards HTML
@@ -2191,6 +2221,149 @@ const results = await response.json();</code></pre>
                 '<span class="usa-tag">Web</span>',
                 '<span class="usa-tag">Database</span>',
                 '<span class="usa-tag">SCADA</span>'
+            ]
+        )
+
+    def generate_module_page_civ_ramp(self) -> str:
+        """Generate individual page for CIV-RAMP (FedRAMP) module."""
+        return self._generate_module_page_template(
+            module_id="fedramp",
+            module_name="CIV-RAMP",
+            title="Federal Risk and Authorization Management",
+            description="FedRAMP-inspired authorization program for cloud services. Provides standardized security assessment, authorization, and continuous monitoring for federal cloud deployments.",
+            features=[
+                "<strong>3PAO Assessment:</strong> Third Party Assessment Organization evaluation process",
+                "<strong>ATO Package Management:</strong> Authority to Operate documentation workflows",
+                "<strong>Continuous Monitoring:</strong> Ongoing security posture tracking and reporting",
+                "<strong>Control Inheritance:</strong> Leverage cloud provider security controls",
+                "<strong>ConMon Integration:</strong> Automated security data collection and reporting",
+                "<strong>SAR & SAP Generation:</strong> Security Assessment Report and Plan automation"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/fedramp/assessment/create", "Create FedRAMP assessment package"),
+                ("POST /api/compliance/fedramp/controls/assess", "Assess security control implementation"),
+                ("GET /api/compliance/fedramp/authorization/status", "Check ATO status and monitoring data"),
+                ("POST /api/compliance/fedramp/conmon/report", "Submit continuous monitoring report")
+            ],
+            tags=[
+                '<span class="usa-tag bg-info">Low Impact</span>',
+                '<span class="usa-tag bg-warning">Moderate Impact</span>',
+                '<span class="usa-tag bg-error">High Impact</span>'
+            ]
+        )
+
+    def generate_module_page_civ_star(self) -> str:
+        """Generate individual page for CIV-STAR (CSA STAR) module."""
+        return self._generate_module_page_template(
+            module_id="csa_star",
+            module_name="CIV-STAR",
+            title="Cloud Security Trust, Assurance, and Risk Registry",
+            description="CSA STAR-inspired certification program for cloud security assurance. Provides transparent security attestation using CCM (Cloud Controls Matrix) framework for cloud service providers.",
+            features=[
+                "<strong>CCM Framework:</strong> Cloud Controls Matrix v4.0 implementation",
+                "<strong>CAIQ Assessment:</strong> Consensus Assessments Initiative Questionnaire",
+                "<strong>3-Level Certification:</strong> Self-Assessment, 3rd Party Audit, Continuous Monitoring",
+                "<strong>Transparency Registry:</strong> Public security posture documentation",
+                "<strong>SOC 2 Mapping:</strong> Alignment with Trust Services Criteria",
+                "<strong>ISO 27001 Correlation:</strong> Integration with information security standards"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/csa-star/assessment/create", "Create STAR self-assessment"),
+                ("POST /api/compliance/csa-star/caiq/submit", "Submit CAIQ questionnaire responses"),
+                ("GET /api/compliance/csa-star/certification/level", "Get current certification level"),
+                ("POST /api/compliance/csa-star/ccm/assess", "Assess against CCM controls")
+            ],
+            tags=[
+                '<span class="usa-tag">Level 1: Self-Assessment</span>',
+                '<span class="usa-tag bg-info">Level 2: 3rd Party</span>',
+                '<span class="usa-tag bg-success">Level 3: Continuous</span>'
+            ]
+        )
+
+    def generate_module_page_civ_cmmc(self) -> str:
+        """Generate individual page for CIV-CMMC module."""
+        return self._generate_module_page_template(
+            module_id="cmmc",
+            module_name="CIV-CMMC",
+            title="Cybersecurity Maturity Model Certification",
+            description="CMMC 2.0-inspired cybersecurity framework for defense contractors. Ensures protection of Federal Contract Information (FCI) and Controlled Unclassified Information (CUI) in the defense industrial base.",
+            features=[
+                "<strong>CMMC 2.0 Levels:</strong> 3-tier maturity model (Foundational, Advanced, Expert)",
+                "<strong>NIST 800-171 Alignment:</strong> 110 security requirements mapped to practices",
+                "<strong>Assessment Readiness:</strong> Gap analysis and remediation planning",
+                "<strong>Practice Implementation:</strong> 320+ cybersecurity practices across 17 domains",
+                "<strong>C3PAO Preparation:</strong> Third-party assessor readiness verification",
+                "<strong>POA&M Tracking:</strong> Plan of Action and Milestones management"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/cmmc/assessment/create", "Create CMMC assessment for contractor"),
+                ("POST /api/compliance/cmmc/gap-analysis", "Perform gap analysis against target level"),
+                ("GET /api/compliance/cmmc/practices/assess", "Assess practice implementation status"),
+                ("POST /api/compliance/cmmc/poam/create", "Create POA&M for identified gaps")
+            ],
+            tags=[
+                '<span class="usa-tag">Level 1: Foundational</span>',
+                '<span class="usa-tag bg-info">Level 2: Advanced</span>',
+                '<span class="usa-tag bg-warning">Level 3: Expert</span>'
+            ]
+        )
+
+    def generate_module_page_civ_diss(self) -> str:
+        """Generate individual page for CIV-DISS (DISS) module."""
+        return self._generate_module_page_template(
+            module_id="diss",
+            module_name="CIV-DISS",
+            title="Personnel Security and Clearance Management",
+            description="DISS-inspired Defense Information System for Security for personnel security management. Provides comprehensive tracking of security clearances, investigations, and continuous evaluation for cleared personnel.",
+            features=[
+                "<strong>Clearance Tracking:</strong> Confidential, Secret, Top Secret clearance management",
+                "<strong>Investigation Monitoring:</strong> SF-86, SF-85P processing and status tracking",
+                "<strong>Continuous Evaluation:</strong> Ongoing security posture monitoring (CE)",
+                "<strong>SCI Access Control:</strong> Sensitive Compartmented Information eligibility",
+                "<strong>Indoctrination Records:</strong> Special access program briefing tracking",
+                "<strong>Incident Reporting:</strong> Security violation and adverse information management"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/diss/clearance/create", "Create personnel clearance record"),
+                ("GET /api/compliance/diss/clearance/status", "Check clearance status and expiration"),
+                ("POST /api/compliance/diss/investigation/submit", "Submit investigation package"),
+                ("POST /api/compliance/diss/continuous-evaluation", "Submit CE periodic review data")
+            ],
+            tags=[
+                '<span class="usa-tag">Confidential</span>',
+                '<span class="usa-tag bg-info">Secret</span>',
+                '<span class="usa-tag bg-warning">Top Secret</span>',
+                '<span class="usa-tag bg-error">TS/SCI</span>'
+            ]
+        )
+
+    def generate_module_page_soc2(self) -> str:
+        """Generate individual page for SOC 2 Type II module."""
+        return self._generate_module_page_template(
+            module_id="soc2",
+            module_name="SOC 2 Type II",
+            title="Trust Services Certification",
+            description="AICPA SOC 2 Type II compliance framework for SaaS providers. Demonstrates security, availability, processing integrity, confidentiality, and privacy controls through independent attestation.",
+            features=[
+                "<strong>5 Trust Services Criteria:</strong> Security, Availability, Processing Integrity, Confidentiality, Privacy",
+                "<strong>Type II Assessment:</strong> 6-12 month operational effectiveness evaluation",
+                "<strong>Control Environment:</strong> 64 common criteria with customized controls",
+                "<strong>Evidence Collection:</strong> Automated artifact gathering and retention",
+                "<strong>Audit Readiness:</strong> Pre-audit preparation and gap remediation",
+                "<strong>Report Generation:</strong> SOC 2 Type II report production support"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/soc2/assessment/create", "Create SOC 2 assessment scope"),
+                ("POST /api/compliance/soc2/controls/assess", "Assess control implementation"),
+                ("POST /api/compliance/soc2/evidence/collect", "Collect supporting evidence"),
+                ("GET /api/compliance/soc2/readiness", "Check audit readiness status")
+            ],
+            tags=[
+                '<span class="usa-tag">Security</span>',
+                '<span class="usa-tag">Availability</span>',
+                '<span class="usa-tag">Processing Integrity</span>',
+                '<span class="usa-tag">Confidentiality</span>',
+                '<span class="usa-tag">Privacy</span>'
             ]
         )
 
