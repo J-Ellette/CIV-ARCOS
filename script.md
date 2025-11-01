@@ -2,15 +2,6 @@
 
 This document identifies all external tools, scripts, software, modules, and off-the-shelf models used in the repository instead of custom implementations.
 
-## Language Coverage
-- ✅ Python (primary language)
-- ✅ JavaScript/Node.js (for Drakon Editor integration - optional)
-- ❌ Java - None found
-- ❌ Rust - None found
-- ❌ Go - None found
-- ❌ C# - None found
-- ❌ Ruby - None found
-
 ## External Tools and Software by Category
 
 ### Development & Build Tools
