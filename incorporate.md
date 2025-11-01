@@ -711,7 +711,7 @@ Enterprise asset management for public agencies
 
 ****************************************
 
-## Dioptra: Test Software for the Characterization of AI Technologies
+## Dioptra: Test Software for the Characterization of AI Technologies (COMPLETE)
 (https://pages.nist.gov/dioptra/) (https://github.com/usnistgov/dioptra)
 
 ****************************************
@@ -727,7 +727,7 @@ https://github.com/awesomeSBOM/awesome-sbom
 ****************************************
 
 
-## RegScale: 
+## RegScale: (COMPLETE)
 With an emphasis on automation, this platform integrates compliance as code into IT operations, allowing for continuous monitoring and automated reporting against federal standards like NIST 800-53 and FedRAMP. 
 (https://regscale.com/)
 
