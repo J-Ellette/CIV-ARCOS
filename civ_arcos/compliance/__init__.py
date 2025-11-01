@@ -8,6 +8,9 @@ Implements various compliance and security automation frameworks:
 - CIV-ACAS: Unified vulnerability management and compliance assessment
 - CIV-NESSUS: Network vulnerability scanning and policy compliance
 - SBOM: Software Bill of Materials and Supply Chain Security
+- ATO: Accelerated Authority to Operate
+- DEF STAN 00-970: UK Defense Software Standards
+- MIL-STD-498: Military Standard for Software Development
 """
 
 from .scap import (
@@ -96,6 +99,35 @@ from .ato import (
     Assessment,
 )
 
+from .defstan import (
+    DefStanEngine,
+    DocumentationValidator,
+    DefStanAssessment,
+    DefStanRequirement,
+    SafetyRequirement,
+    QualityMetric,
+    ConfigurationItem,
+    DefStanCategory,
+    IntegrityLevel,
+    LifecyclePhase,
+    ComplianceStatus as DefStanComplianceStatus,
+)
+
+from .milstd498 import (
+    MilStd498Engine,
+    DocumentGenerator,
+    MilStdProject,
+    DocumentRequirement,
+    RequirementItem,
+    DesignComponent,
+    TestCase,
+    VersionInfo,
+    DocumentType,
+    LifecycleActivity,
+    ComplianceLevel as MilStdComplianceLevel,
+    ReviewStatus,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -169,4 +201,29 @@ __all__ = [
     "ATOSecurityControl",
     "RiskItem",
     "Assessment",
+    # DEF STAN 00-970
+    "DefStanEngine",
+    "DocumentationValidator",
+    "DefStanAssessment",
+    "DefStanRequirement",
+    "SafetyRequirement",
+    "QualityMetric",
+    "ConfigurationItem",
+    "DefStanCategory",
+    "IntegrityLevel",
+    "LifecyclePhase",
+    "DefStanComplianceStatus",
+    # MIL-STD-498
+    "MilStd498Engine",
+    "DocumentGenerator",
+    "MilStdProject",
+    "DocumentRequirement",
+    "RequirementItem",
+    "DesignComponent",
+    "TestCase",
+    "VersionInfo",
+    "DocumentType",
+    "LifecycleActivity",
+    "MilStdComplianceLevel",
+    "ReviewStatus",
 ]

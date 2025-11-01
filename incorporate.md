@@ -464,13 +464,13 @@ Cultural shift: The initiative promotes a cultural shift towards integrating sec
 
 ****************************************
 
-### DEF STAN 00-970
+### DEF STAN 00-970 (COMPLETE)
 UK defense software standards
 (https://www.gov.uk/government/publications/defence-standards-def-stan-970-amendments)
 
 ****************************************
 
-### MIL-STD-498
+### MIL-STD-498 (COMPLETE)
 Software development and documentation standards
 (https://en.wikipedia.org/wiki/MIL-STD-498)
 

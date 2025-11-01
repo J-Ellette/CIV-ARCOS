@@ -1051,6 +1051,139 @@ class DashboardGenerator:
                     </div>
                 </div>
 
+                <!-- DEF STAN 00-970 Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">DEF STAN 00-970</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>UK Defense Software Standards</strong></p>
+                            <p>UK Ministry of Defence software quality standards for safety-critical 
+                            and high-integrity software development.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>Safety-Critical Development:</strong> Standards for mission-critical systems</li>
+                                <li><strong>Integrity Levels:</strong> 4-level classification (Level 1-4)</li>
+                                <li><strong>Quality Assurance:</strong> Automated quality metric validation</li>
+                                <li><strong>Configuration Management:</strong> Comprehensive change tracking and baselining</li>
+                                <li><strong>V&V Requirements:</strong> Verification and validation standards</li>
+                                <li><strong>Documentation Standards:</strong> Required artifacts for each integrity level</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/defstan/assessment/create</code><br>
+                                <small>Create DEF STAN 00-970 assessment for a system</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/defstan/quality/assess</code><br>
+                                <small>Assess code quality against DEF STAN requirements</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/defstan/report/:assessment_id</code><br>
+                                <small>Generate comprehensive compliance report</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/defstan/documentation/validate</code><br>
+                                <small>Validate required documentation completeness</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Integrity Levels:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag bg-error">Level 1</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag bg-warning">Level 2</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag bg-info">Level 3</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">Level 4</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('defstan')">Test DEF STAN</button>
+                            <a href="/api/compliance/defstan/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MIL-STD-498 Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">MIL-STD-498</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Military Software Development Standards</strong></p>
+                            <p>US DoD software development and documentation standards for military 
+                            systems and defense contractors.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>13 Data Item Descriptions:</strong> Complete documentation framework (SDP, SRS, SDD, STD, etc.)</li>
+                                <li><strong>Lifecycle Management:</strong> 11 defined software development activities</li>
+                                <li><strong>Requirements Traceability:</strong> Automated traceability matrix generation</li>
+                                <li><strong>Test Case Management:</strong> Test planning, execution, and reporting</li>
+                                <li><strong>Version Control:</strong> VDD (Version Description Document) support</li>
+                                <li><strong>Document Templates:</strong> Standard outlines for all required documents</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/milstd498/project/create</code><br>
+                                <small>Create new MIL-STD-498 compliant project</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/milstd498/requirement/add</code><br>
+                                <small>Add software requirement with traceability</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/milstd498/traceability/:project_id</code><br>
+                                <small>Generate requirements traceability matrix</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/milstd498/document/generate</code><br>
+                                <small>Generate document template (SRS, SDD, STD, VDD)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/milstd498/report/:project_id</code><br>
+                                <small>Generate comprehensive compliance report</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Document Types:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">SRS</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">SDD</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">STD</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">VDD</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">STP</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('milstd498')">Test MIL-STD-498</button>
+                            <a href="/api/compliance/milstd498/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
                 <h2 class="margin-top-5">API Integration</h2>
                 <div class="usa-prose margin-top-3">
                     <p>All compliance modules are accessible via RESTful APIs for easy integration 
@@ -1354,6 +1487,101 @@ const results = await response.json();</code></pre>
                                 </div>
                                 <details class="margin-top-2">
                                     <summary>View Detailed Results</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                                </details>
+                            </div>
+                        </div>
+                    `;
+                }} else if (module === 'defstan') {{
+                    // For DEF STAN 00-970, create and assess
+                    const createResponse = await fetch('/api/compliance/defstan/assessment/create', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            system_name: 'Demo System',
+                            system_version: '1.0.0',
+                            category: 'high_integrity',
+                            target_integrity_level: 'level_2',
+                            assessor: 'Test Assessor'
+                        }})
+                    }});
+                    
+                    if (!createResponse.ok) {{
+                        throw new Error(`HTTP error! status: ${{createResponse.status}}`);
+                    }}
+                    
+                    results = await createResponse.json();
+                    
+                    // Display DEF STAN results
+                    resultsDiv.innerHTML = `
+                        <div class="usa-alert usa-alert--success">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ DEF STAN 00-970 Assessment Created</h4>
+                                <p class="usa-alert__text">
+                                    <strong>System:</strong> ${{results.system_name}} v${{results.system_version}}<br>
+                                    <strong>Category:</strong> ${{results.category}}<br>
+                                    <strong>Integrity Level:</strong> ${{results.target_integrity_level}}<br>
+                                    <strong>Total Requirements:</strong> ${{results.requirements.length}}<br>
+                                    <strong>Status:</strong> ${{results.overall_compliance}}
+                                </p>
+                                <div class="margin-top-2">
+                                    <h5>Key Requirements:</h5>
+                                    <ul class="usa-list text-small">
+                                        ${{results.requirements.slice(0, 5).map(req => `
+                                            <li><strong>${{req.requirement_id}}:</strong> ${{req.title}}</li>
+                                        `).join('')}}
+                                        ${{results.requirements.length > 5 ? '<li><em>And ' + (results.requirements.length - 5) + ' more...</em></li>' : ''}}
+                                    </ul>
+                                </div>
+                                <details class="margin-top-2">
+                                    <summary>View Detailed Assessment</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                                </details>
+                            </div>
+                        </div>
+                    `;
+                }} else if (module === 'milstd498') {{
+                    // For MIL-STD-498, create project
+                    response = await fetch('/api/compliance/milstd498/project/create', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            project_name: 'Demo Defense Project',
+                            project_id: 'DEMO-MIL-001',
+                            compliance_level: 'full',
+                            project_manager: 'Test PM'
+                        }})
+                    }});
+                    
+                    if (!response.ok) {{
+                        throw new Error(`HTTP error! status: ${{response.status}}`);
+                    }}
+                    
+                    results = await response.json();
+                    
+                    // Display MIL-STD-498 results
+                    resultsDiv.innerHTML = `
+                        <div class="usa-alert usa-alert--success">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ MIL-STD-498 Project Created</h4>
+                                <p class="usa-alert__text">
+                                    <strong>Project:</strong> ${{results.project_name}}<br>
+                                    <strong>Project ID:</strong> ${{results.project_id}}<br>
+                                    <strong>Compliance Level:</strong> ${{results.compliance_level}}<br>
+                                    <strong>Required Documents:</strong> ${{results.documents.length}}<br>
+                                    <strong>Start Date:</strong> ${{new Date(results.start_date).toLocaleDateString()}}
+                                </p>
+                                <div class="margin-top-2">
+                                    <h5>Required Documents:</h5>
+                                    <ul class="usa-list text-small">
+                                        ${{results.documents.slice(0, 8).map(doc => `
+                                            <li><strong>${{doc.doc_type}}:</strong> ${{doc.title}} - <span class="text-base">${{doc.status}}</span></li>
+                                        `).join('')}}
+                                        ${{results.documents.length > 8 ? '<li><em>And ' + (results.documents.length - 8) + ' more...</em></li>' : ''}}
+                                    </ul>
+                                </div>
+                                <details class="margin-top-2">
+                                    <summary>View Detailed Project</summary>
                                     <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
                                 </details>
                             </div>
