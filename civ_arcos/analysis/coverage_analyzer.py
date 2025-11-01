@@ -59,18 +59,29 @@ class CoverageAnalyzer:
     def _run_coverage(
         self, source_dir: str, test_command: str, config_file: Optional[str]
     ) -> None:
-        """Run CodeCoverage to measure test coverage."""
+        """
+        Run CodeCoverage to measure test coverage.
+        
+        Note: This is a simplified implementation. The CodeCoverage module
+        requires the test code to be executed while tracing is active.
+        For full functionality, tests should be run programmatically or
+        this should integrate with a test runner like TestRunner from Emu-Soft.
+        
+        Current implementation: Analyzes source files for executable lines
+        without actually running tests. For real coverage data, tests must
+        be executed between cov.start() and cov.stop().
+        """
         # Initialize Coverage with source directory
         self.cov = Coverage(source=[source_dir])
         
         # Start coverage measurement
         self.cov.start()
         
-        # Import and run tests
-        # Note: In a real implementation, we would dynamically import and run tests
-        # For now, we'll use a simplified approach that traces the source code
-        import sys
-        sys.path.insert(0, source_dir)
+        # TODO: Integrate with TestRunner from Emu-Soft to actually run tests
+        # For now, this will track any code executed after start() and before stop()
+        # Example of proper usage:
+        # import test_module
+        # test_module.run_all_tests()
         
         # Stop coverage measurement
         self.cov.stop()
