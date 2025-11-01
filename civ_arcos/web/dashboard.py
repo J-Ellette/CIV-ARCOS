@@ -1938,6 +1938,266 @@ class DashboardGenerator:
                     </div>
                 </div>
 
+                <!-- DoD Cyber Exchange Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">DoD Cyber Exchange</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>CMMC Framework Tools and Resources</strong></p>
+                            <p>Centralized cybersecurity information and tools for defense contractors 
+                            and the defense industrial base. Provides automated tools and resources for 
+                            Cybersecurity Maturity Model Certification (CMMC) framework compliance.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>400+ STIGs:</strong> Security Technical Implementation Guides for various platforms</li>
+                                <li><strong>50+ SRGs:</strong> Security Requirements Guides for defense systems</li>
+                                <li><strong>CMMC Resources:</strong> Comprehensive assessment guides and tools (100+ resources)</li>
+                                <li><strong>Security Tools:</strong> STIG Viewer, benchmarks, validators (15+ tools)</li>
+                                <li><strong>Training Materials:</strong> Cybersecurity awareness training (50+ courses)</li>
+                                <li><strong>Resource Search:</strong> Advanced search across all cybersecurity resources</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/dod-cyber-exchange/resources/search</code><br>
+                                <small>Search DoD Cyber Exchange resources by type and domain</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/dod-cyber-exchange/stig/:stig_id</code><br>
+                                <small>Download specific STIG or SRG</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/dod-cyber-exchange/training/enroll</code><br>
+                                <small>Enroll in cybersecurity awareness training</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Resource Categories:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">STIGs</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Tools</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">CMMC</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Training</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('dod_cyber_exchange')">Test DoD Cyber Exchange</button>
+                            <a href="/api/compliance/dod-cyber-exchange/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HACMS Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">HACMS</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>High-Assurance Cyber Military Systems</strong></p>
+                            <p>Uses formal methods to create provably secure software capable of withstanding 
+                            cyber threats. Generates machine-checkable proofs that demonstrate the safety and 
+                            security of code. DARPA program focused on creating high-assurance software systems.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>Formal Methods:</strong> Model checking, theorem proving, abstract interpretation, symbolic execution</li>
+                                <li><strong>Machine-Checkable Proofs:</strong> Mathematical proofs verified by proof assistants (Coq, Isabelle, ACL2)</li>
+                                <li><strong>Memory Safety:</strong> Guaranteed no buffer overflows, use-after-free, memory leaks</li>
+                                <li><strong>Control Flow Integrity:</strong> Proven resistance to ROP/JOP attacks</li>
+                                <li><strong>Security Properties:</strong> 8 core security properties verified (memory safety, type safety, CFI, etc.)</li>
+                                <li><strong>Assurance Cases:</strong> Formal assurance case generation with GSN notation</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/hacms/system/create</code><br>
+                                <small>Create high-assurance system project with security requirements</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/hacms/verify/memory-safety</code><br>
+                                <small>Verify memory safety properties with formal proof</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/hacms/verify/cfi</code><br>
+                                <small>Verify control flow integrity with formal methods</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/hacms/proof/generate</code><br>
+                                <small>Generate machine-checkable proof for security property</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/hacms/assurance-case/generate</code><br>
+                                <small>Generate formal assurance case with proofs</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Assurance Levels:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">Basic</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">Moderate</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag bg-warning">High</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag bg-error">Very High</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('hacms')">Test HACMS</button>
+                            <a href="/api/compliance/hacms/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SafeDocs Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">SafeDocs</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Parser Vulnerability Prevention</strong></p>
+                            <p>Addresses vulnerabilities in software parsers that process electronic documents. 
+                            Creates safer documents for more secure computing. DARPA program focused on preventing 
+                            exploitation of parser vulnerabilities in document processing systems.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>Multi-Format Support:</strong> PDF, XML, JSON, Office (DOCX/XLSX/PPTX), Images, Archives</li>
+                                <li><strong>Vulnerability Detection:</strong> Buffer overflow, integer overflow, XXE, deserialization, injection</li>
+                                <li><strong>Parser Analysis:</strong> Deep structural analysis of parser components (font parser, image decoder, etc.)</li>
+                                <li><strong>Safe Document Creation:</strong> Generate hardened documents resistant to exploitation</li>
+                                <li><strong>Sanitization:</strong> Automated document sanitization and neutralization</li>
+                                <li><strong>Risk Scoring:</strong> Comprehensive risk assessment and remediation guidance</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/safedocs/scan</code><br>
+                                <small>Scan document for parser vulnerabilities</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/safedocs/sanitize</code><br>
+                                <small>Sanitize document and remove malicious content</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/safedocs/create-safe</code><br>
+                                <small>Create safe document from untrusted source</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/safedocs/validate</code><br>
+                                <small>Validate document against security policy</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Supported Formats:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">PDF</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">XML</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">JSON</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Office</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Images</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('safedocs')">Test SafeDocs</button>
+                            <a href="/api/compliance/safedocs/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- V-SPELLs Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">V-SPELLs</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Verified Security and Performance Enhancement of Large Legacy Software</strong></p>
+                            <p>Automatically enhances security and performance of legacy software through binary 
+                            analysis, verification, and transformation without requiring source code. DARPA program 
+                            focused on improving legacy systems without extensive manual effort.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>Binary Analysis:</strong> Static, dynamic, symbolic execution without source code access</li>
+                                <li><strong>Security Enhancements:</strong> Automated bounds checking, stack protection, CFI, memory sanitization</li>
+                                <li><strong>Performance Optimizations:</strong> Dead code elimination, loop optimization, parallelization, vectorization</li>
+                                <li><strong>Legacy Language Support:</strong> C, C++, FORTRAN, COBOL, Assembly, Java</li>
+                                <li><strong>Automated Verification:</strong> Functional correctness and security verification</li>
+                                <li><strong>Vulnerability Mitigation:</strong> Buffer overflow, format string, integer overflow, race conditions</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/vspells/project/create</code><br>
+                                <small>Create legacy software enhancement project</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/vspells/analyze</code><br>
+                                <small>Analyze binary for vulnerabilities and performance issues</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/vspells/enhance/security</code><br>
+                                <small>Apply security enhancements (bounds checking, CFI, etc.)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/vspells/enhance/performance</code><br>
+                                <small>Apply performance optimizations (parallelization, vectorization)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/vspells/verify</code><br>
+                                <small>Verify enhancements preserve functionality and improve security</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Enhancement Types:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Security</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Performance</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Verification</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('vspells')">Test V-SPELLs</button>
+                            <a href="/api/compliance/vspells/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
                 <h2 class="margin-top-5">API Integration</h2>
                 <div class="usa-prose margin-top-3">
                     <p>All compliance modules are accessible via RESTful APIs for easy integration 
