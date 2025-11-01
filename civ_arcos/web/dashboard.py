@@ -931,6 +931,12 @@ class DashboardGenerator:
                 "title": "Accreditation and Certification Process Automation",
                 "description": "Automated workflow management for complex accreditation and certification processes with evidence assembly, stakeholder coordination, and compliance validation."
             },
+            {
+                "name": "Dynamics for Government",
+                "url": "/dashboard/compliance/dynamics-gov",
+                "title": "Government CRM and Process Automation",
+                "description": "Microsoft 365 Dynamics-inspired CRM capabilities, process automation, and compliance workflow management for civilian organizations and government contractors."
+            },
         ]
         
         # Generate module cards HTML
@@ -3066,6 +3072,35 @@ const results = await response.json();</code></pre>
                 '<span class="usa-tag">Workflow</span>',
                 '<span class="usa-tag">Evidence Management</span>',
                 '<span class="usa-tag">Accreditation</span>'
+            ]
+        )
+
+    def generate_module_page_dynamics_gov(self) -> str:
+        """Generate individual page for Dynamics for Government module."""
+        return self._generate_module_page_template(
+            module_id="dynamics-gov",
+            module_name="Dynamics for Government",
+            title="Government CRM and Process Automation",
+            description="Microsoft 365 Dynamics-inspired CRM capabilities providing compliance workflow automation, stakeholder relationship management, document management, task automation, and analytics for civilian organizations and government contractors.",
+            features=[
+                "<strong>Compliance Workflow Automation:</strong> Automated process management for compliance tasks",
+                "<strong>Stakeholder CRM:</strong> Manage contacts, organizations, and compliance relationships",
+                "<strong>Document Management:</strong> Centralized compliance documentation and tracking",
+                "<strong>Task Automation:</strong> Automated task assignment, tracking, and notifications",
+                "<strong>Integration Hub:</strong> Connect compliance tools and systems seamlessly",
+                "<strong>Analytics & Reporting:</strong> Compliance metrics, dashboards, and insights"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/dynamics-gov/contact/create", "Create contact record"),
+                ("POST /api/compliance/dynamics-gov/workflow/start", "Start automated workflow"),
+                ("GET /api/compliance/dynamics-gov/tasks/list", "List assigned tasks"),
+                ("POST /api/compliance/dynamics-gov/document/upload", "Upload compliance document")
+            ],
+            tags=[
+                '<span class="usa-tag">CRM</span>',
+                '<span class="usa-tag">Workflow Automation</span>',
+                '<span class="usa-tag">Document Management</span>',
+                '<span class="usa-tag">Government</span>'
             ]
         )
 
