@@ -7,15 +7,13 @@ This document identifies all external tools, scripts, software, modules, and off
 **Completed Replacements:**
 - [x] **Drakon Editor (Node.js)** - (COMPLETE - REPLACED) - Replaced with custom SVG generation (see section: Drakon Editor)
 - [x] **coverage.py** - (COMPLETE - REPLACED) - Replaced with CodeCoverage from Emu-Soft (see: `civ_arcos/analysis/civ_scripts/civ_cov.py`)
-
-**In Progress:**
-- [ ] pytest → TestRunner (from Emu-Soft)
-- [ ] mypy → TypeChecker (from Emu-Soft)
-- [ ] black → CodeFormatter (from Emu-Soft)
-- [ ] flake8 → CodeLinter (from Emu-Soft)
+- [x] **pytest** - (COMPLETE - REPLACED) - Replaced with TestRunner (CIV-pyt) from Emu-Soft (see: `civ_arcos/analysis/civ_scripts/civ_pyt.py`)
+- [x] **mypy** - (COMPLETE - REPLACED) - Replaced with TypeChecker (CIV-my) from Emu-Soft (see: `civ_arcos/analysis/civ_scripts/civ_my.py`)
+- [x] **black** - (COMPLETE - REPLACED) - Replaced with CodeFormatter (CIV-bla) from Emu-Soft (see: `civ_arcos/analysis/civ_scripts/civ_bla.py`)
+- [x] **flake8** - (COMPLETE - REPLACED) - Replaced with CodeLinter (CIV-fla) from Emu-Soft (see: `civ_arcos/analysis/civ_scripts/civ_fla.py`)
 
 **Acceptable External Dependencies (Per Project Philosophy):**
-- Testing & Quality Tools: ~~pytest, coverage.py~~, black, mypy, flake8 (acceptable as development tools - being replaced)
+- Testing & Quality Tools: ~~pytest, coverage.py, black, mypy, flake8~~ (all replaced with CIV scripts)
 - Containerization: Docker, docker-compose (acceptable for deployment)
 - Package Management: pip, setuptools (Python ecosystem standards)
 

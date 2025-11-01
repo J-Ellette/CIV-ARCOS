@@ -3,6 +3,10 @@ CIV-Scripts: Custom implementations replacing external tools.
 
 This module provides replacements for external Python tools and standard library modules:
 - civ_cov: Replacement for coverage.py (CodeCoverage)
+- civ_pyt: Replacement for pytest (TestRunner)
+- civ_my: Replacement for mypy (TypeChecker)
+- civ_bla: Replacement for black (CodeFormatter)
+- civ_fla: Replacement for flake8 (CodeLinter)
 - submarine: Replacement for subprocess (Submarine)  
 - jason: Replacement/wrapper for json (Jason)
 - hashish: Replacement/wrapper for hashlib (Hashish)

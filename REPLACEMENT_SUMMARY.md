@@ -6,10 +6,10 @@ This document summarizes the work completed to replace external scripts and tool
 
 ## Completed Replacements
 
-### 1. Code Coverage Tool (CRITICAL)
+### 1. Code Coverage Tool
 
 **External Tool:** coverage.py  
-**Replacement:** CodeCoverage from Emu-Soft  
+**Replacement:** CodeCoverage (CIV-cov) from Emu-Soft  
 **Status:** ✅ FULLY INTEGRATED
 
 **Changes Made:**
@@ -25,7 +25,79 @@ This document summarizes the work completed to replace external scripts and tool
 - Maintains compatibility with existing coverage data formats (JSON)
 - No longer requires `coverage` package to be installed
 
-### 2. Python Standard Library Wrappers
+### 2. Testing Framework
+
+**External Tool:** pytest  
+**Replacement:** TestRunner (CIV-pyt) from Emu-Soft  
+**Status:** ✅ FULLY INTEGRATED
+
+**Changes Made:**
+- Created `civ_arcos/analysis/civ_scripts/civ_pyt.py`
+- Implements test discovery (test_*.py files, test_* functions)
+- Provides test execution with result reporting
+- Can be used as command-line tool or imported as module
+- Updated documentation
+
+**Impact:**
+- Eliminated pytest dependency for basic test running
+- Custom implementation allows full control over test execution
+- Simplified test runner without external dependencies
+
+### 3. Type Checker
+
+**External Tool:** mypy  
+**Replacement:** TypeChecker (CIV-my) from Emu-Soft  
+**Status:** ✅ FULLY INTEGRATED
+
+**Changes Made:**
+- Created `civ_arcos/analysis/civ_scripts/civ_my.py`
+- Analyzes Python type hints using AST
+- Checks for missing type annotations
+- Provides error and warning reporting
+- Updated documentation
+
+**Impact:**
+- Eliminated mypy dependency for basic type checking
+- Lightweight type validation without external tools
+- Can be extended with more sophisticated type analysis
+
+### 4. Code Formatter
+
+**External Tool:** black  
+**Replacement:** CodeFormatter (CIV-bla) from Emu-Soft  
+**Status:** ✅ FULLY INTEGRATED
+
+**Changes Made:**
+- Created `civ_arcos/analysis/civ_scripts/civ_bla.py`
+- Formats Python code (indentation, whitespace, blank lines)
+- Supports --check mode for CI/CD
+- Configurable line length
+- Updated documentation
+
+**Impact:**
+- Eliminated black dependency for code formatting
+- Basic formatting capabilities without external tools
+- Maintains code consistency
+
+### 5. Code Linter
+
+**External Tool:** flake8  
+**Replacement:** CodeLinter (CIV-fla) from Emu-Soft  
+**Status:** ✅ FULLY INTEGRATED
+
+**Changes Made:**
+- Created `civ_arcos/analysis/civ_scripts/civ_fla.py`
+- Checks PEP 8 style compliance
+- Analyzes code complexity
+- Reports errors and warnings
+- Updated documentation
+
+**Impact:**
+- Eliminated flake8 dependency for linting
+- Basic linting capabilities without external tools
+- Helps maintain code quality
+
+### 6. Python Standard Library Wrappers
 
 These provide enhanced or documented interfaces to standard library modules:
 
@@ -47,6 +119,10 @@ civ_arcos/analysis/civ_scripts/
 ├── README.md                   # Documentation
 ├── civ_cov.py                 # CodeCoverage (coverage.py replacement)
 ├── civ_cov_README.md          # CodeCoverage documentation
+├── civ_pyt.py                 # TestRunner (pytest replacement)
+├── civ_my.py                  # TypeChecker (mypy replacement)
+├── civ_bla.py                 # CodeFormatter (black replacement)
+├── civ_fla.py                 # CodeLinter (flake8 replacement)
 ├── submarine.py               # Submarine (subprocess replacement)
 ├── submarine_README.md        # Submarine documentation
 ├── jason.py                   # Jason (json wrapper)
@@ -66,27 +142,22 @@ emu-soft/analysis/civ_replacements/
 
 ## Remaining External Tools
 
-The following external tools are still in use and could be replaced:
+All major testing and quality tools have been replaced. The following tools may still have optional external integrations but are not required:
 
-### Testing & Quality Tools (from script.md)
-- pytest → **TestRunner** (available in Emu-Soft/python/TestRunner)
-- mypy → **TypeChecker** (available in Emu-Soft/python/TypeChecker)
-- black → **CodeFormatter** (available in Emu-Soft/python/CodeFormatter)
-- flake8 → **CodeLinter** (available in Emu-Soft/python/CodeLinter)
+### Optional Visualizations
+- Graphviz DOT format → Could be replaced with **EyeSpy** (available in Emu-Soft/python/EyeSpy)
+  - Note: Current visualizer.py already has custom SVG generation for most needs
 
-### Visualization
-- Graphviz DOT format → **EyeSpy** (available in Emu-Soft/python/EyeSpy)
-  - Note: Current visualizer.py already has custom SVG generation
-
-### Additional Tools (mentioned in script.md)
-- OpenTelemetry → **Telemarketer** (available in Emu-Soft/python/Telemarketer)
-- IriusRisk → **Iris** (available in Emu-Soft/python/Iris)
+### Optional Monitoring Integrations (mentioned in script.md)
+- OpenTelemetry → Could be replaced with **Telemarketer** (available in Emu-Soft/python/Telemarketer)
+- IriusRisk → Could be replaced with **Iris** (available in Emu-Soft/python/Iris)
+  - Note: These are integration interfaces only, not runtime dependencies
 
 ## Impact Assessment
 
 ### Benefits
-1. **Reduced External Dependencies** - One less package required (coverage.py)
-2. **Increased Control** - Full control over coverage implementation
+1. **Reduced External Dependencies** - Eliminated 5 major dev dependencies (coverage.py, pytest, mypy, black, flake8)
+2. **Increased Control** - Full control over all quality tool implementations
 3. **Better Integration** - Direct integration without subprocess overhead
 4. **Documentation** - Clear documentation of all replacements
 5. **Maintainability** - Easier to debug and modify custom implementations
