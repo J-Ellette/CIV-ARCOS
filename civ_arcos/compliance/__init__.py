@@ -82,6 +82,20 @@ from .sbom import (
     VulnerabilitySeverity as SBOMVulnerabilitySeverity,
 )
 
+from .ato import (
+    ATOManager,
+    BaselineGenerator,
+    RiskAssessor,
+    ATOPackage,
+    ATOStatus,
+    RiskLevel as ATORiskLevel,
+    AssessmentType,
+    AuthorizationLevel,
+    SecurityControl as ATOSecurityControl,
+    RiskItem,
+    Assessment,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -143,4 +157,16 @@ __all__ = [
     "ComponentType",
     "LicenseType",
     "SBOMVulnerabilitySeverity",
+    # ATO
+    "ATOManager",
+    "BaselineGenerator",
+    "RiskAssessor",
+    "ATOPackage",
+    "ATOStatus",
+    "ATORiskLevel",
+    "AssessmentType",
+    "AuthorizationLevel",
+    "ATOSecurityControl",
+    "RiskItem",
+    "Assessment",
 ]

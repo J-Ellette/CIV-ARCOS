@@ -8,6 +8,7 @@ Provides REST endpoints for evidence collection, badge generation, and status qu
 """
 
 import os
+from dataclasses import asdict
 from civ_arcos.web.framework import create_app, Request, Response
 from civ_arcos.web.badges import BadgeGenerator
 from civ_arcos.web.dashboard import DashboardGenerator
@@ -63,6 +64,8 @@ from civ_arcos.compliance import (
     SupplyChainScanner,
     SBOMValidator,
     SBOMFormat,
+    ATOManager,
+    AssessmentType,
 )
 
 
@@ -132,6 +135,9 @@ nessus_manager = NessusManager()
 sbom_generator = SBOMGenerator()
 supply_chain_scanner = SupplyChainScanner()
 sbom_validator = SBOMValidator()
+
+# Initialize ATO manager
+ato_manager = ATOManager()
 
 
 @app.get("/")
@@ -241,6 +247,13 @@ def index(request: Request) -> Response:
                 "POST /api/supply-chain/scan": "Scan for supply chain risks",
                 "GET /api/sbom/formats": "List supported SBOM formats",
                 "GET /api/sbom/docs": "Get SBOM documentation",
+                # Accelerated ATO
+                "POST /api/ato/initiate": "Initiate ATO process",
+                "POST /api/ato/assess": "Conduct security assessment",
+                "POST /api/ato/authorize": "Make authorization decision",
+                "POST /api/ato/enable-continuous": "Enable continuous ATO",
+                "GET /api/ato/status/{system_name}": "Get ATO status",
+                "GET /api/ato/docs": "Get ATO documentation",
                 # Human-Centered Design & XAI
                 "GET /api/personas/list": "List all persona roles",
                 "GET /api/personas/{role}": "Get persona configuration",
@@ -5437,6 +5450,237 @@ def sbom_documentation(request: Request) -> Response:
                 "POST /api/supply-chain/scan - Scan for supply chain risks",
                 "GET /api/sbom/formats - List supported formats",
                 "GET /api/sbom/docs - This documentation"
+            ]
+        }
+        
+        return Response({
+            "success": True,
+            "documentation": docs
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# Accelerated Authority to Operate (ATO) Endpoints
+# ============================================================================
+
+@app.post("/api/ato/initiate")
+def initiate_ato(request: Request) -> Response:
+    """
+    Initiate ATO process for a system.
+    
+    Request body:
+    {
+        "system_name": "my-system",
+        "system_version": "1.0.0",
+        "impact_level": "moderate"  # low, moderate, or high
+    }
+    """
+    try:
+        data = request.json
+        system_name = data.get("system_name")
+        system_version = data.get("system_version")
+        impact_level = data.get("impact_level", "moderate")
+        
+        if not system_name or not system_version:
+            return Response(
+                {"error": "system_name and system_version are required"},
+                status_code=400
+            )
+        
+        package = ato_manager.initiate_ato(
+            system_name=system_name,
+            system_version=system_version,
+            impact_level=impact_level
+        )
+        
+        return Response({
+            "success": True,
+            "package": package.to_dict(),
+            "status": package.status.value
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/ato/assess")
+def conduct_ato_assessment(request: Request) -> Response:
+    """
+    Conduct security assessment for ATO.
+    
+    Request body:
+    {
+        "system_name": "my-system",
+        "assessment_type": "baseline",  # baseline, penetration_test, vulnerability_scan, etc.
+        "vulnerabilities": [...],  # Optional list of vulnerabilities
+        "findings": [...]  # Optional additional findings
+    }
+    """
+    try:
+        data = request.json
+        system_name = data.get("system_name")
+        assessment_type_str = data.get("assessment_type", "baseline")
+        vulnerabilities = data.get("vulnerabilities")
+        findings = data.get("findings")
+        
+        if not system_name:
+            return Response(
+                {"error": "system_name is required"},
+                status_code=400
+            )
+        
+        # Parse assessment type
+        try:
+            assessment_type = AssessmentType(assessment_type_str)
+        except ValueError:
+            return Response(
+                {"error": f"Invalid assessment_type: {assessment_type_str}"},
+                status_code=400
+            )
+        
+        assessment = ato_manager.conduct_assessment(
+            system_name=system_name,
+            assessment_type=assessment_type,
+            vulnerabilities=vulnerabilities,
+            findings=findings
+        )
+        
+        return Response({
+            "success": True,
+            "assessment": asdict(assessment),
+            "assessment_type": assessment.assessment_type.value
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/ato/authorize")
+def make_ato_decision(request: Request) -> Response:
+    """
+    Make ATO authorization decision.
+    
+    Request body:
+    {
+        "system_name": "my-system",
+        "authorizing_official": "Security Officer Name"
+    }
+    """
+    try:
+        data = request.json
+        system_name = data.get("system_name")
+        authorizing_official = data.get("authorizing_official")
+        
+        if not system_name or not authorizing_official:
+            return Response(
+                {"error": "system_name and authorizing_official are required"},
+                status_code=400
+            )
+        
+        package = ato_manager.make_authorization_decision(
+            system_name=system_name,
+            authorizing_official=authorizing_official
+        )
+        
+        return Response({
+            "success": True,
+            "package": package.to_dict(),
+            "authorization_level": package.authorization_level.value,
+            "status": package.status.value
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/ato/enable-continuous")
+def enable_continuous_ato(request: Request) -> Response:
+    """
+    Enable continuous ATO (cATO) for a system.
+    
+    Request body:
+    {
+        "system_name": "my-system"
+    }
+    """
+    try:
+        data = request.json
+        system_name = data.get("system_name")
+        
+        if not system_name:
+            return Response(
+                {"error": "system_name is required"},
+                status_code=400
+            )
+        
+        package = ato_manager.enable_continuous_ato(system_name)
+        
+        return Response({
+            "success": True,
+            "package": package.to_dict(),
+            "continuous_monitoring": package.metadata.get('continuous_monitoring', False)
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/ato/status/{system_name}")
+def get_ato_status(request: Request) -> Response:
+    """Get current ATO status for a system."""
+    try:
+        system_name = request.path_params.get("system_name")
+        
+        status = ato_manager.get_ato_status(system_name)
+        
+        return Response({
+            "success": True,
+            "status": status
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/ato/docs")
+def ato_documentation(request: Request) -> Response:
+    """Get ATO module documentation."""
+    try:
+        docs = {
+            "module": "Accelerated Authority to Operate (ATO)",
+            "description": "DoD's fast-track software approval process for rapid deployment",
+            "features": [
+                "Automated baseline assessment (NIST 800-53)",
+                "AI-enabled risk analysis",
+                "Continuous ATO (cATO) support",
+                "Rapid authorization decisions",
+                "DevSecOps integration"
+            ],
+            "authorization_levels": [
+                "FULL - Complete authorization for production",
+                "INTERIM - Temporary authorization (6 months)",
+                "CONDITIONAL - Authorization with conditions",
+                "DENIED - Authorization denied"
+            ],
+            "assessment_types": [
+                "baseline - Security baseline assessment",
+                "penetration_test - Penetration testing",
+                "vulnerability_scan - Vulnerability scanning",
+                "configuration_audit - Configuration audit",
+                "code_review - Code review",
+                "continuous_monitoring - Continuous monitoring"
+            ],
+            "standards": [
+                "NIST 800-53 Rev 5 (Security Controls)",
+                "NIST 800-37 (Risk Management Framework)",
+                "DoD RMF",
+                "FedRAMP",
+                "FISMA"
+            ],
+            "endpoints": [
+                "POST /api/ato/initiate - Initiate ATO process",
+                "POST /api/ato/assess - Conduct security assessment",
+                "POST /api/ato/authorize - Make authorization decision",
+                "POST /api/ato/enable-continuous - Enable continuous ATO",
+                "GET /api/ato/status/{system_name} - Get ATO status",
+                "GET /api/ato/docs - This documentation"
             ]
         }
         
