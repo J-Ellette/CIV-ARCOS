@@ -29,14 +29,14 @@ A comprehensive analysis of the CIV-ARCOS codebase confirms that all external sc
 
 ### Functional Replacements (ACTIVE)
 
-| External Tool | CIV Replacement | Status | Source |
-|---------------|-----------------|--------|---------|
-| **pytest** | CIV-pyt | ✅ Functional | Emu-Soft/python/TestRunner |
-| **coverage.py** | CIV-cov | ✅ Functional | Emu-Soft/python/CodeCoverage |
-| **black** | CIV-bla | ✅ Functional | Emu-Soft/python/CodeFormatter |
-| **mypy** | CIV-my | ✅ Functional | Emu-Soft/python/TypeChecker |
-| **flake8** | CIV-fla | ✅ Functional | Emu-Soft/python/CodeLinter |
-| **Drakon Editor** | Custom SVG | ✅ Functional | Custom implementation |
+| External Tool | CIV Replacement | Status | Location |
+|---------------|-----------------|--------|-----------|
+| **pytest** | CIV-pyt | ✅ Functional | civ_arcos/analysis/civ_scripts/civ_pyt.py |
+| **coverage.py** | CIV-cov | ✅ Functional | civ_arcos/analysis/civ_scripts/civ_cov.py |
+| **black** | CIV-bla | ✅ Functional | civ_arcos/analysis/civ_scripts/civ_bla.py |
+| **mypy** | CIV-my | ✅ Functional | civ_arcos/analysis/civ_scripts/civ_my.py |
+| **flake8** | CIV-fla | ✅ Functional | civ_arcos/analysis/civ_scripts/civ_fla.py |
+| **Drakon Editor** | Custom SVG | ✅ Functional | civ_arcos/assurance/visualizer.py |
 
 ### Documentation Stubs (REFERENCE)
 
@@ -129,4 +129,4 @@ The codebase demonstrates:
 
 **Verified by:** Automated Analysis  
 **Verification Date:** 2025-11-01  
-**Codebase Version:** Current HEAD on copilot/replace-external-scripts branch
+**Repository:** https://github.com/J-Ellette/CIV-ARCOS
