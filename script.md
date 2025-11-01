@@ -218,17 +218,17 @@ This document identifies all external tools, scripts, software, modules, and off
 
 ### 8. Python Standard Library Usage
 
-The project extensively uses Python's standard library instead of external dependencies:
-- **ast** - Abstract Syntax Tree parsing for static code analysis
-- **json** - JSON data handling
-- **urllib** - HTTP requests without external libraries (requests)
-- **subprocess** - Running external commands (coverage, Node.js)
-- **hashlib** - Cryptographic hashing for evidence integrity
-- **hmac** - HMAC signatures for webhook verification
+The project extensively uses Python's standard library, with custom wrappers for enhanced functionality:
+- **ast** - Abstract Syntax Tree parsing for static code analysis (wrapped by Asterisk in civ_scripts)
+- **json** - JSON data handling (wrapped by Jason in civ_scripts)
+- **urllib** - HTTP requests without external libraries (wrapped by WebFetch in civ_scripts)
+- **subprocess** - Running external commands (wrapped by Submarine in civ_scripts)
+- **hashlib** - Cryptographic hashing for evidence integrity (wrapped by Hashish in civ_scripts)
+- **hmac** - HMAC signatures for webhook verification (wrapped by Hamburger in civ_scripts)
 - **tempfile** - Temporary file handling for Drakon generation
-- **dataclasses** - Structured data types
-- **enum** - Enumeration types
-- **pathlib** - File path operations
+- **dataclasses** - Structured data types (wrapped by DataClass in civ_scripts)
+- **enum** - Enumeration types (wrapped by Enumeration in civ_scripts)
+- **pathlib** - File path operations (wrapped by PathFinder in civ_scripts)
 
 ## Summary
 
