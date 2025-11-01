@@ -1483,6 +1483,16 @@ def dashboard_compliance_armature_fabric(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+@app.get("/dashboard/compliance/dynamics-gov")
+def dashboard_compliance_dynamics_gov(request: Request) -> Response:
+    """Dynamics for Government CRM and process automation module page."""
+    try:
+        html = dashboard_gen.generate_module_page_dynamics_gov()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
 @app.get("/dashboard/powershell")
 def dashboard_powershell(request: Request) -> Response:
     """Dashboard PowerShell security analysis page."""
