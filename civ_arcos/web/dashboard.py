@@ -2198,6 +2198,368 @@ class DashboardGenerator:
                     </div>
                 </div>
 
+                <!-- CASE/4GL Development Tools -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">CASE/4GL Development Tools</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Computer-Aided Software Engineering & 4th Generation Language</strong></p>
+                            <p>Soviet-era CASE tools emulated for automated compliance documentation generation, 
+                            requirements tracking, and project planning.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>CASE-Analyst:</strong> Automated software design and documentation generation</li>
+                                <li><strong>NIKA-Plan:</strong> Project planning and resource management with critical path analysis</li>
+                                <li><strong>SPRUT:</strong> Specification and requirements tracking with traceability matrices</li>
+                                <li><strong>Documentation Engine:</strong> Automated generation of SRS, SDD, STD, VDD documents</li>
+                                <li><strong>Artifact Management:</strong> Data flow diagrams, ERDs, state transitions, structure charts</li>
+                                <li><strong>Evidence Generation:</strong> Compliance documentation artifacts for audits</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/case4gl/project/create</code><br>
+                                <small>Create CASE project with automated design artifacts</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/case4gl/documentation/generate</code><br>
+                                <small>Generate compliance documentation (SRS, SDD, etc.)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/case4gl/requirement/add</code><br>
+                                <small>Add requirement with automated traceability</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/case4gl/traceability/:project_id</code><br>
+                                <small>Generate requirements traceability matrix (RTM)</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Emulated Tools:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">CASE-Analyst</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">NIKA-Plan</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">SPRUT</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('case4gl')">Test CASE/4GL</button>
+                            <a href="/api/compliance/case4gl/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verification & Validation Tools -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Verification & Validation Tools</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Automated Testing and Verification Systems</strong></p>
+                            <p>Soviet-era testing and verification tools for comprehensive quality assurance, 
+                            code analysis, and legacy code modernization.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>SOKRAT Engine:</strong> Automated test case generation and execution (functional, integration, system)</li>
+                                <li><strong>SPECTRUM Analyzer:</strong> Static code analysis with MISRA-C, CERT-C compliance checking</li>
+                                <li><strong>FORTRAN Analyzer:</strong> Legacy code quality analysis and modernization recommendations</li>
+                                <li><strong>Parallel Execution:</strong> High-performance automated test execution</li>
+                                <li><strong>Standards Compliance:</strong> MISRA, CERT, ISO coding standards verification</li>
+                                <li><strong>Modernization Planning:</strong> Automated legacy code refactoring roadmaps</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/vv/sokrat/test-suite/create</code><br>
+                                <small>Create automated test suite with generated test cases</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/vv/sokrat/execute</code><br>
+                                <small>Execute automated tests (parallel or sequential)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/vv/spectrum/analyze</code><br>
+                                <small>Perform static code analysis with standards compliance</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/vv/fortran/analyze</code><br>
+                                <small>Analyze FORTRAN code with modernization recommendations</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Emulated Tools:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">SOKRAT</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">SPECTRUM</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">FORTRAN Analyzer</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('vv')">Test V&V Tools</button>
+                            <a href="/api/compliance/vv/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Configuration Management Systems -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Configuration Management Systems</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Version Control and Change Management</strong></p>
+                            <p>Soviet-era configuration control systems for critical systems with immutable 
+                            audit trails, approval workflows, and artifact management.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>SCCS (Soviet Configuration Control System):</strong> Version control with immutable audit trails</li>
+                                <li><strong>DELTA Engine:</strong> Change management with automated approval routing</li>
+                                <li><strong>ARCHIVE-M:</strong> Immutable document and artifact storage with provenance</li>
+                                <li><strong>Baseline Management:</strong> Configuration baseline tracking and comparison</li>
+                                <li><strong>Impact Analysis:</strong> Automated change impact assessment</li>
+                                <li><strong>Compliance Tracking:</strong> Regulatory change management workflows</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/config-mgmt/sccs/repository/create</code><br>
+                                <small>Create configuration-controlled repository</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/config-mgmt/sccs/commit</code><br>
+                                <small>Commit version with change tracking</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/config-mgmt/delta/change/create</code><br>
+                                <small>Create change request with impact analysis</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/config-mgmt/archive/store</code><br>
+                                <small>Store artifact with immutable record</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Emulated Systems:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">SCCS</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">DELTA</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">ARCHIVE-M</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('config-mgmt')">Test Config Mgmt</button>
+                            <a href="/api/compliance/config-mgmt/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Design & Architecture Tools -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">System Design & Architecture Tools</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Structured Analysis and Design</strong></p>
+                            <p>Soviet-era design tools for hierarchical functional decomposition, architecture 
+                            modeling, and rigorous process analysis.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>SADT-M:</strong> Structured Analysis and Design Technique with ICOM diagrams</li>
+                                <li><strong>KESKAR:</strong> Computer-aided architecture design with quality attributes</li>
+                                <li><strong>METAN:</strong> Rigorous process modeling with state machines</li>
+                                <li><strong>Model Validation:</strong> Automated consistency and completeness checking</li>
+                                <li><strong>Architecture Patterns:</strong> Layered, microservices, event-driven, pipe-filter</li>
+                                <li><strong>Process Analysis:</strong> Performance metrics and bottleneck identification</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/system-design/sadt/model/create</code><br>
+                                <small>Create SADT model with functional decomposition</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/system-design/sadt/validate</code><br>
+                                <small>Validate SADT model for consistency</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/system-design/keskar/architecture/create</code><br>
+                                <small>Generate system architecture design</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/system-design/metan/process/model</code><br>
+                                <small>Create rigorous process model with state transitions</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Emulated Tools:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">SADT-M</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">KESKAR</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">METAN</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('system-design')">Test System Design</button>
+                            <a href="/api/compliance/system-design/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OpenGov EAM -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">OpenGov EAM</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Enterprise Asset Management for Public Agencies</strong></p>
+                            <p>Comprehensive asset tracking, maintenance scheduling, lifecycle management, and 
+                            work order automation for government organizations.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>Asset Registration:</strong> Complete asset inventory with barcode/serial tracking</li>
+                                <li><strong>Lifecycle Management:</strong> From acquisition to disposal with depreciation</li>
+                                <li><strong>Maintenance Scheduling:</strong> Preventive and corrective maintenance automation</li>
+                                <li><strong>Work Order Management:</strong> Priority-based scheduling with cost tracking</li>
+                                <li><strong>Compliance Tracking:</strong> Inspection and certification requirements</li>
+                                <li><strong>Financial Management:</strong> TCO, depreciation, and value tracking</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/opengov/asset/register</code><br>
+                                <small>Register new asset with lifecycle tracking</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/opengov/work-order/create</code><br>
+                                <small>Create maintenance work order</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/opengov/asset/:id/lifecycle</code><br>
+                                <small>Get comprehensive asset lifecycle information</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Asset Types:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Vehicles</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Equipment</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Facilities</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">IT Assets</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('opengov')">Test OpenGov EAM</button>
+                            <a href="/api/compliance/opengov/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cheqroom -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Cheqroom</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Government Asset Tracking with Audit Trails</strong></p>
+                            <p>Specialized equipment check-in/check-out tracking with QR/RFID support, 
+                            automated maintenance alerts, and comprehensive audit trails.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>Equipment Tracking:</strong> QR code and RFID tag integration</li>
+                                <li><strong>Check-out/Check-in:</strong> User-based equipment lending with return tracking</li>
+                                <li><strong>Immutable Audit Trail:</strong> Complete history of all equipment transactions</li>
+                                <li><strong>Automated Alerts:</strong> Overdue returns and maintenance reminders</li>
+                                <li><strong>Condition Tracking:</strong> Equipment condition at checkout and return</li>
+                                <li><strong>Availability Management:</strong> Real-time quantity tracking</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/cheqroom/equipment/add</code><br>
+                                <small>Add equipment with QR/RFID tracking</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/cheqroom/equipment/checkout</code><br>
+                                <small>Check out equipment to user</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/cheqroom/equipment/checkin</code><br>
+                                <small>Check in equipment with condition assessment</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/cheqroom/audit-trail</code><br>
+                                <small>Retrieve comprehensive audit trail</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Equipment Categories:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Tools</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Vehicles</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Electronics</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Safety Gear</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('cheqroom')">Test Cheqroom</button>
+                            <a href="/api/compliance/cheqroom/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
                 <h2 class="margin-top-5">API Integration</h2>
                 <div class="usa-prose margin-top-3">
                     <p>All compliance modules are accessible via RESTful APIs for easy integration 
