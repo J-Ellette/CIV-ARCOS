@@ -305,8 +305,10 @@ class TestSCAPEngine:
         
         score = engine.get_compliance_score(results)
         
+        # Verify score is calculated correctly: 2 passed out of 3 = 66.67%
         assert 0 <= score <= 100
-        assert score == pytest.approx(66.67, 0.1)  # 2/3 passed
+        expected_score = (2.0 / 3.0) * 100  # Calculate dynamically
+        assert score == pytest.approx(expected_score, 0.1)
     
     def test_generate_report(self):
         """Test report generation through engine."""

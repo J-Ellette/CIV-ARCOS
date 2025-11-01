@@ -19,7 +19,6 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 import json
-import hashlib
 
 
 class ComplianceStatus(Enum):

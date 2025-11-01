@@ -1120,9 +1120,9 @@ def scap_report(request: Request) -> Response:
     try:
         from civ_arcos.compliance import SCAPEngine
         
-        # Get query parameters
-        report_type = request.query.get("report_type", "technical")
-        project_name = request.query.get("project_name", "System")
+        # Get query parameters (they come as lists from the framework)
+        report_type = request.query.get("report_type", ["technical"])[0]
+        project_name = request.query.get("project_name", ["System"])[0]
         
         # For demo purposes, run a quick scan
         # In production, would retrieve stored scan results by scan_id
