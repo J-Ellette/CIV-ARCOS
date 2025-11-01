@@ -149,16 +149,16 @@ This document identifies all external tools, scripts, software, modules, and off
 - **Usage:** Creating assurance case diagrams in DOT format
 - **Note:** Generates DOT format strings; external Graphviz tool can render these to images
 
-#### Drakon Editor (Optional)
+#### Drakon Editor (Optional) - (COMPLETE - REPLACED)
 **Files:** `civ_arcos/assurance/visualizer.py`, `test_drakon_chart.py`
-- **Tool:** Node.js-based Drakon chart generator
-- **Path:** `Drakon-Chart-Editor/drakon-generator.js` (external, optional)
+- **Tool:** ~~Node.js-based Drakon chart generator~~ **REPLACED with custom SVG generation**
+- **Status:** External Drakon Editor dependency removed
 - **Purpose:** Enhanced GSN (Goal Structuring Notation) visualization
-- **Usage:** 
-  - Generates improved chart layouts with better spacing and centering
-  - Requires Node.js to execute the generator script
-  - Falls back to basic SVG generation if not available
-- **Implementation:** Uses `subprocess.run()` to call Node.js script
+- **Implementation:** Now uses 100% custom Python-based SVG generation
+  - No external Node.js dependency required
+  - Custom tree layout algorithm
+  - Optimized visualization with proper node spacing
+  - All functionality implemented in-house
 
 ### 6. Runtime Monitoring & Security Tools (Integration Points)
 
