@@ -700,6 +700,43 @@ class DashboardGenerator:
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/js/uswds.min.js"></script>
     <script>{self.base_js}</script>
+    <script>
+        function viewCase(caseId) {{
+            // Navigate to detailed case view
+            window.location.href = `/api/assurance/${{caseId}}`;
+        }}
+
+        function visualizeCase(caseId) {{
+            // Open visualization in new tab
+            window.open(`/api/assurance/${{caseId}}/visualize?format=svg`, '_blank');
+        }}
+
+        async function exportCaseToPDF(caseId) {{
+            try {{
+                const response = await fetch(`/api/assurance/${{caseId}}/export/pdf`, {{
+                    method: 'GET'
+                }});
+                
+                if (response.ok) {{
+                    // Create a download link for the PDF
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `assurance-case-${{caseId}}.pdf`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                }} else {{
+                    alert('Failed to export PDF. The export feature may not be fully implemented yet.');
+                }}
+            }} catch (error) {{
+                console.error('Error exporting PDF:', error);
+                alert('Error exporting PDF: ' + error.message);
+            }}
+        }}
+    </script>
 </body>
 </html>"""
         return html
@@ -2560,6 +2597,65 @@ class DashboardGenerator:
                     </div>
                 </div>
 
+                <!-- PowerShield Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">PowerShield</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Comprehensive security scanning for PowerShell scripts</strong></p>
+                            <p>Integrated PowerShell security scanner for detecting vulnerabilities, 
+                            insecure coding practices, and compliance issues in PowerShell scripts. 
+                            Powered by pattern-based analysis with 12+ vulnerability detection rules.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>12+ Security Rules:</strong> Hardcoded credentials, command injection, path traversal, XXE, etc.</li>
+                                <li><strong>Code Quality Checks:</strong> Deprecated cmdlets, error handling, secure coding practices</li>
+                                <li><strong>Compliance Analysis:</strong> PowerShell security best practices and industry standards</li>
+                                <li><strong>Detailed Reporting:</strong> Line-by-line vulnerability identification with severity ratings</li>
+                                <li><strong>Remediation Guidance:</strong> Actionable recommendations for each finding</li>
+                                <li><strong>CI/CD Integration:</strong> Automated scanning in build pipelines</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/powershell/analyze</code><br>
+                                <small>Analyze PowerShell script for security vulnerabilities</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /dashboard/powershell</code><br>
+                                <small>Access interactive PowerShield analysis interface</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Detected Vulnerabilities:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag bg-error">Credentials</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag bg-error">Injection</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag bg-warning">Path Traversal</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag bg-warning">XXE</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag bg-info">Best Practices</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <a href="/dashboard/powershell" class="usa-button">Launch PowerShield</a>
+                            <a href="/api/powershell/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
                 <h2 class="margin-top-5">API Integration</h2>
                 <div class="usa-prose margin-top-3">
                     <p>All compliance modules are accessible via RESTful APIs for easy integration 
@@ -3819,7 +3915,7 @@ or
         """
 
     def _generate_cases_list(self, cases: List[Dict[str, Any]]) -> str:
-        """Generate HTML for assurance cases list using USWDS cards."""
+        """Generate HTML for assurance cases list using USWDS cards with export options."""
         if not cases:
             return '''<div class="usa-alert usa-alert--info margin-top-3">
                 <div class="usa-alert__body">
@@ -3832,8 +3928,11 @@ or
             case_id = case.get("case_id", "unknown")
             title = case.get("title", "Untitled Case")
             node_count = case.get("node_count", 0)
+            description = case.get("description", "Digital assurance case with GSN notation")
+            created = case.get("created_at", "Unknown")
+            
             cases_html += f"""
-            <div class="tablet:grid-col-6 desktop:grid-col-4">
+            <div class="tablet:grid-col-6">
                 <div class="usa-card">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
@@ -3841,11 +3940,14 @@ or
                         </header>
                         <div class="usa-card__body">
                             <p class="text-base-dark"><strong>ID:</strong> {case_id}</p>
-                            <p class="text-base-dark">{node_count} GSN nodes</p>
+                            <p class="text-base-dark"><strong>Nodes:</strong> {node_count} GSN nodes</p>
+                            <p class="text-base-dark"><strong>Created:</strong> {created}</p>
+                            <p class="margin-top-2">{description}</p>
                         </div>
                         <div class="usa-card__footer">
-                            <a href="/api/assurance/{case_id}" class="usa-button usa-button--outline">View Details</a>
-                            <a href="/api/assurance/{case_id}/visualize?format=svg" class="usa-button usa-button--outline margin-left-1">Visualize</a>
+                            <button class="usa-button" onclick="viewCase('{case_id}')">View Case</button>
+                            <button class="usa-button usa-button--outline" onclick="visualizeCase('{case_id}')">Visualize</button>
+                            <button class="usa-button usa-button--outline" onclick="exportCaseToPDF('{case_id}')">Export PDF</button>
                         </div>
                     </div>
                 </div>
