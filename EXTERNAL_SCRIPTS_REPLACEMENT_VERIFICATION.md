@@ -30,7 +30,7 @@ A comprehensive analysis of the CIV-ARCOS codebase confirms that all external sc
 ### Functional Replacements (ACTIVE)
 
 | External Tool | CIV Replacement | Status | Source |
-|--------------|----------------|--------|--------|
+|---------------|-----------------|--------|---------|
 | **pytest** | CIV-pyt | ✅ Functional | Emu-Soft/python/TestRunner |
 | **coverage.py** | CIV-cov | ✅ Functional | Emu-Soft/python/CodeCoverage |
 | **black** | CIV-bla | ✅ Functional | Emu-Soft/python/CodeFormatter |
@@ -41,7 +41,7 @@ A comprehensive analysis of the CIV-ARCOS codebase confirms that all external sc
 ### Documentation Stubs (REFERENCE)
 
 | Standard Library | Stub Module | Status | Purpose |
-|-----------------|-------------|--------|---------|
+|------------------|-------------|--------|----------|
 | subprocess | submarine | 📝 Stub | Documentation reference |
 | json | jason | 📝 Stub | Documentation reference |
 | hashlib | hashish | 📝 Stub | Documentation reference |
