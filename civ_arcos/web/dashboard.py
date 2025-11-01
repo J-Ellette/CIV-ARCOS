@@ -744,11 +744,65 @@ class DashboardGenerator:
     def generate_compliance_page(self) -> str:
         """
         Generate the compliance modules page using USWDS components.
-        Shows available compliance and security automation modules.
+        Shows list of available compliance and security automation modules with links to individual pages.
 
         Returns:
             Complete HTML page as string with USWDS styling
         """
+        # Define modules with their details
+        modules = [
+            {
+                "name": "CIV-SCAP",
+                "url": "/dashboard/compliance/civ-scap",
+                "title": "Security Content Automation Protocol",
+                "description": "Automated compliance content and protocols for security management, vulnerability assessment, and policy compliance evaluation."
+            },
+            {
+                "name": "CIV-STIG",
+                "url": "/dashboard/compliance/civ-stig",
+                "title": "Configuration Compliance Management",
+                "description": "DoD STIG-inspired configuration compliance and security technical implementation guides for civilian systems."
+            },
+            {
+                "name": "CIV-GRUNDSCHUTZ",
+                "url": "/dashboard/compliance/civ-grundschutz",
+                "title": "Systematic Security Certification",
+                "description": "BSI IT-Grundschutz-inspired methodology for comprehensive information security management and ISO 27001 certification readiness."
+            },
+            {
+                "name": "CIV-ACAS",
+                "url": "/dashboard/compliance/civ-acas",
+                "title": "Assured Compliance Assessment Solution",
+                "description": "DoD ACAS-inspired unified vulnerability management and compliance assessment platform."
+            },
+            {
+                "name": "CIV-NESSUS",
+                "url": "/dashboard/compliance/civ-nessus",
+                "title": "Network Security Scanner",
+                "description": "Tenable Nessus Professional-inspired vulnerability assessment platform for comprehensive network security scanning."
+            },
+        ]
+        
+        # Generate module cards HTML
+        modules_html = ""
+        for module in modules:
+            modules_html += f'''
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">{module["name"]}</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>{module["title"]}</strong></p>
+                            <p>{module["description"]}</p>
+                        </div>
+                        <div class="usa-card__footer">
+                            <a href="{module["url"]}" class="usa-button">View Module</a>
+                        </div>
+                    </div>
+                </div>'''
+        
         html = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -780,1881 +834,7 @@ class DashboardGenerator:
 
                 <h2 class="margin-top-5">Available Modules</h2>
                 
-                <!-- CIV-SCAP Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-SCAP</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Security Content Automation Protocol</strong></p>
-                            <p>Automated compliance content and protocols for security management, vulnerability 
-                            assessment, and policy compliance evaluation.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>XCCDF Parser:</strong> Extensible Configuration Checklist Description Format</li>
-                                <li><strong>OVAL Engine:</strong> Open Vulnerability and Assessment Language</li>
-                                <li><strong>CPE Identifier:</strong> Common Platform Enumeration</li>
-                                <li><strong>CVE Integration:</strong> Common Vulnerabilities and Exposures database</li>
-                                <li><strong>Compliance Reporting:</strong> Multi-format standardized reports</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/scap/scan</code><br>
-                                <small>Perform SCAP compliance scan</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/scap/report/:scan_id</code><br>
-                                <small>Generate compliance report (executive, technical, compliance)</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Standards Supported:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">NIST 800-53</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">CIS Benchmarks</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">PCI DSS</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">FedRAMP</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('scap')">Test SCAP Scan</button>
-                            <a href="/api/compliance/scap/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-STIG Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-STIG</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Configuration Compliance Management</strong></p>
-                            <p>DoD STIG-inspired configuration compliance and security technical implementation 
-                            guides for civilian systems. Emulates DISA STIG Viewer/Manager functionality.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>STIG Benchmarks:</strong> Windows 10, RHEL 8, and custom security baselines</li>
-                                <li><strong>Checklist Management:</strong> CKL-format checklists with multi-asset tracking</li>
-                                <li><strong>Automated Scanning:</strong> Configuration assessment for Windows, Linux, network devices</li>
-                                <li><strong>CCI Integration:</strong> Control Correlation Identifiers mapped to NIST 800-53</li>
-                                <li><strong>POA&M Management:</strong> Plans of Action and Milestones for remediation tracking</li>
-                                <li><strong>eMASS Export:</strong> Integration with DoD Enterprise Mission Assurance Support Service</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/stig/assessment/create</code><br>
-                                <small>Create new STIG assessment for an asset</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/stig/scan</code><br>
-                                <small>Perform automated STIG compliance scan</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/stig/report/:checklist_id</code><br>
-                                <small>Generate asset or enterprise compliance report</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Severity Categories:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag bg-error">CAT I (High)</span>
-                                </div>
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag bg-warning">CAT II (Medium)</span>
-                                </div>
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag bg-info">CAT III (Low)</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('stig')">Test STIG Scan</button>
-                            <a href="/api/compliance/stig/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-                    </div>
-                </div>
-
-                <!-- CIV-GRUNDSCHUTZ Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-GRUNDSCHUTZ</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Systematic Security Certification</strong></p>
-                            <p>BSI IT-Grundschutz-inspired methodology for comprehensive information security 
-                            management and ISO 27001 certification readiness.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>ISMS Foundation:</strong> ISO 27001-based management system</li>
-                                <li><strong>IT Structure Analysis:</strong> Comprehensive infrastructure documentation</li>
-                                <li><strong>Security Catalogs:</strong> Technical, organizational, personnel, physical controls (Bausteine)</li>
-                                <li><strong>Risk Methodology:</strong> Threat modeling and risk-based control selection</li>
-                                <li><strong>Certification Support:</strong> ISO 27001 readiness assessment and gap analysis</li>
-                                <li><strong>Framework Mapping:</strong> ISO 27001, NIST 800-53 correlation</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/grundschutz/structure-analysis</code><br>
-                                <small>Conduct IT structure analysis and asset inventory</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/grundschutz/risk-assessment</code><br>
-                                <small>Perform risk assessment with treatment planning</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/grundschutz/certification-readiness</code><br>
-                                <small>Assess ISO 27001 certification readiness</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Security Levels:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag bg-info">Basic</span>
-                                </div>
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag bg-warning">Standard</span>
-                                </div>
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag bg-error">High</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('grundschutz')">Test Grundschutz</button>
-                            <a href="/api/compliance/grundschutz/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-ACAS Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-ACAS</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Assured Compliance Assessment Solution</strong></p>
-                            <p>DoD ACAS-inspired unified vulnerability management and compliance assessment 
-                            platform. Emulates Tenable's ACAS program used across DoD networks.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>Multi-Modal Scanning:</strong> 5 scan modes (credentialed, agentless, passive, agent-based, cloud API)</li>
-                                <li><strong>CVE Database:</strong> Real-time vulnerability intelligence with exploit tracking</li>
-                                <li><strong>Compliance Assessment:</strong> PCI DSS, HIPAA, SOX, NIST 800-53, ISO 27001, CIS</li>
-                                <li><strong>Remediation Orchestration:</strong> SLA tracking and automated task management</li>
-                                <li><strong>Continuous Monitoring:</strong> Real-time security posture visibility</li>
-                                <li><strong>Risk Scoring:</strong> CVSS-based risk calculation with business impact</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/acas/scan</code><br>
-                                <small>Run vulnerability scan (active credentialed/agentless/passive/agent/cloud)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/acas/compliance/assess</code><br>
-                                <small>Assess compliance against framework (PCI DSS, HIPAA, etc.)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/acas/comprehensive</code><br>
-                                <small>Perform comprehensive security and compliance assessment</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/acas/dashboard</code><br>
-                                <small>Get vulnerability management dashboard data</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/acas/remediation/task</code><br>
-                                <small>Create remediation task with SLA tracking</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Scan Modes:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Credentialed</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Agentless</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Passive</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Agent</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Cloud API</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('acas')">Test ACAS Scan</button>
-                            <a href="/api/acas/dashboard" class="usa-button usa-button--outline">Dashboard</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-NESSUS Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-NESSUS</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Network Security Scanner</strong></p>
-                            <p>Tenable Nessus Professional-inspired vulnerability assessment platform. 
-                            Core component of DoD's ACAS program for vulnerability scanning.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>Plugin System:</strong> 10+ vulnerability detection plugins with CVE mapping</li>
-                                <li><strong>6 Scan Types:</strong> Basic network, credentialed, web app, malware, policy, SCADA</li>
-                                <li><strong>Asset Discovery:</strong> Real-time network asset identification and inventory</li>
-                                <li><strong>Compliance Engine:</strong> PCI DSS 4.0, HIPAA, NIST 800-53, ISO 27001, CIS</li>
-                                <li><strong>Report Generation:</strong> Executive, technical, and compliance reports</li>
-                                <li><strong>Risk Factor Classification:</strong> Critical/High/Medium/Low/Info with CVSS</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/nessus/scan/create-and-run</code><br>
-                                <small>Create and execute vulnerability scan with multiple targets</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/nessus/compliance/audit</code><br>
-                                <small>Run compliance audit against policy (PCI DSS, HIPAA, etc.)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/nessus/asset/inventory</code><br>
-                                <small>Get complete asset inventory with vulnerability counts</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/nessus/vulnerability/summary</code><br>
-                                <small>Get vulnerability summary across all scans</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/nessus/dashboard</code><br>
-                                <small>Get comprehensive dashboard with scan history and statistics</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Plugin Families:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Windows</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Unix</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Web</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Database</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">SCADA</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('nessus')">Test Nessus Scan</button>
-                            <a href="/api/nessus/dashboard" class="usa-button usa-button--outline">Dashboard</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DEF STAN 00-970 Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">DEF STAN 00-970</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>UK Defense Software Standards</strong></p>
-                            <p>UK Ministry of Defence software quality standards for safety-critical 
-                            and high-integrity software development.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>Safety-Critical Development:</strong> Standards for mission-critical systems</li>
-                                <li><strong>Integrity Levels:</strong> 4-level classification (Level 1-4)</li>
-                                <li><strong>Quality Assurance:</strong> Automated quality metric validation</li>
-                                <li><strong>Configuration Management:</strong> Comprehensive change tracking and baselining</li>
-                                <li><strong>V&V Requirements:</strong> Verification and validation standards</li>
-                                <li><strong>Documentation Standards:</strong> Required artifacts for each integrity level</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/defstan/assessment/create</code><br>
-                                <small>Create DEF STAN 00-970 assessment for a system</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/defstan/quality/assess</code><br>
-                                <small>Assess code quality against DEF STAN requirements</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/defstan/report/:assessment_id</code><br>
-                                <small>Generate comprehensive compliance report</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/defstan/documentation/validate</code><br>
-                                <small>Validate required documentation completeness</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Integrity Levels:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag bg-error">Level 1</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag bg-warning">Level 2</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag bg-info">Level 3</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">Level 4</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('defstan')">Test DEF STAN</button>
-                            <a href="/api/compliance/defstan/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MIL-STD-498 Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">MIL-STD-498</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Military Software Development Standards</strong></p>
-                            <p>US DoD software development and documentation standards for military 
-                            systems and defense contractors.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>13 Data Item Descriptions:</strong> Complete documentation framework (SDP, SRS, SDD, STD, etc.)</li>
-                                <li><strong>Lifecycle Management:</strong> 11 defined software development activities</li>
-                                <li><strong>Requirements Traceability:</strong> Automated traceability matrix generation</li>
-                                <li><strong>Test Case Management:</strong> Test planning, execution, and reporting</li>
-                                <li><strong>Version Control:</strong> VDD (Version Description Document) support</li>
-                                <li><strong>Document Templates:</strong> Standard outlines for all required documents</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/milstd498/project/create</code><br>
-                                <small>Create new MIL-STD-498 compliant project</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/milstd498/requirement/add</code><br>
-                                <small>Add software requirement with traceability</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/milstd498/traceability/:project_id</code><br>
-                                <small>Generate requirements traceability matrix</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/milstd498/document/generate</code><br>
-                                <small>Generate document template (SRS, SDD, STD, VDD)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/milstd498/report/:project_id</code><br>
-                                <small>Generate comprehensive compliance report</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Document Types:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">SRS</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">SDD</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">STD</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">VDD</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">STP</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('milstd498')">Test MIL-STD-498</button>
-                            <a href="/api/compliance/milstd498/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SOC 2 Type II Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">SOC 2 Type II</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Trust Services Certification</strong></p>
-                            <p>Enterprise trust services compliance essential for SaaS providers and service organizations.
-                            Implements AICPA Trust Services Criteria framework.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>5 Trust Services Criteria:</strong> Security, Availability, Processing Integrity, Confidentiality, Privacy</li>
-                                <li><strong>Control Framework:</strong> CC1-CC9 Common Criteria plus additional criteria-specific controls</li>
-                                <li><strong>Evidence Collection:</strong> Automated evidence gathering and tracking</li>
-                                <li><strong>Control Testing:</strong> Sample-based testing with statistical validation</li>
-                                <li><strong>Audit Readiness:</strong> Continuous compliance monitoring and gap analysis</li>
-                                <li><strong>Service Auditor Support:</strong> Audit package preparation and CPA liaison</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/soc2/assessment/create</code><br>
-                                <small>Create new SOC 2 assessment with selected criteria</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/soc2/control/test</code><br>
-                                <small>Perform control testing with evidence</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/soc2/readiness/:assessment_id</code><br>
-                                <small>Assess audit readiness with gap analysis</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/soc2/evidence/add</code><br>
-                                <small>Add evidence item for control</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Trust Criteria:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Security</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Availability</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">PI</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Confidentiality</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Privacy</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('soc2')">Test SOC 2</button>
-                            <a href="/api/compliance/soc2/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ISO 27001 Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">ISO 27001</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>International Information Security Standard</strong></p>
-                            <p>ISO/IEC 27001:2022 Information Security Management System (ISMS) implementation
-                            for global information security certification.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>93 Annex A Controls:</strong> 4 themes (Organizational, People, Physical, Technological)</li>
-                                <li><strong>Risk Management:</strong> Systematic risk assessment and treatment</li>
-                                <li><strong>Statement of Applicability:</strong> Automated SoA generation</li>
-                                <li><strong>Internal Audit:</strong> ISMS audit management and finding tracking</li>
-                                <li><strong>Management Review:</strong> Executive oversight and decision tracking</li>
-                                <li><strong>Certification Readiness:</strong> Gap analysis and remediation planning</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/iso27001/isms/create</code><br>
-                                <small>Create new ISMS with Annex A controls</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/iso27001/risk/assess</code><br>
-                                <small>Conduct information security risk assessment</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/iso27001/audit/internal</code><br>
-                                <small>Conduct internal ISMS audit</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/iso27001/readiness/:isms_id</code><br>
-                                <small>Assess ISO 27001 certification readiness</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/iso27001/soa/:isms_id</code><br>
-                                <small>Generate Statement of Applicability</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Control Themes:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">Organizational</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">People</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">Physical</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">Technological</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('iso27001')">Test ISO 27001</button>
-                            <a href="/api/compliance/iso27001/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-RAMP Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-RAMP</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian Risk and Authorization Management Program</strong></p>
-                            <p>Civilian implementation of federal cloud authorization standards. Provides standardized approach to
-                            security assessment, authorization, and continuous monitoring for cloud services.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>4 Impact Levels:</strong> Low (125 controls), Moderate (325), High (421), LI-SaaS (130)</li>
-                                <li><strong>Authorization Paths:</strong> JAB P-ATO, Agency ATO, CSP Supplied</li>
-                                <li><strong>3PAO Assessment:</strong> Third-Party Assessment Organization security assessment</li>
-                                <li><strong>ATO Management:</strong> Authority to Operate granting and tracking</li>
-                                <li><strong>Continuous Monitoring:</strong> Monthly deliverables and annual assessments</li>
-                                <li><strong>Marketplace:</strong> Public listing of authorized cloud services</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/fedramp/package/create</code><br>
-                                <small>Create authorization package for cloud service</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/fedramp/assessment/conduct</code><br>
-                                <small>Conduct 3PAO security assessment</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/fedramp/ato/grant</code><br>
-                                <small>Grant Authority to Operate (ATO)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/fedramp/conmon/submit</code><br>
-                                <small>Submit continuous monitoring deliverable</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Impact Levels:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">Low</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag bg-warning">Moderate</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag bg-error">High</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">LI-SaaS</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('fedramp')">Test CIV-RAMP</button>
-                            <a href="/api/compliance/fedramp/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-STAR Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-STAR</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian Security, Trust, Assurance, and Risk Registry</strong></p>
-                            <p>Civilian implementation inspired by Cloud Security Alliance STAR principles. Public documentation of security
-                            and privacy controls using structured control frameworks.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>197 CCM Controls:</strong> 17 domains covering all cloud security aspects</li>
-                                <li><strong>Level 1 - Self-Assessment:</strong> CAIQ questionnaire with public listing</li>
-                                <li><strong>Level 2 - Attestation:</strong> SOC 2 Type II mapped to CCM</li>
-                                <li><strong>Level 2 - Certification:</strong> ISO 27001 mapped to CCM</li>
-                                <li><strong>Level 3 - Continuous:</strong> Real-time automated monitoring</li>
-                                <li><strong>Public Registry:</strong> Searchable database of cloud provider assessments</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/csa-star/registration/create</code><br>
-                                <small>Create STAR registry entry for cloud service</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/csa-star/caiq/complete</code><br>
-                                <small>Complete CAIQ self-assessment (Level 1)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/csa-star/soc2/map</code><br>
-                                <small>Map SOC 2 to CCM (Level 2 Attestation)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/csa-star/iso27001/map</code><br>
-                                <small>Map ISO 27001 to CCM (Level 2 Certification)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/csa-star/registry/search</code><br>
-                                <small>Search public STAR registry</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">CCM Domains (17):</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">A&A</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">AIS</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">BCR</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">IAM</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">DCS</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('csa_star')">Test CIV-STAR</button>
-                            <a href="/api/compliance/csa-star/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cloud Compliance Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">Cloud Platform Compliance</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>AWS/Azure/GCP Compliance Management</strong></p>
-                            <p>Multi-cloud compliance assessment and certification management for major cloud
-                            platforms with platform-specific compliance frameworks.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>AWS:</strong> 143+ compliance programs (FedRAMP, DoD CC SRG, PCI DSS, HIPAA)</li>
-                                <li><strong>Azure:</strong> 100+ offerings (FedRAMP High, DoD IL4/5, CJIS, UK G-Cloud)</li>
-                                <li><strong>GCP:</strong> 50+ certifications (FedRAMP Moderate, DoD IL2/4, CSA STAR)</li>
-                                <li><strong>Shared Responsibility:</strong> Clear delineation for IaaS/PaaS/SaaS</li>
-                                <li><strong>Resource Scanning:</strong> Automated compliance assessment of cloud resources</li>
-                                <li><strong>Continuous Monitoring:</strong> Real-time workload compliance tracking</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/cloud/assessment/create</code><br>
-                                <small>Create cloud compliance assessment (AWS/Azure/GCP)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/cloud/resources/scan</code><br>
-                                <small>Scan cloud resources for compliance</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/cloud/workload/register</code><br>
-                                <small>Register cloud workload for tracking</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/cloud/certifications/:provider</code><br>
-                                <small>Get available certifications for cloud provider</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Cloud Providers:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag">AWS (143+)</span>
-                                </div>
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag">Azure (100+)</span>
-                                </div>
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag">GCP (50+)</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('cloud')">Test Cloud Compliance</button>
-                            <a href="/api/compliance/cloud/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-TRAX Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-TRAX</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian Quality and Compliance Software</strong></p>
-                            <p>Manages documentation, automates processes, and streamlines internal and external 
-                            audits to ensure real-time regulatory compliance for quality management systems.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>Document Control:</strong> Electronic signatures, version control, approval workflows</li>
-                                <li><strong>Process Automation:</strong> Automated compliance workflows with triggers and notifications</li>
-                                <li><strong>Audit Management:</strong> Internal/external audit scheduling, findings tracking, CAPA</li>
-                                <li><strong>Training Records:</strong> Employee training tracking with completion certificates</li>
-                                <li><strong>Real-time Compliance:</strong> Automated reporting against multiple frameworks</li>
-                                <li><strong>Regulatory Frameworks:</strong> ISO 9001, ISO 13485, FDA 21 CFR 820, ISO 17025, GMP</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/qualtrax/document/create</code><br>
-                                <small>Create controlled document with version tracking</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/qualtrax/process/automate</code><br>
-                                <small>Automate compliance process with workflow steps</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/qualtrax/audit/schedule</code><br>
-                                <small>Schedule internal or external audit</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/qualtrax/training/record</code><br>
-                                <small>Track employee training completion</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/qualtrax/report/compliance</code><br>
-                                <small>Generate real-time compliance report</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Supported Frameworks:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">ISO 9001</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">ISO 13485</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">FDA 21 CFR 820</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">ISO 17025</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">GMP</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('qualtrax')">Test CIV-TRAX</button>
-                            <a href="/api/compliance/qualtrax/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-LAND Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-LAND</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian Digital Government Solutions</strong></p>
-                            <p>Modernizes government operations by digitizing and automating document capture, 
-                            workflows, and records management to meet federal compliance requirements.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>Document Capture:</strong> Automated digitization with OCR, indexing, and searchability</li>
-                                <li><strong>Workflow Automation:</strong> Automated routing, approvals, and SLA tracking</li>
-                                <li><strong>Records Management:</strong> NARA-compliant retention policies and disposition</li>
-                                <li><strong>FOIA Support:</strong> 20-day response automation with redaction capabilities</li>
-                                <li><strong>Audit Trail:</strong> Complete access tracking for compliance requirements</li>
-                                <li><strong>Full-Text Search:</strong> Enterprise-wide document search with metadata filters</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/hyland/document/capture</code><br>
-                                <small>Capture and digitize document with metadata</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/hyland/workflow/create</code><br>
-                                <small>Create automated workflow with routing rules</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/hyland/retention/policy</code><br>
-                                <small>Create NARA-compliant retention policy</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/hyland/records/manage</code><br>
-                                <small>Manage document as official record with retention</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/hyland/foia/response</code><br>
-                                <small>Generate FOIA response with automated redaction</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/hyland/search</code><br>
-                                <small>Full-text search across document repository</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Regulatory Compliance:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">NARA</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">FOIA</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">HIPAA</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">FERPA</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">FISMA</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('hyland')">Test CIV-LAND</button>
-                            <a href="/api/compliance/hyland/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-DISS Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-DISS</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian Defense Information System for Security</strong></p>
-                            <p>Enterprise-wide system for personnel security, suitability, and credentialing for 
-                            military, civilian, and contractor personnel. Replaced JPAS for security clearances.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>Clearance Management:</strong> Secret, Top Secret, SCI access tracking</li>
-                                <li><strong>Investigation Tracking:</strong> NACLC, SSBI, T3/T5 investigation management</li>
-                                <li><strong>Adjudication:</strong> Automated favorable/unfavorable decisions with conditions</li>
-                                <li><strong>Visit Requests:</strong> Classified facility visit automation with escort rules</li>
-                                <li><strong>Incident Reporting:</strong> Security incident tracking and investigation</li>
-                                <li><strong>Clearance Verification:</strong> Real-time eligibility verification</li>
-                                <li><strong>Secure Communications:</strong> Encrypted personnel security data</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/diss/personnel/create</code><br>
-                                <small>Create personnel security record</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/diss/investigation/initiate</code><br>
-                                <small>Initiate background investigation (SSBI, T3, T5)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/diss/clearance/adjudicate</code><br>
-                                <small>Adjudicate security clearance with conditions</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/diss/visit/request</code><br>
-                                <small>Submit classified facility visit request</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/diss/incident/report</code><br>
-                                <small>Report security incident for investigation</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/diss/clearance/verify</code><br>
-                                <small>Verify current clearance eligibility</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Clearance Levels:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Confidential</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag bg-info">Secret</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag bg-warning">Top Secret</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag bg-error">TS/SCI</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Q (DOE)</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('diss')">Test CIV-DISS</button>
-                            <a href="/api/compliance/diss/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-CMMC Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-CMMC</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian Cybersecurity Maturity Model Certification</strong></p>
-                            <p>Automated tools and platforms supporting the CMMC framework to help defense 
-                            contractors achieve and demonstrate compliance with DoD security standards.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>3 Maturity Levels:</strong> Level 1 (17 practices), Level 2 (110 practices), Level 3 (130 practices)</li>
-                                <li><strong>15 Security Domains:</strong> AC, AT, AU, CA, CM, IA, IR, MA, MP, PE, PS, RA, RE, SC, SI</li>
-                                <li><strong>Gap Analysis:</strong> Automated assessment of current vs. required practices</li>
-                                <li><strong>Remediation Planning:</strong> Task prioritization with cost and timeline estimates</li>
-                                <li><strong>C3PAO Assessment:</strong> Support for Certified Third Party Assessor Organization audits</li>
-                                <li><strong>Continuous Monitoring:</strong> Real-time compliance tracking and drift detection</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/cmmc/organization/register</code><br>
-                                <small>Register defense contractor for CMMC</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/cmmc/gap-analysis</code><br>
-                                <small>Conduct gap analysis against target level</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/cmmc/remediation/plan</code><br>
-                                <small>Create remediation plan with prioritized tasks</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/cmmc/assessment/schedule</code><br>
-                                <small>Schedule C3PAO assessment</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/cmmc/monitoring/enable</code><br>
-                                <small>Enable continuous compliance monitoring</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">CMMC Levels:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag">Level 1 (17)</span>
-                                </div>
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag bg-warning">Level 2 (110)</span>
-                                </div>
-                                <div class="tablet:grid-col-4">
-                                    <span class="usa-tag bg-error">Level 3 (130)</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('cmmc')">Test CIV-CMMC</button>
-                            <a href="/api/compliance/cmmc/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-UL Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-UL</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian Global Regulatory Compliance Platform</strong></p>
-                            <p>Proactively manage regulatory compliance from product design to production launch with 
-                            real-time alerts from 7,000+ sources in 200+ countries.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>7,000+ Regulatory Sources:</strong> Global coverage across all industries</li>
-                                <li><strong>200+ Countries:</strong> Comprehensive international regulatory database</li>
-                                <li><strong>Real-time Alerts:</strong> Automated notifications of regulatory changes</li>
-                                <li><strong>Product Lifecycle Management:</strong> Design to production compliance tracking</li>
-                                <li><strong>Test Management:</strong> Testing lab integration and report tracking</li>
-                                <li><strong>Certification Tracking:</strong> Multi-certification management (CE, UL, FDA, etc.)</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/gcm/product/register</code><br>
-                                <small>Register product for compliance tracking</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/gcm/alert/track</code><br>
-                                <small>Track regulatory update alert</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/gcm/requirement/create</code><br>
-                                <small>Create compliance requirement with test method</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/gcm/test/submit</code><br>
-                                <small>Submit test report from testing lab</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/gcm/certification/apply</code><br>
-                                <small>Apply for product certification</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/gcm/dashboard/:product_id</code><br>
-                                <small>Get compliance dashboard for product</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Product Categories:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Medical</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Electronics</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Industrial</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Automotive</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Aerospace</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('gcm')">Test CIV-UL</button>
-                            <a href="/api/compliance/gcm/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-WARDEN Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-WARDEN</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian DevSecOps Platform for Authorization</strong></p>
-                            <p>Commercial DevSecOps platform designed for defense contractors to rapidly achieve 
-                            Authority to Operate (ATO) with automated DoD security compliance.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>4 Impact Levels:</strong> IL2, IL4, IL5, IL6 with appropriate NIST controls</li>
-                                <li><strong>DevSecOps Pipeline:</strong> 7-stage automated security pipeline</li>
-                                <li><strong>Security Gates:</strong> SAST, DAST, SCA, container scanning, IaC security, secrets detection</li>
-                                <li><strong>Automated ATO Package:</strong> SSP, SAR, POA&M, continuous monitoring strategy</li>
-                                <li><strong>Continuous Monitoring:</strong> Real-time compliance validation and drift detection</li>
-                                <li><strong>Accelerated Timeline:</strong> 3-18 months vs. traditional 24-36 months</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/game-warden/app/onboard</code><br>
-                                <small>Onboard defense contractor application</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/game-warden/pipeline/configure</code><br>
-                                <small>Configure DevSecOps pipeline with security gates</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/game-warden/control/implement</code><br>
-                                <small>Implement NIST security control</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/game-warden/scan/automated</code><br>
-                                <small>Run automated compliance scan</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/game-warden/ato/generate</code><br>
-                                <small>Generate ATO package with automated evidence</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/game-warden/monitoring/enable</code><br>
-                                <small>Enable continuous ATO monitoring</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">DoD Impact Levels:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">IL2 (48)</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag bg-info">IL4 (110)</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag bg-warning">IL5 (325)</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag bg-error">IL6 (421)</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('game_warden')">Test CIV-WARDEN</button>
-                            <a href="/api/compliance/game-warden/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-EXCHANGE Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-EXCHANGE</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Cybersecurity Maturity Model Certification Framework Tools and Resources</strong></p>
-                            <p>Centralized cybersecurity information and tools for defense contractors 
-                            and the defense industrial base. Provides automated tools and resources for 
-                            Cybersecurity Maturity Model Certification (CMMC) framework compliance.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>400+ STIGs:</strong> Security Technical Implementation Guides for various platforms</li>
-                                <li><strong>50+ SRGs:</strong> Security Requirements Guides for defense systems</li>
-                                <li><strong>CMMC Resources:</strong> Comprehensive assessment guides and tools (100+ resources)</li>
-                                <li><strong>Security Tools:</strong> STIG Viewer, benchmarks, validators (15+ tools)</li>
-                                <li><strong>Training Materials:</strong> Cybersecurity awareness training (50+ courses)</li>
-                                <li><strong>Resource Search:</strong> Advanced search across all cybersecurity resources</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/dod-cyber-exchange/resources/search</code><br>
-                                <small>Search DoD Cyber Exchange resources by type and domain</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/dod-cyber-exchange/stig/:stig_id</code><br>
-                                <small>Download specific STIG or SRG</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/dod-cyber-exchange/training/enroll</code><br>
-                                <small>Enroll in cybersecurity awareness training</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Resource Categories:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">STIGs</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Tools</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CMMC</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Training</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('dod_cyber_exchange')">Test CIV-EXCHANGE</button>
-                            <a href="/api/compliance/dod-cyber-exchange/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-HAC Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-HAC</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian High-Assurance Cyber Systems</strong></p>
-                            <p>Uses formal methods to create provably secure software capable of withstanding 
-                            cyber threats. Generates machine-checkable proofs that demonstrate the safety and 
-                            security of code. DARPA program focused on creating high-assurance software systems.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>Formal Methods:</strong> Model checking, theorem proving, abstract interpretation, symbolic execution</li>
-                                <li><strong>Machine-Checkable Proofs:</strong> Mathematical proofs verified by proof assistants (Coq, Isabelle, ACL2)</li>
-                                <li><strong>Memory Safety:</strong> Guaranteed no buffer overflows, use-after-free, memory leaks</li>
-                                <li><strong>Control Flow Integrity:</strong> Proven resistance to ROP/JOP attacks</li>
-                                <li><strong>Security Properties:</strong> 8 core security properties verified (memory safety, type safety, CFI, etc.)</li>
-                                <li><strong>Assurance Cases:</strong> Formal assurance case generation with GSN notation</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/hacms/system/create</code><br>
-                                <small>Create high-assurance system project with security requirements</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/hacms/verify/memory-safety</code><br>
-                                <small>Verify memory safety properties with formal proof</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/hacms/verify/cfi</code><br>
-                                <small>Verify control flow integrity with formal methods</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/hacms/proof/generate</code><br>
-                                <small>Generate machine-checkable proof for security property</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/hacms/assurance-case/generate</code><br>
-                                <small>Generate formal assurance case with proofs</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Assurance Levels:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">Basic</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag">Moderate</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag bg-warning">High</span>
-                                </div>
-                                <div class="tablet:grid-col-3">
-                                    <span class="usa-tag bg-error">Very High</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('hacms')">Test CIV-HAC</button>
-                            <a href="/api/compliance/hacms/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-DOCS Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-DOCS</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian Parser Vulnerability Prevention</strong></p>
-                            <p>Addresses vulnerabilities in software parsers that process electronic documents. 
-                            Creates safer documents for more secure computing. DARPA program focused on preventing 
-                            exploitation of parser vulnerabilities in document processing systems.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>Multi-Format Support:</strong> PDF, XML, JSON, Office (DOCX/XLSX/PPTX), Images, Archives</li>
-                                <li><strong>Vulnerability Detection:</strong> Buffer overflow, integer overflow, XXE, deserialization, injection</li>
-                                <li><strong>Parser Analysis:</strong> Deep structural analysis of parser components (font parser, image decoder, etc.)</li>
-                                <li><strong>Safe Document Creation:</strong> Generate hardened documents resistant to exploitation</li>
-                                <li><strong>Sanitization:</strong> Automated document sanitization and neutralization</li>
-                                <li><strong>Risk Scoring:</strong> Comprehensive risk assessment and remediation guidance</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/safedocs/scan</code><br>
-                                <small>Scan document for parser vulnerabilities</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/safedocs/sanitize</code><br>
-                                <small>Sanitize document and remove malicious content</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/safedocs/create-safe</code><br>
-                                <small>Create safe document from untrusted source</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/safedocs/validate</code><br>
-                                <small>Validate document against security policy</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Supported Formats:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">PDF</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">XML</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">JSON</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Office</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Images</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('safedocs')">Test CIV-DOCS</button>
-                            <a href="/api/compliance/safedocs/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-SPELLS Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-SPELLS</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian Verified Security and Performance Enhancement of Large Legacy Software</strong></p>
-                            <p>Automatically enhances security and performance of legacy software through binary 
-                            analysis, verification, and transformation without requiring source code. DARPA program 
-                            focused on improving legacy systems without extensive manual effort.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>Binary Analysis:</strong> Static, dynamic, symbolic execution without source code access</li>
-                                <li><strong>Security Enhancements:</strong> Automated bounds checking, stack protection, CFI, memory sanitization</li>
-                                <li><strong>Performance Optimizations:</strong> Dead code elimination, loop optimization, parallelization, vectorization</li>
-                                <li><strong>Legacy Language Support:</strong> C, C++, FORTRAN, COBOL, Assembly, Java</li>
-                                <li><strong>Automated Verification:</strong> Functional correctness and security verification</li>
-                                <li><strong>Vulnerability Mitigation:</strong> Buffer overflow, format string, integer overflow, race conditions</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/vspells/project/create</code><br>
-                                <small>Create legacy software enhancement project</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/vspells/analyze</code><br>
-                                <small>Analyze binary for vulnerabilities and performance issues</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/vspells/enhance/security</code><br>
-                                <small>Apply security enhancements (bounds checking, CFI, etc.)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/vspells/enhance/performance</code><br>
-                                <small>Apply performance optimizations (parallelization, vectorization)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/vspells/verify</code><br>
-                                <small>Verify enhancements preserve functionality and improve security</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Enhancement Types:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Security</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Performance</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Verification</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('vspells')">Test CIV-SPELLS</button>
-                            <a href="/api/compliance/vspells/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CASE/4GL Development Tools -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CASE/4GL Development Tools</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Computer-Aided Software Engineering & 4th Generation Language</strong></p>
-                            <p>Soviet-era CASE tools emulated for automated compliance documentation generation, 
-                            requirements tracking, and project planning.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>CIV-CASE:</strong> Automated software design and documentation generation</li>
-                                <li><strong>CIV-NIKA:</strong> Project planning and resource management with critical path analysis</li>
-                                <li><strong>CIV-SPRUT:</strong> Specification and requirements tracking with traceability matrices</li>
-                                <li><strong>Documentation Engine:</strong> Automated generation of SRS, SDD, STD, VDD documents</li>
-                                <li><strong>Artifact Management:</strong> Data flow diagrams, ERDs, state transitions, structure charts</li>
-                                <li><strong>Evidence Generation:</strong> Compliance documentation artifacts for audits</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/case4gl/project/create</code><br>
-                                <small>Create CASE project with automated design artifacts</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/case4gl/documentation/generate</code><br>
-                                <small>Generate compliance documentation (SRS, SDD, etc.)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/case4gl/requirement/add</code><br>
-                                <small>Add requirement with automated traceability</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/case4gl/traceability/:project_id</code><br>
-                                <small>Generate requirements traceability matrix (RTM)</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Emulated Tools:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-CASE</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-NIKA</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-SPRUT</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('case4gl')">Test CASE/4GL</button>
-                            <a href="/api/compliance/case4gl/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Verification & Validation Tools -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">Verification & Validation Tools</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Automated Testing and Verification Systems</strong></p>
-                            <p>Soviet-era testing and verification tools for comprehensive quality assurance, 
-                            code analysis, and legacy code modernization.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>CIV-KRAT:</strong> Automated test case generation and execution (functional, integration, system)</li>
-                                <li><strong>CIV-SPEC:</strong> Static code analysis with MISRA-C, CERT-C compliance checking</li>
-                                <li><strong>CIV-TRAN:</strong> Legacy code quality analysis and modernization recommendations</li>
-                                <li><strong>CIV-PAR:</strong> High-performance automated test execution</li>
-                                <li><strong>Standards Compliance:</strong> MISRA, CERT, ISO coding standards verification</li>
-                                <li><strong>Modernization Planning:</strong> Automated legacy code refactoring roadmaps</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/vv/sokrat/test-suite/create</code><br>
-                                <small>Create automated test suite with generated test cases</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/vv/sokrat/execute</code><br>
-                                <small>Execute automated tests (parallel or sequential)</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/vv/spectrum/analyze</code><br>
-                                <small>Perform static code analysis with standards compliance</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/vv/fortran/analyze</code><br>
-                                <small>Analyze FORTRAN code with modernization recommendations</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Emulated Tools:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-KRAT</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-SPEC</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-TRAN</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('vv')">Test V&V Tools</button>
-                            <a href="/api/compliance/vv/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Configuration Management Systems -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">Configuration Management Systems</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Version Control and Change Management</strong></p>
-                            <p>Soviet-era configuration control systems for critical systems with immutable 
-                            audit trails, approval workflows, and artifact management.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>CIV-SCCS (Civilian Soviet Configuration Control System):</strong> Version control with immutable audit trails</li>
-                                <li><strong>CIV-DEL:</strong> Change management with automated approval routing</li>
-                                <li><strong>CIV-ARCH:</strong> Immutable document and artifact storage with provenance</li>
-                                <li><strong>Baseline Management:</strong> Configuration baseline tracking and comparison</li>
-                                <li><strong>Impact Analysis:</strong> Automated change impact assessment</li>
-                                <li><strong>Compliance Tracking:</strong> Regulatory change management workflows</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/config-mgmt/sccs/repository/create</code><br>
-                                <small>Create configuration-controlled repository</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/config-mgmt/sccs/commit</code><br>
-                                <small>Commit version with change tracking</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/config-mgmt/delta/change/create</code><br>
-                                <small>Create change request with impact analysis</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/config-mgmt/archive/store</code><br>
-                                <small>Store artifact with immutable record</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Emulated Systems:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-SCCS</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-DEL</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-ARCH</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('config-mgmt')">Test Config Mgmt</button>
-                            <a href="/api/compliance/config-mgmt/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- System Design & Architecture Tools -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">System Design & Architecture Tools</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Structured Analysis and Design</strong></p>
-                            <p>Soviet-era design tools for hierarchical functional decomposition, architecture 
-                            modeling, and rigorous process analysis.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>CIV-SADT:</strong> Structured Analysis and Design Technique with ICOM diagrams</li>
-                                <li><strong>CIV-KESK:</strong> Computer-aided architecture design with quality attributes</li>
-                                <li><strong>CIV-MET:</strong> Rigorous process modeling with state machines</li>
-                                <li><strong>Model Validation:</strong> Automated consistency and completeness checking</li>
-                                <li><strong>Architecture Patterns:</strong> Layered, microservices, event-driven, pipe-filter</li>
-                                <li><strong>Process Analysis:</strong> Performance metrics and bottleneck identification</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/system-design/sadt/model/create</code><br>
-                                <small>Create SADT model with functional decomposition</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/system-design/sadt/validate</code><br>
-                                <small>Validate SADT model for consistency</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/system-design/keskar/architecture/create</code><br>
-                                <small>Generate system architecture design</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/system-design/metan/process/model</code><br>
-                                <small>Create rigorous process model with state transitions</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Emulated Tools:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-SADT</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-KESK</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">CIV-MET</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('system-design')">Test System Design</button>
-                            <a href="/api/compliance/system-design/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-EAM Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-EAM</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian Enterprise Asset Management for Public Agencies</strong></p>
-                            <p>Comprehensive asset tracking, maintenance scheduling, lifecycle management, and 
-                            work order automation for government organizations.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>Asset Registration:</strong> Complete asset inventory with barcode/serial tracking</li>
-                                <li><strong>Lifecycle Management:</strong> From acquisition to disposal with depreciation</li>
-                                <li><strong>Maintenance Scheduling:</strong> Preventive and corrective maintenance automation</li>
-                                <li><strong>Work Order Management:</strong> Priority-based scheduling with cost tracking</li>
-                                <li><strong>Compliance Tracking:</strong> Inspection and certification requirements</li>
-                                <li><strong>Financial Management:</strong> TCO, depreciation, and value tracking</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/opengov/asset/register</code><br>
-                                <small>Register new asset with lifecycle tracking</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/opengov/work-order/create</code><br>
-                                <small>Create maintenance work order</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/opengov/asset/:id/lifecycle</code><br>
-                                <small>Get comprehensive asset lifecycle information</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Asset Types:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Vehicles</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Equipment</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Facilities</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">IT Assets</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('opengov')">Test CIV-EAM</button>
-                            <a href="/api/compliance/opengov/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CIV-CHEQ Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">CIV-CHEQ</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Civilian Government Asset Tracking with Audit Trails</strong></p>
-                            <p>Specialized equipment check-in/check-out tracking with QR/RFID support, 
-                            automated maintenance alerts, and comprehensive audit trails.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>Equipment Tracking:</strong> QR code and RFID tag integration</li>
-                                <li><strong>Check-out/Check-in:</strong> User-based equipment lending with return tracking</li>
-                                <li><strong>Immutable Audit Trail:</strong> Complete history of all equipment transactions</li>
-                                <li><strong>Automated Alerts:</strong> Overdue returns and maintenance reminders</li>
-                                <li><strong>Condition Tracking:</strong> Equipment condition at checkout and return</li>
-                                <li><strong>Availability Management:</strong> Real-time quantity tracking</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/cheqroom/equipment/add</code><br>
-                                <small>Add equipment with QR/RFID tracking</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/cheqroom/equipment/checkout</code><br>
-                                <small>Check out equipment to user</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/compliance/cheqroom/equipment/checkin</code><br>
-                                <small>Check in equipment with condition assessment</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /api/compliance/cheqroom/audit-trail</code><br>
-                                <small>Retrieve comprehensive audit trail</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Equipment Categories:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Tools</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Vehicles</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Electronics</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag">Safety Gear</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <button class="usa-button" onclick="testModule('cheqroom')">Test CIV-CHEQ</button>
-                            <a href="/api/compliance/cheqroom/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PowerShield Module -->
-                <div class="usa-card margin-top-3">
-                    <div class="usa-card__container">
-                        <header class="usa-card__header">
-                            <h3 class="usa-card__heading">PowerShield</h3>
-                            <p class="usa-tag bg-success">Active</p>
-                        </header>
-                        <div class="usa-card__body">
-                            <p><strong>Comprehensive security scanning for PowerShell scripts</strong></p>
-                            <p>Integrated PowerShell security scanner for detecting vulnerabilities, 
-                            insecure coding practices, and compliance issues in PowerShell scripts. 
-                            Powered by pattern-based analysis with 12+ vulnerability detection rules.</p>
-                            
-                            <h4 class="margin-top-2">Features:</h4>
-                            <ul class="usa-list">
-                                <li><strong>12+ Security Rules:</strong> Hardcoded credentials, command injection, path traversal, XXE, etc.</li>
-                                <li><strong>Code Quality Checks:</strong> Deprecated cmdlets, error handling, secure coding practices</li>
-                                <li><strong>Compliance Analysis:</strong> PowerShell security best practices and industry standards</li>
-                                <li><strong>Detailed Reporting:</strong> Line-by-line vulnerability identification with severity ratings</li>
-                                <li><strong>Remediation Guidance:</strong> Actionable recommendations for each finding</li>
-                                <li><strong>CI/CD Integration:</strong> Automated scanning in build pipelines</li>
-                            </ul>
-                            
-                            <h4 class="margin-top-2">Usage:</h4>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>POST /api/powershell/analyze</code><br>
-                                <small>Analyze PowerShell script for security vulnerabilities</small>
-                            </div>
-                            <div class="bg-base-lightest padding-2 margin-y-1">
-                                <code>GET /dashboard/powershell</code><br>
-                                <small>Access interactive PowerShield analysis interface</small>
-                            </div>
-                            
-                            <h4 class="margin-top-2">Detected Vulnerabilities:</h4>
-                            <div class="grid-row grid-gap margin-top-1">
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag bg-error">Credentials</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag bg-error">Injection</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag bg-warning">Path Traversal</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag bg-warning">XXE</span>
-                                </div>
-                                <div class="tablet:grid-col">
-                                    <span class="usa-tag bg-info">Best Practices</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="usa-card__footer">
-                            <a href="/dashboard/powershell" class="usa-button">Launch PowerShield</a>
-                            <a href="/api/powershell/docs" class="usa-button usa-button--outline">API Documentation</a>
-                        </div>
-                    </div>
-                </div>
+                {modules_html}
 
                 <h2 class="margin-top-5">API Integration</h2>
                 <div class="usa-prose margin-top-3">
@@ -3210,6 +1390,737 @@ const results = await response.json();</code></pre>
 </body>
 </html>"""
         return html
+
+    def generate_module_page_civ_scap(self) -> str:
+        """Generate individual page for CIV-SCAP module."""
+        html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIV-SCAP - Security Content Automation Protocol</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/css/uswds.min.css">
+    <style>{self._get_custom_css()}</style>
+</head>
+<body>
+    {self._get_header("CIV-SCAP")}
+    
+    <main id="main-content">
+        <section class="usa-section">
+            <div class="grid-container">
+                <h1 class="usa-prose">🔒 CIV-SCAP</h1>
+                <p class="usa-intro">Security Content Automation Protocol</p>
+                
+                <div class="usa-alert usa-alert--info margin-top-4">
+                    <div class="usa-alert__body">
+                        <h4 class="usa-alert__heading">About CIV-SCAP</h4>
+                        <p class="usa-alert__text">
+                            Automated compliance content and protocols for security management, vulnerability 
+                            assessment, and policy compliance evaluation.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid-row grid-gap margin-top-5">
+                    <div class="tablet:grid-col-8">
+                        <h2>Features</h2>
+                        <ul class="usa-list">
+                            <li><strong>XCCDF Parser:</strong> Extensible Configuration Checklist Description Format</li>
+                            <li><strong>OVAL Engine:</strong> Open Vulnerability and Assessment Language</li>
+                            <li><strong>CPE Identifier:</strong> Common Platform Enumeration</li>
+                            <li><strong>CVE Integration:</strong> Common Vulnerabilities and Exposures database</li>
+                            <li><strong>Compliance Reporting:</strong> Multi-format standardized reports</li>
+                        </ul>
+                        
+                        <h2 class="margin-top-4">API Usage</h2>
+                        <div class="bg-base-lightest padding-2 margin-y-1">
+                            <code>POST /api/compliance/scap/scan</code><br>
+                            <small>Perform SCAP compliance scan</small>
+                        </div>
+                        <div class="bg-base-lightest padding-2 margin-y-1">
+                            <code>GET /api/compliance/scap/report/:scan_id</code><br>
+                            <small>Generate compliance report (executive, technical, compliance)</small>
+                        </div>
+                        
+                        <h2 class="margin-top-4">Standards Supported</h2>
+                        <div class="grid-row grid-gap margin-top-1">
+                            <div class="tablet:grid-col-3">
+                                <span class="usa-tag">NIST 800-53</span>
+                            </div>
+                            <div class="tablet:grid-col-3">
+                                <span class="usa-tag">CIS Benchmarks</span>
+                            </div>
+                            <div class="tablet:grid-col-3">
+                                <span class="usa-tag">PCI DSS</span>
+                            </div>
+                            <div class="tablet:grid-col-3">
+                                <span class="usa-tag">FedRAMP</span>
+                            </div>
+                        </div>
+                        
+                        <div class="margin-top-5">
+                            <button class="usa-button" onclick="testModule('scap')">Test SCAP Scan</button>
+                            <a href="/api/compliance/scap/docs" class="usa-button usa-button--outline">API Documentation</a>
+                            <a href="/dashboard/assurance" class="usa-button usa-button--outline">Assurance Cases</a>
+                        </div>
+                        
+                        <div id="testResults" class="margin-top-4"></div>
+                    </div>
+                    
+                    <div class="tablet:grid-col-4">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <div class="usa-card__header">
+                                    <h3 class="usa-card__heading">Badge Creator</h3>
+                                </div>
+                                <div class="usa-card__body">
+                                    <p>Create a compliance badge for CIV-SCAP test results:</p>
+                                    <form id="badgeForm" class="margin-top-2">
+                                        <label class="usa-label" for="badge-label">Badge Label</label>
+                                        <input class="usa-input" id="badge-label" type="text" value="CIV-SCAP" />
+                                        
+                                        <label class="usa-label margin-top-2" for="badge-status">Status</label>
+                                        <select class="usa-select" id="badge-status">
+                                            <option value="passing">Passing</option>
+                                            <option value="failing">Failing</option>
+                                            <option value="error">Error</option>
+                                        </select>
+                                        
+                                        <label class="usa-label margin-top-2" for="badge-score">Score (%)</label>
+                                        <input class="usa-input" id="badge-score" type="number" value="95" min="0" max="100" />
+                                        
+                                        <button type="button" class="usa-button margin-top-2" onclick="generateBadge()">Generate Badge</button>
+                                    </form>
+                                    
+                                    <div id="badgePreview" class="margin-top-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    {self._get_footer()}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/js/uswds.min.js"></script>
+    <script>{self.base_js}</script>
+    <script>
+        async function testModule(module) {{
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = `
+                <div class="usa-alert usa-alert--info">
+                    <div class="usa-alert__body">
+                        <h4 class="usa-alert__heading">Testing ${{module.toUpperCase()}} Module...</h4>
+                        <p class="usa-alert__text">Running sample scan with demo data</p>
+                    </div>
+                </div>
+            `;
+            
+            try {{
+                const response = await fetch('/api/compliance/scap/scan', {{
+                    method: 'POST',
+                    headers: {{ 'Content-Type': 'application/json' }},
+                    body: JSON.stringify({{
+                        system_info: {{
+                            os: 'Ubuntu',
+                            version: '22.04',
+                            configuration: {{}}
+                        }}
+                    }})
+                }});
+                
+                if (!response.ok) {{
+                    throw new Error(`HTTP error! status: ${{response.status}}`);
+                }}
+                
+                const results = await response.json();
+                
+                resultsDiv.innerHTML = `
+                    <div class="usa-alert usa-alert--success">
+                        <div class="usa-alert__body">
+                            <h4 class="usa-alert__heading">✅ SCAP Scan Complete</h4>
+                            <p class="usa-alert__text">
+                                Scan ID: <strong>${{results.scan_id}}</strong><br>
+                                Timestamp: ${{results.timestamp}}
+                            </p>
+                            <details class="margin-top-2">
+                                <summary>View Detailed Results</summary>
+                                <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                            </details>
+                        </div>
+                    </div>
+                `;
+            }} catch (error) {{
+                resultsDiv.innerHTML = `
+                    <div class="usa-alert usa-alert--error">
+                        <div class="usa-alert__body">
+                            <h4 class="usa-alert__heading">❌ Test Failed</h4>
+                            <p class="usa-alert__text">${{error.message}}</p>
+                        </div>
+                    </div>
+                `;
+            }}
+        }}
+        
+        function generateBadge() {{
+            const label = document.getElementById('badge-label').value;
+            const status = document.getElementById('badge-status').value;
+            const score = document.getElementById('badge-score').value;
+            
+            const badgeUrl = `/api/badges/compliance?label=${{encodeURIComponent(label)}}&status=${{status}}&score=${{score}}`;
+            
+            const preview = document.getElementById('badgePreview');
+            preview.innerHTML = `
+                <img src="${{badgeUrl}}" alt="Badge Preview" />
+                <div class="margin-top-2">
+                    <label class="usa-label" for="badge-url">Badge URL:</label>
+                    <input class="usa-input" id="badge-url" type="text" value="${{badgeUrl}}" readonly />
+                    <button type="button" class="usa-button usa-button--outline margin-top-1" onclick="copyBadgeUrl()">Copy URL</button>
+                </div>
+            `;
+        }}
+        
+        function copyBadgeUrl() {{
+            const urlInput = document.getElementById('badge-url');
+            urlInput.select();
+            document.execCommand('copy');
+            alert('Badge URL copied to clipboard!');
+        }}
+    </script>
+</body>
+</html>"""
+        return html
+
+    def generate_module_page_civ_stig(self) -> str:
+        """Generate individual page for CIV-STIG module."""
+        html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIV-STIG - Configuration Compliance Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/css/uswds.min.css">
+    <style>{self._get_custom_css()}</style>
+</head>
+<body>
+    {self._get_header("CIV-STIG")}
+    
+    <main id="main-content">
+        <section class="usa-section">
+            <div class="grid-container">
+                <h1 class="usa-prose">🔒 CIV-STIG</h1>
+                <p class="usa-intro">Configuration Compliance Management</p>
+                
+                <div class="usa-alert usa-alert--info margin-top-4">
+                    <div class="usa-alert__body">
+                        <h4 class="usa-alert__heading">About CIV-STIG</h4>
+                        <p class="usa-alert__text">
+                            DoD STIG-inspired configuration compliance and security technical implementation 
+                            guides for civilian systems. Emulates DISA STIG Viewer/Manager functionality.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid-row grid-gap margin-top-5">
+                    <div class="tablet:grid-col-8">
+                        <h2>Features</h2>
+                        <ul class="usa-list">
+                            <li><strong>STIG Benchmarks:</strong> Windows 10, RHEL 8, and custom security baselines</li>
+                            <li><strong>Checklist Management:</strong> CKL-format checklists with multi-asset tracking</li>
+                            <li><strong>Automated Scanning:</strong> Configuration assessment for Windows, Linux, network devices</li>
+                            <li><strong>CCI Integration:</strong> Control Correlation Identifiers mapped to NIST 800-53</li>
+                            <li><strong>POA&M Management:</strong> Plans of Action and Milestones for remediation tracking</li>
+                            <li><strong>eMASS Export:</strong> Integration with DoD Enterprise Mission Assurance Support Service</li>
+                        </ul>
+                        
+                        <h2 class="margin-top-4">API Usage</h2>
+                        <div class="bg-base-lightest padding-2 margin-y-1">
+                            <code>POST /api/compliance/stig/assessment/create</code><br>
+                            <small>Create new STIG assessment for an asset</small>
+                        </div>
+                        <div class="bg-base-lightest padding-2 margin-y-1">
+                            <code>POST /api/compliance/stig/scan</code><br>
+                            <small>Perform automated STIG compliance scan</small>
+                        </div>
+                        <div class="bg-base-lightest padding-2 margin-y-1">
+                            <code>GET /api/compliance/stig/report/:checklist_id</code><br>
+                            <small>Generate asset or enterprise compliance report</small>
+                        </div>
+                        
+                        <h2 class="margin-top-4">Severity Categories</h2>
+                        <div class="grid-row grid-gap margin-top-1">
+                            <div class="tablet:grid-col-4">
+                                <span class="usa-tag bg-error">CAT I (High)</span>
+                            </div>
+                            <div class="tablet:grid-col-4">
+                                <span class="usa-tag bg-warning">CAT II (Medium)</span>
+                            </div>
+                            <div class="tablet:grid-col-4">
+                                <span class="usa-tag bg-info">CAT III (Low)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="margin-top-5">
+                            <button class="usa-button" onclick="testModule('stig')">Test STIG Scan</button>
+                            <a href="/api/compliance/stig/docs" class="usa-button usa-button--outline">API Documentation</a>
+                            <a href="/dashboard/assurance" class="usa-button usa-button--outline">Assurance Cases</a>
+                        </div>
+                        
+                        <div id="testResults" class="margin-top-4"></div>
+                    </div>
+                    
+                    <div class="tablet:grid-col-4">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <div class="usa-card__header">
+                                    <h3 class="usa-card__heading">Badge Creator</h3>
+                                </div>
+                                <div class="usa-card__body">
+                                    <p>Create a compliance badge for CIV-STIG test results:</p>
+                                    <form id="badgeForm" class="margin-top-2">
+                                        <label class="usa-label" for="badge-label">Badge Label</label>
+                                        <input class="usa-input" id="badge-label" type="text" value="CIV-STIG" />
+                                        
+                                        <label class="usa-label margin-top-2" for="badge-status">Status</label>
+                                        <select class="usa-select" id="badge-status">
+                                            <option value="passing">Passing</option>
+                                            <option value="failing">Failing</option>
+                                            <option value="error">Error</option>
+                                        </select>
+                                        
+                                        <label class="usa-label margin-top-2" for="badge-score">Score (%)</label>
+                                        <input class="usa-input" id="badge-score" type="number" value="95" min="0" max="100" />
+                                        
+                                        <button type="button" class="usa-button margin-top-2" onclick="generateBadge()">Generate Badge</button>
+                                    </form>
+                                    
+                                    <div id="badgePreview" class="margin-top-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    {self._get_footer()}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/js/uswds.min.js"></script>
+    <script>{self.base_js}</script>
+    <script>
+        async function testModule(module) {{
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = `
+                <div class="usa-alert usa-alert--info">
+                    <div class="usa-alert__body">
+                        <h4 class="usa-alert__heading">Testing ${{module.toUpperCase()}} Module...</h4>
+                        <p class="usa-alert__text">Running sample scan with demo data</p>
+                    </div>
+                </div>
+            `;
+            
+            try {{
+                // Create assessment first
+                const createResponse = await fetch('/api/compliance/stig/assessment/create', {{
+                    method: 'POST',
+                    headers: {{ 'Content-Type': 'application/json' }},
+                    body: JSON.stringify({{
+                        asset: {{
+                            asset_id: 'DEMO-001',
+                            hostname: 'demo-server',
+                            ip_address: '192.168.1.100',
+                            asset_type: 'Computing',
+                            operating_system: 'Windows 10'
+                        }},
+                        benchmark_id: 'Windows_10_STIG'
+                    }})
+                }});
+                
+                if (!createResponse.ok) {{
+                    throw new Error(`HTTP error! status: ${{createResponse.status}}`);
+                }}
+                
+                const assessmentData = await createResponse.json();
+                const checklist_id = assessmentData.checklist_id;
+                
+                // Perform scan
+                const response = await fetch('/api/compliance/stig/scan', {{
+                    method: 'POST',
+                    headers: {{ 'Content-Type': 'application/json' }},
+                    body: JSON.stringify({{
+                        checklist_id: checklist_id,
+                        system_info: {{
+                            registry: {{
+                                'HKLM\\\\SOFTWARE\\\\Policies\\\\Microsoft\\\\Windows NT\\\\Terminal Services\\\\DisablePasswordSaving': 1
+                            }},
+                            volumes: [
+                                {{ drive: 'C:', filesystem: 'NTFS' }},
+                                {{ drive: 'D:', filesystem: 'NTFS' }}
+                            ]
+                        }}
+                    }})
+                }});
+                
+                const results = await response.json();
+                
+                resultsDiv.innerHTML = `
+                    <div class="usa-alert usa-alert--success">
+                        <div class="usa-alert__body">
+                            <h4 class="usa-alert__heading">✅ STIG Scan Complete</h4>
+                            <p class="usa-alert__text">
+                                Checklist ID: <strong>${{checklist_id}}</strong><br>
+                                Total Findings: ${{results.total_findings}}<br>
+                                Open: <span class="text-error">${{results.by_status.open}}</span><br>
+                                Not a Finding: <span class="text-success">${{results.by_status.not_a_finding}}</span><br>
+                                Not Applicable: <span class="text-base">${{results.by_status.not_applicable}}</span><br>
+                                Not Reviewed: <span class="text-base">${{results.by_status.not_reviewed}}</span>
+                            </p>
+                            <details class="margin-top-2">
+                                <summary>View Detailed Results</summary>
+                                <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                            </details>
+                        </div>
+                    </div>
+                `;
+            }} catch (error) {{
+                resultsDiv.innerHTML = `
+                    <div class="usa-alert usa-alert--error">
+                        <div class="usa-alert__body">
+                            <h4 class="usa-alert__heading">❌ Test Failed</h4>
+                            <p class="usa-alert__text">${{error.message}}</p>
+                        </div>
+                    </div>
+                `;
+            }}
+        }}
+        
+        function generateBadge() {{
+            const label = document.getElementById('badge-label').value;
+            const status = document.getElementById('badge-status').value;
+            const score = document.getElementById('badge-score').value;
+            
+            const badgeUrl = `/api/badges/compliance?label=${{encodeURIComponent(label)}}&status=${{status}}&score=${{score}}`;
+            
+            const preview = document.getElementById('badgePreview');
+            preview.innerHTML = `
+                <img src="${{badgeUrl}}" alt="Badge Preview" />
+                <div class="margin-top-2">
+                    <label class="usa-label" for="badge-url">Badge URL:</label>
+                    <input class="usa-input" id="badge-url" type="text" value="${{badgeUrl}}" readonly />
+                    <button type="button" class="usa-button usa-button--outline margin-top-1" onclick="copyBadgeUrl()">Copy URL</button>
+                </div>
+            `;
+        }}
+        
+        function copyBadgeUrl() {{
+            const urlInput = document.getElementById('badge-url');
+            urlInput.select();
+            document.execCommand('copy');
+            alert('Badge URL copied to clipboard!');
+        }}
+    </script>
+</body>
+</html>"""
+        return html
+
+    def _generate_module_page_template(self, module_id: str, module_name: str, title: str, 
+                                       description: str, features: list, api_endpoints: list,
+                                       tags: list, test_code: str = "") -> str:
+        """
+        Helper method to generate individual module pages with consistent layout.
+        
+        Args:
+            module_id: Module identifier (e.g., 'scap', 'stig')
+            module_name: Display name (e.g., 'CIV-SCAP')
+            title: Module title/tagline
+            description: Detailed description
+            features: List of feature strings (HTML allowed)
+            api_endpoints: List of tuples (endpoint, description)
+            tags: List of tag HTML strings
+            test_code: Custom JavaScript test code (optional)
+        
+        Returns:
+            Complete HTML page as string
+        """
+        features_html = "\n".join([f"                            <li>{f}</li>" for f in features])
+        endpoints_html = "\n".join([
+            f'''                        <div class="bg-base-lightest padding-2 margin-y-1">
+                            <code>{ep}</code><br>
+                            <small>{desc}</small>
+                        </div>''' for ep, desc in api_endpoints
+        ])
+        tags_html = "\n".join([
+            f'''                            <div class="tablet:grid-col">
+                                {tag}
+                            </div>''' for tag in tags
+        ])
+        
+        # Default test code if none provided
+        if not test_code:
+            test_code = f'''
+                const response = await fetch('/api/compliance/{module_id}/test', {{
+                    method: 'POST',
+                    headers: {{ 'Content-Type': 'application/json' }},
+                    body: JSON.stringify({{ demo: true }})
+                }});
+                
+                if (!response.ok) {{
+                    throw new Error(`HTTP error! status: ${{response.status}}`);
+                }}
+                
+                const results = await response.json();
+                
+                resultsDiv.innerHTML = `
+                    <div class="usa-alert usa-alert--success">
+                        <div class="usa-alert__body">
+                            <h4 class="usa-alert__heading">✅ Test Complete</h4>
+                            <p class="usa-alert__text">
+                                Test completed successfully
+                            </p>
+                            <details class="margin-top-2">
+                                <summary>View Detailed Results</summary>
+                                <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                            </details>
+                        </div>
+                    </div>
+                `;'''
+        
+        html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{module_name} - {title}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/css/uswds.min.css">
+    <style>{self._get_custom_css()}</style>
+</head>
+<body>
+    {self._get_header(module_name)}
+    
+    <main id="main-content">
+        <section class="usa-section">
+            <div class="grid-container">
+                <h1 class="usa-prose">🔒 {module_name}</h1>
+                <p class="usa-intro">{title}</p>
+                
+                <div class="usa-alert usa-alert--info margin-top-4">
+                    <div class="usa-alert__body">
+                        <h4 class="usa-alert__heading">About {module_name}</h4>
+                        <p class="usa-alert__text">
+                            {description}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid-row grid-gap margin-top-5">
+                    <div class="tablet:grid-col-8">
+                        <h2>Features</h2>
+                        <ul class="usa-list">
+{features_html}
+                        </ul>
+                        
+                        <h2 class="margin-top-4">API Usage</h2>
+{endpoints_html}
+                        
+                        <h2 class="margin-top-4">Available Options</h2>
+                        <div class="grid-row grid-gap margin-top-1">
+{tags_html}
+                        </div>
+                        
+                        <div class="margin-top-5">
+                            <button class="usa-button" onclick="testModule('{module_id}')">Test {module_name}</button>
+                            <a href="/api/compliance/{module_id}/docs" class="usa-button usa-button--outline">API Documentation</a>
+                            <a href="/dashboard/assurance" class="usa-button usa-button--outline">Assurance Cases</a>
+                        </div>
+                        
+                        <div id="testResults" class="margin-top-4"></div>
+                    </div>
+                    
+                    <div class="tablet:grid-col-4">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <div class="usa-card__header">
+                                    <h3 class="usa-card__heading">Badge Creator</h3>
+                                </div>
+                                <div class="usa-card__body">
+                                    <p>Create a compliance badge for {module_name} test results:</p>
+                                    <form id="badgeForm" class="margin-top-2">
+                                        <label class="usa-label" for="badge-label">Badge Label</label>
+                                        <input class="usa-input" id="badge-label" type="text" value="{module_name}" />
+                                        
+                                        <label class="usa-label margin-top-2" for="badge-status">Status</label>
+                                        <select class="usa-select" id="badge-status">
+                                            <option value="passing">Passing</option>
+                                            <option value="failing">Failing</option>
+                                            <option value="error">Error</option>
+                                        </select>
+                                        
+                                        <label class="usa-label margin-top-2" for="badge-score">Score (%)</label>
+                                        <input class="usa-input" id="badge-score" type="number" value="95" min="0" max="100" />
+                                        
+                                        <button type="button" class="usa-button margin-top-2" onclick="generateBadge()">Generate Badge</button>
+                                    </form>
+                                    
+                                    <div id="badgePreview" class="margin-top-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    {self._get_footer()}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/js/uswds.min.js"></script>
+    <script>{self.base_js}</script>
+    <script>
+        async function testModule(module) {{
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = `
+                <div class="usa-alert usa-alert--info">
+                    <div class="usa-alert__body">
+                        <h4 class="usa-alert__heading">Testing ${{module.toUpperCase()}} Module...</h4>
+                        <p class="usa-alert__text">Running sample scan with demo data</p>
+                    </div>
+                </div>
+            `;
+            
+            try {{
+{test_code}
+            }} catch (error) {{
+                resultsDiv.innerHTML = `
+                    <div class="usa-alert usa-alert--error">
+                        <div class="usa-alert__body">
+                            <h4 class="usa-alert__heading">❌ Test Failed</h4>
+                            <p class="usa-alert__text">${{error.message}}</p>
+                        </div>
+                    </div>
+                `;
+            }}
+        }}
+        
+        function generateBadge() {{
+            const label = document.getElementById('badge-label').value;
+            const status = document.getElementById('badge-status').value;
+            const score = document.getElementById('badge-score').value;
+            
+            const badgeUrl = `/api/badges/compliance?label=${{encodeURIComponent(label)}}&status=${{status}}&score=${{score}}`;
+            
+            const preview = document.getElementById('badgePreview');
+            preview.innerHTML = `
+                <img src="${{badgeUrl}}" alt="Badge Preview" />
+                <div class="margin-top-2">
+                    <label class="usa-label" for="badge-url">Badge URL:</label>
+                    <input class="usa-input" id="badge-url" type="text" value="${{badgeUrl}}" readonly />
+                    <button type="button" class="usa-button usa-button--outline margin-top-1" onclick="copyBadgeUrl()">Copy URL</button>
+                </div>
+            `;
+        }}
+        
+        function copyBadgeUrl() {{
+            const urlInput = document.getElementById('badge-url');
+            urlInput.select();
+            document.execCommand('copy');
+            alert('Badge URL copied to clipboard!');
+        }}
+    </script>
+</body>
+</html>"""
+        return html
+
+    def generate_module_page_civ_grundschutz(self) -> str:
+        """Generate individual page for CIV-GRUNDSCHUTZ module."""
+        return self._generate_module_page_template(
+            module_id="grundschutz",
+            module_name="CIV-GRUNDSCHUTZ",
+            title="Systematic Security Certification",
+            description="BSI IT-Grundschutz-inspired methodology for comprehensive information security management and ISO 27001 certification readiness.",
+            features=[
+                "<strong>ISMS Foundation:</strong> ISO 27001-based management system",
+                "<strong>IT Structure Analysis:</strong> Comprehensive infrastructure documentation",
+                "<strong>Security Catalogs:</strong> Technical, organizational, personnel, physical controls (Bausteine)",
+                "<strong>Risk Methodology:</strong> Threat modeling and risk-based control selection",
+                "<strong>Certification Support:</strong> ISO 27001 readiness assessment and gap analysis",
+                "<strong>Framework Mapping:</strong> ISO 27001, NIST 800-53 correlation"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/grundschutz/structure-analysis", "Conduct IT structure analysis and asset inventory"),
+                ("POST /api/compliance/grundschutz/risk-assessment", "Perform risk assessment with treatment planning"),
+                ("GET /api/compliance/grundschutz/certification-readiness", "Assess ISO 27001 certification readiness")
+            ],
+            tags=[
+                '<span class="usa-tag bg-info">Basic</span>',
+                '<span class="usa-tag bg-warning">Standard</span>',
+                '<span class="usa-tag bg-error">High</span>'
+            ]
+        )
+
+    def generate_module_page_civ_acas(self) -> str:
+        """Generate individual page for CIV-ACAS module."""
+        return self._generate_module_page_template(
+            module_id="acas",
+            module_name="CIV-ACAS",
+            title="Assured Compliance Assessment Solution",
+            description="DoD ACAS-inspired unified vulnerability management and compliance assessment platform. Emulates Tenable's ACAS program used across DoD networks.",
+            features=[
+                "<strong>Multi-Modal Scanning:</strong> 5 scan modes (credentialed, agentless, passive, agent-based, cloud API)",
+                "<strong>CVE Database:</strong> Real-time vulnerability intelligence with exploit tracking",
+                "<strong>Compliance Assessment:</strong> PCI DSS, HIPAA, SOX, NIST 800-53, ISO 27001, CIS",
+                "<strong>Remediation Orchestration:</strong> SLA tracking and automated task management",
+                "<strong>Continuous Monitoring:</strong> Real-time security posture visibility",
+                "<strong>Risk Scoring:</strong> CVSS-based risk calculation with business impact"
+            ],
+            api_endpoints=[
+                ("POST /api/acas/scan", "Run vulnerability scan (active credentialed/agentless/passive/agent/cloud)"),
+                ("POST /api/acas/compliance/assess", "Assess compliance against framework (PCI DSS, HIPAA, etc.)"),
+                ("POST /api/acas/comprehensive", "Perform comprehensive security and compliance assessment"),
+                ("GET /api/acas/dashboard", "Get vulnerability management dashboard data"),
+                ("POST /api/acas/remediation/task", "Create remediation task with SLA tracking")
+            ],
+            tags=[
+                '<span class="usa-tag">Credentialed</span>',
+                '<span class="usa-tag">Agentless</span>',
+                '<span class="usa-tag">Passive</span>',
+                '<span class="usa-tag">Agent</span>',
+                '<span class="usa-tag">Cloud API</span>'
+            ]
+        )
+
+    def generate_module_page_civ_nessus(self) -> str:
+        """Generate individual page for CIV-NESSUS module."""
+        return self._generate_module_page_template(
+            module_id="nessus",
+            module_name="CIV-NESSUS",
+            title="Network Security Scanner",
+            description="Tenable Nessus Professional-inspired vulnerability assessment platform. Core component of DoD's ACAS program for vulnerability scanning.",
+            features=[
+                "<strong>Plugin System:</strong> 10+ vulnerability detection plugins with CVE mapping",
+                "<strong>6 Scan Types:</strong> Basic network, credentialed, web app, malware, policy, SCADA",
+                "<strong>Asset Discovery:</strong> Real-time network asset identification and inventory",
+                "<strong>Compliance Engine:</strong> PCI DSS 4.0, HIPAA, NIST 800-53, ISO 27001, CIS",
+                "<strong>Report Generation:</strong> Executive, technical, and compliance reports",
+                "<strong>Risk Factor Classification:</strong> Critical/High/Medium/Low/Info with CVSS"
+            ],
+            api_endpoints=[
+                ("POST /api/nessus/scan/create-and-run", "Create and execute vulnerability scan with multiple targets"),
+                ("POST /api/nessus/compliance/audit", "Run compliance audit against policy (PCI DSS, HIPAA, etc.)"),
+                ("GET /api/nessus/asset/inventory", "Get complete asset inventory with vulnerability counts"),
+                ("GET /api/nessus/vulnerability/summary", "Get vulnerability summary across all scans"),
+                ("GET /api/nessus/dashboard", "Get comprehensive dashboard with scan history and statistics")
+            ],
+            tags=[
+                '<span class="usa-tag">Windows</span>',
+                '<span class="usa-tag">Unix</span>',
+                '<span class="usa-tag">Web</span>',
+                '<span class="usa-tag">Database</span>',
+                '<span class="usa-tag">SCADA</span>'
+            ]
+        )
 
     def generate_powershell_page(self) -> str:
         """

@@ -1183,6 +1183,56 @@ def dashboard_compliance(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+@app.get("/dashboard/compliance/civ-scap")
+def dashboard_compliance_civ_scap(request: Request) -> Response:
+    """CIV-SCAP module page."""
+    try:
+        html = dashboard_gen.generate_module_page_civ_scap()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/civ-stig")
+def dashboard_compliance_civ_stig(request: Request) -> Response:
+    """CIV-STIG module page."""
+    try:
+        html = dashboard_gen.generate_module_page_civ_stig()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/civ-grundschutz")
+def dashboard_compliance_civ_grundschutz(request: Request) -> Response:
+    """CIV-GRUNDSCHUTZ module page."""
+    try:
+        html = dashboard_gen.generate_module_page_civ_grundschutz()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/civ-acas")
+def dashboard_compliance_civ_acas(request: Request) -> Response:
+    """CIV-ACAS module page."""
+    try:
+        html = dashboard_gen.generate_module_page_civ_acas()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/civ-nessus")
+def dashboard_compliance_civ_nessus(request: Request) -> Response:
+    """CIV-NESSUS module page."""
+    try:
+        html = dashboard_gen.generate_module_page_civ_nessus()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
 @app.get("/dashboard/powershell")
 def dashboard_powershell(request: Request) -> Response:
     """Dashboard PowerShell security analysis page."""
