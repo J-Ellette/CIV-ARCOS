@@ -6,6 +6,7 @@ Emulates Soviet-era automated testing and verification systems.
 from typing import Any, Dict, List
 from datetime import datetime
 import uuid
+import random
 
 
 class SokratEngine:
@@ -92,7 +93,6 @@ class SokratEngine:
         
         for test_case in suite["test_cases"]:
             # Simulate 90% pass rate
-            import random
             status = "passed" if random.random() < 0.9 else "failed"
             
             if status == "passed":
