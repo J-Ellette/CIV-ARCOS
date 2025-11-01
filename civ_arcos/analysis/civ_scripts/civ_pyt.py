@@ -350,7 +350,7 @@ def main():
         return 0
     
     # Run tests
-    runner = TestRunner(verbose=args.verbose or True)
+    runner = TestRunner(verbose=args.verbose)
     suite = runner.run_tests(args.path)
     runner.print_summary()
     

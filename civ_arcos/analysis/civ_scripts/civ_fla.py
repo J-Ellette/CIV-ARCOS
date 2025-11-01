@@ -90,13 +90,17 @@ class CodeLinter(ast.NodeVisitor):
     def check_whitespace(self) -> None:
         """Check whitespace issues."""
         for i, line in enumerate(self.source_lines, 1):
-            # Check trailing whitespace
-            if line.rstrip() != line.rstrip('\n'):
-                if line.rstrip() != line.rstrip('\n').rstrip():
-                    self.add_issue(i, len(line.rstrip('\n')), "W291", "trailing whitespace")
+            # Skip empty lines
+            if not line or line == '\n':
+                continue
+            
+            # Check trailing whitespace (but not on empty lines)
+            stripped = line.rstrip('\n')
+            if stripped and stripped != stripped.rstrip():
+                self.add_issue(i, len(stripped), "W291", "trailing whitespace")
             
             # Check blank lines with whitespace
-            if not line.strip() and line != '\n':
+            if not stripped.strip() and stripped:
                 self.add_issue(i, 0, "W293", "blank line contains whitespace")
     
     def check_indentation(self) -> None:
