@@ -1193,6 +1193,16 @@ def dashboard_powershell(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+@app.get("/dashboard/help")
+def dashboard_help(request: Request) -> Response:
+    """Dashboard Help and Documentation page."""
+    try:
+        html = dashboard_gen.generate_help_page()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
 @app.get("/dashboard/statistics")
 def dashboard_statistics(request: Request) -> Response:
     """Dashboard Statistical Analysis page."""
