@@ -1172,6 +1172,275 @@ def scap_docs(request: Request) -> Response:
     })
 
 
+# CIV-STIG API endpoints
+@app.post("/api/compliance/stig/assessment/create")
+def stig_create_assessment(request: Request) -> Response:
+    """
+    Create a new STIG assessment for an asset.
+    
+    Request body:
+    {
+        "asset": {
+            "asset_id": "SRV-001",
+            "hostname": "web-server-01",
+            "ip_address": "192.168.1.100",
+            "asset_type": "Computing",
+            "operating_system": "Windows 10"
+        },
+        "benchmark_id": "Windows_10_STIG"
+    }
+    """
+    try:
+        from civ_arcos.compliance.stig import STIGEngine, Asset
+        
+        data = request.json()
+        asset_data = data.get("asset", {})
+        benchmark_id = data.get("benchmark_id")
+        
+        if not asset_data or not benchmark_id:
+            return Response({"error": "asset and benchmark_id are required"}, status_code=400)
+        
+        # Create asset object
+        asset = Asset(
+            asset_id=asset_data["asset_id"],
+            hostname=asset_data["hostname"],
+            ip_address=asset_data["ip_address"],
+            asset_type=asset_data.get("asset_type", "Computing"),
+            operating_system=asset_data["operating_system"],
+            mac_address=asset_data.get("mac_address", ""),
+        )
+        
+        # Initialize STIG engine and create assessment
+        engine = STIGEngine()
+        checklist_id = engine.create_assessment(asset, benchmark_id)
+        
+        return Response({
+            "success": True,
+            "checklist_id": checklist_id,
+            "asset_id": asset.asset_id,
+            "benchmark_id": benchmark_id,
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/compliance/stig/scan")
+def stig_automated_scan(request: Request) -> Response:
+    """
+    Perform automated STIG scan on an asset.
+    
+    Request body:
+    {
+        "checklist_id": "SRV-001_Windows_10_STIG_1234567890",
+        "system_info": {
+            "registry": {...},
+            "volumes": [...]
+        }
+    }
+    """
+    try:
+        from civ_arcos.compliance.stig import STIGEngine
+        
+        data = request.json()
+        checklist_id = data.get("checklist_id")
+        system_info = data.get("system_info", {})
+        
+        if not checklist_id:
+            return Response({"error": "checklist_id is required"}, status_code=400)
+        
+        # Initialize STIG engine and perform scan
+        engine = STIGEngine()
+        findings = engine.perform_automated_scan(checklist_id, system_info)
+        
+        # Count findings by status
+        from civ_arcos.compliance.stig import STIGStatus
+        by_status = {
+            "open": sum(1 for f in findings if f.status == STIGStatus.OPEN),
+            "not_a_finding": sum(1 for f in findings if f.status == STIGStatus.NOT_A_FINDING),
+            "not_applicable": sum(1 for f in findings if f.status == STIGStatus.NOT_APPLICABLE),
+            "not_reviewed": sum(1 for f in findings if f.status == STIGStatus.NOT_REVIEWED),
+        }
+        
+        return Response({
+            "success": True,
+            "checklist_id": checklist_id,
+            "total_findings": len(findings),
+            "by_status": by_status,
+            "findings": [
+                {
+                    "rule_id": f.rule_id,
+                    "status": f.status.value,
+                    "finding_details": f.finding_details,
+                    "timestamp": f.timestamp.isoformat(),
+                }
+                for f in findings
+            ],
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/compliance/stig/report/{checklist_id}")
+def stig_report(request: Request) -> Response:
+    """
+    Generate STIG compliance report for an asset.
+    
+    Query params:
+    - report_type: asset or enterprise (default: asset)
+    """
+    try:
+        from civ_arcos.compliance.stig import STIGEngine
+        
+        checklist_id = request.path.split("/")[-1]
+        report_type = request.query.get("report_type", ["asset"])[0]
+        
+        # Initialize STIG engine and generate report
+        engine = STIGEngine()
+        report = engine.generate_report(checklist_id, report_type)
+        
+        return Response(report)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/compliance/stig/export/{checklist_id}")
+def stig_export(request: Request) -> Response:
+    """
+    Export STIG checklist in eMASS-compatible format.
+    """
+    try:
+        from civ_arcos.compliance.stig import STIGEngine
+        
+        checklist_id = request.path.split("/")[-1]
+        
+        # Initialize STIG engine and export
+        engine = STIGEngine()
+        export_data = engine.export_for_emass(checklist_id)
+        
+        return Response(export_data)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/compliance/stig/benchmarks")
+def stig_list_benchmarks(request: Request) -> Response:
+    """List all available STIG benchmarks."""
+    try:
+        from civ_arcos.compliance.stig import STIGEngine
+        
+        engine = STIGEngine()
+        benchmarks = engine.list_benchmarks()
+        
+        return Response({
+            "success": True,
+            "benchmarks": benchmarks,
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/compliance/stig/poam/create")
+def stig_create_poam(request: Request) -> Response:
+    """
+    Create a Plan of Action and Milestones (POA&M) for a finding.
+    
+    Request body:
+    {
+        "poam_id": "POAM-001",
+        "finding_id": "SV-230220",
+        "description": "Configure password policy",
+        "resources_required": "System Admin, 2 hours",
+        "scheduled_completion": "2024-12-31T23:59:59"
+    }
+    """
+    try:
+        from civ_arcos.compliance.stig import STIGEngine
+        from datetime import datetime
+        
+        data = request.json()
+        
+        # Initialize STIG engine
+        engine = STIGEngine()
+        
+        # Create POA&M
+        poam_id = engine.poam_manager.create_poam(
+            poam_id=data["poam_id"],
+            finding_id=data["finding_id"],
+            description=data["description"],
+            resources_required=data["resources_required"],
+            scheduled_completion=datetime.fromisoformat(data["scheduled_completion"]),
+        )
+        
+        return Response({
+            "success": True,
+            "poam_id": poam_id,
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/compliance/stig/docs")
+def stig_docs(request: Request) -> Response:
+    """Get STIG module API documentation."""
+    return Response({
+        "module": "CIV-STIG",
+        "description": "Configuration compliance and STIG assessment implementation",
+        "endpoints": {
+            "POST /api/compliance/stig/assessment/create": {
+                "description": "Create new STIG assessment for an asset",
+                "parameters": {
+                    "asset": "Asset information (asset_id, hostname, ip_address, os)",
+                    "benchmark_id": "STIG benchmark ID (e.g., Windows_10_STIG)"
+                },
+                "returns": "Checklist ID for tracking assessment"
+            },
+            "POST /api/compliance/stig/scan": {
+                "description": "Perform automated STIG scan",
+                "parameters": {
+                    "checklist_id": "Assessment checklist ID",
+                    "system_info": "System configuration data"
+                },
+                "returns": "Scan findings with status breakdown"
+            },
+            "GET /api/compliance/stig/report/:checklist_id": {
+                "description": "Generate compliance report",
+                "query_params": {
+                    "report_type": "asset or enterprise (default: asset)"
+                },
+                "returns": "Formatted compliance report"
+            },
+            "GET /api/compliance/stig/export/:checklist_id": {
+                "description": "Export checklist for eMASS integration",
+                "returns": "CKL-format export data"
+            },
+            "GET /api/compliance/stig/benchmarks": {
+                "description": "List available STIG benchmarks",
+                "returns": "List of STIG benchmarks with versions"
+            },
+            "POST /api/compliance/stig/poam/create": {
+                "description": "Create Plan of Action and Milestones",
+                "parameters": {
+                    "poam_id": "Unique POA&M identifier",
+                    "finding_id": "Associated finding/rule ID",
+                    "description": "Remediation plan description",
+                    "resources_required": "Resources needed",
+                    "scheduled_completion": "Target completion date"
+                },
+                "returns": "POA&M ID"
+            }
+        },
+        "standards": ["XCCDF", "SCAP", "CCI", "NIST 800-53"],
+        "severity_categories": ["CAT I (High)", "CAT II (Medium)", "CAT III (Low)"],
+        "finding_statuses": ["NOT_REVIEWED", "OPEN", "NOT_A_FINDING", "NOT_APPLICABLE"]
+    })
+
+
 # Integration API endpoints
 @app.post("/api/github/quality-check")
 def github_quality_check_webhook(request: Request) -> Response:

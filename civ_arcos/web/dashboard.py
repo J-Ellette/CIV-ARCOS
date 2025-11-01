@@ -797,27 +797,61 @@ class DashboardGenerator:
                     </div>
                 </div>
 
-                <!-- CIV-STIG Module (Coming Soon) -->
+                <!-- CIV-STIG Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
                             <h3 class="usa-card__heading">CIV-STIG</h3>
-                            <p class="usa-tag bg-base-light">Coming Soon</p>
+                            <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
                             <p><strong>Configuration Compliance Management</strong></p>
                             <p>DoD STIG-inspired configuration compliance and security technical implementation 
-                            guides for civilian systems.</p>
+                            guides for civilian systems. Emulates DISA STIG Viewer/Manager functionality.</p>
                             
-                            <h4 class="margin-top-2">Planned Features:</h4>
+                            <h4 class="margin-top-2">Features:</h4>
                             <ul class="usa-list">
-                                <li>Desktop STIG Viewer for security checklists</li>
-                                <li>Enterprise STIG Manager for multi-system tracking</li>
-                                <li>Automated configuration assessment</li>
-                                <li>Remediation workflow engine</li>
-                                <li>Compliance tracking and reporting</li>
+                                <li><strong>STIG Benchmarks:</strong> Windows 10, RHEL 8, and custom security baselines</li>
+                                <li><strong>Checklist Management:</strong> CKL-format checklists with multi-asset tracking</li>
+                                <li><strong>Automated Scanning:</strong> Configuration assessment for Windows, Linux, network devices</li>
+                                <li><strong>CCI Integration:</strong> Control Correlation Identifiers mapped to NIST 800-53</li>
+                                <li><strong>POA&M Management:</strong> Plans of Action and Milestones for remediation tracking</li>
+                                <li><strong>eMASS Export:</strong> Integration with DoD Enterprise Mission Assurance Support Service</li>
                             </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/stig/assessment/create</code><br>
+                                <small>Create new STIG assessment for an asset</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/stig/scan</code><br>
+                                <small>Perform automated STIG compliance scan</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/stig/report/:checklist_id</code><br>
+                                <small>Generate asset or enterprise compliance report</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Severity Categories:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag bg-error">CAT I (High)</span>
+                                </div>
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag bg-warning">CAT II (Medium)</span>
+                                </div>
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag bg-info">CAT III (Low)</span>
+                                </div>
+                            </div>
                         </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('stig')">Test STIG Scan</button>
+                            <a href="/api/compliance/stig/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
                     </div>
                 </div>
 
@@ -920,44 +954,112 @@ const results = await response.json();</code></pre>
             `;
             
             try {{
-                // Test scan with sample data
-                const response = await fetch(`/api/compliance/${{module}}/scan`, {{
-                    method: 'POST',
-                    headers: {{ 'Content-Type': 'application/json' }},
-                    body: JSON.stringify({{
-                        system_info: {{
-                            os: 'Ubuntu',
-                            version: '22.04',
-                            configuration: {{}},
-                            state: {{}}
-                        }}
-                    }})
-                }});
+                let response, results;
                 
-                if (!response.ok) {{
-                    throw new Error(`HTTP error! status: ${{response.status}}`);
-                }}
-                
-                const results = await response.json();
-                
-                // Display results
-                resultsDiv.innerHTML = `
-                    <div class="usa-alert usa-alert--success">
-                        <div class="usa-alert__body">
-                            <h4 class="usa-alert__heading">✅ ${{module.toUpperCase()}} Scan Complete</h4>
-                            <p class="usa-alert__text">
-                                Compliance Score: <strong>${{results.compliance_score}}%</strong><br>
-                                Total Checks: ${{results.total_results}}<br>
-                                Passed: <span class="text-success">${{results.passed}}</span><br>
-                                Failed: <span class="text-error">${{results.failed}}</span>
-                            </p>
-                            <details class="margin-top-2">
-                                <summary>View Detailed Results</summary>
-                                <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
-                            </details>
+                if (module === 'stig') {{
+                    // For STIG, first create an assessment
+                    const createResponse = await fetch('/api/compliance/stig/assessment/create', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            asset: {{
+                                asset_id: 'DEMO-001',
+                                hostname: 'demo-server',
+                                ip_address: '192.168.1.100',
+                                asset_type: 'Computing',
+                                operating_system: 'Windows 10'
+                            }},
+                            benchmark_id: 'Windows_10_STIG'
+                        }})
+                    }});
+                    
+                    if (!createResponse.ok) {{
+                        throw new Error(`HTTP error! status: ${{createResponse.status}}`);
+                    }}
+                    
+                    const assessmentData = await createResponse.json();
+                    const checklist_id = assessmentData.checklist_id;
+                    
+                    // Then perform scan
+                    response = await fetch('/api/compliance/stig/scan', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            checklist_id: checklist_id,
+                            system_info: {{
+                                registry: {{
+                                    'HKLM\\\\SOFTWARE\\\\Policies\\\\Microsoft\\\\Windows NT\\\\Terminal Services\\\\DisablePasswordSaving': 1
+                                }},
+                                volumes: [
+                                    {{ drive: 'C:', filesystem: 'NTFS' }},
+                                    {{ drive: 'D:', filesystem: 'NTFS' }}
+                                ]
+                            }}
+                        }})
+                    }});
+                    
+                    results = await response.json();
+                    
+                    // Display STIG-specific results
+                    resultsDiv.innerHTML = `
+                        <div class="usa-alert usa-alert--success">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ STIG Scan Complete</h4>
+                                <p class="usa-alert__text">
+                                    Checklist ID: <strong>${{checklist_id}}</strong><br>
+                                    Total Findings: ${{results.total_findings}}<br>
+                                    Open: <span class="text-error">${{results.by_status.open}}</span><br>
+                                    Not a Finding: <span class="text-success">${{results.by_status.not_a_finding}}</span><br>
+                                    Not Applicable: <span class="text-base">${{results.by_status.not_applicable}}</span><br>
+                                    Not Reviewed: <span class="text-base">${{results.by_status.not_reviewed}}</span>
+                                </p>
+                                <details class="margin-top-2">
+                                    <summary>View Detailed Results</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                                </details>
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                }} else {{
+                    // Test scan with sample data for SCAP
+                    response = await fetch(`/api/compliance/${{module}}/scan`, {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            system_info: {{
+                                os: 'Ubuntu',
+                                version: '22.04',
+                                configuration: {{}},
+                                state: {{}}
+                            }}
+                        }})
+                    }});
+                    
+                    if (!response.ok) {{
+                        throw new Error(`HTTP error! status: ${{response.status}}`);
+                    }}
+                    
+                    results = await response.json();
+                    
+                    // Display results
+                    resultsDiv.innerHTML = `
+                        <div class="usa-alert usa-alert--success">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ ${{module.toUpperCase()}} Scan Complete</h4>
+                                <p class="usa-alert__text">
+                                    Compliance Score: <strong>${{results.compliance_score}}%</strong><br>
+                                    Total Checks: ${{results.total_results}}<br>
+                                    Passed: <span class="text-success">${{results.passed}}</span><br>
+                                    Failed: <span class="text-error">${{results.failed}}</span>
+                                </p>
+                                <details class="margin-top-2">
+                                    <summary>View Detailed Results</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                                </details>
+                            </div>
+                        </div>
+                    `;
+                }}
             }} catch (error) {{
                 resultsDiv.innerHTML = `
                     <div class="usa-alert usa-alert--error">

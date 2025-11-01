@@ -17,11 +17,34 @@ from .scap import (
     SCAPReporter,
 )
 
+from .stig import (
+    STIGEngine,
+    STIGBenchmark,
+    ChecklistManager,
+    ConfigurationScanner,
+    POAMManager,
+    STIGReporter,
+    Asset,
+    STIGStatus,
+    STIGSeverity,
+)
+
 __all__ = [
+    # SCAP
     "SCAPEngine",
     "XCCDFParser",
     "OVALEngine",
     "CPEIdentifier",
     "CVEIntegration",
     "SCAPReporter",
+    # STIG
+    "STIGEngine",
+    "STIGBenchmark",
+    "ChecklistManager",
+    "ConfigurationScanner",
+    "POAMManager",
+    "STIGReporter",
+    "Asset",
+    "STIGStatus",
+    "STIGSeverity",
 ]
