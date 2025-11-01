@@ -206,3 +206,156 @@ def test_pages_are_responsive():
     for html in pages:
         assert 'name="viewport"' in html
         assert "width=device-width" in html
+
+
+def test_generate_compliance_page():
+    """Test generating compliance modules page."""
+    gen = DashboardGenerator()
+    
+    html = gen.generate_compliance_page()
+    
+    assert "<!DOCTYPE html>" in html
+    assert "Compliance & Security Modules" in html
+    assert "Available Modules" in html
+    # Should list all 10 modules
+    assert "CIV-SCAP" in html
+    assert "CIV-STIG" in html
+    assert "CIV-GRUNDSCHUTZ" in html
+    assert "CIV-ACAS" in html
+    assert "CIV-NESSUS" in html
+    assert "CIV-RAMP" in html
+    assert "CIV-STAR" in html
+    assert "CIV-CMMC" in html
+    assert "CIV-DISS" in html
+    assert "SOC 2 Type II" in html
+
+
+def test_generate_module_page_civ_ramp():
+    """Test generating CIV-RAMP module page."""
+    gen = DashboardGenerator()
+    
+    html = gen.generate_module_page_civ_ramp()
+    
+    assert "<!DOCTYPE html>" in html
+    assert "CIV-RAMP" in html
+    assert "Federal Risk and Authorization Management" in html
+    assert "FedRAMP" in html
+    assert "Badge Creator" in html
+    assert "API Documentation" in html
+    assert "Assurance Cases" in html
+    assert "/api/compliance/fedramp" in html
+
+
+def test_generate_module_page_civ_star():
+    """Test generating CIV-STAR module page."""
+    gen = DashboardGenerator()
+    
+    html = gen.generate_module_page_civ_star()
+    
+    assert "<!DOCTYPE html>" in html
+    assert "CIV-STAR" in html
+    assert "Cloud Security" in html
+    assert "CCM" in html
+    assert "Badge Creator" in html
+    assert "API Documentation" in html
+    assert "Assurance Cases" in html
+    assert "/api/compliance/csa-star" in html
+
+
+def test_generate_module_page_civ_cmmc():
+    """Test generating CIV-CMMC module page."""
+    gen = DashboardGenerator()
+    
+    html = gen.generate_module_page_civ_cmmc()
+    
+    assert "<!DOCTYPE html>" in html
+    assert "CIV-CMMC" in html
+    assert "Cybersecurity Maturity Model" in html
+    assert "CMMC 2.0" in html
+    assert "Badge Creator" in html
+    assert "API Documentation" in html
+    assert "Assurance Cases" in html
+    assert "/api/compliance/cmmc" in html
+
+
+def test_generate_module_page_civ_diss():
+    """Test generating CIV-DISS module page."""
+    gen = DashboardGenerator()
+    
+    html = gen.generate_module_page_civ_diss()
+    
+    assert "<!DOCTYPE html>" in html
+    assert "CIV-DISS" in html
+    assert "Personnel Security" in html
+    assert "Clearance" in html
+    assert "Badge Creator" in html
+    assert "API Documentation" in html
+    assert "Assurance Cases" in html
+    assert "/api/compliance/diss" in html
+
+
+def test_generate_module_page_soc2():
+    """Test generating SOC 2 Type II module page."""
+    gen = DashboardGenerator()
+    
+    html = gen.generate_module_page_soc2()
+    
+    assert "<!DOCTYPE html>" in html
+    assert "SOC 2 Type II" in html
+    assert "Trust Services" in html
+    assert "AICPA" in html
+    assert "Badge Creator" in html
+    assert "API Documentation" in html
+    assert "Assurance Cases" in html
+    assert "/api/compliance/soc2" in html
+
+
+def test_all_module_pages_have_required_components():
+    """Test that all module pages have required components."""
+    gen = DashboardGenerator()
+    
+    module_pages = [
+        gen.generate_module_page_civ_ramp(),
+        gen.generate_module_page_civ_star(),
+        gen.generate_module_page_civ_cmmc(),
+        gen.generate_module_page_civ_diss(),
+        gen.generate_module_page_soc2(),
+    ]
+    
+    for html in module_pages:
+        # Required components
+        assert "Badge Creator" in html
+        assert "API Documentation" in html
+        assert "Assurance Cases" in html
+        # Form elements
+        assert "badge-label" in html
+        assert "badge-status" in html
+        assert "badge-score" in html
+        # Functions
+        assert "generateBadge" in html
+        assert "testModule" in html
+        assert "copyBadgeUrl" in html
+
+
+def test_compliance_page_has_links_to_all_modules():
+    """Test that compliance page has links to all module pages."""
+    gen = DashboardGenerator()
+    
+    html = gen.generate_compliance_page()
+    
+    # Check for links to all 10 module pages
+    module_urls = [
+        "/dashboard/compliance/civ-scap",
+        "/dashboard/compliance/civ-stig",
+        "/dashboard/compliance/civ-grundschutz",
+        "/dashboard/compliance/civ-acas",
+        "/dashboard/compliance/civ-nessus",
+        "/dashboard/compliance/civ-ramp",
+        "/dashboard/compliance/civ-star",
+        "/dashboard/compliance/civ-cmmc",
+        "/dashboard/compliance/civ-diss",
+        "/dashboard/compliance/soc2",
+    ]
+    
+    for url in module_urls:
+        assert url in html
