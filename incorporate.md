@@ -701,12 +701,12 @@ Enterprise asset management for public agencies
 
 ****************************************
 
-## Automated Cryptographic Validation Protocol 
+## Automated Cryptographic Validation Protocol (COMPLETE)
 (https://csrc.nist.gov/projects/cryptographic-algorithm-validation-program) (https://github.com/usnistgov/ACVP)
 
 ****************************************
 
-## NIST Resource Metadata Management (RMM) API
+## NIST Resource Metadata Management (RMM) API (COMPLETE)
 (https://github.com/usnistgov/oar-rmm-python) 
 
 ****************************************
