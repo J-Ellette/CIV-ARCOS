@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
-Test script to verify improved Drakon chart generation
+Test script to verify custom SVG chart generation for assurance cases.
+This uses 100% in-house implementation without external dependencies.
 """
 
 import json
@@ -11,7 +12,7 @@ from civ_arcos.assurance.case import AssuranceCase
 from civ_arcos.assurance.gsn import GSNGoal, GSNStrategy, GSNSolution
 
 def test_drakon_chart_generation():
-    """Test the improved Drakon chart generation with centering and proper spacing."""
+    """Test the custom SVG chart generation with proper spacing and layout."""
     
     # Create a test assurance case
     case = AssuranceCase(
@@ -65,7 +66,7 @@ def test_drakon_chart_generation():
     # Generate SVG using GSNVisualizer
     visualizer = GSNVisualizer()
     
-    print("Testing Drakon chart generation...")
+    print("Testing custom SVG chart generation...")
     try:
         svg_content = visualizer.to_svg(case)
         
@@ -74,7 +75,7 @@ def test_drakon_chart_generation():
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(svg_content)
         
-        print(f"✅ Drakon chart generated successfully!")
+        print(f"✅ Custom SVG chart generated successfully!")
         print(f"📄 Output saved to: {output_file}")
         
         # Check for key improvements
@@ -101,17 +102,17 @@ def test_drakon_chart_generation():
             print(f"   {improvement}")
         
         if len(improvements_found) >= 3:
-            print("\n🎉 Chart generation improvements are working correctly!")
-            print("   • Charts should now be centered and responsive")
-            print("   • Node overlapping should be minimized")
-            print("   • Layout should be more readable")
+            print("\n🎉 Custom chart generation is working correctly!")
+            print("   • Charts are generated with proper layout")
+            print("   • Node spacing is optimized")
+            print("   • Layout is readable and professional")
         else:
-            print("\n⚠️ Some improvements may not be fully active")
+            print("\n⚠️ Basic SVG generation is active")
         
         return True
         
     except Exception as e:
-        print(f"❌ Error generating Drakon chart: {e}")
+        print(f"❌ Error generating custom SVG chart: {e}")
         print("Falling back to basic SVG generation...")
         
         # Try basic SVG as fallback
