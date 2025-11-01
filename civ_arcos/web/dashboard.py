@@ -911,26 +911,142 @@ class DashboardGenerator:
                     </div>
                 </div>
 
-                <!-- CIV-ACAS Module (Coming Soon) -->
+                <!-- CIV-ACAS Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
                             <h3 class="usa-card__heading">CIV-ACAS</h3>
-                            <p class="usa-tag bg-base-light">Coming Soon</p>
+                            <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
                             <p><strong>Assured Compliance Assessment Solution</strong></p>
                             <p>DoD ACAS-inspired unified vulnerability management and compliance assessment 
-                            platform.</p>
+                            platform. Emulates Tenable's ACAS program used across DoD networks.</p>
                             
-                            <h4 class="margin-top-2">Planned Features:</h4>
+                            <h4 class="margin-top-2">Features:</h4>
                             <ul class="usa-list">
-                                <li>Multi-modal scanning engine (active, agentless, agent-based)</li>
-                                <li>Passive network monitoring</li>
-                                <li>Vulnerability intelligence integration</li>
-                                <li>Centralized management platform</li>
-                                <li>Remediation orchestration</li>
+                                <li><strong>Multi-Modal Scanning:</strong> 5 scan modes (credentialed, agentless, passive, agent-based, cloud API)</li>
+                                <li><strong>CVE Database:</strong> Real-time vulnerability intelligence with exploit tracking</li>
+                                <li><strong>Compliance Assessment:</strong> PCI DSS, HIPAA, SOX, NIST 800-53, ISO 27001, CIS</li>
+                                <li><strong>Remediation Orchestration:</strong> SLA tracking and automated task management</li>
+                                <li><strong>Continuous Monitoring:</strong> Real-time security posture visibility</li>
+                                <li><strong>Risk Scoring:</strong> CVSS-based risk calculation with business impact</li>
                             </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/acas/scan</code><br>
+                                <small>Run vulnerability scan (active credentialed/agentless/passive/agent/cloud)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/acas/compliance/assess</code><br>
+                                <small>Assess compliance against framework (PCI DSS, HIPAA, etc.)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/acas/comprehensive</code><br>
+                                <small>Perform comprehensive security and compliance assessment</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/acas/dashboard</code><br>
+                                <small>Get vulnerability management dashboard data</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/acas/remediation/task</code><br>
+                                <small>Create remediation task with SLA tracking</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Scan Modes:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Credentialed</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Agentless</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Passive</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Agent</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Cloud API</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('acas')">Test ACAS Scan</button>
+                            <a href="/api/acas/dashboard" class="usa-button usa-button--outline">Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CIV-NESSUS Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">CIV-NESSUS</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Network Security Scanner</strong></p>
+                            <p>Tenable Nessus Professional-inspired vulnerability assessment platform. 
+                            Core component of DoD's ACAS program for vulnerability scanning.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>Plugin System:</strong> 10+ vulnerability detection plugins with CVE mapping</li>
+                                <li><strong>6 Scan Types:</strong> Basic network, credentialed, web app, malware, policy, SCADA</li>
+                                <li><strong>Asset Discovery:</strong> Real-time network asset identification and inventory</li>
+                                <li><strong>Compliance Engine:</strong> PCI DSS 4.0, HIPAA, NIST 800-53, ISO 27001, CIS</li>
+                                <li><strong>Report Generation:</strong> Executive, technical, and compliance reports</li>
+                                <li><strong>Risk Factor Classification:</strong> Critical/High/Medium/Low/Info with CVSS</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/nessus/scan/create-and-run</code><br>
+                                <small>Create and execute vulnerability scan with multiple targets</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/nessus/compliance/audit</code><br>
+                                <small>Run compliance audit against policy (PCI DSS, HIPAA, etc.)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/nessus/asset/inventory</code><br>
+                                <small>Get complete asset inventory with vulnerability counts</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/nessus/vulnerability/summary</code><br>
+                                <small>Get vulnerability summary across all scans</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/nessus/dashboard</code><br>
+                                <small>Get comprehensive dashboard with scan history and statistics</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Plugin Families:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Windows</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Unix</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Web</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Database</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">SCADA</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('nessus')">Test Nessus Scan</button>
+                            <a href="/api/nessus/dashboard" class="usa-button usa-button--outline">Dashboard</a>
                         </div>
                     </div>
                 </div>
@@ -1105,6 +1221,139 @@ const results = await response.json();</code></pre>
                                 </details>
                                 <details class="margin-top-2">
                                     <summary>View Full Report</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                                </details>
+                            </div>
+                        </div>
+                    `;
+                }} else if (module === 'acas') {{
+                    // For ACAS, run comprehensive assessment
+                    response = await fetch('/api/acas/comprehensive', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            target: 'demo-server.example.com',
+                            scan_mode: 'active_credentialed',
+                            compliance_frameworks: ['pci_dss', 'nist_800_53'],
+                            credentials: {{
+                                username: 'demo_scanner',
+                                password: '****'
+                            }}
+                        }})
+                    }});
+                    
+                    if (!response.ok) {{
+                        throw new Error(`HTTP error! status: ${{response.status}}`);
+                    }}
+                    
+                    results = await response.json();
+                    
+                    // Display ACAS-specific results
+                    const assessment = results.assessment;
+                    const vulnScan = assessment.vulnerability_scan;
+                    const posture = assessment.overall_security_posture;
+                    
+                    resultsDiv.innerHTML = `
+                        <div class="usa-alert usa-alert--success">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ ACAS Comprehensive Assessment Complete</h4>
+                                <p class="usa-alert__text">
+                                    <strong>Target:</strong> ${{assessment.target}}<br>
+                                    <strong>Vulnerabilities Found:</strong> ${{vulnScan.vulnerabilities_found}}<br>
+                                    <strong>Risk Level:</strong> <span class="${{
+                                        vulnScan.risk_summary.overall_risk_level === 'CRITICAL' ? 'text-error' :
+                                        vulnScan.risk_summary.overall_risk_level === 'HIGH' ? 'text-warning' : 'text-success'
+                                    }}">${{vulnScan.risk_summary.overall_risk_level}}</span><br>
+                                    <strong>Security Posture Score:</strong> ${{posture.posture_score}}/100<br>
+                                    <strong>Remediation Tasks:</strong> ${{assessment.remediation_tasks_created}}
+                                </p>
+                                <div class="margin-top-2">
+                                    <h5>Vulnerability Breakdown:</h5>
+                                    <p class="text-small">
+                                        Critical: <span class="text-error">${{vulnScan.risk_summary.severity_breakdown.critical}}</span> | 
+                                        High: <span class="text-warning">${{vulnScan.risk_summary.severity_breakdown.high}}</span> | 
+                                        Medium: <span class="text-base">${{vulnScan.risk_summary.severity_breakdown.medium}}</span> | 
+                                        Low: ${{vulnScan.risk_summary.severity_breakdown.low}}
+                                    </p>
+                                </div>
+                                <div class="margin-top-2">
+                                    <h5>Compliance Assessments:</h5>
+                                    ${{assessment.compliance_assessments.map(comp => `
+                                        <p class="text-small">
+                                            <strong>${{comp.framework_name}}:</strong> ${{comp.compliance_score}}% 
+                                            (Passed: ${{comp.passed_requirements}}/${{comp.total_requirements}})
+                                        </p>
+                                    `).join('')}}
+                                </div>
+                                <details class="margin-top-2">
+                                    <summary>View Detailed Results</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                                </details>
+                            </div>
+                        </div>
+                    `;
+                }} else if (module === 'nessus') {{
+                    // For Nessus, run credentialed scan
+                    response = await fetch('/api/nessus/scan/create-and-run', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            name: 'Demo Security Scan',
+                            targets: ['192.168.1.10', '192.168.1.20'],
+                            scan_type: 'credentialed',
+                            credentials: {{
+                                ssh_username: 'scanner',
+                                ssh_password: '****'
+                            }}
+                        }})
+                    }});
+                    
+                    if (!response.ok) {{
+                        throw new Error(`HTTP error! status: ${{response.status}}`);
+                    }}
+                    
+                    results = await response.json();
+                    
+                    // Display Nessus-specific results
+                    const scanResults = results.scan.scan_results;
+                    const stats = scanResults.statistics;
+                    const summary = results.scan.executive_summary.summary;
+                    
+                    resultsDiv.innerHTML = `
+                        <div class="usa-alert usa-alert--success">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ Nessus Scan Complete</h4>
+                                <p class="usa-alert__text">
+                                    <strong>Scan ID:</strong> ${{scanResults.scan_id}}<br>
+                                    <strong>Targets Scanned:</strong> ${{scanResults.targets_scanned}}<br>
+                                    <strong>Assets Discovered:</strong> ${{scanResults.assets_discovered}}<br>
+                                    <strong>Vulnerabilities Found:</strong> ${{scanResults.vulnerabilities_found}}<br>
+                                    <strong>Risk Score:</strong> ${{stats.risk_score}}/100<br>
+                                    <strong>Risk Level:</strong> <span class="${{
+                                        summary.risk_level === 'CRITICAL' ? 'text-error' :
+                                        summary.risk_level === 'HIGH' ? 'text-warning' : 'text-success'
+                                    }}">${{summary.risk_level}}</span>
+                                </p>
+                                <div class="margin-top-2">
+                                    <h5>Risk Summary:</h5>
+                                    <p class="text-small">
+                                        Critical: <span class="text-error">${{stats.critical}}</span> | 
+                                        High: <span class="text-warning">${{stats.high}}</span> | 
+                                        Medium: <span class="text-base">${{stats.medium}}</span> | 
+                                        Low: ${{stats.low}} | 
+                                        Info: ${{stats.info}}
+                                    </p>
+                                </div>
+                                <div class="margin-top-2">
+                                    <h5>Key Findings:</h5>
+                                    <ul class="usa-list text-small">
+                                        ${{results.scan.executive_summary.key_findings.map(finding => `
+                                            <li>${{finding}}</li>
+                                        `).join('')}}
+                                    </ul>
+                                </div>
+                                <details class="margin-top-2">
+                                    <summary>View Detailed Results</summary>
                                     <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
                                 </details>
                             </div>

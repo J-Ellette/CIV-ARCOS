@@ -5,7 +5,8 @@ Implements various compliance and security automation frameworks:
 - CIV-SCAP: Security Content Automation Protocol
 - CIV-STIG: Configuration compliance management
 - CIV-GRUNDSCHUTZ: Systematic security certification
-- CIV-ACAS: Vulnerability assessment solution
+- CIV-ACAS: Unified vulnerability management and compliance assessment
+- CIV-NESSUS: Network vulnerability scanning and policy compliance
 """
 
 from .scap import (
@@ -44,6 +45,30 @@ from .grundschutz import (
     RiskLevel,
 )
 
+from .acas import (
+    ACASManager,
+    VulnerabilityScanner,
+    ComplianceAssessor,
+    RemediationOrchestrator,
+    Vulnerability,
+    ScanMode,
+    VulnerabilitySeverity,
+    ComplianceFramework,
+)
+
+from .nessus import (
+    NessusManager,
+    NessusScanner,
+    ComplianceEngine,
+    CompliancePolicy,
+    ReportGenerator,
+    Plugin,
+    Asset as NessusAsset,
+    ScanType,
+    PluginFamily,
+    RiskFactor,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -75,4 +100,24 @@ __all__ = [
     "ControlCategory",
     "ImplementationStatus",
     "RiskLevel",
+    # ACAS
+    "ACASManager",
+    "VulnerabilityScanner",
+    "ComplianceAssessor",
+    "RemediationOrchestrator",
+    "Vulnerability",
+    "ScanMode",
+    "VulnerabilitySeverity",
+    "ComplianceFramework",
+    # NESSUS
+    "NessusManager",
+    "NessusScanner",
+    "ComplianceEngine",
+    "CompliancePolicy",
+    "ReportGenerator",
+    "Plugin",
+    "NessusAsset",
+    "ScanType",
+    "PluginFamily",
+    "RiskFactor",
 ]
