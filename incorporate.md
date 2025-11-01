@@ -751,19 +751,19 @@ Used by the U.S. Department of Defense (DoD), this is an enterprise-wide system 
 
 ****************************************
 
-## Cybersecurity Maturity Model Certification (CMMC) Ecosystem: 
+## Cybersecurity Maturity Model Certification (CMMC) Ecosystem: (COMPLETE) 
 Although CMMC is a set of standards rather than a single software, the ecosystem is supported by automated tools and platforms. The Department of Defense establishes criteria to give assurance that contractors' applications meet security standards, and vendors provide tools to assist in achieving and demonstrating that compliance.
 (https://dodcio.defense.gov/cmmc/About/)
 
 ****************************************
 
-## UL Solutions Global Compliance Management (GCM): 
+## UL Solutions Global Compliance Management (GCM): (COMPLETE) 
 This software suite helps businesses and government entities proactively manage regulatory compliance from product design to production launch. It centralizes compliance activities and provides real-time alerts on regulatory updates from over 7,000 sources in more than 200 countries.
 (https://www.ul.com/software/introducing-global-compliance-management-gcm)
 
 ****************************************
 
-## 2F Game Warden (Second Front Systems): 
+## 2F Game Warden (Second Front Systems): (COMPLETE) 
 This commercial DevSecOps platform is designed specifically for defense contractors. It helps them rapidly achieve an Authority to Operate (ATO) for their software, automatically ensuring compliance with DoD security requirements.
 (https://www.secondfront.com/products/game-warden/)
 

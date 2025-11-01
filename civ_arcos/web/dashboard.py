@@ -1729,6 +1729,215 @@ class DashboardGenerator:
                     </div>
                 </div>
 
+                <!-- CMMC Ecosystem Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">CMMC Ecosystem</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Cybersecurity Maturity Model Certification</strong></p>
+                            <p>Automated tools and platforms supporting the CMMC framework to help defense 
+                            contractors achieve and demonstrate compliance with DoD security standards.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>3 Maturity Levels:</strong> Level 1 (17 practices), Level 2 (110 practices), Level 3 (130 practices)</li>
+                                <li><strong>15 Security Domains:</strong> AC, AT, AU, CA, CM, IA, IR, MA, MP, PE, PS, RA, RE, SC, SI</li>
+                                <li><strong>Gap Analysis:</strong> Automated assessment of current vs. required practices</li>
+                                <li><strong>Remediation Planning:</strong> Task prioritization with cost and timeline estimates</li>
+                                <li><strong>C3PAO Assessment:</strong> Support for Certified Third Party Assessor Organization audits</li>
+                                <li><strong>Continuous Monitoring:</strong> Real-time compliance tracking and drift detection</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/cmmc/organization/register</code><br>
+                                <small>Register defense contractor for CMMC</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/cmmc/gap-analysis</code><br>
+                                <small>Conduct gap analysis against target level</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/cmmc/remediation/plan</code><br>
+                                <small>Create remediation plan with prioritized tasks</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/cmmc/assessment/schedule</code><br>
+                                <small>Schedule C3PAO assessment</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/cmmc/monitoring/enable</code><br>
+                                <small>Enable continuous compliance monitoring</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">CMMC Levels:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag">Level 1 (17)</span>
+                                </div>
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag bg-warning">Level 2 (110)</span>
+                                </div>
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag bg-error">Level 3 (130)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('cmmc')">Test CMMC</button>
+                            <a href="/api/compliance/cmmc/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GCM (UL Solutions Global Compliance Management) Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">UL Global Compliance Management</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Global Regulatory Compliance Platform</strong></p>
+                            <p>Proactively manage regulatory compliance from product design to production launch with 
+                            real-time alerts from 7,000+ sources in 200+ countries.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>7,000+ Regulatory Sources:</strong> Global coverage across all industries</li>
+                                <li><strong>200+ Countries:</strong> Comprehensive international regulatory database</li>
+                                <li><strong>Real-time Alerts:</strong> Automated notifications of regulatory changes</li>
+                                <li><strong>Product Lifecycle Management:</strong> Design to production compliance tracking</li>
+                                <li><strong>Test Management:</strong> Testing lab integration and report tracking</li>
+                                <li><strong>Certification Tracking:</strong> Multi-certification management (CE, UL, FDA, etc.)</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/gcm/product/register</code><br>
+                                <small>Register product for compliance tracking</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/gcm/alert/track</code><br>
+                                <small>Track regulatory update alert</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/gcm/requirement/create</code><br>
+                                <small>Create compliance requirement with test method</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/gcm/test/submit</code><br>
+                                <small>Submit test report from testing lab</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/gcm/certification/apply</code><br>
+                                <small>Apply for product certification</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/gcm/dashboard/:product_id</code><br>
+                                <small>Get compliance dashboard for product</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Product Categories:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Medical</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Electronics</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Industrial</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Automotive</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Aerospace</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('gcm')">Test GCM</button>
+                            <a href="/api/compliance/gcm/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game Warden (2F Second Front Systems) Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">2F Game Warden</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>DevSecOps Platform for DoD ATO</strong></p>
+                            <p>Commercial DevSecOps platform designed for defense contractors to rapidly achieve 
+                            Authority to Operate (ATO) with automated DoD security compliance.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>4 Impact Levels:</strong> IL2, IL4, IL5, IL6 with appropriate NIST controls</li>
+                                <li><strong>DevSecOps Pipeline:</strong> 7-stage automated security pipeline</li>
+                                <li><strong>Security Gates:</strong> SAST, DAST, SCA, container scanning, IaC security, secrets detection</li>
+                                <li><strong>Automated ATO Package:</strong> SSP, SAR, POA&M, continuous monitoring strategy</li>
+                                <li><strong>Continuous Monitoring:</strong> Real-time compliance validation and drift detection</li>
+                                <li><strong>Accelerated Timeline:</strong> 3-18 months vs. traditional 24-36 months</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/game-warden/app/onboard</code><br>
+                                <small>Onboard defense contractor application</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/game-warden/pipeline/configure</code><br>
+                                <small>Configure DevSecOps pipeline with security gates</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/game-warden/control/implement</code><br>
+                                <small>Implement NIST security control</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/game-warden/scan/automated</code><br>
+                                <small>Run automated compliance scan</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/game-warden/ato/generate</code><br>
+                                <small>Generate ATO package with automated evidence</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/game-warden/monitoring/enable</code><br>
+                                <small>Enable continuous ATO monitoring</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">DoD Impact Levels:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">IL2 (48)</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag bg-info">IL4 (110)</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag bg-warning">IL5 (325)</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag bg-error">IL6 (421)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('game_warden')">Test Game Warden</button>
+                            <a href="/api/compliance/game-warden/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
                 <h2 class="margin-top-5">API Integration</h2>
                 <div class="usa-prose margin-top-3">
                     <p>All compliance modules are accessible via RESTful APIs for easy integration 
