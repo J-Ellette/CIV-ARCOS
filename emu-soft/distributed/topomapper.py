@@ -249,7 +249,12 @@ class TopologyMapper:
         return service_id
 
     def _generate_service_id(self, service_name: str, endpoint: NetworkEndpoint) -> str:
-        """Generate a unique service ID."""
+        """
+        Generate a unique service ID.
+
+        Uses deterministic hashing for consistent IDs across observations,
+        which ensures the same service is always identified with the same ID.
+        """
         unique_str = f"{service_name}-{endpoint.host}-{endpoint.port}"
         return hashlib.sha256(unique_str.encode()).hexdigest()[:16]
 

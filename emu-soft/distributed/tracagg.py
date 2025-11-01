@@ -500,17 +500,21 @@ class TracePerformanceAnalyzer:
         return results
 
     def _percentile(self, data: List[float], percentile: float) -> float:
-        """Calculate percentile value."""
+        """Calculate percentile value using linear interpolation."""
         if not data:
             return 0.0
         sorted_data = sorted(data)
+        if len(sorted_data) == 1:
+            return sorted_data[0]
         index = (len(sorted_data) - 1) * percentile / 100
         floor_index = int(index)
-        if floor_index == len(sorted_data) - 1:
-            return sorted_data[floor_index]
-        return sorted_data[floor_index] + (
+        if floor_index >= len(sorted_data) - 1:
+            return sorted_data[-1]
+        # Linear interpolation between two closest values
+        fraction = index - floor_index
+        return sorted_data[floor_index] + fraction * (
             sorted_data[floor_index + 1] - sorted_data[floor_index]
-        ) * (index - floor_index)
+        )
 
     def identify_bottlenecks(
         self, trace: Trace, threshold_ms: float = 100.0

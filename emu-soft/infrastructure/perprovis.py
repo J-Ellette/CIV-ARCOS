@@ -492,8 +492,7 @@ class ProfileVisualizer:
 
             lines.append(f"{prefix}{indent}{node.function_name}{time_info}")
 
-            # Add callees - call_count is tracked for potential future features
-            # like weighted call trees or frequency-based filtering
+            # Add callees with their call counts tracked in node.callees
             for callee_key in sorted(node.callees.keys()):
                 new_prefix = f"{prefix}  "
                 build_tree(callee_key, depth + 1, new_prefix)
