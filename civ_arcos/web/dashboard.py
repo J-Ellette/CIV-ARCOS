@@ -704,6 +704,276 @@ class DashboardGenerator:
 </html>"""
         return html
 
+    def generate_compliance_page(self) -> str:
+        """
+        Generate the compliance modules page using USWDS components.
+        Shows available compliance and security automation modules.
+
+        Returns:
+            Complete HTML page as string with USWDS styling
+        """
+        html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance Modules - CIV-ARCOS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/css/uswds.min.css">
+    <style>{self._get_custom_css()}</style>
+</head>
+<body>
+    {self._get_header("Compliance Modules")}
+    
+    <main id="main-content">
+        <section class="usa-section">
+            <div class="grid-container">
+                <h1 class="usa-prose">🔒 Compliance & Security Modules</h1>
+                <p class="usa-intro">Automated compliance content and vulnerability management tools</p>
+                
+                <div class="usa-alert usa-alert--info margin-top-4">
+                    <div class="usa-alert__body">
+                        <h4 class="usa-alert__heading">Military-Grade Compliance</h4>
+                        <p class="usa-alert__text">
+                            These modules provide DoD-proven compliance automation and security assessment 
+                            capabilities for civilian organizations. All implementations are 100% homegrown, 
+                            emulating industry standards while maintaining complete code autonomy.
+                        </p>
+                    </div>
+                </div>
+
+                <h2 class="margin-top-5">Available Modules</h2>
+                
+                <!-- CIV-SCAP Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">CIV-SCAP</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Security Content Automation Protocol</strong></p>
+                            <p>Automated compliance content and protocols for security management, vulnerability 
+                            assessment, and policy compliance evaluation.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>XCCDF Parser:</strong> Extensible Configuration Checklist Description Format</li>
+                                <li><strong>OVAL Engine:</strong> Open Vulnerability and Assessment Language</li>
+                                <li><strong>CPE Identifier:</strong> Common Platform Enumeration</li>
+                                <li><strong>CVE Integration:</strong> Common Vulnerabilities and Exposures database</li>
+                                <li><strong>Compliance Reporting:</strong> Multi-format standardized reports</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/scap/scan</code><br>
+                                <small>Perform SCAP compliance scan</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/scap/report/:scan_id</code><br>
+                                <small>Generate compliance report (executive, technical, compliance)</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Standards Supported:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">NIST 800-53</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">CIS Benchmarks</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">PCI DSS</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">FedRAMP</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('scap')">Test SCAP Scan</button>
+                            <a href="/api/compliance/scap/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CIV-STIG Module (Coming Soon) -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">CIV-STIG</h3>
+                            <p class="usa-tag bg-base-light">Coming Soon</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Configuration Compliance Management</strong></p>
+                            <p>DoD STIG-inspired configuration compliance and security technical implementation 
+                            guides for civilian systems.</p>
+                            
+                            <h4 class="margin-top-2">Planned Features:</h4>
+                            <ul class="usa-list">
+                                <li>Desktop STIG Viewer for security checklists</li>
+                                <li>Enterprise STIG Manager for multi-system tracking</li>
+                                <li>Automated configuration assessment</li>
+                                <li>Remediation workflow engine</li>
+                                <li>Compliance tracking and reporting</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CIV-GRUNDSCHUTZ Module (Coming Soon) -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">CIV-GRUNDSCHUTZ</h3>
+                            <p class="usa-tag bg-base-light">Coming Soon</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Systematic Security Certification</strong></p>
+                            <p>BSI IT-Grundschutz-inspired methodology for comprehensive information security 
+                            management and ISO 27001 certification.</p>
+                            
+                            <h4 class="margin-top-2">Planned Features:</h4>
+                            <ul class="usa-list">
+                                <li>ISMS (Information Security Management System) core</li>
+                                <li>IT structure analysis engine</li>
+                                <li>Risk-based security controls</li>
+                                <li>Compliance and certification management</li>
+                                <li>Multi-framework integration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CIV-ACAS Module (Coming Soon) -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">CIV-ACAS</h3>
+                            <p class="usa-tag bg-base-light">Coming Soon</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Assured Compliance Assessment Solution</strong></p>
+                            <p>DoD ACAS-inspired unified vulnerability management and compliance assessment 
+                            platform.</p>
+                            
+                            <h4 class="margin-top-2">Planned Features:</h4>
+                            <ul class="usa-list">
+                                <li>Multi-modal scanning engine (active, agentless, agent-based)</li>
+                                <li>Passive network monitoring</li>
+                                <li>Vulnerability intelligence integration</li>
+                                <li>Centralized management platform</li>
+                                <li>Remediation orchestration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="margin-top-5">API Integration</h2>
+                <div class="usa-prose margin-top-3">
+                    <p>All compliance modules are accessible via RESTful APIs for easy integration 
+                    into your CI/CD pipeline, security tools, and monitoring systems.</p>
+                    
+                    <h3>Base Endpoint</h3>
+                    <div class="bg-base-lightest padding-2 margin-y-1">
+                        <code>/api/compliance/:module/:action</code>
+                    </div>
+                    
+                    <h3>Example Integration</h3>
+                    <div class="bg-base-lightest padding-2 margin-y-1">
+                        <pre><code>// Run SCAP compliance scan
+const response = await fetch('/api/compliance/scap/scan', {{
+    method: 'POST',
+    headers: {{ 'Content-Type': 'application/json' }},
+    body: JSON.stringify({{
+        system_info: {{
+            os: 'Ubuntu',
+            version: '22.04',
+            configuration: {{ ... }}
+        }}
+    }})
+}});
+
+const results = await response.json();</code></pre>
+                    </div>
+                </div>
+                
+                <div id="testResults" class="margin-top-5"></div>
+            </div>
+        </section>
+    </main>
+    
+    {self._get_footer()}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/js/uswds.min.js"></script>
+    <script>{self.base_js}</script>
+    <script>
+        async function testModule(module) {{
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = `
+                <div class="usa-alert usa-alert--info">
+                    <div class="usa-alert__body">
+                        <h4 class="usa-alert__heading">Testing ${{module.toUpperCase()}} Module...</h4>
+                        <p class="usa-alert__text">Running sample scan with demo data</p>
+                    </div>
+                </div>
+            `;
+            
+            try {{
+                // Test scan with sample data
+                const response = await fetch(`/api/compliance/${{module}}/scan`, {{
+                    method: 'POST',
+                    headers: {{ 'Content-Type': 'application/json' }},
+                    body: JSON.stringify({{
+                        system_info: {{
+                            os: 'Ubuntu',
+                            version: '22.04',
+                            configuration: {{}},
+                            state: {{}}
+                        }}
+                    }})
+                }});
+                
+                if (!response.ok) {{
+                    throw new Error(`HTTP error! status: ${{response.status}}`);
+                }}
+                
+                const results = await response.json();
+                
+                // Display results
+                resultsDiv.innerHTML = `
+                    <div class="usa-alert usa-alert--success">
+                        <div class="usa-alert__body">
+                            <h4 class="usa-alert__heading">✅ ${{module.toUpperCase()}} Scan Complete</h4>
+                            <p class="usa-alert__text">
+                                Compliance Score: <strong>${{results.compliance_score}}%</strong><br>
+                                Total Checks: ${{results.total_results}}<br>
+                                Passed: <span class="text-success">${{results.passed}}</span><br>
+                                Failed: <span class="text-error">${{results.failed}}</span>
+                            </p>
+                            <details class="margin-top-2">
+                                <summary>View Detailed Results</summary>
+                                <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                            </details>
+                        </div>
+                    </div>
+                `;
+            }} catch (error) {{
+                resultsDiv.innerHTML = `
+                    <div class="usa-alert usa-alert--error">
+                        <div class="usa-alert__body">
+                            <h4 class="usa-alert__heading">❌ Test Failed</h4>
+                            <p class="usa-alert__text">${{error.message}}</p>
+                        </div>
+                    </div>
+                `;
+            }}
+        }}
+    </script>
+</body>
+</html>"""
+        return html
+
     def _generate_badge_examples(self) -> str:
         """Generate HTML for badge examples using USWDS cards."""
         return """
@@ -839,7 +1109,8 @@ class DashboardGenerator:
             "Home": "/dashboard",
             "Analyze Repository": "/dashboard/analyze",
             "Assurance Cases": "/dashboard/assurance",
-            "Badges": "/dashboard/badges"
+            "Badges": "/dashboard/badges",
+            "Compliance Modules": "/dashboard/compliance"
         }
         
         nav_items = ""
