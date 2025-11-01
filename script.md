@@ -26,6 +26,11 @@ This document identifies all external tools, scripts, software, modules, and off
 - **Purpose:** Building and distributing the Python package
 - **Usage:** Package configuration and installation
 
+**Tool:** `MANIFEST.in`
+- **File:** `MANIFEST.in`
+- **Purpose:** Specifies additional files to include in source distributions
+- **Includes:** README.md, LICENSE, requirements.txt, build-guide.md, Python source files
+
 #### 2. Containerization & Deployment
 **Tool:** `Docker`
 - **Files:** `Dockerfile`, `Dockerfile.dev`, `docker-compose.yml`, `docker-compose.dev.yml`
@@ -33,8 +38,13 @@ This document identifies all external tools, scripts, software, modules, and off
 - **Features Used:**
   - Base image: `python:3.12-slim`
   - Container orchestration with docker-compose
-  - Development environment with build tools
+  - Development environment with build tools (git, vim, curl, build-essential via apt-get)
   - Volume mounting for data persistence
+
+**Tool:** `docker-compose`
+- **Files:** `docker-compose.yml`, `docker-compose.dev.yml`
+- **Purpose:** Multi-container Docker application orchestration
+- **Features:** Environment variables, volume mounts, port mapping, restart policies
 
 ### Testing & Quality Assurance Tools
 
@@ -223,6 +233,12 @@ The repository uses a carefully selected set of external tools while maintaining
 3. **setuptools** - Package building and distribution
 4. **Docker** - Containerization and deployment
 5. **docker-compose** - Container orchestration
+
+**Development Environment Tools (in Dockerfile.dev):**
+- **git** - Version control
+- **vim** - Text editor
+- **curl** - HTTP client
+- **build-essential** - Compiler and build tools (gcc, make, etc.)
 
 #### Testing & Quality Tools (5 tools)
 1. **pytest** - Testing framework with plugins (pytest-cov, pytest-asyncio)
