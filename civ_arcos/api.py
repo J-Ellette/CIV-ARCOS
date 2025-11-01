@@ -68,6 +68,11 @@ from civ_arcos.compliance import (
     SBOMFormat,
     ATOManager,
     AssessmentType,
+    StatisticalAnalysisEngine,
+    ARMATUREEngine,
+    CertificationType,
+    DynamicsEngine,
+    WorkflowType,
 )
 
 
@@ -140,6 +145,11 @@ sbom_validator = SBOMValidator()
 
 # Initialize ATO manager
 ato_manager = ATOManager()
+
+# Initialize new compliance modules
+statistical_engine = StatisticalAnalysisEngine()
+armature_engine = ARMATUREEngine()
+dynamics_engine = DynamicsEngine()
 
 
 @app.get("/")
@@ -5779,6 +5789,381 @@ def ato_documentation(request: Request) -> Response:
                 "POST /api/ato/enable-continuous - Enable continuous ATO",
                 "GET /api/ato/status/{system_name} - Get ATO status",
                 "GET /api/ato/docs - This documentation"
+            ]
+        }
+        
+        return Response({
+            "success": True,
+            "documentation": docs
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ===== Statistical Analysis Endpoints =====
+
+@app.post("/api/statistics/analyze")
+def analyze_dataset(request: Request) -> Response:
+    """Perform comprehensive statistical analysis on a dataset."""
+    try:
+        data = request.body.get("data", [])
+        confidence_level = request.body.get("confidence_level", 95)
+        
+        if not data:
+            return Response({"error": "Missing data parameter"}, status_code=400)
+            
+        result = statistical_engine.analyze_dataset(data, confidence_level)
+        
+        return Response({
+            "success": True,
+            "analysis": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/statistics/forecast")
+def forecast_metric(request: Request) -> Response:
+    """Forecast future metric values using regression."""
+    try:
+        historical_values = request.body.get("historical_values", [])
+        periods_ahead = request.body.get("periods_ahead", 1)
+        
+        if not historical_values:
+            return Response({"error": "Missing historical_values parameter"}, status_code=400)
+            
+        result = statistical_engine.forecast_metric(historical_values, periods_ahead)
+        
+        return Response({
+            "success": True,
+            "forecast": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/statistics/quality-score")
+def analyze_quality_scores(request: Request) -> Response:
+    """Comprehensive statistical analysis of quality scores."""
+    try:
+        project_name = request.body.get("project_name", "Project")
+        coverage_history = request.body.get("coverage_history", [])
+        quality_history = request.body.get("quality_history", [])
+        security_history = request.body.get("security_history", [])
+        
+        result = statistical_engine.quality_score_analysis(
+            project_name=project_name,
+            coverage_history=coverage_history,
+            quality_history=quality_history,
+            security_history=security_history
+        )
+        
+        return Response({
+            "success": True,
+            "analysis": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/statistics/detect-anomalies")
+def detect_anomalies(request: Request) -> Response:
+    """Detect anomalies in data using statistical methods."""
+    try:
+        data = request.body.get("data", [])
+        sigma_threshold = request.body.get("sigma_threshold", 3.0)
+        
+        if not data:
+            return Response({"error": "Missing data parameter"}, status_code=400)
+            
+        anomalies = statistical_engine.detect_anomalies(data, sigma_threshold)
+        
+        return Response({
+            "success": True,
+            "anomaly_indices": anomalies,
+            "anomaly_count": len(anomalies)
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/statistics/docs")
+def statistics_docs(request: Request) -> Response:
+    """Get statistical analysis documentation."""
+    try:
+        docs = {
+            "name": "Statistical Analysis Packages",
+            "description": "Advanced statistical analysis for quality metrics and compliance data",
+            "features": [
+                "Descriptive Statistics (mean, median, std dev, percentiles)",
+                "Inferential Statistics (confidence intervals, hypothesis testing)",
+                "Regression Analysis (linear regression, forecasting)",
+                "Quality Metrics Analysis (trend detection, control charts)",
+                "Anomaly Detection (outlier identification)"
+            ],
+            "endpoints": [
+                "POST /api/statistics/analyze - Comprehensive dataset analysis",
+                "POST /api/statistics/forecast - Forecast future values",
+                "POST /api/statistics/quality-score - Quality score analysis",
+                "POST /api/statistics/detect-anomalies - Anomaly detection",
+                "GET /api/statistics/docs - This documentation"
+            ]
+        }
+        
+        return Response({
+            "success": True,
+            "documentation": docs
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ===== ARMATURE Fabric Endpoints =====
+
+@app.post("/api/armature/initiate")
+def initiate_certification(request: Request) -> Response:
+    """Initiate new certification process."""
+    try:
+        system_name = request.body.get("system_name")
+        cert_type = request.body.get("cert_type", "iso_27001")
+        target_date_str = request.body.get("target_date")
+        
+        if not system_name:
+            return Response({"error": "Missing system_name parameter"}, status_code=400)
+            
+        if not target_date_str:
+            return Response({"error": "Missing target_date parameter"}, status_code=400)
+            
+        # Parse target date
+        from datetime import datetime
+        target_date = datetime.fromisoformat(target_date_str.replace('Z', '+00:00'))
+        
+        # Convert cert type
+        try:
+            cert_type_enum = CertificationType(cert_type)
+        except ValueError:
+            return Response({"error": f"Invalid cert_type: {cert_type}"}, status_code=400)
+            
+        package_id = armature_engine.initiate_certification(
+            system_name=system_name,
+            cert_type=cert_type_enum,
+            target_date=target_date
+        )
+        
+        return Response({
+            "success": True,
+            "package_id": package_id,
+            "system_name": system_name,
+            "certification_type": cert_type
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/armature/validate")
+def validate_certification_package(request: Request) -> Response:
+    """Validate certification package."""
+    try:
+        package_id = request.body.get("package_id")
+        
+        if not package_id:
+            return Response({"error": "Missing package_id parameter"}, status_code=400)
+            
+        result = armature_engine.validate_certification_package(package_id)
+        
+        return Response({
+            "success": True,
+            "validation": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/armature/status/{package_id}")
+def get_certification_status(request: Request) -> Response:
+    """Get certification status report."""
+    try:
+        package_id = request.path_params.get("package_id")
+        
+        result = armature_engine.generate_status_report(package_id)
+        
+        return Response({
+            "success": True,
+            "status": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/armature/docs")
+def armature_docs(request: Request) -> Response:
+    """Get ARMATURE Fabric documentation."""
+    try:
+        docs = {
+            "name": "ARMATURE Fabric",
+            "description": "Accreditation and certification process automation",
+            "features": [
+                "Certification Workflow Management",
+                "Evidence Package Assembly",
+                "Accreditation Tracking",
+                "Stakeholder Coordination",
+                "Compliance Validation",
+                "Audit Trail Management"
+            ],
+            "supported_certifications": [
+                "ISO 27001",
+                "SOC 2",
+                "FedRAMP",
+                "CMMC",
+                "HIPAA",
+                "PCI DSS",
+                "NIST 800-53",
+                "Custom"
+            ],
+            "endpoints": [
+                "POST /api/armature/initiate - Initiate certification process",
+                "POST /api/armature/validate - Validate certification package",
+                "GET /api/armature/status/{package_id} - Get status report",
+                "GET /api/armature/docs - This documentation"
+            ]
+        }
+        
+        return Response({
+            "success": True,
+            "documentation": docs
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ===== Dynamics for Government Endpoints =====
+
+@app.post("/api/dynamics/contact/create")
+def create_contact(request: Request) -> Response:
+    """Create a new contact in CRM."""
+    try:
+        contact_id = request.body.get("contact_id")
+        first_name = request.body.get("first_name")
+        last_name = request.body.get("last_name")
+        email = request.body.get("email")
+        
+        if not all([contact_id, first_name, last_name, email]):
+            return Response({"error": "Missing required parameters"}, status_code=400)
+            
+        result = dynamics_engine.crm.create_contact(
+            contact_id=contact_id,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone=request.body.get("phone", ""),
+            organization_id=request.body.get("organization_id", ""),
+            role=request.body.get("role", "")
+        )
+        
+        return Response({
+            "success": True,
+            "contact_id": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/dynamics/workflow/initiate")
+def initiate_workflow(request: Request) -> Response:
+    """Initiate a new workflow."""
+    try:
+        workflow_type = request.body.get("workflow_type", "compliance_review")
+        name = request.body.get("name")
+        initiated_by = request.body.get("initiated_by")
+        data = request.body.get("data", {})
+        
+        if not all([name, initiated_by]):
+            return Response({"error": "Missing required parameters"}, status_code=400)
+            
+        # Convert workflow type
+        try:
+            wf_type = WorkflowType(workflow_type)
+        except ValueError:
+            return Response({"error": f"Invalid workflow_type: {workflow_type}"}, status_code=400)
+            
+        instance_id = dynamics_engine.workflows.initiate_workflow(
+            workflow_type=wf_type,
+            name=name,
+            initiated_by=initiated_by,
+            data=data
+        )
+        
+        return Response({
+            "success": True,
+            "instance_id": instance_id,
+            "workflow_type": workflow_type
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/dynamics/workflow/status/{instance_id}")
+def get_workflow_status(request: Request) -> Response:
+    """Get workflow status."""
+    try:
+        instance_id = request.path_params.get("instance_id")
+        
+        result = dynamics_engine.workflows.get_workflow_status(instance_id)
+        
+        return Response({
+            "success": True,
+            "workflow": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/dynamics/dashboard/{user_id}")
+def get_stakeholder_dashboard(request: Request) -> Response:
+    """Get personalized dashboard for stakeholder."""
+    try:
+        user_id = request.path_params.get("user_id")
+        
+        result = dynamics_engine.get_stakeholder_dashboard(user_id)
+        
+        return Response({
+            "success": True,
+            "dashboard": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/dynamics/docs")
+def dynamics_docs(request: Request) -> Response:
+    """Get Dynamics for Government documentation."""
+    try:
+        docs = {
+            "name": "Microsoft Dynamics for Government",
+            "description": "CRM and process automation for compliance management",
+            "features": [
+                "Compliance Workflow Automation",
+                "Stakeholder Relationship Management",
+                "Document Management",
+                "Task Automation",
+                "Integration Hub",
+                "Analytics & Reporting"
+            ],
+            "workflow_types": [
+                "compliance_review - Compliance review process",
+                "document_approval - Document approval workflow",
+                "audit_preparation - Audit preparation process",
+                "incident_response - Incident response workflow",
+                "risk_assessment - Risk assessment process",
+                "policy_update - Policy update workflow",
+                "vendor_assessment - Vendor assessment process"
+            ],
+            "endpoints": [
+                "POST /api/dynamics/contact/create - Create contact",
+                "POST /api/dynamics/workflow/initiate - Initiate workflow",
+                "GET /api/dynamics/workflow/status/{instance_id} - Get workflow status",
+                "GET /api/dynamics/dashboard/{user_id} - Get user dashboard",
+                "GET /api/dynamics/docs - This documentation"
             ]
         }
         
