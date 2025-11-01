@@ -671,7 +671,7 @@ Build automated evidence generation
 Original Soviet Systems:
 
 ## BESM Calculator Suite (COMPLETE)
-## Statistical analysis packages
+## Statistical analysis packages (COMPLETE)
 ## ALGOL-BESM (COMPLETE)
 Mathematical modeling system
 ## STATISTIKA (COMPLETE)
@@ -679,13 +679,13 @@ Advanced statistical analysis
 
 ****************************************
 
-### ARMATURE Fabric
+### ARMATURE Fabric (COMPLETE)
 Directly addresses complex accreditation/certification processes
 (https://armaturecorp.com/armature-fabric/)
 
 ****************************************
 
-### Microsoft 365 Dynamics for Government
+### Microsoft 365 Dynamics for Government (COMPLETE)
 CRM with process automation and compliance tools
 (https://www.microsoft.com/en-us/federal/dynamics-365)
 
