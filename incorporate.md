@@ -440,15 +440,15 @@ Military Heritage: "Based on DoD-proven technology" Integrated Compliance: Built
 
 ****************************************
 
-### Software Supply Chain Security - OMB's new federal software security requirements
+### Software Supply Chain Security - OMB's new federal software security requirements (COMPLETE)
 (https://github.com/vishalgarg-sec/Software-Supply-Chain-Security)
 ************************************
 
-### Software Bill of Materials (SBOM) - Federal requirement for all government software
+### Software Bill of Materials (SBOM) - Federal requirement for all government software (COMPLETE)
 (https://github.com/vishalgarg-sec/Software-Supply-Chain-Security)
 ****************************************
 
-### Accelerated Authority to Operate (ATO)
+### Accelerated Authority to Operate (ATO) (COMPLETE)
 DoD's fast-track software approval process
 The DoD's Accelerated Authority to Operate (ATO) is a fast-track process, like the new Software Fast Track (SWFT) Initiative, that aims to significantly reduce the time it takes to approve and deploy software. These initiatives use an AI-enabled, continuous monitoring model, a security baseline, and risk-based decisions to automate security authorization, moving away from the traditional, manual Risk Management Framework (RMF). By focusing on continuous compliance and operationally relevant risk, the goal is to allow for rapid deployment while still maintaining an acceptable level of security. 
 How it works

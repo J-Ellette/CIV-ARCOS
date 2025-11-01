@@ -7,6 +7,7 @@ Implements various compliance and security automation frameworks:
 - CIV-GRUNDSCHUTZ: Systematic security certification
 - CIV-ACAS: Unified vulnerability management and compliance assessment
 - CIV-NESSUS: Network vulnerability scanning and policy compliance
+- SBOM: Software Bill of Materials and Supply Chain Security
 """
 
 from .scap import (
@@ -69,6 +70,32 @@ from .nessus import (
     RiskFactor,
 )
 
+from .sbom import (
+    SBOMGenerator,
+    SupplyChainScanner,
+    SBOMValidator,
+    SBOM,
+    Component,
+    SBOMFormat,
+    ComponentType,
+    LicenseType,
+    VulnerabilitySeverity as SBOMVulnerabilitySeverity,
+)
+
+from .ato import (
+    ATOManager,
+    BaselineGenerator,
+    RiskAssessor,
+    ATOPackage,
+    ATOStatus,
+    RiskLevel as ATORiskLevel,
+    AssessmentType,
+    AuthorizationLevel,
+    SecurityControl as ATOSecurityControl,
+    RiskItem,
+    Assessment,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -120,4 +147,26 @@ __all__ = [
     "ScanType",
     "PluginFamily",
     "RiskFactor",
+    # SBOM
+    "SBOMGenerator",
+    "SupplyChainScanner",
+    "SBOMValidator",
+    "SBOM",
+    "Component",
+    "SBOMFormat",
+    "ComponentType",
+    "LicenseType",
+    "SBOMVulnerabilitySeverity",
+    # ATO
+    "ATOManager",
+    "BaselineGenerator",
+    "RiskAssessor",
+    "ATOPackage",
+    "ATOStatus",
+    "ATORiskLevel",
+    "AssessmentType",
+    "AuthorizationLevel",
+    "ATOSecurityControl",
+    "RiskItem",
+    "Assessment",
 ]
