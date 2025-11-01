@@ -7,11 +7,15 @@ This module provides replacements for external Python tools and standard library
 - civ_my: Replacement for mypy (TypeChecker)
 - civ_bla: Replacement for black (CodeFormatter)
 - civ_fla: Replacement for flake8 (CodeLinter)
-- submarine: Replacement for subprocess (Submarine)  
-- jason: Replacement/wrapper for json (Jason)
-- hashish: Replacement/wrapper for hashlib (Hashish)
-- hamburger: Replacement/wrapper for hmac (Hamburger)
-- pathfinder: Replacement/wrapper for pathlib (PathFinder)
+- submarine: Wrapper for subprocess (Submarine)  
+- jason: Wrapper for json (Jason)
+- hashish: Wrapper for hashlib (Hashish)
+- hamburger: Wrapper for hmac (Hamburger)
+- pathfinder: Wrapper for pathlib (PathFinder)
+- asterisk: Wrapper for ast (Asterisk)
+- webfetch: Wrapper for urllib (WebFetch)
+- dataclass: Wrapper for dataclasses (DataClass)
+- enumeration: Wrapper for enum (Enumeration)
 """
 
 from .civ_cov import *
@@ -39,5 +43,25 @@ except ImportError:
 
 try:
     from .pathfinder import *
+except ImportError:
+    pass
+
+try:
+    from .asterisk import *
+except ImportError:
+    pass
+
+try:
+    from .webfetch import *
+except ImportError:
+    pass
+
+try:
+    from .dataclass import *
+except ImportError:
+    pass
+
+try:
+    from .enumeration import *
 except ImportError:
     pass

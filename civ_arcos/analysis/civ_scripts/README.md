@@ -46,11 +46,22 @@ Following the project philosophy of minimizing external dependencies, these scri
 **Integration:** Can be used as a drop-in replacement for flake8 commands
 
 #### Submarine (submarine.py)
-**Replaces:** `subprocess` module  
-**Original Tool:** Python standard library subprocess  
+**Wraps:** `subprocess` module  
 **Source:** [Emu-Soft/python/Submarine](https://github.com/J-Ellette/Emu-Soft/tree/main/python/Submarine)  
-**Usage:** Process execution and management  
+**Purpose:** Process execution and management  
 **Integration:** Available for use where subprocess would be needed
+
+#### Asterisk (asterisk.py)
+**Wraps:** `ast` module  
+**Source:** [Emu-Soft/python/Asterisk](https://github.com/J-Ellette/Emu-Soft/tree/main/python/Asterisk)  
+**Purpose:** Abstract Syntax Tree parsing for static code analysis  
+**Integration:** Available for code analysis and introspection
+
+#### WebFetch (webfetch.py)
+**Wraps:** `urllib` module  
+**Source:** [Emu-Soft/python/WebFetch](https://github.com/J-Ellette/Emu-Soft/tree/main/python/WebFetch)  
+**Purpose:** HTTP requests without external libraries (like requests)  
+**Integration:** Available for HTTP client functionality
 
 ### Python Standard Library Wrappers
 
@@ -75,6 +86,16 @@ These provide enhanced or documented interfaces to Python standard library modul
 **Wraps:** `pathlib` module  
 **Source:** [Emu-Soft/python/PathFinder](https://github.com/J-Ellette/Emu-Soft/tree/main/python/PathFinder)  
 **Purpose:** File path operations with enhanced functionality
+
+#### DataClass (dataclass.py)
+**Wraps:** `dataclasses` module  
+**Source:** [Emu-Soft/python/DataClass](https://github.com/J-Ellette/Emu-Soft/tree/main/python/DataClass)  
+**Purpose:** Structured data types creation and manipulation
+
+#### Enumeration (enumeration.py)
+**Wraps:** `enum` module  
+**Source:** [Emu-Soft/python/Enumeration](https://github.com/J-Ellette/Emu-Soft/tree/main/python/Enumeration)  
+**Purpose:** Enumeration types creation and management
 
 ## Naming Convention
 
