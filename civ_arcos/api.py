@@ -1283,6 +1283,56 @@ def dashboard_compliance_soc2(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+@app.get("/dashboard/compliance/iso27001")
+def dashboard_compliance_iso27001(request: Request) -> Response:
+    """ISO 27001 module page."""
+    try:
+        html = dashboard_gen.generate_module_page_iso27001()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/milstd498")
+def dashboard_compliance_milstd498(request: Request) -> Response:
+    """MIL-STD-498 module page."""
+    try:
+        html = dashboard_gen.generate_module_page_milstd498()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/defstan")
+def dashboard_compliance_defstan(request: Request) -> Response:
+    """DEF STAN 00-970 module page."""
+    try:
+        html = dashboard_gen.generate_module_page_defstan()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/sbom")
+def dashboard_compliance_sbom(request: Request) -> Response:
+    """SBOM module page."""
+    try:
+        html = dashboard_gen.generate_module_page_sbom()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/ato")
+def dashboard_compliance_ato(request: Request) -> Response:
+    """ATO (Authority to Operate) module page."""
+    try:
+        html = dashboard_gen.generate_module_page_ato()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
 @app.get("/dashboard/powershell")
 def dashboard_powershell(request: Request) -> Response:
     """Dashboard PowerShell security analysis page."""
