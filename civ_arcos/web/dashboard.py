@@ -1051,6 +1051,272 @@ class DashboardGenerator:
                     </div>
                 </div>
 
+                <!-- DEF STAN 00-970 Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">DEF STAN 00-970</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>UK Defense Software Standards</strong></p>
+                            <p>UK Ministry of Defence software quality standards for safety-critical 
+                            and high-integrity software development.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>Safety-Critical Development:</strong> Standards for mission-critical systems</li>
+                                <li><strong>Integrity Levels:</strong> 4-level classification (Level 1-4)</li>
+                                <li><strong>Quality Assurance:</strong> Automated quality metric validation</li>
+                                <li><strong>Configuration Management:</strong> Comprehensive change tracking and baselining</li>
+                                <li><strong>V&V Requirements:</strong> Verification and validation standards</li>
+                                <li><strong>Documentation Standards:</strong> Required artifacts for each integrity level</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/defstan/assessment/create</code><br>
+                                <small>Create DEF STAN 00-970 assessment for a system</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/defstan/quality/assess</code><br>
+                                <small>Assess code quality against DEF STAN requirements</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/defstan/report/:assessment_id</code><br>
+                                <small>Generate comprehensive compliance report</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/defstan/documentation/validate</code><br>
+                                <small>Validate required documentation completeness</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Integrity Levels:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag bg-error">Level 1</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag bg-warning">Level 2</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag bg-info">Level 3</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">Level 4</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('defstan')">Test DEF STAN</button>
+                            <a href="/api/compliance/defstan/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MIL-STD-498 Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">MIL-STD-498</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Military Software Development Standards</strong></p>
+                            <p>US DoD software development and documentation standards for military 
+                            systems and defense contractors.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>13 Data Item Descriptions:</strong> Complete documentation framework (SDP, SRS, SDD, STD, etc.)</li>
+                                <li><strong>Lifecycle Management:</strong> 11 defined software development activities</li>
+                                <li><strong>Requirements Traceability:</strong> Automated traceability matrix generation</li>
+                                <li><strong>Test Case Management:</strong> Test planning, execution, and reporting</li>
+                                <li><strong>Version Control:</strong> VDD (Version Description Document) support</li>
+                                <li><strong>Document Templates:</strong> Standard outlines for all required documents</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/milstd498/project/create</code><br>
+                                <small>Create new MIL-STD-498 compliant project</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/milstd498/requirement/add</code><br>
+                                <small>Add software requirement with traceability</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/milstd498/traceability/:project_id</code><br>
+                                <small>Generate requirements traceability matrix</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/milstd498/document/generate</code><br>
+                                <small>Generate document template (SRS, SDD, STD, VDD)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/milstd498/report/:project_id</code><br>
+                                <small>Generate comprehensive compliance report</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Document Types:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">SRS</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">SDD</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">STD</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">VDD</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">STP</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('milstd498')">Test MIL-STD-498</button>
+                            <a href="/api/compliance/milstd498/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SOC 2 Type II Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">SOC 2 Type II</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Trust Services Certification</strong></p>
+                            <p>Enterprise trust services compliance essential for SaaS providers and service organizations.
+                            Implements AICPA Trust Services Criteria framework.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>5 Trust Services Criteria:</strong> Security, Availability, Processing Integrity, Confidentiality, Privacy</li>
+                                <li><strong>Control Framework:</strong> CC1-CC9 Common Criteria plus additional criteria-specific controls</li>
+                                <li><strong>Evidence Collection:</strong> Automated evidence gathering and tracking</li>
+                                <li><strong>Control Testing:</strong> Sample-based testing with statistical validation</li>
+                                <li><strong>Audit Readiness:</strong> Continuous compliance monitoring and gap analysis</li>
+                                <li><strong>Service Auditor Support:</strong> Audit package preparation and CPA liaison</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/soc2/assessment/create</code><br>
+                                <small>Create new SOC 2 assessment with selected criteria</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/soc2/control/test</code><br>
+                                <small>Perform control testing with evidence</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/soc2/readiness/:assessment_id</code><br>
+                                <small>Assess audit readiness with gap analysis</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/soc2/evidence/add</code><br>
+                                <small>Add evidence item for control</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Trust Criteria:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Security</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Availability</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">PI</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Confidentiality</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Privacy</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('soc2')">Test SOC 2</button>
+                            <a href="/api/compliance/soc2/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ISO 27001 Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">ISO 27001</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>International Information Security Standard</strong></p>
+                            <p>ISO/IEC 27001:2022 Information Security Management System (ISMS) implementation
+                            for global information security certification.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>93 Annex A Controls:</strong> 4 themes (Organizational, People, Physical, Technological)</li>
+                                <li><strong>Risk Management:</strong> Systematic risk assessment and treatment</li>
+                                <li><strong>Statement of Applicability:</strong> Automated SoA generation</li>
+                                <li><strong>Internal Audit:</strong> ISMS audit management and finding tracking</li>
+                                <li><strong>Management Review:</strong> Executive oversight and decision tracking</li>
+                                <li><strong>Certification Readiness:</strong> Gap analysis and remediation planning</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/iso27001/isms/create</code><br>
+                                <small>Create new ISMS with Annex A controls</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/iso27001/risk/assess</code><br>
+                                <small>Conduct information security risk assessment</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/iso27001/audit/internal</code><br>
+                                <small>Conduct internal ISMS audit</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/iso27001/readiness/:isms_id</code><br>
+                                <small>Assess ISO 27001 certification readiness</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/iso27001/soa/:isms_id</code><br>
+                                <small>Generate Statement of Applicability</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Control Themes:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">Organizational</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">People</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">Physical</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">Technological</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('iso27001')">Test ISO 27001</button>
+                            <a href="/api/compliance/iso27001/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
                 <h2 class="margin-top-5">API Integration</h2>
                 <div class="usa-prose margin-top-3">
                     <p>All compliance modules are accessible via RESTful APIs for easy integration 
@@ -1354,6 +1620,197 @@ const results = await response.json();</code></pre>
                                 </div>
                                 <details class="margin-top-2">
                                     <summary>View Detailed Results</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                                </details>
+                            </div>
+                        </div>
+                    `;
+                }} else if (module === 'defstan') {{
+                    // For DEF STAN 00-970, create and assess
+                    const createResponse = await fetch('/api/compliance/defstan/assessment/create', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            system_name: 'Demo System',
+                            system_version: '1.0.0',
+                            category: 'high_integrity',
+                            target_integrity_level: 'level_2',
+                            assessor: 'Test Assessor'
+                        }})
+                    }});
+                    
+                    if (!createResponse.ok) {{
+                        throw new Error(`HTTP error! status: ${{createResponse.status}}`);
+                    }}
+                    
+                    results = await createResponse.json();
+                    
+                    // Display DEF STAN results
+                    resultsDiv.innerHTML = `
+                        <div class="usa-alert usa-alert--success">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ DEF STAN 00-970 Assessment Created</h4>
+                                <p class="usa-alert__text">
+                                    <strong>System:</strong> ${{results.system_name}} v${{results.system_version}}<br>
+                                    <strong>Category:</strong> ${{results.category}}<br>
+                                    <strong>Integrity Level:</strong> ${{results.target_integrity_level}}<br>
+                                    <strong>Total Requirements:</strong> ${{results.requirements.length}}<br>
+                                    <strong>Status:</strong> ${{results.overall_compliance}}
+                                </p>
+                                <div class="margin-top-2">
+                                    <h5>Key Requirements:</h5>
+                                    <ul class="usa-list text-small">
+                                        ${{results.requirements.slice(0, 5).map(req => `
+                                            <li><strong>${{req.requirement_id}}:</strong> ${{req.title}}</li>
+                                        `).join('')}}
+                                        ${{results.requirements.length > 5 ? '<li><em>And ' + (results.requirements.length - 5) + ' more...</em></li>' : ''}}
+                                    </ul>
+                                </div>
+                                <details class="margin-top-2">
+                                    <summary>View Detailed Assessment</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                                </details>
+                            </div>
+                        </div>
+                    `;
+                }} else if (module === 'milstd498') {{
+                    // For MIL-STD-498, create project
+                    response = await fetch('/api/compliance/milstd498/project/create', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            project_name: 'Demo Defense Project',
+                            project_id: 'DEMO-MIL-001',
+                            compliance_level: 'full',
+                            project_manager: 'Test PM'
+                        }})
+                    }});
+                    
+                    if (!response.ok) {{
+                        throw new Error(`HTTP error! status: ${{response.status}}`);
+                    }}
+                    
+                    results = await response.json();
+                    
+                    // Display MIL-STD-498 results
+                    resultsDiv.innerHTML = `
+                        <div class="usa-alert usa-alert--success">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ MIL-STD-498 Project Created</h4>
+                                <p class="usa-alert__text">
+                                    <strong>Project:</strong> ${{results.project_name}}<br>
+                                    <strong>Project ID:</strong> ${{results.project_id}}<br>
+                                    <strong>Compliance Level:</strong> ${{results.compliance_level}}<br>
+                                    <strong>Required Documents:</strong> ${{results.documents.length}}<br>
+                                    <strong>Start Date:</strong> ${{new Date(results.start_date).toLocaleDateString()}}
+                                </p>
+                                <div class="margin-top-2">
+                                    <h5>Required Documents:</h5>
+                                    <ul class="usa-list text-small">
+                                        ${{results.documents.slice(0, 8).map(doc => `
+                                            <li><strong>${{doc.doc_type}}:</strong> ${{doc.title}} - <span class="text-base">${{doc.status}}</span></li>
+                                        `).join('')}}
+                                        ${{results.documents.length > 8 ? '<li><em>And ' + (results.documents.length - 8) + ' more...</em></li>' : ''}}
+                                    </ul>
+                                </div>
+                                <details class="margin-top-2">
+                                    <summary>View Detailed Project</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                                </details>
+                            </div>
+                        </div>
+                    `;
+                }} else if (module === 'soc2') {{
+                    // For SOC 2, create assessment
+                    response = await fetch('/api/compliance/soc2/assessment/create', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            organization_name: 'Demo Organization',
+                            assessment_id: 'SOC2-DEMO-' + Date.now(),
+                            report_period_start: '2024-01-01',
+                            report_period_end: '2024-12-31',
+                            criteria: ['security', 'availability', 'confidentiality']
+                        }})
+                    }});
+                    
+                    if (!response.ok) {{
+                        throw new Error(`HTTP error! status: ${{response.status}}`);
+                    }}
+                    
+                    results = await response.json();
+                    
+                    // Display SOC 2 results
+                    resultsDiv.innerHTML = `
+                        <div class="usa-alert usa-alert--success">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ SOC 2 Assessment Created</h4>
+                                <p class="usa-alert__text">
+                                    <strong>Organization:</strong> ${{results.organization_name}}<br>
+                                    <strong>Assessment ID:</strong> ${{results.assessment_id}}<br>
+                                    <strong>Report Period:</strong> ${{results.report_period_start}} to ${{results.report_period_end}}<br>
+                                    <strong>Criteria Selected:</strong> ${{results.criteria_selected.join(', ')}}<br>
+                                    <strong>Total Controls:</strong> ${{results.controls.length}}<br>
+                                    <strong>Readiness:</strong> ${{results.readiness_status}}
+                                </p>
+                                <div class="margin-top-2">
+                                    <h5>Control Breakdown:</h5>
+                                    <p class="text-small">
+                                        Common Criteria (CC): ${{results.controls.filter(c => c.control_id.startsWith('CC')).length}}<br>
+                                        Availability (A): ${{results.controls.filter(c => c.control_id.startsWith('A1')).length}}<br>
+                                        Confidentiality (C): ${{results.controls.filter(c => c.control_id.startsWith('C1')).length}}
+                                    </p>
+                                </div>
+                                <details class="margin-top-2">
+                                    <summary>View Detailed Assessment</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                                </details>
+                            </div>
+                        </div>
+                    `;
+                }} else if (module === 'iso27001') {{
+                    // For ISO 27001, create ISMS
+                    response = await fetch('/api/compliance/iso27001/isms/create', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            organization_name: 'Demo Corporation',
+                            isms_id: 'ISMS-DEMO-' + Date.now(),
+                            scope: 'All IT systems, data centers, and cloud infrastructure',
+                            certification_target: '2025-12-31'
+                        }})
+                    }});
+                    
+                    if (!response.ok) {{
+                        throw new Error(`HTTP error! status: ${{response.status}}`);
+                    }}
+                    
+                    results = await response.json();
+                    
+                    // Display ISO 27001 results
+                    resultsDiv.innerHTML = `
+                        <div class="usa-alert usa-alert--success">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ ISO 27001 ISMS Created</h4>
+                                <p class="usa-alert__text">
+                                    <strong>Organization:</strong> ${{results.organization_name}}<br>
+                                    <strong>ISMS ID:</strong> ${{results.isms_id}}<br>
+                                    <strong>Scope:</strong> ${{results.scope}}<br>
+                                    <strong>Certification Target:</strong> ${{results.certification_target}}<br>
+                                    <strong>Annex A Controls:</strong> ${{results.annex_a_controls.length}}<br>
+                                    <strong>Status:</strong> ${{results.certification_status}}
+                                </p>
+                                <div class="margin-top-2">
+                                    <h5>Control Themes:</h5>
+                                    <p class="text-small">
+                                        Organizational: ${{results.annex_a_controls.filter(c => c.theme === 'organizational').length}}<br>
+                                        People: ${{results.annex_a_controls.filter(c => c.theme === 'people').length}}<br>
+                                        Physical: ${{results.annex_a_controls.filter(c => c.theme === 'physical').length}}<br>
+                                        Technological: ${{results.annex_a_controls.filter(c => c.theme === 'technological').length}}
+                                    </p>
+                                </div>
+                                <details class="margin-top-2">
+                                    <summary>View Detailed ISMS</summary>
                                     <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
                                 </details>
                             </div>

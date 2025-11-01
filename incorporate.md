@@ -464,25 +464,25 @@ Cultural shift: The initiative promotes a cultural shift towards integrating sec
 
 ****************************************
 
-### DEF STAN 00-970
+### DEF STAN 00-970 (COMPLETE)
 UK defense software standards
 (https://www.gov.uk/government/publications/defence-standards-def-stan-970-amendments)
 
 ****************************************
 
-### MIL-STD-498
+### MIL-STD-498 (COMPLETE)
 Software development and documentation standards
 (https://en.wikipedia.org/wiki/MIL-STD-498)
 
 ****************************************
 
-### SOC 2 Type II
+### SOC 2 Type II (COMPLETE)
 Trust services certification (essential for enterprise sales)
 (https://www.strongdm.com/blog/what-is-soc-2-type-2)
 
 ****************************************
 
-### ISO 27001
+### ISO 27001 (COMPLETE)
 International information security standard
 ISO 27001 is an international standard for establishing, implementing, maintaining, and continually improving an information security management system (ISMS). It helps organizations protect the confidentiality, integrity, and availability of their information assets through a systematic, risk-based approach that includes identifying threats, implementing controls, and monitoring performance. 
 Key components and goals
