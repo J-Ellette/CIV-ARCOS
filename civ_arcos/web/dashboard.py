@@ -3461,6 +3461,278 @@ or
 </html>"""
         return html
 
+    def generate_help_page(self) -> str:
+        """
+        Generate the Help page with documentation for each module and function.
+
+        Returns:
+            Complete HTML page as string with USWDS styling
+        """
+        html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - CIV-ARCOS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/css/uswds.min.css">
+    <style>{self._get_custom_css()}</style>
+</head>
+<body>
+    {self._get_header("Help")}
+    
+    <main id="main-content">
+        <section class="usa-section">
+            <div class="grid-container">
+                <h1 class="usa-prose">📚 Help & Documentation</h1>
+                <p class="usa-intro">Comprehensive guides for each module and function</p>
+                
+                <div class="usa-accordion usa-accordion--bordered margin-top-5">
+                    <!-- Getting Started -->
+                    <h2 class="usa-accordion__heading">
+                        <button class="usa-accordion__button" aria-expanded="true" aria-controls="getting-started">
+                            Getting Started
+                        </button>
+                    </h2>
+                    <div id="getting-started" class="usa-accordion__content usa-prose">
+                        <h3>Welcome to CIV-ARCOS</h3>
+                        <p>CIV-ARCOS (Civilian Assurance-based Risk Computation and Orchestration System) provides military-grade software assurance for civilian code.</p>
+                        
+                        <h4>Quick Start Guide:</h4>
+                        <ol>
+                            <li><strong>Navigate to Compliance Modules</strong> - Browse available compliance and security modules</li>
+                            <li><strong>Select a Module</strong> - Choose a module that fits your needs (e.g., CIV-RAMP for federal compliance)</li>
+                            <li><strong>Use the API</strong> - Each module provides REST API endpoints for automation</li>
+                            <li><strong>Generate Badges</strong> - Create quality badges for your repository</li>
+                            <li><strong>Create Assurance Cases</strong> - Build digital assurance cases using GSN notation</li>
+                        </ol>
+                        
+                        <h4>Key Features:</h4>
+                        <ul>
+                            <li>30+ Compliance and security modules</li>
+                            <li>Automated evidence collection from GitHub</li>
+                            <li>Quality badge generation (coverage, security, documentation, etc.)</li>
+                            <li>Digital assurance cases with GSN visualization</li>
+                            <li>REST API for all operations</li>
+                        </ul>
+                    </div>
+
+                    <!-- Compliance Modules Help -->
+                    <h2 class="usa-accordion__heading">
+                        <button class="usa-accordion__button" aria-expanded="false" aria-controls="compliance-help">
+                            Compliance Modules
+                        </button>
+                    </h2>
+                    <div id="compliance-help" class="usa-accordion__content usa-prose">
+                        <h3>Using Compliance Modules</h3>
+                        <p>CIV-ARCOS provides comprehensive compliance automation for various frameworks and standards.</p>
+                        
+                        <h4>Federal/Government Compliance:</h4>
+                        <ul>
+                            <li><strong>CIV-RAMP</strong> - Federal Risk and Authorization Management for cloud services</li>
+                            <li><strong>CIV-DISS</strong> - Personnel Security and Clearance Management</li>
+                            <li><strong>CIV-CMMC</strong> - Cybersecurity Maturity Model Certification for defense contractors</li>
+                            <li><strong>CIV-EXCHANGE</strong> - CMMC Framework tools and resources</li>
+                            <li><strong>CIV-WARDEN</strong> - DevSecOps platform for authorization</li>
+                        </ul>
+                        
+                        <h4>Cloud & Enterprise Compliance:</h4>
+                        <ul>
+                            <li><strong>CIV-STAR</strong> - Cloud Security, Trust, Assurance, and Risk Registry</li>
+                            <li><strong>SOC 2 Type II</strong> - Trust Services Certification for SaaS providers</li>
+                            <li><strong>ISO 27001</strong> - International Information Security Standard</li>
+                        </ul>
+                        
+                        <h4>Security & Vulnerability Management:</h4>
+                        <ul>
+                            <li><strong>CIV-SCAP</strong> - Security Content Automation Protocol</li>
+                            <li><strong>CIV-STIG</strong> - Configuration Compliance Management</li>
+                            <li><strong>CIV-ACAS</strong> - Assured Compliance Assessment Solution</li>
+                            <li><strong>CIV-NESSUS</strong> - Network Security Scanner</li>
+                        </ul>
+                        
+                        <h4>Quality & Documentation:</h4>
+                        <ul>
+                            <li><strong>CIV-TRAX</strong> - Quality and Compliance Software</li>
+                            <li><strong>CIV-LAND</strong> - Digital Government Solutions</li>
+                            <li><strong>CIV-UL</strong> - Global Regulatory Compliance Platform</li>
+                        </ul>
+                        
+                        <h4>Legacy & Advanced Systems:</h4>
+                        <ul>
+                            <li><strong>CIV-HAC</strong> - High-Assurance Cyber Systems</li>
+                            <li><strong>CIV-DOCS</strong> - Parser Vulnerability Prevention</li>
+                            <li><strong>CIV-SPELLS</strong> - Security and Performance Enhancement for Legacy Software</li>
+                            <li><strong>PowerShield</strong> - PowerShell script security scanning</li>
+                        </ul>
+                        
+                        <h4>Asset Management:</h4>
+                        <ul>
+                            <li><strong>CIV-EAM</strong> - Enterprise Asset Management for public agencies</li>
+                            <li><strong>CIV-CHEQ</strong> - Asset tracking with audit trails</li>
+                        </ul>
+                    </div>
+
+                    <!-- API Documentation -->
+                    <h2 class="usa-accordion__heading">
+                        <button class="usa-accordion__button" aria-expanded="false" aria-controls="api-help">
+                            API Documentation
+                        </button>
+                    </h2>
+                    <div id="api-help" class="usa-accordion__content usa-prose">
+                        <h3>Using the REST API</h3>
+                        <p>All CIV-ARCOS functionality is available through REST API endpoints.</p>
+                        
+                        <h4>Common Endpoints:</h4>
+                        <div class="bg-base-lightest padding-2 margin-y-2">
+                            <code>GET /api/status</code><br>
+                            <small>Check system status</small>
+                        </div>
+                        
+                        <div class="bg-base-lightest padding-2 margin-y-2">
+                            <code>POST /api/evidence/collect</code><br>
+                            <small>Collect evidence from a repository</small><br>
+                            <strong>Body:</strong> {{ "repo_url": "owner/repo", "source": "github" }}
+                        </div>
+                        
+                        <div class="bg-base-lightest padding-2 margin-y-2">
+                            <code>GET /api/badge/&lt;type&gt;/&lt;owner&gt;/&lt;repo&gt;</code><br>
+                            <small>Generate quality badge (types: coverage, quality, security, documentation, performance, accessibility)</small>
+                        </div>
+                        
+                        <div class="bg-base-lightest padding-2 margin-y-2">
+                            <code>POST /api/assurance/case/create</code><br>
+                            <small>Create a new assurance case</small>
+                        </div>
+                        
+                        <h4>Module-Specific APIs:</h4>
+                        <p>Each compliance module has its own API documentation. Click the "API Documentation" button on any module page for detailed endpoints.</p>
+                    </div>
+
+                    <!-- Badges Help -->
+                    <h2 class="usa-accordion__heading">
+                        <button class="usa-accordion__button" aria-expanded="false" aria-controls="badges-help">
+                            Quality Badges
+                        </button>
+                    </h2>
+                    <div id="badges-help" class="usa-accordion__content usa-prose">
+                        <h3>Generating Quality Badges</h3>
+                        <p>CIV-ARCOS can generate SVG badges for your repository to display quality metrics.</p>
+                        
+                        <h4>Available Badge Types:</h4>
+                        <ol>
+                            <li><strong>Test Coverage</strong> - Bronze (&gt;60%), Silver (&gt;80%), Gold (&gt;95%)</li>
+                            <li><strong>Code Quality</strong> - Excellent (&gt;90%), Good (&gt;75%), Fair (&gt;60%)</li>
+                            <li><strong>Security</strong> - Shows vulnerability count</li>
+                            <li><strong>Documentation</strong> - API docs, README, inline comments coverage</li>
+                            <li><strong>Performance</strong> - Load testing and profiling results</li>
+                            <li><strong>Accessibility</strong> - WCAG A, AA, AAA compliance</li>
+                        </ol>
+                        
+                        <h4>How to Use Badges:</h4>
+                        <p>Add badges to your README.md:</p>
+                        <div class="bg-base-lightest padding-2 margin-y-2">
+                            <code>![Coverage Badge](https://your-server/api/badge/coverage/owner/repo?coverage=95.5)</code>
+                        </div>
+                    </div>
+
+                    <!-- Assurance Cases Help -->
+                    <h2 class="usa-accordion__heading">
+                        <button class="usa-accordion__button" aria-expanded="false" aria-controls="assurance-help">
+                            Assurance Cases
+                        </button>
+                    </h2>
+                    <div id="assurance-help" class="usa-accordion__content usa-prose">
+                        <h3>Creating Digital Assurance Cases</h3>
+                        <p>Assurance cases provide structured arguments that a system meets specific quality or safety requirements.</p>
+                        
+                        <h4>What is an Assurance Case?</h4>
+                        <p>An assurance case is a structured argument, supported by evidence, that a system is acceptably safe for a given application in a given environment.</p>
+                        
+                        <h4>GSN Notation:</h4>
+                        <p>CIV-ARCOS uses Goal Structuring Notation (GSN) for visualizing assurance cases:</p>
+                        <ul>
+                            <li><strong>Goals</strong> - Claims about system properties</li>
+                            <li><strong>Strategies</strong> - Reasoning approach</li>
+                            <li><strong>Solutions</strong> - Evidence supporting claims</li>
+                            <li><strong>Context</strong> - Background information</li>
+                            <li><strong>Assumptions</strong> - Stated assumptions</li>
+                            <li><strong>Justifications</strong> - Rationale for approach</li>
+                        </ul>
+                        
+                        <h4>Built-in Templates:</h4>
+                        <ul>
+                            <li>Code Quality Assurance</li>
+                            <li>Test Coverage Assurance</li>
+                            <li>Security Assurance</li>
+                            <li>Maintainability Assurance</li>
+                            <li>Comprehensive Quality Assurance</li>
+                        </ul>
+                    </div>
+
+                    <!-- Troubleshooting -->
+                    <h2 class="usa-accordion__heading">
+                        <button class="usa-accordion__button" aria-expanded="false" aria-controls="troubleshooting">
+                            Troubleshooting
+                        </button>
+                    </h2>
+                    <div id="troubleshooting" class="usa-accordion__content usa-prose">
+                        <h3>Common Issues</h3>
+                        
+                        <h4>Module Not Responding</h4>
+                        <p><strong>Solution:</strong> Check the system status at <code>/api/status</code>. Ensure the module is active and properly configured.</p>
+                        
+                        <h4>Evidence Collection Fails</h4>
+                        <p><strong>Possible causes:</strong></p>
+                        <ul>
+                            <li>Invalid repository URL or format</li>
+                            <li>Repository not accessible (private, requires authentication)</li>
+                            <li>Network connectivity issues</li>
+                        </ul>
+                        
+                        <h4>Badge Not Displaying</h4>
+                        <p><strong>Solution:</strong> Verify the badge URL format and parameters. Ensure the repository has been analyzed and evidence collected.</p>
+                        
+                        <h4>API Authentication</h4>
+                        <p>Some endpoints may require authentication. Include your API key in the request headers:</p>
+                        <div class="bg-base-lightest padding-2 margin-y-2">
+                            <code>Authorization: Bearer YOUR_API_KEY</code>
+                        </div>
+                    </div>
+
+                    <!-- Contact & Support -->
+                    <h2 class="usa-accordion__heading">
+                        <button class="usa-accordion__button" aria-expanded="false" aria-controls="support">
+                            Contact & Support
+                        </button>
+                    </h2>
+                    <div id="support" class="usa-accordion__content usa-prose">
+                        <h3>Getting Help</h3>
+                        
+                        <h4>Documentation</h4>
+                        <ul>
+                            <li>Browse module-specific documentation by clicking "API Documentation" on any module page</li>
+                            <li>Each API endpoint includes usage examples and parameter descriptions</li>
+                        </ul>
+                        
+                        <h4>Additional Resources</h4>
+                        <ul>
+                            <li><strong>GitHub:</strong> Visit the repository for source code and issues</li>
+                            <li><strong>API Reference:</strong> Complete API documentation at <code>/api/docs</code></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    {self._get_footer()}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/js/uswds.min.js"></script>
+    <script>{self.base_js}</script>
+</body>
+</html>"""
+        return html
+
     def _generate_badge_examples(self) -> str:
         """Generate HTML for badge examples using USWDS cards."""
         return """
@@ -3594,11 +3866,10 @@ or
         """
         pages = {
             "Home": "/dashboard",
-            "Analyze Repository": "/dashboard/analyze",
+            "Compliance Modules": "/dashboard/compliance",
             "Assurance Cases": "/dashboard/assurance",
             "Badges": "/dashboard/badges",
-            "PowerShield": "/dashboard/powershell",
-            "Compliance Modules": "/dashboard/compliance"
+            "Help": "/dashboard/help"
         }
         
         nav_items = ""
