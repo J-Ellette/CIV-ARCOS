@@ -733,19 +733,19 @@ With an emphasis on automation, this platform integrates compliance as code into
 
 ****************************************
 
-## Qualtrax: 
+## Qualtrax: (COMPLETE) 
 A quality and compliance software that manages documentation, automates processes, and streamlines internal and external audits to ensure real-time regulatory compliance.
 (https://www.ideagen.com/products/qualtrax)
 
 ****************************************
 
-## Hyland Digital Government Solutions: 
+## Hyland Digital Government Solutions: (COMPLETE) 
 Modernizes government operations by digitizing and automating document capture, workflows, and records management to meet compliance requirements.
 (https://www.hyland.com/en/solutions/industries/government)
 
 ****************************************
 
-## Defense Information System for Security (DISS): 
+## Defense Information System for Security (DISS): (COMPLETE) 
 Used by the U.S. Department of Defense (DoD), this is an enterprise-wide system for personnel security, suitability, and credentialing for military, civilian, and contractor personnel. It provides secure communications and automated record-keeping for security clearances and eligibility determinations, replacing the former Joint Personnel Adjudication System (JPAS).
 (https://www.dcsa.mil/Systems-Applications/Defense-Information-System-for-Security-DISS/)
 

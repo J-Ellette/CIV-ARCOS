@@ -1510,6 +1510,225 @@ class DashboardGenerator:
                     </div>
                 </div>
 
+                <!-- Qualtrax Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Qualtrax</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Quality and Compliance Software</strong></p>
+                            <p>Manages documentation, automates processes, and streamlines internal and external 
+                            audits to ensure real-time regulatory compliance for quality management systems.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>Document Control:</strong> Electronic signatures, version control, approval workflows</li>
+                                <li><strong>Process Automation:</strong> Automated compliance workflows with triggers and notifications</li>
+                                <li><strong>Audit Management:</strong> Internal/external audit scheduling, findings tracking, CAPA</li>
+                                <li><strong>Training Records:</strong> Employee training tracking with completion certificates</li>
+                                <li><strong>Real-time Compliance:</strong> Automated reporting against multiple frameworks</li>
+                                <li><strong>Regulatory Frameworks:</strong> ISO 9001, ISO 13485, FDA 21 CFR 820, ISO 17025, GMP</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/qualtrax/document/create</code><br>
+                                <small>Create controlled document with version tracking</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/qualtrax/process/automate</code><br>
+                                <small>Automate compliance process with workflow steps</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/qualtrax/audit/schedule</code><br>
+                                <small>Schedule internal or external audit</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/qualtrax/training/record</code><br>
+                                <small>Track employee training completion</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/qualtrax/report/compliance</code><br>
+                                <small>Generate real-time compliance report</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Supported Frameworks:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">ISO 9001</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">ISO 13485</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">FDA 21 CFR 820</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">ISO 17025</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">GMP</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('qualtrax')">Test Qualtrax</button>
+                            <a href="/api/compliance/qualtrax/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hyland Digital Government Solutions Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Hyland Digital Government</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Document Management and Workflow Automation</strong></p>
+                            <p>Modernizes government operations by digitizing and automating document capture, 
+                            workflows, and records management to meet federal compliance requirements.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>Document Capture:</strong> Automated digitization with OCR, indexing, and searchability</li>
+                                <li><strong>Workflow Automation:</strong> Automated routing, approvals, and SLA tracking</li>
+                                <li><strong>Records Management:</strong> NARA-compliant retention policies and disposition</li>
+                                <li><strong>FOIA Support:</strong> 20-day response automation with redaction capabilities</li>
+                                <li><strong>Audit Trail:</strong> Complete access tracking for compliance requirements</li>
+                                <li><strong>Full-Text Search:</strong> Enterprise-wide document search with metadata filters</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/hyland/document/capture</code><br>
+                                <small>Capture and digitize document with metadata</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/hyland/workflow/create</code><br>
+                                <small>Create automated workflow with routing rules</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/hyland/retention/policy</code><br>
+                                <small>Create NARA-compliant retention policy</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/hyland/records/manage</code><br>
+                                <small>Manage document as official record with retention</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/hyland/foia/response</code><br>
+                                <small>Generate FOIA response with automated redaction</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/hyland/search</code><br>
+                                <small>Full-text search across document repository</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Regulatory Compliance:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">NARA</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">FOIA</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">HIPAA</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">FERPA</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">FISMA</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('hyland')">Test Hyland</button>
+                            <a href="/api/compliance/hyland/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DISS Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">DISS (Defense Information System for Security)</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Personnel Security and Clearance Management</strong></p>
+                            <p>Enterprise-wide system for personnel security, suitability, and credentialing for 
+                            military, civilian, and contractor personnel. Replaced JPAS for security clearances.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>Clearance Management:</strong> Secret, Top Secret, SCI access tracking</li>
+                                <li><strong>Investigation Tracking:</strong> NACLC, SSBI, T3/T5 investigation management</li>
+                                <li><strong>Adjudication:</strong> Automated favorable/unfavorable decisions with conditions</li>
+                                <li><strong>Visit Requests:</strong> Classified facility visit automation with escort rules</li>
+                                <li><strong>Incident Reporting:</strong> Security incident tracking and investigation</li>
+                                <li><strong>Clearance Verification:</strong> Real-time eligibility verification</li>
+                                <li><strong>Secure Communications:</strong> Encrypted personnel security data</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/diss/personnel/create</code><br>
+                                <small>Create personnel security record</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/diss/investigation/initiate</code><br>
+                                <small>Initiate background investigation (SSBI, T3, T5)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/diss/clearance/adjudicate</code><br>
+                                <small>Adjudicate security clearance with conditions</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/diss/visit/request</code><br>
+                                <small>Submit classified facility visit request</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/diss/incident/report</code><br>
+                                <small>Report security incident for investigation</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/diss/clearance/verify</code><br>
+                                <small>Verify current clearance eligibility</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Clearance Levels:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Confidential</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag bg-info">Secret</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag bg-warning">Top Secret</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag bg-error">TS/SCI</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">Q (DOE)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('diss')">Test DISS</button>
+                            <a href="/api/compliance/diss/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
                 <h2 class="margin-top-5">API Integration</h2>
                 <div class="usa-prose margin-top-3">
                     <p>All compliance modules are accessible via RESTful APIs for easy integration 
