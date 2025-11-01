@@ -729,7 +729,7 @@ class DashboardGenerator:
                     window.URL.revokeObjectURL(url);
                     document.body.removeChild(a);
                 }} else {{
-                    alert('Failed to export PDF. The export feature may not be fully implemented yet.');
+                    alert('Failed to export PDF. Please contact support if this issue persists.');
                 }}
             }} catch (error) {{
                 console.error('Error exporting PDF:', error);
@@ -1363,8 +1363,8 @@ class DashboardGenerator:
                         </header>
                         <div class="usa-card__body">
                             <p><strong>Civilian Risk and Authorization Management Program</strong></p>
-                            <p>Federal cloud authorization for government cloud services. Standardized approach to
-                            security assessment, authorization, and continuous monitoring for federal agencies.</p>
+                            <p>Civilian implementation of federal cloud authorization standards. Provides standardized approach to
+                            security assessment, authorization, and continuous monitoring for cloud services.</p>
                             
                             <h4 class="margin-top-2">Features:</h4>
                             <ul class="usa-list">
@@ -1426,8 +1426,8 @@ class DashboardGenerator:
                         </header>
                         <div class="usa-card__body">
                             <p><strong>Civilian Security, Trust, Assurance, and Risk Registry</strong></p>
-                            <p>Cloud Security, Trust, Assurance, and Risk registry. Public documentation of security
-                            and privacy controls using CSA Cloud Controls Matrix (CCM).</p>
+                            <p>Civilian implementation inspired by Cloud Security Alliance STAR principles. Public documentation of security
+                            and privacy controls using structured control frameworks.</p>
                             
                             <h4 class="margin-top-2">Features:</h4>
                             <ul class="usa-list">
