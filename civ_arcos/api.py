@@ -23,7 +23,7 @@ from civ_arcos.analysis.collectors import (
     ComprehensiveAnalysisCollector,
 )
 from civ_arcos.analysis.powershell_scanner import PowerShellScanner
-from civ_arcos.evidence.model import Evidence
+from civ_arcos.evidence.collector import Evidence
 from civ_arcos.assurance import (
     AssuranceCase,
     AssuranceCaseBuilder,

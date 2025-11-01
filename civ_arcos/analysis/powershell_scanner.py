@@ -168,7 +168,7 @@ class PowerShellScanner:
             name="CommandInjectionRisk",
             description="Detects potential command injection vulnerabilities",
             severity="High",
-            pattern=r"(Start-Process|Invoke-Command|&\s+).*\$\w+.*(\||;|&&)"
+            pattern=r"(Start-Process|Invoke-Command).*['\"].*\$"
         ))
         
         # Rule 8: Insecure Deserialization
@@ -195,7 +195,7 @@ class PowerShellScanner:
             name="ExposedSecrets",
             description="Detects potential exposed API keys, tokens, or secrets",
             severity="Critical",
-            pattern=r"(api[_-]?key|token|secret|password)\s*=\s*['\"][A-Za-z0-9+/=]{20,}['\"]"
+            pattern=r"(\$\w+\s*=\s*['\"][a-zA-Z0-9_-]{20,}['\"]|api[_-]?key|token|secret)"
         ))
         
         # Rule 11: Dangerous Modules
