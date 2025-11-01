@@ -28,24 +28,26 @@ Thank you for your interest in contributing to CIV-ARCOS! This document provides
 
 ### Style Guide
 
-We use the following tools to maintain code quality:
+We use custom CIV-scripts to maintain code quality (no external dependencies):
 
-- **Black** for code formatting
-- **MyPy** for type checking
-- **Flake8** for linting
+- **CIV-bla (CodeFormatter)** for code formatting (replaces black)
+- **CIV-my (TypeChecker)** for type checking (replaces mypy)
+- **CIV-fla (CodeLinter)** for linting (replaces flake8)
 
 Run these tools before submitting:
 
 ```bash
 # Format code
-black civ_arcos/ tests/
+python -m civ_arcos.analysis.civ_scripts.civ_bla civ_arcos/ tests/
 
 # Type check
-mypy civ_arcos/
+python -m civ_arcos.analysis.civ_scripts.civ_my civ_arcos/
 
 # Lint
-flake8 civ_arcos/ tests/
+python -m civ_arcos.analysis.civ_scripts.civ_fla civ_arcos/ tests/
 ```
+
+**Note:** You can also use the external tools (black, mypy, flake8) if you have them installed, but they are no longer required dependencies.
 
 ### Testing
 
@@ -56,9 +58,13 @@ All code changes should include tests:
 - Aim for >80% test coverage
 - All tests must pass before submitting
 
-Run tests with coverage:
+Run tests:
 
 ```bash
+# Using CIV-pyt (TestRunner)
+python -m civ_arcos.analysis.civ_scripts.civ_pyt tests/
+
+# Or using pytest if installed
 pytest --cov=civ_arcos --cov-report=html
 ```
 
@@ -77,9 +83,11 @@ CIV-ARCOS is built from scratch without the following frameworks:
 ### What We Can Use
 
 We allow these tools where needed:
-- pytest, Coverage.py
-- Black, MyPy, Flake8
+- ~~pytest, Coverage.py~~ (replaced with CIV-scripts)
+- ~~Black, MyPy, Flake8~~ (replaced with CIV-scripts)
 - Docker
+
+**Note:** All testing and quality tools have been replaced with custom CIV-scripts. External tools are optional but no longer required.
 
 ### Why?
 
@@ -103,10 +111,11 @@ We're building a complete system from fundamental principles to:
 
 3. **Test your changes:**
    ```bash
-   pytest
-   black civ_arcos/ tests/
-   mypy civ_arcos/
-   flake8 civ_arcos/ tests/
+   # Using CIV-scripts
+   python -m civ_arcos.analysis.civ_scripts.civ_pyt tests/
+   python -m civ_arcos.analysis.civ_scripts.civ_bla civ_arcos/ tests/
+   python -m civ_arcos.analysis.civ_scripts.civ_my civ_arcos/
+   python -m civ_arcos.analysis.civ_scripts.civ_fla civ_arcos/ tests/
    ```
 
 4. **Commit your changes:**
