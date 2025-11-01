@@ -13,6 +13,9 @@ Implements various compliance and security automation frameworks:
 - MIL-STD-498: Military Standard for Software Development
 - ACVP: Automated Cryptographic Validation Protocol
 - RMM: NIST Resource Metadata Management
+- Qualtrax: Quality and compliance software for documentation and audits
+- Hyland: Digital government document management and workflows
+- DISS: Defense Information System for Security (clearance management)
 """
 
 from .scap import (
@@ -176,6 +179,28 @@ from .rmm_api import (
     create_rmm_client,
 )
 
+from .qualtrax import (
+    QualtraxPlatform,
+    DocumentStatus,
+    AuditType,
+    ComplianceStatus as QualtraxComplianceStatus,
+)
+
+from .hyland import (
+    HylandPlatform,
+    DocumentType as HylandDocumentType,
+    WorkflowStatus,
+    RecordDispositionStatus,
+)
+
+from .diss import (
+    DISSPlatform,
+    ClearanceLevel,
+    InvestigationType,
+    AdjudicationStatus,
+    VisitStatus,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -312,4 +337,20 @@ __all__ = [
     "Metadata",
     "Resource",
     "create_rmm_client",
+    # Qualtrax
+    "QualtraxPlatform",
+    "DocumentStatus",
+    "AuditType",
+    "QualtraxComplianceStatus",
+    # Hyland
+    "HylandPlatform",
+    "HylandDocumentType",
+    "WorkflowStatus",
+    "RecordDispositionStatus",
+    # DISS
+    "DISSPlatform",
+    "ClearanceLevel",
+    "InvestigationType",
+    "AdjudicationStatus",
+    "VisitStatus",
 ]
