@@ -1193,6 +1193,339 @@ def dashboard_powershell(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+@app.get("/dashboard/statistics")
+def dashboard_statistics(request: Request) -> Response:
+    """Dashboard Statistical Analysis page."""
+    try:
+        html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistical Analysis - CIV-ARCOS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0e27; color: #e2e8f0; }
+        .navbar { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); padding: 1.5rem 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .navbar h1 { color: white; font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .navbar p { color: rgba(255,255,255,0.9); font-size: 0.9rem; }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        .card { background: #1e293b; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .card h2 { color: #60a5fa; margin-bottom: 1rem; font-size: 1.5rem; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+        .feature { background: #2d3748; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #3b82f6; }
+        .feature h3 { color: #93c5fd; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .feature p { color: #cbd5e1; line-height: 1.6; }
+        .endpoint { background: #374151; padding: 1rem; border-radius: 6px; margin-bottom: 0.5rem; font-family: 'Courier New', monospace; }
+        .endpoint code { color: #fbbf24; }
+        .back-link { display: inline-block; color: #60a5fa; text-decoration: none; padding: 0.5rem 1rem; background: #1e293b; border-radius: 6px; margin-bottom: 1rem; }
+        .back-link:hover { background: #2d3748; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>📊 Statistical Analysis Packages</h1>
+        <p>Advanced statistical analysis for quality metrics and compliance data</p>
+    </div>
+    
+    <div class="container">
+        <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+        
+        <div class="card">
+            <h2>Overview</h2>
+            <p>The Statistical Analysis module provides comprehensive statistical capabilities for analyzing software quality metrics, detecting trends, and making data-driven decisions about code quality and compliance.</p>
+        </div>
+        
+        <div class="card">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>Descriptive Statistics</h3>
+                    <p>Calculate mean, median, mode, standard deviation, variance, percentiles, and other statistical measures for quality metrics.</p>
+                </div>
+                <div class="feature">
+                    <h3>Inferential Statistics</h3>
+                    <p>Perform hypothesis testing, calculate confidence intervals, and make statistical inferences about quality trends.</p>
+                </div>
+                <div class="feature">
+                    <h3>Regression Analysis</h3>
+                    <p>Linear regression for trend analysis and forecasting future quality metric values with confidence scores.</p>
+                </div>
+                <div class="feature">
+                    <h3>Quality Metrics Analysis</h3>
+                    <p>Specialized analysis for software quality metrics including trend detection, control charts, and comparative analysis.</p>
+                </div>
+                <div class="feature">
+                    <h3>Anomaly Detection</h3>
+                    <p>Automatically detect outliers and anomalies in quality data using statistical methods.</p>
+                </div>
+                <div class="feature">
+                    <h3>Predictive Analytics</h3>
+                    <p>Forecast future values and trends based on historical data with regression modeling.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>API Endpoints</h2>
+            <div class="endpoint"><code>POST /api/statistics/analyze</code> - Comprehensive dataset analysis</div>
+            <div class="endpoint"><code>POST /api/statistics/forecast</code> - Forecast future metric values</div>
+            <div class="endpoint"><code>POST /api/statistics/quality-score</code> - Quality score analysis</div>
+            <div class="endpoint"><code>POST /api/statistics/detect-anomalies</code> - Detect anomalies in data</div>
+            <div class="endpoint"><code>GET /api/statistics/docs</code> - API documentation</div>
+        </div>
+        
+        <div class="card">
+            <h2>Use Cases</h2>
+            <ul style="color: #cbd5e1; line-height: 2; margin-left: 1.5rem;">
+                <li>Analyze test coverage trends over time</li>
+                <li>Detect quality metric degradation early</li>
+                <li>Predict future code quality scores</li>
+                <li>Identify anomalous quality measurements</li>
+                <li>Generate statistical reports for stakeholders</li>
+                <li>Compare quality metrics across teams or projects</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>"""
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/armature")
+def dashboard_armature(request: Request) -> Response:
+    """Dashboard ARMATURE Fabric page."""
+    try:
+        html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMATURE Fabric - CIV-ARCOS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0e27; color: #e2e8f0; }
+        .navbar { background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%); padding: 1.5rem 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .navbar h1 { color: white; font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .navbar p { color: rgba(255,255,255,0.9); font-size: 0.9rem; }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        .card { background: #1e293b; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .card h2 { color: #a78bfa; margin-bottom: 1rem; font-size: 1.5rem; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+        .feature { background: #2d3748; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #7c3aed; }
+        .feature h3 { color: #c4b5fd; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .feature p { color: #cbd5e1; line-height: 1.6; }
+        .cert-badge { display: inline-block; background: #7c3aed; color: white; padding: 0.5rem 1rem; border-radius: 6px; margin: 0.25rem; font-size: 0.9rem; }
+        .endpoint { background: #374151; padding: 1rem; border-radius: 6px; margin-bottom: 0.5rem; font-family: 'Courier New', monospace; }
+        .endpoint code { color: #fbbf24; }
+        .back-link { display: inline-block; color: #a78bfa; text-decoration: none; padding: 0.5rem 1rem; background: #1e293b; border-radius: 6px; margin-bottom: 1rem; }
+        .back-link:hover { background: #2d3748; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🎯 ARMATURE Fabric</h1>
+        <p>Accreditation and certification process automation</p>
+    </div>
+    
+    <div class="container">
+        <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+        
+        <div class="card">
+            <h2>Overview</h2>
+            <p>ARMATURE Fabric automates complex accreditation and certification processes, providing workflow management, evidence tracking, and compliance validation for enterprise certification programs.</p>
+        </div>
+        
+        <div class="card">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>Certification Workflow Management</h3>
+                    <p>Automated orchestration of multi-stage certification processes with milestone tracking and progress monitoring.</p>
+                </div>
+                <div class="feature">
+                    <h3>Evidence Package Assembly</h3>
+                    <p>Automated collection, validation, and organization of evidence artifacts for certification requirements.</p>
+                </div>
+                <div class="feature">
+                    <h3>Accreditation Tracking</h3>
+                    <p>Comprehensive tracking of accreditation progress, stakeholder activities, and certification status.</p>
+                </div>
+                <div class="feature">
+                    <h3>Stakeholder Coordination</h3>
+                    <p>Role-based access control and collaboration features for certification team members.</p>
+                </div>
+                <div class="feature">
+                    <h3>Compliance Validation</h3>
+                    <p>Automated validation of certification packages against framework requirements.</p>
+                </div>
+                <div class="feature">
+                    <h3>Audit Trail Management</h3>
+                    <p>Complete immutable audit trails for all certification activities and decisions.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Supported Certifications</h2>
+            <div style="margin-top: 1rem;">
+                <span class="cert-badge">ISO 27001</span>
+                <span class="cert-badge">SOC 2</span>
+                <span class="cert-badge">FedRAMP</span>
+                <span class="cert-badge">CMMC</span>
+                <span class="cert-badge">HIPAA</span>
+                <span class="cert-badge">PCI DSS</span>
+                <span class="cert-badge">NIST 800-53</span>
+                <span class="cert-badge">Custom</span>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>API Endpoints</h2>
+            <div class="endpoint"><code>POST /api/armature/initiate</code> - Initiate certification process</div>
+            <div class="endpoint"><code>POST /api/armature/validate</code> - Validate certification package</div>
+            <div class="endpoint"><code>GET /api/armature/status/{package_id}</code> - Get status report</div>
+            <div class="endpoint"><code>GET /api/armature/docs</code> - API documentation</div>
+        </div>
+        
+        <div class="card">
+            <h2>Process Stages</h2>
+            <ul style="color: #cbd5e1; line-height: 2; margin-left: 1.5rem;">
+                <li><strong>Initiation:</strong> Define scope and objectives</li>
+                <li><strong>Preparation:</strong> Gather evidence and documentation</li>
+                <li><strong>Assessment:</strong> Conduct security assessments</li>
+                <li><strong>Remediation:</strong> Address findings and gaps</li>
+                <li><strong>Validation:</strong> Validate all requirements met</li>
+                <li><strong>Accreditation:</strong> Final approval and certification</li>
+                <li><strong>Monitoring:</strong> Ongoing compliance monitoring</li>
+                <li><strong>Renewal:</strong> Certification renewal process</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>"""
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/dynamics")
+def dashboard_dynamics(request: Request) -> Response:
+    """Dashboard Dynamics for Government page."""
+    try:
+        html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamics for Government - CIV-ARCOS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0e27; color: #e2e8f0; }
+        .navbar { background: linear-gradient(135deg, #059669 0%, #10b981 100%); padding: 1.5rem 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .navbar h1 { color: white; font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .navbar p { color: rgba(255,255,255,0.9); font-size: 0.9rem; }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        .card { background: #1e293b; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .card h2 { color: #34d399; margin-bottom: 1rem; font-size: 1.5rem; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+        .feature { background: #2d3748; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #059669; }
+        .feature h3 { color: #6ee7b7; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .feature p { color: #cbd5e1; line-height: 1.6; }
+        .workflow-badge { display: inline-block; background: #059669; color: white; padding: 0.5rem 1rem; border-radius: 6px; margin: 0.25rem; font-size: 0.85rem; }
+        .endpoint { background: #374151; padding: 1rem; border-radius: 6px; margin-bottom: 0.5rem; font-family: 'Courier New', monospace; }
+        .endpoint code { color: #fbbf24; }
+        .back-link { display: inline-block; color: #34d399; text-decoration: none; padding: 0.5rem 1rem; background: #1e293b; border-radius: 6px; margin-bottom: 1rem; }
+        .back-link:hover { background: #2d3748; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🔄 Microsoft Dynamics for Government</h1>
+        <p>CRM and process automation for compliance management</p>
+    </div>
+    
+    <div class="container">
+        <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+        
+        <div class="card">
+            <h2>Overview</h2>
+            <p>Dynamics for Government provides comprehensive CRM capabilities and process automation tailored for compliance management, stakeholder coordination, and document workflows.</p>
+        </div>
+        
+        <div class="card">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>Compliance Workflow Automation</h3>
+                    <p>Automated workflow management for compliance reviews, audits, and certification processes.</p>
+                </div>
+                <div class="feature">
+                    <h3>Stakeholder Relationship Management</h3>
+                    <p>CRM system for managing contacts, organizations, and relationships across compliance programs.</p>
+                </div>
+                <div class="feature">
+                    <h3>Document Management</h3>
+                    <p>Centralized document management with approval workflows and version control.</p>
+                </div>
+                <div class="feature">
+                    <h3>Task Automation</h3>
+                    <p>Automated task creation, assignment, and tracking with priority management.</p>
+                </div>
+                <div class="feature">
+                    <h3>Integration Hub</h3>
+                    <p>Connect and integrate multiple compliance tools and systems.</p>
+                </div>
+                <div class="feature">
+                    <h3>Analytics & Reporting</h3>
+                    <p>Personalized dashboards and analytics for stakeholder activities and compliance metrics.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Workflow Types</h2>
+            <div style="margin-top: 1rem;">
+                <span class="workflow-badge">Compliance Review</span>
+                <span class="workflow-badge">Document Approval</span>
+                <span class="workflow-badge">Audit Preparation</span>
+                <span class="workflow-badge">Incident Response</span>
+                <span class="workflow-badge">Risk Assessment</span>
+                <span class="workflow-badge">Policy Update</span>
+                <span class="workflow-badge">Vendor Assessment</span>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>API Endpoints</h2>
+            <div class="endpoint"><code>POST /api/dynamics/contact/create</code> - Create contact in CRM</div>
+            <div class="endpoint"><code>POST /api/dynamics/workflow/initiate</code> - Initiate workflow</div>
+            <div class="endpoint"><code>GET /api/dynamics/workflow/status/{instance_id}</code> - Get workflow status</div>
+            <div class="endpoint"><code>GET /api/dynamics/dashboard/{user_id}</code> - Get personalized dashboard</div>
+            <div class="endpoint"><code>GET /api/dynamics/docs</code> - API documentation</div>
+        </div>
+        
+        <div class="card">
+            <h2>Use Cases</h2>
+            <ul style="color: #cbd5e1; line-height: 2; margin-left: 1.5rem;">
+                <li>Automate compliance review processes</li>
+                <li>Manage stakeholder relationships across programs</li>
+                <li>Track document approvals and workflows</li>
+                <li>Coordinate audit preparation activities</li>
+                <li>Assign and track remediation tasks</li>
+                <li>Generate personalized stakeholder dashboards</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>"""
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
 # Compliance API endpoints
 @app.post("/api/compliance/scap/scan")
 def scap_scan(request: Request) -> Response:
