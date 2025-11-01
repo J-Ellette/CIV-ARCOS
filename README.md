@@ -12,6 +12,7 @@ A civilian version of military-grade software assurance following proven ARCOS m
 - **Automated Test Evidence Generation**: Static analysis, security scanning, test generation, and coverage analysis
   - **Static Analysis**: Code complexity, maintainability index, and code smell detection
   - **Security Scanning**: SAST vulnerability detection (SQL injection, XSS, hardcoded secrets, etc.)
+  - **PowerShell Security Scanner**: Comprehensive PowerShell script security analysis with 12+ vulnerability detection rules
   - **Test Generation**: Automated test case suggestions with code-driven approach
   - **Coverage Analysis**: Integration with coverage.py for tracking code and branch coverage
 - **Digital Assurance Case Builder**: CertGATE-style assurance cases with GSN notation
@@ -31,6 +32,7 @@ A civilian version of military-grade software assurance following proven ARCOS m
   - Home page with system overview
   - Badge showcase with API examples
   - Repository analyzer with GitHub integration
+  - PowerShell security analysis page with vulnerability detection
   - Assurance case viewer with GSN visualization
 - **Human-Centered Design**: Role-based experience tailored for different users
   - **Persona Management**: 4 user personas (Developer, QA, Auditor, Executive) with custom KPIs and dashboards
@@ -211,6 +213,25 @@ Run all analyses (static, security, tests):
   "run_coverage": false
 }
 ```
+
+**POST /api/analysis/powershell**
+Run PowerShell security analysis:
+```json
+{
+  "source_path": "path/to/script.ps1",
+  "content": "PowerShell script content"
+}
+```
+Detects 12+ security vulnerabilities including:
+- Insecure hash algorithms (MD5, SHA1)
+- Hardcoded credentials
+- Invoke-Expression risks
+- Disabled certificate validation
+- Unencrypted HTTP communication
+- SQL/Command injection vulnerabilities
+- Exposed secrets (API keys, tokens)
+- Execution policy bypass
+
 
 ### Assurance Cases
 

@@ -756,19 +756,32 @@ def run_powershell_analysis(request: Request) -> Response:
         # Store evidence
         evidence_ids = []
         
+        # Generate evidence ID and timestamp
+        import hashlib
+        import json
+        from datetime import datetime, timezone
+        
+        evidence_data_str = json.dumps(scan_result, sort_keys=True)
+        evidence_id = hashlib.sha256(
+            f"powershell_security_scan:{evidence_data_str}".encode()
+        ).hexdigest()[:16]
+        
         # Create evidence for the scan results
         evidence = Evidence(
+            id=evidence_id,
             type="powershell_security_scan",
             source="powershell_scanner",
+            timestamp=datetime.now(timezone.utc).isoformat(),
             data=scan_result,
-            metadata={
+            provenance={
                 "scanner": scan_result.get("scanner", "built-in"),
                 "total_violations": scan_result.get("total_violations", 0),
                 "summary": scan_result.get("summary", {}),
+                "collection_time": datetime.now(timezone.utc).isoformat(),
             },
         )
-        evidence_id = evidence_store.store_evidence(evidence)
-        evidence_ids.append(evidence_id)
+        stored_id = evidence_store.store_evidence(evidence)
+        evidence_ids.append(stored_id)
 
         return Response(
             {
