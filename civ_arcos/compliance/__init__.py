@@ -22,6 +22,7 @@ Implements various compliance and security automation frameworks:
 - DoD Cyber Exchange: CMMC framework tools and resources
 - HACMS: High-Assurance Cyber Military Systems with formal methods
 - SafeDocs: Parser vulnerability prevention and secure document processing
+- V-SPELLs: Verified Security and Performance Enhancement of Large Legacy Software
 """
 
 from .scap import (
@@ -247,6 +248,14 @@ from .safedocs import (
     VulnerabilityType as ParserVulnerabilityType,
 )
 
+from .vspells import (
+    VSpellsPlatform,
+    LegacyLanguage,
+    SecurityEnhancement,
+    PerformanceEnhancement,
+    AnalysisMethod,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -427,4 +436,10 @@ __all__ = [
     "SafeDocsEngine",
     "DocumentFormat",
     "ParserVulnerabilityType",
+    # V-SPELLs
+    "VSpellsPlatform",
+    "LegacyLanguage",
+    "SecurityEnhancement",
+    "PerformanceEnhancement",
+    "AnalysisMethod",
 ]

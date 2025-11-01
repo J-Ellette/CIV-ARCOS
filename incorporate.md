@@ -787,7 +787,7 @@ This effort developed tools to address vulnerabilities in software parsers that 
 
 ****************************************
 
-## V-SPELLs:
+## V-SPELLs: (COMPLETE)
 Verified Security and Performance Enhancement of Large Legacy Software
 (https://www.darpa.mil/research/programs/verified-security-and-performance-enhancement-of-large-legacy-software)
 
