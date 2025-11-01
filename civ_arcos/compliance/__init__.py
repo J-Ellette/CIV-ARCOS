@@ -128,6 +128,31 @@ from .milstd498 import (
     ReviewStatus,
 )
 
+from .soc2 import (
+    SOC2Engine,
+    SOC2Assessment,
+    Control as SOC2Control,
+    EvidenceItem,
+    AuditTest,
+    TrustServicesCriteria,
+    ControlObjective,
+    ControlTestStatus,
+    AuditReadiness,
+)
+
+from .iso27001 import (
+    ISO27001Engine,
+    ISO27001ISMS,
+    AnnexAControl,
+    RiskAssessment,
+    InternalAudit,
+    ManagementReview,
+    ControlTheme,
+    ImplementationStatus as ISO27001ImplementationStatus,
+    RiskLevel as ISO27001RiskLevel,
+    AuditFinding,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -226,4 +251,25 @@ __all__ = [
     "LifecycleActivity",
     "MilStdComplianceLevel",
     "ReviewStatus",
+    # SOC 2 Type II
+    "SOC2Engine",
+    "SOC2Assessment",
+    "SOC2Control",
+    "EvidenceItem",
+    "AuditTest",
+    "TrustServicesCriteria",
+    "ControlObjective",
+    "ControlTestStatus",
+    "AuditReadiness",
+    # ISO 27001
+    "ISO27001Engine",
+    "ISO27001ISMS",
+    "AnnexAControl",
+    "RiskAssessment",
+    "InternalAudit",
+    "ManagementReview",
+    "ControlTheme",
+    "ISO27001ImplementationStatus",
+    "ISO27001RiskLevel",
+    "AuditFinding",
 ]

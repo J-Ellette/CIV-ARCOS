@@ -476,13 +476,13 @@ Software development and documentation standards
 
 ****************************************
 
-### SOC 2 Type II
+### SOC 2 Type II (COMPLETE)
 Trust services certification (essential for enterprise sales)
 (https://www.strongdm.com/blog/what-is-soc-2-type-2)
 
 ****************************************
 
-### ISO 27001
+### ISO 27001 (COMPLETE)
 International information security standard
 ISO 27001 is an international standard for establishing, implementing, maintaining, and continually improving an information security management system (ISMS). It helps organizations protect the confidentiality, integrity, and availability of their information assets through a systematic, risk-based approach that includes identifying threats, implementing controls, and monitoring performance. 
 Key components and goals
