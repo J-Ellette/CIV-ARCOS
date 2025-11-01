@@ -11,6 +11,8 @@ Implements various compliance and security automation frameworks:
 - ATO: Accelerated Authority to Operate
 - DEF STAN 00-970: UK Defense Software Standards
 - MIL-STD-498: Military Standard for Software Development
+- ACVP: Automated Cryptographic Validation Protocol
+- RMM: NIST Resource Metadata Management
 """
 
 from .scap import (
@@ -153,6 +155,27 @@ from .iso27001 import (
     AuditFinding,
 )
 
+from .acvp import (
+    ACVPClient,
+    AlgorithmType,
+    ValidationStatus,
+    TestVector,
+    ValidationResult,
+    CertificationReport,
+    create_acvp_client,
+)
+
+from .rmm_api import (
+    RMMClient,
+    ResourceType,
+    AccessLevel,
+    Contact,
+    ResourceIdentifier,
+    Metadata,
+    Resource,
+    create_rmm_client,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -272,4 +295,21 @@ __all__ = [
     "ISO27001ImplementationStatus",
     "ISO27001RiskLevel",
     "AuditFinding",
+    # ACVP
+    "ACVPClient",
+    "AlgorithmType",
+    "ValidationStatus",
+    "TestVector",
+    "ValidationResult",
+    "CertificationReport",
+    "create_acvp_client",
+    # RMM API
+    "RMMClient",
+    "ResourceType",
+    "AccessLevel",
+    "Contact",
+    "ResourceIdentifier",
+    "Metadata",
+    "Resource",
+    "create_rmm_client",
 ]
