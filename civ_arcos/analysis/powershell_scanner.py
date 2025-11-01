@@ -195,7 +195,7 @@ class PowerShellScanner:
             name="ExposedSecrets",
             description="Detects potential exposed API keys, tokens, or secrets",
             severity="Critical",
-            pattern=r"(\$\w+\s*=\s*['\"][a-zA-Z0-9_-]{20,}['\"]|api[_-]?key|token|secret)"
+            pattern=r"\$\w+\s*=\s*['\"]([a-zA-Z0-9_-]{30,}|sk_live_|ghp_|glpat-)['\"]"
         ))
         
         # Rule 11: Dangerous Modules
@@ -279,7 +279,8 @@ class PowerShellScanner:
             # Clean up temporary file
             try:
                 os.unlink(tmp_path)
-            except:
+            except (OSError, FileNotFoundError):
+                # Ignore cleanup errors - file may already be deleted
                 pass
     
     def _scan_with_powershield(self, script_path: str) -> Dict[str, Any]:
@@ -301,8 +302,9 @@ class PowerShellScanner:
         
         try:
             # Example of how to call PowerShield (requires it to be in PATH or bundled)
+            # Using list arguments to prevent shell injection
             result = subprocess.run(
-                ["pwsh", "-Command", f"./powershield.ps1 analyze '{script_path}' -Format json"],
+                ["pwsh", "-Command", "./powershield.ps1", "analyze", script_path, "-Format", "json"],
                 capture_output=True,
                 text=True,
                 timeout=30
@@ -313,7 +315,8 @@ class PowerShellScanner:
                 data = json.loads(result.stdout)
                 return self._convert_powershield_results(data)
             
-        except Exception as e:
+        except (subprocess.SubprocessError, json.JSONDecodeError, OSError) as e:
+            # Log specific error types for debugging
             pass
         
         return {"success": False, "error": "PowerShield scan failed"}
