@@ -2,11 +2,11 @@
 
 **Date:** 2025-11-01  
 **Task:** Replace External Scripts with Emu-Soft Equivalents  
-**Status:** ✅ COMPLETE - All replacements verified
+**Status:** ✅ CORE TOOLS REPLACED - Test suite still uses pytest
 
 ## Executive Summary
 
-A comprehensive analysis of the CIV-ARCOS codebase confirms that all external scripts and development tools have been successfully replaced with custom CIV-* implementations from the Emu-Soft repository. No additional replacements are needed.
+A comprehensive analysis of the CIV-ARCOS codebase confirms that all core external development tools (coverage, black, mypy, flake8) have been successfully replaced with custom CIV-* implementations from the Emu-Soft repository. **Note:** While a CIV-pyt replacement for pytest exists, the test suite (75+ test files) still imports and uses pytest directly, as CIV-pyt provides only basic functionality compared to pytest's advanced features (fixtures, parametrization, plugins, etc.).
 
 ## Methodology
 
@@ -31,12 +31,12 @@ A comprehensive analysis of the CIV-ARCOS codebase confirms that all external sc
 
 | External Tool | CIV Replacement | Status | Location |
 |---------------|-----------------|--------|-----------|
-| **pytest** | CIV-pyt | ✅ Functional | civ_arcos/analysis/civ_scripts/civ_pyt.py |
-| **coverage.py** | CIV-cov | ✅ Functional | civ_arcos/analysis/civ_scripts/civ_cov.py |
-| **black** | CIV-bla | ✅ Functional | civ_arcos/analysis/civ_scripts/civ_bla.py |
-| **mypy** | CIV-my | ✅ Functional | civ_arcos/analysis/civ_scripts/civ_my.py |
-| **flake8** | CIV-fla | ✅ Functional | civ_arcos/analysis/civ_scripts/civ_fla.py |
-| **Drakon Editor** | Custom SVG | ✅ Functional | civ_arcos/assurance/visualizer.py |
+| **coverage.py** | CIV-cov | ✅ Fully Replaced | civ_arcos/analysis/civ_scripts/civ_cov.py |
+| **black** | CIV-bla | ✅ Fully Replaced | civ_arcos/analysis/civ_scripts/civ_bla.py |
+| **mypy** | CIV-my | ✅ Fully Replaced | civ_arcos/analysis/civ_scripts/civ_my.py |
+| **flake8** | CIV-fla | ✅ Fully Replaced | civ_arcos/analysis/civ_scripts/civ_fla.py |
+| **Drakon Editor** | Custom SVG | ✅ Fully Replaced | civ_arcos/assurance/visualizer.py |
+| **pytest** | CIV-pyt | ⚠️ Partial | civ_arcos/analysis/civ_scripts/civ_pyt.py (Basic functionality only; test suite still uses pytest) |
 
 ### Documentation Stubs (REFERENCE)
 
@@ -52,15 +52,26 @@ A comprehensive analysis of the CIV-ARCOS codebase confirms that all external sc
 
 ## Dependency Analysis Results
 
-### Third-Party Dependencies: ZERO ✅
+### Third-Party Dependencies in Active Code
+
+**Production Code (civ_arcos/):** ZERO ✅
+- All production code uses only Python standard library or internal modules
+- No third-party packages imported in `civ_arcos/` directory
+
+**Test Code (tests/):** pytest and plugins ⚠️
+- **pytest** - Used in 75+ test files
+- **pytest-cov** - Coverage plugin for pytest
+- **pytest-asyncio** - Async test support
+- Listed in: `requirements-dev.txt`
 
 Comprehensive scan results:
-- **Files scanned:** 100+ Python files
-- **Third-party imports found:** 0 (active)
+- **Production files scanned:** 100+ Python files in `civ_arcos/`
+- **Third-party imports in production:** 0
+- **Test files:** 75+ files importing pytest
 - **External scripts found:** 0
 - **Subprocess calls to external tools:** 0
 
-All imports are either:
+All production code imports are either:
 - Python standard library modules
 - Internal `civ_arcos` modules  
 - CIV-* replacement scripts
@@ -96,14 +107,42 @@ All replacements follow the required pattern: **CIV-(first syllable of external 
 
 ## Recommendations
 
-### Current State: Optimal ✅
-The project has achieved its goal of minimal external dependencies while maintaining full functionality.
+### Current State: Core Tools Replaced ✅
+
+The project has successfully replaced all core development tools (coverage, linting, formatting, type checking) with custom implementations. Production code has zero third-party dependencies.
+
+### pytest Status: Partial Replacement ⚠️
+
+**Current Situation:**
+- CIV-pyt exists and provides basic test runner functionality
+- Test suite (75+ files) still imports pytest for advanced features:
+  - Fixtures and dependency injection
+  - Parametrization
+  - Plugins (pytest-cov, pytest-asyncio)
+  - Advanced assertions and error reporting
+
+**Options Going Forward:**
+1. **Accept Current State** (Recommended)
+   - Use CIV-pyt for basic testing needs
+   - Keep pytest as optional dev dependency for advanced test features
+   - Status: Pragmatic balance between custom tools and functionality
+   
+2. **Full pytest Replacement** (Significant effort)
+   - Enhance CIV-pyt to support fixtures, parametrization, plugins
+   - Rewrite 75+ test files to use CIV-pyt syntax
+   - Estimate: Multiple weeks of development
+   
+3. **Hybrid Approach**
+   - Continue using CIV-pyt for simple tests
+   - Use pytest for integration tests requiring advanced features
+   - Gradually migrate as CIV-pyt gains features
 
 ### Future Considerations (OPTIONAL):
-1. **Test Files**: Currently still use `pytest` imports
-   - Status: Acceptable (pytest is optional for advanced features)
-   - Action: None required
-   - Rationale: CIV-pyt exists for basic testing; pytest can be used for advanced scenarios
+
+1. **Test Files**: Currently use pytest extensively
+   - Status: Acceptable (pytest is optional dev dependency)
+   - Action: Document as known limitation
+   - Rationale: CIV-pyt provides basic testing; pytest offers advanced capabilities
 
 2. **Standard Library Stubs**: Currently non-functional templates
    - Status: Acceptable (documentation purpose)
@@ -112,18 +151,26 @@ The project has achieved its goal of minimal external dependencies while maintai
 
 ## Conclusion
 
-**Task Status: ✅ COMPLETE**
+**Task Status: ✅ CORE TOOLS REPLACED**
 
-All external scripts and development tools that should be replaced according to the CIV-ARCOS project philosophy have been successfully replaced with custom CIV-* implementations from the Emu-Soft repository.
+All core external development tools (coverage, black, mypy, flake8, Drakon Editor) have been successfully replaced with custom CIV-* implementations from the Emu-Soft repository.
 
-The codebase demonstrates:
-- ✅ Minimal external dependencies
-- ✅ Functional custom implementations for all development tools
-- ✅ Compliance with naming conventions
+**Current Limitations:**
+- **pytest**: While CIV-pyt exists, the test suite (75+ files) still uses pytest for its advanced features (fixtures, parametrization, plugins). This is documented as a known limitation.
+
+The production codebase demonstrates:
+- ✅ Zero external dependencies in production code (`civ_arcos/`)
+- ✅ Functional custom implementations for all core development tools
+- ✅ Compliance with naming conventions (CIV-[first syllable])
 - ✅ Comprehensive documentation
-- ✅ No missing replacements
+- ⚠️ Test suite still uses pytest (documented limitation)
 
-**No additional action required.**
+**Assessment:**
+- **Core task:** COMPLETE - All development tools replaced with CIV-* versions
+- **Additional work possible:** Enhance CIV-pyt to fully replace pytest in test suite
+- **Current pragmatic choice:** Use custom tools for core development, optional pytest for advanced testing
+
+**No additional action required for core development tools.**
 
 ---
 
