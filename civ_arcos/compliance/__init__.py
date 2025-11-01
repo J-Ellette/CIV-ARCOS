@@ -16,6 +16,9 @@ Implements various compliance and security automation frameworks:
 - Qualtrax: Quality and compliance software for documentation and audits
 - Hyland: Digital government document management and workflows
 - DISS: Defense Information System for Security (clearance management)
+- CMMC: Cybersecurity Maturity Model Certification ecosystem
+- GCM: UL Solutions Global Compliance Management
+- Game Warden: DevSecOps platform for DoD ATO
 """
 
 from .scap import (
@@ -201,6 +204,27 @@ from .diss import (
     VisitStatus,
 )
 
+from .cmmc import (
+    CMMCPlatform,
+    CMMCLevel,
+    PracticeStatus,
+    AssessmentStatus as CMMCAssessmentStatus,
+)
+
+from .gcm import (
+    GCMPlatform,
+    ProductCategory,
+    ComplianceStatus as GCMComplianceStatus,
+    RegulatoryRegion,
+)
+
+from .game_warden import (
+    GameWardenPlatform,
+    ATOStatus as GameWardenATOStatus,
+    ImpactLevel,
+    SecurityControlStatus,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -353,4 +377,19 @@ __all__ = [
     "InvestigationType",
     "AdjudicationStatus",
     "VisitStatus",
+    # CMMC
+    "CMMCPlatform",
+    "CMMCLevel",
+    "PracticeStatus",
+    "CMMCAssessmentStatus",
+    # GCM
+    "GCMPlatform",
+    "ProductCategory",
+    "GCMComplianceStatus",
+    "RegulatoryRegion",
+    # Game Warden
+    "GameWardenPlatform",
+    "GameWardenATOStatus",
+    "ImpactLevel",
+    "SecurityControlStatus",
 ]
