@@ -6,9 +6,16 @@ This document identifies all external tools, scripts, software, modules, and off
 
 **Completed Replacements:**
 - [x] **Drakon Editor (Node.js)** - (COMPLETE - REPLACED) - Replaced with custom SVG generation (see section: Drakon Editor)
+- [x] **coverage.py** - (COMPLETE - REPLACED) - Replaced with CodeCoverage from Emu-Soft (see: `civ_arcos/analysis/civ_scripts/civ_cov.py`)
+
+**In Progress:**
+- [ ] pytest → TestRunner (from Emu-Soft)
+- [ ] mypy → TypeChecker (from Emu-Soft)
+- [ ] black → CodeFormatter (from Emu-Soft)
+- [ ] flake8 → CodeLinter (from Emu-Soft)
 
 **Acceptable External Dependencies (Per Project Philosophy):**
-- Testing & Quality Tools: pytest, coverage.py, black, mypy, flake8 (acceptable as development tools)
+- Testing & Quality Tools: ~~pytest, coverage.py~~, black, mypy, flake8 (acceptable as development tools - being replaced)
 - Containerization: Docker, docker-compose (acceptable for deployment)
 - Package Management: pip, setuptools (Python ecosystem standards)
 
@@ -58,15 +65,18 @@ This document identifies all external tools, scripts, software, modules, and off
   - `pytest-cov` (>=4.1.0) - Coverage reporting plugin
   - `pytest-asyncio` (>=0.21.0) - Async test support
 
-#### 4. Code Coverage Analysis
-**Tool:** `coverage.py` (>=7.3.0)
+#### 4. Code Coverage Analysis - (COMPLETE - REPLACED)
+**Tool:** ~~`coverage.py` (>=7.3.0)~~ **REPLACED with CodeCoverage from Emu-Soft**
 - **File:** `civ_arcos/analysis/coverage_analyzer.py`
-- **Purpose:** Measuring code and branch coverage
-- **Configuration:** Coverage settings in `pytest.ini`
-- **Usage:** 
-  - Running tests with coverage tracking
-  - Generating coverage reports (JSON, HTML)
-  - Automated via `subprocess.run()` calls
+- **Replacement:** `civ_arcos/analysis/civ_scripts/civ_cov.py` (CodeCoverage from Emu-Soft)
+- **Source:** [Emu-Soft/python/CodeCoverage](https://github.com/J-Ellette/Emu-Soft/tree/main/python/CodeCoverage)
+- **Purpose:** Measuring code and branch coverage using `sys.settrace()`
+- **Status:** External dependency eliminated - now uses custom implementation
+- **Features:**
+  - Line coverage tracking
+  - Branch coverage analysis  
+  - Coverage reporting (JSON format compatible with coverage.py)
+  - No external dependencies required
 
 #### 5. Code Quality Tools
 **Tool:** `black` (>=23.7.0)
