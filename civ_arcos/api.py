@@ -1441,6 +1441,303 @@ def stig_docs(request: Request) -> Response:
     })
 
 
+# CIV-GRUNDSCHUTZ API endpoints
+@app.post("/api/compliance/grundschutz/structure-analysis")
+def grundschutz_structure_analysis(request: Request) -> Response:
+    """
+    Conduct IT structure analysis.
+    
+    Request body:
+    {
+        "assets": [
+            {
+                "asset_id": "SRV-001",
+                "name": "Web Server",
+                "asset_type": "Server",
+                "description": "Production web server",
+                "criticality": "high",
+                "owner": "IT Dept",
+                "dependencies": []
+            }
+        ]
+    }
+    """
+    try:
+        from civ_arcos.compliance.grundschutz import GrundschutzEngine, Asset
+        
+        data = request.json()
+        assets_data = data.get("assets", [])
+        
+        if not assets_data:
+            return Response({"error": "assets list is required"}, status_code=400)
+        
+        # Initialize engine
+        engine = GrundschutzEngine()
+        
+        # Create asset objects
+        assets = []
+        for asset_data in assets_data:
+            asset = Asset(
+                asset_id=asset_data["asset_id"],
+                name=asset_data["name"],
+                asset_type=asset_data["asset_type"],
+                description=asset_data["description"],
+                criticality=asset_data.get("criticality", "normal"),
+                owner=asset_data["owner"],
+                dependencies=asset_data.get("dependencies", []),
+            )
+            assets.append(asset)
+        
+        # Conduct analysis
+        report = engine.conduct_structure_analysis(assets)
+        
+        return Response({
+            "success": True,
+            "report": report,
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/compliance/grundschutz/risk-assessment")
+def grundschutz_risk_assessment(request: Request) -> Response:
+    """
+    Perform risk assessment for an asset.
+    
+    Request body:
+    {
+        "asset_id": "SRV-001",
+        "threat_ids": ["T.1", "T.2", "T.3"]
+    }
+    """
+    try:
+        from civ_arcos.compliance.grundschutz import GrundschutzEngine
+        
+        data = request.json()
+        asset_id = data.get("asset_id")
+        threat_ids = data.get("threat_ids", [])
+        
+        if not asset_id or not threat_ids:
+            return Response({"error": "asset_id and threat_ids are required"}, status_code=400)
+        
+        # Initialize engine and perform assessment
+        engine = GrundschutzEngine()
+        risks = engine.perform_risk_assessment(asset_id, threat_ids)
+        
+        return Response({
+            "success": True,
+            "risks": [
+                {
+                    "risk_id": r.risk_id,
+                    "threat_id": r.threat_id,
+                    "asset_id": r.asset_id,
+                    "likelihood": r.likelihood.value,
+                    "impact": r.impact.value,
+                    "risk_level": r.risk_level.value,
+                    "treatment": r.treatment,
+                    "residual_risk": r.residual_risk.value,
+                }
+                for r in risks
+            ],
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/compliance/grundschutz/recommend-controls")
+def grundschutz_recommend_controls(request: Request) -> Response:
+    """
+    Recommend security controls for an asset based on risks.
+    
+    Request body:
+    {
+        "asset": {
+            "asset_id": "SRV-001",
+            "name": "Web Server",
+            "asset_type": "Server",
+            "description": "...",
+            "criticality": "high",
+            "owner": "IT Dept"
+        },
+        "risks": [
+            {
+                "risk_level": "high",
+                "threat_id": "T.1"
+            }
+        ]
+    }
+    """
+    try:
+        from civ_arcos.compliance.grundschutz import GrundschutzEngine, Asset, Risk, RiskLevel
+        
+        data = request.json()
+        asset_data = data.get("asset")
+        risks_data = data.get("risks", [])
+        
+        if not asset_data:
+            return Response({"error": "asset is required"}, status_code=400)
+        
+        # Initialize engine
+        engine = GrundschutzEngine()
+        
+        # Create asset
+        asset = Asset(
+            asset_id=asset_data["asset_id"],
+            name=asset_data["name"],
+            asset_type=asset_data["asset_type"],
+            description=asset_data["description"],
+            criticality=asset_data.get("criticality", "normal"),
+            owner=asset_data["owner"],
+        )
+        
+        # For simplicity, create minimal risk objects for recommendation
+        risks = []
+        for risk_data in risks_data:
+            # Create a simplified risk (normally would get from engine)
+            from civ_arcos.compliance.grundschutz import Risk
+            risk = Risk(
+                risk_id=risk_data.get("risk_id", "R-1"),
+                threat_id=risk_data.get("threat_id", "T-1"),
+                asset_id=asset.asset_id,
+                likelihood=RiskLevel(risk_data.get("likelihood", "medium")),
+                impact=RiskLevel(risk_data.get("impact", "medium")),
+                risk_level=RiskLevel(risk_data.get("risk_level", "medium")),
+                treatment="mitigate",
+            )
+            risks.append(risk)
+        
+        # Get recommendations
+        recommended_controls = engine.recommend_controls(asset, risks)
+        
+        return Response({
+            "success": True,
+            "recommended_controls": [
+                {
+                    "control_id": c.control_id,
+                    "title": c.title,
+                    "category": c.category.value,
+                    "security_level": c.security_level.value,
+                    "description": c.description,
+                }
+                for c in recommended_controls
+            ],
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/compliance/grundschutz/certification-readiness")
+def grundschutz_certification_readiness(request: Request) -> Response:
+    """Get ISO 27001 certification readiness assessment."""
+    try:
+        from civ_arcos.compliance.grundschutz import GrundschutzEngine
+        
+        # Initialize engine
+        engine = GrundschutzEngine()
+        
+        # Assess readiness
+        readiness = engine.assess_certification_readiness()
+        
+        return Response({
+            "success": True,
+            "readiness": readiness,
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/compliance/grundschutz/controls")
+def grundschutz_list_controls(request: Request) -> Response:
+    """List all available Grundschutz security controls."""
+    try:
+        from civ_arcos.compliance.grundschutz import GrundschutzEngine
+        
+        # Initialize engine
+        engine = GrundschutzEngine()
+        
+        # List controls
+        controls = engine.list_controls()
+        
+        return Response({
+            "success": True,
+            "controls": controls,
+        })
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/compliance/grundschutz/report")
+def grundschutz_comprehensive_report(request: Request) -> Response:
+    """Generate comprehensive Grundschutz status report."""
+    try:
+        from civ_arcos.compliance.grundschutz import GrundschutzEngine
+        
+        # Initialize engine
+        engine = GrundschutzEngine()
+        
+        # Generate report
+        report = engine.generate_comprehensive_report()
+        
+        return Response(report)
+        
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/compliance/grundschutz/docs")
+def grundschutz_docs(request: Request) -> Response:
+    """Get Grundschutz module API documentation."""
+    return Response({
+        "module": "CIV-GRUNDSCHUTZ",
+        "description": "BSI IT-Grundschutz systematic security certification implementation",
+        "endpoints": {
+            "POST /api/compliance/grundschutz/structure-analysis": {
+                "description": "Conduct IT structure analysis",
+                "parameters": {
+                    "assets": "List of IT assets to analyze"
+                },
+                "returns": "Structure analysis report with asset inventory and dependencies"
+            },
+            "POST /api/compliance/grundschutz/risk-assessment": {
+                "description": "Perform risk assessment for an asset",
+                "parameters": {
+                    "asset_id": "Asset identifier",
+                    "threat_ids": "List of threat IDs to evaluate"
+                },
+                "returns": "Risk assessment with treatment recommendations"
+            },
+            "POST /api/compliance/grundschutz/recommend-controls": {
+                "description": "Get recommended security controls",
+                "parameters": {
+                    "asset": "Asset information",
+                    "risks": "Identified risks"
+                },
+                "returns": "List of recommended security controls (Bausteine)"
+            },
+            "GET /api/compliance/grundschutz/certification-readiness": {
+                "description": "Assess ISO 27001 certification readiness",
+                "returns": "Readiness score and gap analysis"
+            },
+            "GET /api/compliance/grundschutz/controls": {
+                "description": "List all Grundschutz security controls",
+                "returns": "Complete control catalog (Bausteine)"
+            },
+            "GET /api/compliance/grundschutz/report": {
+                "description": "Generate comprehensive status report",
+                "returns": "Full Grundschutz compliance report"
+            }
+        },
+        "standards": ["BSI IT-Grundschutz", "ISO 27001", "NIST 800-53"],
+        "control_categories": ["Technical", "Organizational", "Personnel", "Physical"],
+        "security_levels": ["Basic", "Standard", "High"]
+    })
+
+
 # Integration API endpoints
 @app.post("/api/github/quality-check")
 def github_quality_check_webhook(request: Request) -> Response:

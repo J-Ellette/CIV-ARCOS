@@ -24,9 +24,24 @@ from .stig import (
     ConfigurationScanner,
     POAMManager,
     STIGReporter,
-    Asset,
+    Asset as STIGAsset,
     STIGStatus,
     STIGSeverity,
+)
+
+from .grundschutz import (
+    GrundschutzEngine,
+    SecurityCatalog,
+    ITStructureAnalysis,
+    RiskAnalysis,
+    ISMSManager,
+    CertificationManager,
+    Asset as GrundschutzAsset,
+    SecurityControl,
+    SecurityLevel,
+    ControlCategory,
+    ImplementationStatus,
+    RiskLevel,
 )
 
 __all__ = [
@@ -44,7 +59,20 @@ __all__ = [
     "ConfigurationScanner",
     "POAMManager",
     "STIGReporter",
-    "Asset",
+    "STIGAsset",
     "STIGStatus",
     "STIGSeverity",
+    # GRUNDSCHUTZ
+    "GrundschutzEngine",
+    "SecurityCatalog",
+    "ITStructureAnalysis",
+    "RiskAnalysis",
+    "ISMSManager",
+    "CertificationManager",
+    "GrundschutzAsset",
+    "SecurityControl",
+    "SecurityLevel",
+    "ControlCategory",
+    "ImplementationStatus",
+    "RiskLevel",
 ]

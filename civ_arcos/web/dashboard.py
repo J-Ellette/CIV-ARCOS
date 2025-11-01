@@ -855,26 +855,58 @@ class DashboardGenerator:
                     </div>
                 </div>
 
-                <!-- CIV-GRUNDSCHUTZ Module (Coming Soon) -->
+                <!-- CIV-GRUNDSCHUTZ Module -->
                 <div class="usa-card margin-top-3">
                     <div class="usa-card__container">
                         <header class="usa-card__header">
                             <h3 class="usa-card__heading">CIV-GRUNDSCHUTZ</h3>
-                            <p class="usa-tag bg-base-light">Coming Soon</p>
+                            <p class="usa-tag bg-success">Active</p>
                         </header>
                         <div class="usa-card__body">
                             <p><strong>Systematic Security Certification</strong></p>
                             <p>BSI IT-Grundschutz-inspired methodology for comprehensive information security 
-                            management and ISO 27001 certification.</p>
+                            management and ISO 27001 certification readiness.</p>
                             
-                            <h4 class="margin-top-2">Planned Features:</h4>
+                            <h4 class="margin-top-2">Features:</h4>
                             <ul class="usa-list">
-                                <li>ISMS (Information Security Management System) core</li>
-                                <li>IT structure analysis engine</li>
-                                <li>Risk-based security controls</li>
-                                <li>Compliance and certification management</li>
-                                <li>Multi-framework integration</li>
+                                <li><strong>ISMS Foundation:</strong> ISO 27001-based management system</li>
+                                <li><strong>IT Structure Analysis:</strong> Comprehensive infrastructure documentation</li>
+                                <li><strong>Security Catalogs:</strong> Technical, organizational, personnel, physical controls (Bausteine)</li>
+                                <li><strong>Risk Methodology:</strong> Threat modeling and risk-based control selection</li>
+                                <li><strong>Certification Support:</strong> ISO 27001 readiness assessment and gap analysis</li>
+                                <li><strong>Framework Mapping:</strong> ISO 27001, NIST 800-53 correlation</li>
                             </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/grundschutz/structure-analysis</code><br>
+                                <small>Conduct IT structure analysis and asset inventory</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/grundschutz/risk-assessment</code><br>
+                                <small>Perform risk assessment with treatment planning</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/grundschutz/certification-readiness</code><br>
+                                <small>Assess ISO 27001 certification readiness</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Security Levels:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag bg-info">Basic</span>
+                                </div>
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag bg-warning">Standard</span>
+                                </div>
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag bg-error">High</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('grundschutz')">Test Grundschutz</button>
+                            <a href="/api/compliance/grundschutz/docs" class="usa-button usa-button--outline">API Documentation</a>
                         </div>
                     </div>
                 </div>
@@ -1015,6 +1047,64 @@ const results = await response.json();</code></pre>
                                 </p>
                                 <details class="margin-top-2">
                                     <summary>View Detailed Results</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
+                                </details>
+                            </div>
+                        </div>
+                    `;
+                }} else if (module === 'grundschutz') {{
+                    // For Grundschutz, test structure analysis
+                    response = await fetch('/api/compliance/grundschutz/structure-analysis', {{
+                        method: 'POST',
+                        headers: {{ 'Content-Type': 'application/json' }},
+                        body: JSON.stringify({{
+                            assets: [
+                                {{
+                                    asset_id: 'SRV-DEMO-001',
+                                    name: 'Demo Web Server',
+                                    asset_type: 'Server',
+                                    description: 'Production web server',
+                                    criticality: 'high',
+                                    owner: 'IT Department',
+                                    dependencies: ['DB-001']
+                                }},
+                                {{
+                                    asset_id: 'DB-001',
+                                    name: 'Demo Database',
+                                    asset_type: 'Database',
+                                    description: 'Customer database',
+                                    criticality: 'very_high',
+                                    owner: 'Data Team',
+                                    dependencies: []
+                                }}
+                            ]
+                        }})
+                    }});
+                    
+                    if (!response.ok) {{
+                        throw new Error(`HTTP error! status: ${{response.status}}`);
+                    }}
+                    
+                    results = await response.json();
+                    const report = results.report;
+                    
+                    // Display Grundschutz-specific results
+                    resultsDiv.innerHTML = `
+                        <div class="usa-alert usa-alert--success">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ Grundschutz Analysis Complete</h4>
+                                <p class="usa-alert__text">
+                                    Total Assets: <strong>${{report.total_assets}}</strong><br>
+                                    Critical Assets: <span class="text-error">${{report.critical_assets}}</span><br>
+                                    Data Flows: ${{report.data_flows}}<br>
+                                    Dependency Complexity: <span class="text-info">${{report.dependency_complexity}}</span>
+                                </p>
+                                <details class="margin-top-2">
+                                    <summary>View Asset Breakdown</summary>
+                                    <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(report.assets_by_type, null, 2)}}</code></pre>
+                                </details>
+                                <details class="margin-top-2">
+                                    <summary>View Full Report</summary>
                                     <pre class="bg-base-lightest padding-2 margin-top-2"><code>${{JSON.stringify(results, null, 2)}}</code></pre>
                                 </details>
                             </div>
