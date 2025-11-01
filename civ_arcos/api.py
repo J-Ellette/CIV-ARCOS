@@ -1383,6 +1383,56 @@ def dashboard_compliance_game_warden(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+@app.get("/dashboard/compliance/powershield")
+def dashboard_compliance_powershield(request: Request) -> Response:
+    """PowerShield PowerShell security analysis module page."""
+    try:
+        html = dashboard_gen.generate_module_page_powershield()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/acvp")
+def dashboard_compliance_acvp(request: Request) -> Response:
+    """ACVP cryptographic validation module page."""
+    try:
+        html = dashboard_gen.generate_module_page_acvp()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/dioptra")
+def dashboard_compliance_dioptra(request: Request) -> Response:
+    """Dioptra AI model testing module page."""
+    try:
+        html = dashboard_gen.generate_module_page_dioptra()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/safedocs")
+def dashboard_compliance_safedocs(request: Request) -> Response:
+    """SafeDocs document parser security module page."""
+    try:
+        html = dashboard_gen.generate_module_page_safedocs()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/hacms")
+def dashboard_compliance_hacms(request: Request) -> Response:
+    """HACMS high-assurance systems module page."""
+    try:
+        html = dashboard_gen.generate_module_page_hacms()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
 @app.get("/dashboard/powershell")
 def dashboard_powershell(request: Request) -> Response:
     """Dashboard PowerShell security analysis page."""

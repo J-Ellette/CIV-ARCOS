@@ -871,6 +871,36 @@ class DashboardGenerator:
                 "title": "Container Security Platform",
                 "description": "Second Front Systems container security platform for DoD. Continuous container scanning, policy enforcement, and runtime protection for Kubernetes environments."
             },
+            {
+                "name": "PowerShield",
+                "url": "/dashboard/compliance/powershield",
+                "title": "PowerShell Security Analysis",
+                "description": "Comprehensive security scanning for PowerShell scripts. Detects vulnerabilities, insecure coding practices, and compliance issues with advanced pattern-based analysis."
+            },
+            {
+                "name": "ACVP",
+                "url": "/dashboard/compliance/acvp",
+                "title": "Automated Cryptographic Validation Protocol",
+                "description": "NIST-based cryptographic algorithm validation and testing. Supports FIPS compliance verification, test vector generation, and algorithm certification for AES, SHA, RSA, ECDSA, HMAC, and more."
+            },
+            {
+                "name": "Dioptra",
+                "url": "/dashboard/compliance/dioptra",
+                "title": "AI Model Testing & Characterization",
+                "description": "NIST framework for testing AI/ML models. Comprehensive evaluation of robustness, fairness, security, and performance of AI technologies with adversarial testing and bias detection."
+            },
+            {
+                "name": "SafeDocs",
+                "url": "/dashboard/compliance/safedocs",
+                "title": "Document Parser Security",
+                "description": "DARPA-inspired tool for addressing parser vulnerabilities in document processing. Prevents exploitation through secure document validation and safe parsing of PDF, XML, JSON, and Office formats."
+            },
+            {
+                "name": "HACMS",
+                "url": "/dashboard/compliance/hacms",
+                "title": "High-Assurance Cyber Military Systems",
+                "description": "DARPA formal methods platform for provably secure software. Generates machine-checkable proofs demonstrating safety and security properties using model checking and theorem proving."
+            },
         ]
         
         # Generate module cards HTML
@@ -2716,6 +2746,151 @@ const results = await response.json();</code></pre>
                 '<span class="usa-tag">Kubernetes</span>',
                 '<span class="usa-tag">DoD</span>',
                 '<span class="usa-tag">Runtime Protection</span>'
+            ]
+        )
+
+    def generate_module_page_powershield(self) -> str:
+        """Generate individual page for PowerShield module."""
+        return self._generate_module_page_template(
+            module_id="powershield",
+            module_name="PowerShield",
+            title="PowerShell Security Analysis",
+            description="Comprehensive security scanning for PowerShell scripts. Detects vulnerabilities, insecure coding practices, and compliance issues through advanced pattern-based analysis and static code analysis.",
+            features=[
+                "<strong>Vulnerability Detection:</strong> Identifies security flaws and unsafe patterns",
+                "<strong>Code Quality Analysis:</strong> Detects insecure coding practices",
+                "<strong>Compliance Checks:</strong> Validates against security best practices",
+                "<strong>Pattern Matching:</strong> Advanced regex-based security pattern detection",
+                "<strong>Credential Scanning:</strong> Detects hardcoded credentials and secrets",
+                "<strong>PowerShell CLI:</strong> Integrated PowerShell security scanner"
+            ],
+            api_endpoints=[
+                ("POST /api/analysis/powershell", "Analyze PowerShell script"),
+                ("POST /api/compliance/powershield/scan", "Full security scan"),
+                ("GET /api/compliance/powershield/patterns", "List security patterns"),
+                ("GET /api/compliance/powershield/docs", "API documentation")
+            ],
+            tags=[
+                '<span class="usa-tag">PowerShell</span>',
+                '<span class="usa-tag">Script Security</span>',
+                '<span class="usa-tag">Static Analysis</span>',
+                '<span class="usa-tag">Credential Scanning</span>'
+            ]
+        )
+
+    def generate_module_page_acvp(self) -> str:
+        """Generate individual page for ACVP module."""
+        return self._generate_module_page_template(
+            module_id="acvp",
+            module_name="ACVP",
+            title="Automated Cryptographic Validation Protocol",
+            description="NIST-based cryptographic algorithm validation and testing framework. Provides comprehensive validation of cryptographic implementations against FIPS standards with automated test vector generation and compliance verification.",
+            features=[
+                "<strong>Algorithm Validation:</strong> AES, SHA, RSA, ECDSA, HMAC, DRBG, KDF",
+                "<strong>FIPS Compliance:</strong> Validates against FIPS 140-2/140-3 standards",
+                "<strong>Test Vectors:</strong> Automated generation of cryptographic test vectors",
+                "<strong>Certification Support:</strong> Algorithm testing for NIST certification",
+                "<strong>Compliance Reports:</strong> Detailed validation and compliance reporting",
+                "<strong>Security Analysis:</strong> Cryptographic implementation security assessment"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/acvp/validate", "Validate cryptographic algorithm"),
+                ("POST /api/compliance/acvp/test-vectors", "Generate test vectors"),
+                ("POST /api/compliance/acvp/certify", "Request certification"),
+                ("GET /api/compliance/acvp/algorithms", "List supported algorithms")
+            ],
+            tags=[
+                '<span class="usa-tag">NIST</span>',
+                '<span class="usa-tag">FIPS</span>',
+                '<span class="usa-tag">Cryptography</span>',
+                '<span class="usa-tag">Algorithm Validation</span>'
+            ]
+        )
+
+    def generate_module_page_dioptra(self) -> str:
+        """Generate individual page for Dioptra module."""
+        return self._generate_module_page_template(
+            module_id="dioptra",
+            module_name="Dioptra",
+            title="AI Model Testing & Characterization",
+            description="NIST framework for comprehensive testing and characterization of AI/ML models. Evaluates model robustness, fairness, security, and performance through adversarial testing, bias detection, and explainability analysis.",
+            features=[
+                "<strong>Adversarial Testing:</strong> FGSM, PGD, DeepFool, C&W attacks",
+                "<strong>Fairness Analysis:</strong> Demographic parity and equalized odds metrics",
+                "<strong>Explainability:</strong> LIME, SHAP, and Integrated Gradients analysis",
+                "<strong>Performance Metrics:</strong> Accuracy, precision, recall, F1, AUC-ROC",
+                "<strong>Data Quality:</strong> Training data completeness and distribution analysis",
+                "<strong>Security Assessment:</strong> Model security and robustness evaluation"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/dioptra/test/adversarial", "Run adversarial robustness test"),
+                ("POST /api/compliance/dioptra/test/fairness", "Evaluate model fairness"),
+                ("POST /api/compliance/dioptra/test/explainability", "Analyze model explainability"),
+                ("POST /api/compliance/dioptra/evaluate", "Comprehensive model evaluation")
+            ],
+            tags=[
+                '<span class="usa-tag">NIST</span>',
+                '<span class="usa-tag">AI/ML</span>',
+                '<span class="usa-tag">Model Testing</span>',
+                '<span class="usa-tag">Fairness</span>'
+            ]
+        )
+
+    def generate_module_page_safedocs(self) -> str:
+        """Generate individual page for SafeDocs module."""
+        return self._generate_module_page_template(
+            module_id="safedocs",
+            module_name="SafeDocs",
+            title="Document Parser Security",
+            description="DARPA-inspired tool for addressing vulnerabilities in software parsers that process electronic documents. Prevents exploitation of parser vulnerabilities through secure document validation and safe parsing techniques.",
+            features=[
+                "<strong>Parser Security:</strong> Prevents buffer overflow and integer overflow attacks",
+                "<strong>Format Support:</strong> PDF, XML, JSON, Office documents, images, archives",
+                "<strong>Vulnerability Detection:</strong> Identifies XXE, deserialization, injection flaws",
+                "<strong>Safe Parsing:</strong> Secure document processing with sandboxing",
+                "<strong>Validation Engine:</strong> Document structure and content validation",
+                "<strong>Threat Analysis:</strong> Parser vulnerability risk assessment"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/safedocs/scan", "Scan document for vulnerabilities"),
+                ("POST /api/compliance/safedocs/validate", "Validate document security"),
+                ("POST /api/compliance/safedocs/parse", "Safely parse document"),
+                ("GET /api/compliance/safedocs/formats", "List supported formats")
+            ],
+            tags=[
+                '<span class="usa-tag">DARPA</span>',
+                '<span class="usa-tag">Parser Security</span>',
+                '<span class="usa-tag">Document Safety</span>',
+                '<span class="usa-tag">Vulnerability Prevention</span>'
+            ]
+        )
+
+    def generate_module_page_hacms(self) -> str:
+        """Generate individual page for HACMS module."""
+        return self._generate_module_page_template(
+            module_id="hacms",
+            module_name="HACMS",
+            title="High-Assurance Cyber Military Systems",
+            description="DARPA formal methods platform for creating provably secure software capable of withstanding cyber threats. Generates machine-checkable proofs demonstrating safety and security properties of code using theorem proving and model checking.",
+            features=[
+                "<strong>Formal Methods:</strong> Model checking, theorem proving, symbolic execution",
+                "<strong>Proof Generation:</strong> Machine-checkable security and safety proofs",
+                "<strong>Assurance Levels:</strong> Basic to very high assurance certifications",
+                "<strong>Security Properties:</strong> Verifies memory safety, type safety, access control",
+                "<strong>Runtime Verification:</strong> Continuous verification during execution",
+                "<strong>High Assurance:</strong> Provably secure software for critical systems"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/hacms/verify", "Verify code with formal methods"),
+                ("POST /api/compliance/hacms/proof/generate", "Generate security proof"),
+                ("POST /api/compliance/hacms/analyze", "Analyze code security properties"),
+                ("GET /api/compliance/hacms/assurance-level", "Get assurance level")
+            ],
+            tags=[
+                '<span class="usa-tag">DARPA</span>',
+                '<span class="usa-tag">Formal Methods</span>',
+                '<span class="usa-tag">Provable Security</span>',
+                '<span class="usa-tag">High Assurance</span>'
             ]
         )
 
