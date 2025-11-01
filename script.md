@@ -2,6 +2,16 @@
 
 This document identifies all external tools, scripts, software, modules, and off-the-shelf models used in the repository instead of custom implementations.
 
+## Replacement Status
+
+**Completed Replacements:**
+- [x] **Drakon Editor (Node.js)** - (COMPLETE - REPLACED) - Replaced with custom SVG generation (see section: Drakon Editor)
+
+**Acceptable External Dependencies (Per Project Philosophy):**
+- Testing & Quality Tools: pytest, coverage.py, black, mypy, flake8 (acceptable as development tools)
+- Containerization: Docker, docker-compose (acceptable for deployment)
+- Package Management: pip, setuptools (Python ecosystem standards)
+
 ## External Tools and Software by Category
 
 ### Development & Build Tools

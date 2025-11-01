@@ -18,7 +18,7 @@ A civilian version of military-grade software assurance following proven ARCOS m
 - **Digital Assurance Case Builder**: CertGATE-style assurance cases with GSN notation
   - **Argument Templates**: 5 built-in templates (code quality, test coverage, security, maintainability, comprehensive)
   - **Evidence Linking**: Automatic connection of evidence to argument nodes
-  - **GSN Visualization**: SVG, DOT, and summary formats for visual argument representation
+  - **GSN Visualization**: Custom SVG, DOT, and summary formats for visual argument representation (100% in-house implementation)
   - **Pattern Instantiation**: Auto-generate cases for 8 project types (web app, API, library, mobile app, CLI tool, microservice, desktop app, general)
 - **GitHub Integration**: Automated evidence collection from GitHub repositories
 - **Enhanced Quality Badges**: Dynamic SVG badge generation for 6 metrics:
