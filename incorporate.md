@@ -503,17 +503,17 @@ The cost and time frame for certification can vary based on the company's size a
 The ISO 27001:2022 version was released in October 2022, and organizations certified under the previous version must transition by October 31, 2025. 
 ****************************************
 
-### FedRAMP - Federal cloud authorization (government cloud services)
+### FedRAMP - Federal cloud authorization (government cloud services) (COMPLETE)
 (https://github.com/FedRAMP)
 ****************************************
 
-### CSA STAR
+### CSA STAR (COMPLETE)
 Cloud Security Alliance certification
 (https://cloudsecurityalliance.org/star)
 
 ****************************************
 
-### AWS/Azure/GCP Compliance
+### AWS/Azure/GCP Compliance (COMPLETE)
 Cloud platform certifications
 Common cloud certifications for AWS, Azure, and GCP include foundational certifications like AWS Certified Cloud Practitioner and Microsoft Azure Fundamentals, and professional-level certifications such as AWS Certified Solutions Architect, Microsoft Certified: Azure Solutions Architect Expert, and Google Cloud Professional Cloud Architect. These certifications validate skills in areas like architecture, development, DevOps, and security across the platforms, and are categorized into foundational, associate, and professional levels. 
 AWS Certifications 
@@ -711,7 +711,7 @@ Enterprise asset management for public agencies
 
 ****************************************
 
-## Dioptra: Test Software for the Characterization of AI Technologies
+## Dioptra: Test Software for the Characterization of AI Technologies (COMPLETE)
 (https://pages.nist.gov/dioptra/) (https://github.com/usnistgov/dioptra)
 
 ****************************************
@@ -727,7 +727,7 @@ https://github.com/awesomeSBOM/awesome-sbom
 ****************************************
 
 
-## RegScale: 
+## RegScale: (COMPLETE)
 With an emphasis on automation, this platform integrates compliance as code into IT operations, allowing for continuous monitoring and automated reporting against federal standards like NIST 800-53 and FedRAMP. 
 (https://regscale.com/)
 

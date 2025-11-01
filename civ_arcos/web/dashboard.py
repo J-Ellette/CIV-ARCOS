@@ -1317,6 +1317,199 @@ class DashboardGenerator:
                     </div>
                 </div>
 
+                <!-- FedRAMP Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">FedRAMP</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Federal Risk and Authorization Management Program</strong></p>
+                            <p>Federal cloud authorization for government cloud services. Standardized approach to
+                            security assessment, authorization, and continuous monitoring for federal agencies.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>4 Impact Levels:</strong> Low (125 controls), Moderate (325), High (421), LI-SaaS (130)</li>
+                                <li><strong>Authorization Paths:</strong> JAB P-ATO, Agency ATO, CSP Supplied</li>
+                                <li><strong>3PAO Assessment:</strong> Third-Party Assessment Organization security assessment</li>
+                                <li><strong>ATO Management:</strong> Authority to Operate granting and tracking</li>
+                                <li><strong>Continuous Monitoring:</strong> Monthly deliverables and annual assessments</li>
+                                <li><strong>Marketplace:</strong> Public listing of authorized cloud services</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/fedramp/package/create</code><br>
+                                <small>Create authorization package for cloud service</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/fedramp/assessment/conduct</code><br>
+                                <small>Conduct 3PAO security assessment</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/fedramp/ato/grant</code><br>
+                                <small>Grant Authority to Operate (ATO)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/fedramp/conmon/submit</code><br>
+                                <small>Submit continuous monitoring deliverable</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Impact Levels:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">Low</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag bg-warning">Moderate</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag bg-error">High</span>
+                                </div>
+                                <div class="tablet:grid-col-3">
+                                    <span class="usa-tag">LI-SaaS</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('fedramp')">Test FedRAMP</button>
+                            <a href="/api/compliance/fedramp/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CSA STAR Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">CSA STAR</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>Cloud Security Alliance STAR Registry</strong></p>
+                            <p>Cloud Security, Trust, Assurance, and Risk registry. Public documentation of security
+                            and privacy controls using CSA Cloud Controls Matrix (CCM).</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>197 CCM Controls:</strong> 17 domains covering all cloud security aspects</li>
+                                <li><strong>Level 1 - Self-Assessment:</strong> CAIQ questionnaire with public listing</li>
+                                <li><strong>Level 2 - Attestation:</strong> SOC 2 Type II mapped to CCM</li>
+                                <li><strong>Level 2 - Certification:</strong> ISO 27001 mapped to CCM</li>
+                                <li><strong>Level 3 - Continuous:</strong> Real-time automated monitoring</li>
+                                <li><strong>Public Registry:</strong> Searchable database of cloud provider assessments</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/csa-star/registration/create</code><br>
+                                <small>Create STAR registry entry for cloud service</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/csa-star/caiq/complete</code><br>
+                                <small>Complete CAIQ self-assessment (Level 1)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/csa-star/soc2/map</code><br>
+                                <small>Map SOC 2 to CCM (Level 2 Attestation)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/csa-star/iso27001/map</code><br>
+                                <small>Map ISO 27001 to CCM (Level 2 Certification)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/csa-star/registry/search</code><br>
+                                <small>Search public STAR registry</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">CCM Domains (17):</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">A&A</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">AIS</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">BCR</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">IAM</span>
+                                </div>
+                                <div class="tablet:grid-col">
+                                    <span class="usa-tag">DCS</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('csa_star')">Test CSA STAR</button>
+                            <a href="/api/compliance/csa-star/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cloud Compliance Module -->
+                <div class="usa-card margin-top-3">
+                    <div class="usa-card__container">
+                        <header class="usa-card__header">
+                            <h3 class="usa-card__heading">Cloud Platform Compliance</h3>
+                            <p class="usa-tag bg-success">Active</p>
+                        </header>
+                        <div class="usa-card__body">
+                            <p><strong>AWS/Azure/GCP Compliance Management</strong></p>
+                            <p>Multi-cloud compliance assessment and certification management for major cloud
+                            platforms with platform-specific compliance frameworks.</p>
+                            
+                            <h4 class="margin-top-2">Features:</h4>
+                            <ul class="usa-list">
+                                <li><strong>AWS:</strong> 143+ compliance programs (FedRAMP, DoD CC SRG, PCI DSS, HIPAA)</li>
+                                <li><strong>Azure:</strong> 100+ offerings (FedRAMP High, DoD IL4/5, CJIS, UK G-Cloud)</li>
+                                <li><strong>GCP:</strong> 50+ certifications (FedRAMP Moderate, DoD IL2/4, CSA STAR)</li>
+                                <li><strong>Shared Responsibility:</strong> Clear delineation for IaaS/PaaS/SaaS</li>
+                                <li><strong>Resource Scanning:</strong> Automated compliance assessment of cloud resources</li>
+                                <li><strong>Continuous Monitoring:</strong> Real-time workload compliance tracking</li>
+                            </ul>
+                            
+                            <h4 class="margin-top-2">Usage:</h4>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/cloud/assessment/create</code><br>
+                                <small>Create cloud compliance assessment (AWS/Azure/GCP)</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/cloud/resources/scan</code><br>
+                                <small>Scan cloud resources for compliance</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>POST /api/compliance/cloud/workload/register</code><br>
+                                <small>Register cloud workload for tracking</small>
+                            </div>
+                            <div class="bg-base-lightest padding-2 margin-y-1">
+                                <code>GET /api/compliance/cloud/certifications/:provider</code><br>
+                                <small>Get available certifications for cloud provider</small>
+                            </div>
+                            
+                            <h4 class="margin-top-2">Cloud Providers:</h4>
+                            <div class="grid-row grid-gap margin-top-1">
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag">AWS (143+)</span>
+                                </div>
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag">Azure (100+)</span>
+                                </div>
+                                <div class="tablet:grid-col-4">
+                                    <span class="usa-tag">GCP (50+)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usa-card__footer">
+                            <button class="usa-button" onclick="testModule('cloud')">Test Cloud Compliance</button>
+                            <a href="/api/compliance/cloud/docs" class="usa-button usa-button--outline">API Documentation</a>
+                        </div>
+                    </div>
+                </div>
+
                 <h2 class="margin-top-5">API Integration</h2>
                 <div class="usa-prose margin-top-3">
                     <p>All compliance modules are accessible via RESTful APIs for easy integration 
