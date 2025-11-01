@@ -53,6 +53,13 @@ from civ_arcos.core import (
     SimulationType,
 )
 from civ_arcos.api import CivARCOSAPI
+from civ_arcos.compliance import (
+    ACASManager,
+    ScanMode,
+    ComplianceFramework as ACASFramework,
+    NessusManager,
+    ScanType,
+)
 
 
 # Initialize application
@@ -112,6 +119,10 @@ localization_manager = LocalizationManager()
 
 # Initialize digital twin integration
 digital_twin_integration = DigitalTwinIntegration()
+
+# Initialize compliance scanners
+acas_manager = ACASManager()
+nessus_manager = NessusManager()
 
 
 @app.get("/")
@@ -4810,6 +4821,311 @@ def get_digital_twin_stats(request: Request) -> Response:
         return Response({
             "success": True,
             "stats": stats,
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# COMPLIANCE SCANNING (ACAS & NESSUS)
+# ============================================================================
+
+@app.post("/api/acas/scan")
+def acas_vulnerability_scan(request: Request) -> Response:
+    """Run ACAS vulnerability scan."""
+    try:
+        target = request.body.get("target")
+        scan_mode = request.body.get("scan_mode", "active_agentless")
+        credentials = request.body.get("credentials")
+        
+        if not target:
+            return Response({"error": "Missing target parameter"}, status_code=400)
+        
+        # Convert string scan mode to enum
+        try:
+            mode = ScanMode(scan_mode)
+        except ValueError:
+            return Response(
+                {"error": f"Invalid scan_mode: {scan_mode}"},
+                status_code=400
+            )
+        
+        result = acas_manager.scanner.scan(
+            target=target,
+            mode=mode,
+            credentials=credentials
+        )
+        
+        return Response({
+            "success": True,
+            "scan": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/acas/compliance/assess")
+def acas_compliance_assess(request: Request) -> Response:
+    """Run ACAS compliance assessment."""
+    try:
+        target = request.body.get("target")
+        framework = request.body.get("framework", "pci_dss")
+        configuration = request.body.get("configuration", {})
+        
+        if not target:
+            return Response({"error": "Missing target parameter"}, status_code=400)
+        
+        # Convert string framework to enum
+        try:
+            fw = ACASFramework(framework)
+        except ValueError:
+            return Response(
+                {"error": f"Invalid framework: {framework}"},
+                status_code=400
+            )
+        
+        result = acas_manager.assessor.assess_compliance(
+            target=target,
+            framework=fw,
+            configuration=configuration
+        )
+        
+        return Response({
+            "success": True,
+            "assessment": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/acas/comprehensive")
+def acas_comprehensive_assessment(request: Request) -> Response:
+    """Perform comprehensive ACAS security and compliance assessment."""
+    try:
+        target = request.body.get("target")
+        scan_mode = request.body.get("scan_mode", "active_credentialed")
+        frameworks = request.body.get("compliance_frameworks", ["pci_dss", "nist_800_53"])
+        credentials = request.body.get("credentials")
+        
+        if not target:
+            return Response({"error": "Missing target parameter"}, status_code=400)
+        
+        # Convert scan mode
+        try:
+            mode = ScanMode(scan_mode)
+        except ValueError:
+            return Response(
+                {"error": f"Invalid scan_mode: {scan_mode}"},
+                status_code=400
+            )
+        
+        # Convert frameworks
+        framework_enums = []
+        for fw_str in frameworks:
+            try:
+                framework_enums.append(ACASFramework(fw_str))
+            except ValueError:
+                return Response(
+                    {"error": f"Invalid framework: {fw_str}"},
+                    status_code=400
+                )
+        
+        result = acas_manager.perform_comprehensive_assessment(
+            target=target,
+            scan_mode=mode,
+            compliance_frameworks=framework_enums,
+            credentials=credentials
+        )
+        
+        return Response({
+            "success": True,
+            "assessment": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/acas/dashboard")
+def acas_dashboard(request: Request) -> Response:
+    """Get ACAS dashboard data."""
+    try:
+        dashboard = acas_manager.get_dashboard_data()
+        
+        return Response({
+            "success": True,
+            "dashboard": dashboard
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/acas/remediation/task")
+def acas_create_remediation_task(request: Request) -> Response:
+    """Create ACAS remediation task."""
+    try:
+        vuln_data = request.body.get("vulnerability")
+        assignee = request.body.get("assignee", "security_team")
+        
+        if not vuln_data:
+            return Response(
+                {"error": "Missing vulnerability data"},
+                status_code=400
+            )
+        
+        # Create vulnerability object
+        from civ_arcos.compliance.acas import Vulnerability, VulnerabilitySeverity
+        
+        vuln = Vulnerability(
+            vuln_id=vuln_data.get("vuln_id"),
+            name=vuln_data.get("name"),
+            severity=VulnerabilitySeverity(vuln_data.get("severity", "medium")),
+            cvss_score=vuln_data.get("cvss_score", 5.0),
+            cve_ids=vuln_data.get("cve_ids", []),
+            description=vuln_data.get("description", ""),
+            affected_systems=vuln_data.get("affected_systems", []),
+            remediation=vuln_data.get("remediation", ""),
+            exploit_available=vuln_data.get("exploit_available", False)
+        )
+        
+        task = acas_manager.orchestrator.create_remediation_task(
+            vulnerability=vuln,
+            assignee=assignee
+        )
+        
+        return Response({
+            "success": True,
+            "task": task
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/acas/remediation/report")
+def acas_remediation_report(request: Request) -> Response:
+    """Get ACAS remediation status report."""
+    try:
+        report = acas_manager.orchestrator.generate_remediation_report()
+        
+        return Response({
+            "success": True,
+            "report": report
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/nessus/scan/create-and-run")
+def nessus_create_and_run_scan(request: Request) -> Response:
+    """Create and run a Nessus vulnerability scan."""
+    try:
+        name = request.body.get("name", "Security Scan")
+        targets = request.body.get("targets", [])
+        scan_type = request.body.get("scan_type", "basic_network")
+        credentials = request.body.get("credentials")
+        
+        if not targets:
+            return Response({"error": "Missing targets parameter"}, status_code=400)
+        
+        # Convert scan type
+        try:
+            scan_type_enum = ScanType(scan_type)
+        except ValueError:
+            return Response(
+                {"error": f"Invalid scan_type: {scan_type}"},
+                status_code=400
+            )
+        
+        result = nessus_manager.create_and_run_scan(
+            name=name,
+            targets=targets,
+            scan_type=scan_type_enum,
+            credentials=credentials
+        )
+        
+        return Response({
+            "success": True,
+            "scan": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/nessus/compliance/audit")
+def nessus_compliance_audit(request: Request) -> Response:
+    """Run Nessus compliance audit."""
+    try:
+        policy_id = request.body.get("policy_id", "PCI_DSS_4.0")
+        target = request.body.get("target")
+        configuration = request.body.get("configuration", {})
+        
+        if not target:
+            return Response({"error": "Missing target parameter"}, status_code=400)
+        
+        result = nessus_manager.run_compliance_audit(
+            policy_id=policy_id,
+            target=target,
+            configuration=configuration
+        )
+        
+        return Response({
+            "success": True,
+            "audit": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/nessus/asset/inventory")
+def nessus_asset_inventory(request: Request) -> Response:
+    """Get Nessus asset inventory."""
+    try:
+        inventory = nessus_manager.get_asset_inventory()
+        
+        return Response({
+            "success": True,
+            "inventory": inventory
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/nessus/vulnerability/summary")
+def nessus_vulnerability_summary(request: Request) -> Response:
+    """Get Nessus vulnerability summary."""
+    try:
+        summary = nessus_manager.get_vulnerability_summary()
+        
+        return Response({
+            "success": True,
+            "summary": summary
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/nessus/dashboard")
+def nessus_dashboard(request: Request) -> Response:
+    """Get Nessus dashboard data."""
+    try:
+        dashboard = nessus_manager.get_dashboard_data()
+        
+        return Response({
+            "success": True,
+            "dashboard": dashboard
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/nessus/policies")
+def nessus_list_policies(request: Request) -> Response:
+    """List available Nessus compliance policies."""
+    try:
+        policies = nessus_manager.compliance_engine.list_policies()
+        
+        return Response({
+            "success": True,
+            "policies": policies
         })
     except Exception as e:
         return Response({"error": str(e)}, status_code=500)
