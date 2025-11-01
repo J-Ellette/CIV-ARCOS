@@ -1433,6 +1433,56 @@ def dashboard_compliance_hacms(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+@app.get("/dashboard/compliance/rmm-api")
+def dashboard_compliance_rmm_api(request: Request) -> Response:
+    """RMM API Resource Metadata Management module page."""
+    try:
+        html = dashboard_gen.generate_module_page_rmm_api()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/dod-cyber-exchange")
+def dashboard_compliance_dod_cyber_exchange(request: Request) -> Response:
+    """DoD Cyber Exchange module page."""
+    try:
+        html = dashboard_gen.generate_module_page_dod_cyber_exchange()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/vspells")
+def dashboard_compliance_vspells(request: Request) -> Response:
+    """V-SPELLs legacy software enhancement module page."""
+    try:
+        html = dashboard_gen.generate_module_page_vspells()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/statistical-analysis")
+def dashboard_compliance_statistical_analysis(request: Request) -> Response:
+    """Statistical Analysis quality metrics module page."""
+    try:
+        html = dashboard_gen.generate_module_page_statistical_analysis()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/armature-fabric")
+def dashboard_compliance_armature_fabric(request: Request) -> Response:
+    """ARMATURE Fabric certification process automation module page."""
+    try:
+        html = dashboard_gen.generate_module_page_armature_fabric()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
 @app.get("/dashboard/powershell")
 def dashboard_powershell(request: Request) -> Response:
     """Dashboard PowerShell security analysis page."""
