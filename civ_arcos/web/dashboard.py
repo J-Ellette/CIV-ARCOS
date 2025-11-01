@@ -841,6 +841,36 @@ class DashboardGenerator:
                 "title": "Authority to Operate",
                 "description": "DoD's Accelerated Authority to Operate for rapid deployment. AI-enabled continuous monitoring and automated security baseline assessment with cATO support."
             },
+            {
+                "name": "RegScale",
+                "url": "/dashboard/compliance/regscale",
+                "title": "Compliance as Code Platform",
+                "description": "Automated compliance platform integrating compliance as code into IT operations. Continuous monitoring and automated reporting against federal standards like NIST 800-53 and FedRAMP."
+            },
+            {
+                "name": "Qualtrax",
+                "url": "/dashboard/compliance/qualtrax",
+                "title": "Quality and Compliance Management",
+                "description": "Quality and compliance software managing documentation, automating processes, and streamlining internal and external audits for real-time regulatory compliance."
+            },
+            {
+                "name": "Hyland",
+                "url": "/dashboard/compliance/hyland",
+                "title": "Digital Government Solutions",
+                "description": "Document management and content services platform for government agencies. Streamlines workflows, ensures compliance, and manages digital records lifecycle."
+            },
+            {
+                "name": "UL GCM",
+                "url": "/dashboard/compliance/ul-gcm",
+                "title": "Global Compliance Management",
+                "description": "UL Solutions Global Compliance Management system for product regulatory compliance. Manages certifications, standards tracking, and global market requirements."
+            },
+            {
+                "name": "2F Game Warden",
+                "url": "/dashboard/compliance/game-warden",
+                "title": "Container Security Platform",
+                "description": "Second Front Systems container security platform for DoD. Continuous container scanning, policy enforcement, and runtime protection for Kubernetes environments."
+            },
         ]
         
         # Generate module cards HTML
@@ -2541,6 +2571,151 @@ const results = await response.json();</code></pre>
                 '<span class="usa-tag">NIST 800-53</span>',
                 '<span class="usa-tag">cATO</span>',
                 '<span class="usa-tag">DevSecOps</span>'
+            ]
+        )
+
+    def generate_module_page_regscale(self) -> str:
+        """Generate individual page for RegScale module."""
+        return self._generate_module_page_template(
+            module_id="regscale",
+            module_name="RegScale",
+            title="Compliance as Code Platform",
+            description="Automated compliance platform with emphasis on 'compliance as code' integration into IT operations. Enables continuous monitoring and automated reporting against federal standards like NIST 800-53, FedRAMP, CMMC, and ISO 27001.",
+            features=[
+                "<strong>Compliance as Code:</strong> GitOps integration for version-controlled compliance",
+                "<strong>Continuous Monitoring:</strong> Real-time compliance posture tracking and alerting",
+                "<strong>Automated Evidence:</strong> Automatic evidence collection from infrastructure and tools",
+                "<strong>Multi-Framework Support:</strong> NIST 800-53, FedRAMP, CMMC, ISO 27001, SOC 2",
+                "<strong>Risk Management:</strong> Integrated risk register with automated scoring",
+                "<strong>Audit Automation:</strong> Automated audit preparation and evidence packaging"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/regscale/framework/initialize", "Initialize compliance framework"),
+                ("POST /api/compliance/regscale/evidence/collect", "Collect compliance evidence"),
+                ("GET /api/compliance/regscale/posture/status", "Get compliance posture"),
+                ("POST /api/compliance/regscale/audit/prepare", "Prepare audit package")
+            ],
+            tags=[
+                '<span class="usa-tag">NIST 800-53</span>',
+                '<span class="usa-tag">FedRAMP</span>',
+                '<span class="usa-tag">CMMC</span>',
+                '<span class="usa-tag">ISO 27001</span>'
+            ]
+        )
+
+    def generate_module_page_qualtrax(self) -> str:
+        """Generate individual page for Qualtrax module."""
+        return self._generate_module_page_template(
+            module_id="qualtrax",
+            module_name="Qualtrax",
+            title="Quality and Compliance Management",
+            description="Comprehensive quality and compliance software that manages documentation, automates processes, and streamlines internal and external audits to ensure real-time regulatory compliance across all organizational functions.",
+            features=[
+                "<strong>Document Management:</strong> Centralized repository with version control and approvals",
+                "<strong>Process Automation:</strong> Workflow automation for quality management processes",
+                "<strong>Audit Management:</strong> Internal and external audit planning, execution, and tracking",
+                "<strong>Training Management:</strong> Compliance training programs and competency tracking",
+                "<strong>CAPA System:</strong> Corrective and Preventive Action management and tracking",
+                "<strong>Real-Time Dashboards:</strong> Executive visibility into compliance status"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/qualtrax/document/create", "Create controlled document"),
+                ("POST /api/compliance/qualtrax/audit/schedule", "Schedule compliance audit"),
+                ("POST /api/compliance/qualtrax/capa/create", "Create CAPA record"),
+                ("GET /api/compliance/qualtrax/compliance/dashboard", "Get compliance dashboard")
+            ],
+            tags=[
+                '<span class="usa-tag">QMS</span>',
+                '<span class="usa-tag">Document Control</span>',
+                '<span class="usa-tag">Audit Management</span>',
+                '<span class="usa-tag">CAPA</span>'
+            ]
+        )
+
+    def generate_module_page_hyland(self) -> str:
+        """Generate individual page for Hyland Digital Government Solutions module."""
+        return self._generate_module_page_template(
+            module_id="hyland",
+            module_name="Hyland",
+            title="Digital Government Solutions",
+            description="Enterprise content management and document management platform designed for government agencies. Streamlines workflows, ensures compliance with records management requirements, and manages the complete digital records lifecycle.",
+            features=[
+                "<strong>Records Management:</strong> Federal and state records retention and disposition",
+                "<strong>Workflow Automation:</strong> Government process automation and case management",
+                "<strong>FOIA Management:</strong> Freedom of Information Act request processing",
+                "<strong>E-Forms:</strong> Digital forms with routing and approval workflows",
+                "<strong>Public Access:</strong> Secure citizen portal for document access",
+                "<strong>Compliance Tracking:</strong> Audit trails and regulatory compliance reporting"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/hyland/document/store", "Store government document"),
+                ("POST /api/compliance/hyland/workflow/initiate", "Initiate document workflow"),
+                ("POST /api/compliance/hyland/foia/request", "Process FOIA request"),
+                ("GET /api/compliance/hyland/records/retention", "Get retention schedule")
+            ],
+            tags=[
+                '<span class="usa-tag">ECM</span>',
+                '<span class="usa-tag">Records Mgmt</span>',
+                '<span class="usa-tag">FOIA</span>',
+                '<span class="usa-tag">E-Gov</span>'
+            ]
+        )
+
+    def generate_module_page_ul_gcm(self) -> str:
+        """Generate individual page for UL Solutions GCM module."""
+        return self._generate_module_page_template(
+            module_id="ul-gcm",
+            module_name="UL GCM",
+            title="Global Compliance Management",
+            description="UL Solutions Global Compliance Management system for product regulatory compliance. Manages certifications, standards tracking, testing requirements, and global market regulatory requirements for product safety and compliance.",
+            features=[
+                "<strong>Global Regulations:</strong> Worldwide product safety and compliance standards tracking",
+                "<strong>Certification Management:</strong> UL, CE, FCC, and international certifications",
+                "<strong>Testing Requirements:</strong> Product testing protocols and documentation",
+                "<strong>Standards Library:</strong> Comprehensive database of product safety standards",
+                "<strong>Market Access:</strong> Regulatory requirements for global market entry",
+                "<strong>Change Management:</strong> Track regulatory updates and product impacts"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/ul-gcm/product/register", "Register product for compliance"),
+                ("POST /api/compliance/ul-gcm/certification/request", "Request certification"),
+                ("GET /api/compliance/ul-gcm/standards/search", "Search compliance standards"),
+                ("GET /api/compliance/ul-gcm/markets/requirements", "Get market requirements")
+            ],
+            tags=[
+                '<span class="usa-tag">Product Safety</span>',
+                '<span class="usa-tag">UL Certification</span>',
+                '<span class="usa-tag">Global Markets</span>',
+                '<span class="usa-tag">Standards</span>'
+            ]
+        )
+
+    def generate_module_page_game_warden(self) -> str:
+        """Generate individual page for 2F Game Warden module."""
+        return self._generate_module_page_template(
+            module_id="game-warden",
+            module_name="2F Game Warden",
+            title="Container Security Platform",
+            description="Second Front Systems container security platform designed for DoD environments. Provides continuous container scanning, policy enforcement, runtime protection, and security compliance for Kubernetes and container orchestration platforms.",
+            features=[
+                "<strong>Container Scanning:</strong> Continuous vulnerability scanning of container images",
+                "<strong>Policy Enforcement:</strong> DoD security policies for container deployment",
+                "<strong>Runtime Protection:</strong> Real-time threat detection and prevention",
+                "<strong>Kubernetes Security:</strong> K8s cluster security and configuration validation",
+                "<strong>SBOM Generation:</strong> Automatic software bill of materials for containers",
+                "<strong>Compliance Reporting:</strong> STIG compliance for containerized workloads"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/game-warden/scan/container", "Scan container image"),
+                ("POST /api/compliance/game-warden/policy/enforce", "Enforce security policy"),
+                ("POST /api/compliance/game-warden/runtime/monitor", "Monitor runtime security"),
+                ("GET /api/compliance/game-warden/cluster/status", "Get cluster security status")
+            ],
+            tags=[
+                '<span class="usa-tag">Container Security</span>',
+                '<span class="usa-tag">Kubernetes</span>',
+                '<span class="usa-tag">DoD</span>',
+                '<span class="usa-tag">Runtime Protection</span>'
             ]
         )
 

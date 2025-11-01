@@ -1333,6 +1333,56 @@ def dashboard_compliance_ato(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+@app.get("/dashboard/compliance/regscale")
+def dashboard_compliance_regscale(request: Request) -> Response:
+    """RegScale compliance as code module page."""
+    try:
+        html = dashboard_gen.generate_module_page_regscale()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/qualtrax")
+def dashboard_compliance_qualtrax(request: Request) -> Response:
+    """Qualtrax quality and compliance management module page."""
+    try:
+        html = dashboard_gen.generate_module_page_qualtrax()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/hyland")
+def dashboard_compliance_hyland(request: Request) -> Response:
+    """Hyland Digital Government Solutions module page."""
+    try:
+        html = dashboard_gen.generate_module_page_hyland()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/ul-gcm")
+def dashboard_compliance_ul_gcm(request: Request) -> Response:
+    """UL Solutions Global Compliance Management module page."""
+    try:
+        html = dashboard_gen.generate_module_page_ul_gcm()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/game-warden")
+def dashboard_compliance_game_warden(request: Request) -> Response:
+    """2F Game Warden container security module page."""
+    try:
+        html = dashboard_gen.generate_module_page_game_warden()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
 @app.get("/dashboard/powershell")
 def dashboard_powershell(request: Request) -> Response:
     """Dashboard PowerShell security analysis page."""
