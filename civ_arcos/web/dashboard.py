@@ -4008,6 +4008,15 @@ or
                 <ul class="usa-nav__primary usa-accordion">
                     {nav_items}
                 </ul>
+                <section aria-label="Search component">
+                    <form class="usa-search usa-search--small" role="search" onsubmit="performSearch(event)">
+                        <label class="usa-sr-only" for="search-field">Search</label>
+                        <input class="usa-input" id="search-field" type="search" name="search" placeholder="Search modules...">
+                        <button class="usa-button" type="submit">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E" class="usa-search__submit-icon" alt="Search">
+                        </button>
+                    </form>
+                </section>
             </div>
         </nav>
     </header>
@@ -4124,6 +4133,73 @@ or
             } catch (error) {
                 console.error('API call failed:', error);
                 throw error;
+            }
+        }
+
+        // Search functionality
+        function performSearch(event) {
+            event.preventDefault();
+            const searchField = document.getElementById('search-field');
+            const query = searchField.value.trim().toLowerCase();
+            
+            if (!query) {
+                return;
+            }
+
+            // Search data - modules and their keywords
+            const searchData = [
+                { name: 'CIV-RAMP', url: '/dashboard/compliance', keywords: ['fedramp', 'federal', 'cloud', 'authorization', 'ato', 'risk'] },
+                { name: 'CIV-STAR', url: '/dashboard/compliance', keywords: ['csa', 'star', 'cloud', 'security', 'trust', 'ccm'] },
+                { name: 'CIV-TRAX', url: '/dashboard/compliance', keywords: ['qualtrax', 'quality', 'compliance', 'documentation', 'audit'] },
+                { name: 'CIV-LAND', url: '/dashboard/compliance', keywords: ['hyland', 'government', 'document', 'workflow', 'foia'] },
+                { name: 'CIV-DISS', url: '/dashboard/compliance', keywords: ['diss', 'security', 'clearance', 'personnel', 'defense'] },
+                { name: 'CIV-CMMC', url: '/dashboard/compliance', keywords: ['cmmc', 'cybersecurity', 'maturity', 'defense', 'contractor'] },
+                { name: 'CIV-UL', url: '/dashboard/compliance', keywords: ['ul', 'global', 'compliance', 'regulatory', 'product'] },
+                { name: 'CIV-WARDEN', url: '/dashboard/compliance', keywords: ['game', 'warden', 'devsecops', 'ato', 'defense'] },
+                { name: 'CIV-EXCHANGE', url: '/dashboard/compliance', keywords: ['dod', 'cyber', 'exchange', 'cmmc', 'stig', 'tools'] },
+                { name: 'CIV-HAC', url: '/dashboard/compliance', keywords: ['hacms', 'assurance', 'formal', 'methods', 'secure'] },
+                { name: 'CIV-DOCS', url: '/dashboard/compliance', keywords: ['safedocs', 'parser', 'vulnerability', 'document', 'pdf'] },
+                { name: 'CIV-SPELLS', url: '/dashboard/compliance', keywords: ['vspells', 'legacy', 'security', 'performance', 'binary'] },
+                { name: 'PowerShield', url: '/dashboard/powershell', keywords: ['powershell', 'security', 'script', 'scan', 'vulnerability'] },
+                { name: 'CIV-SCAP', url: '/dashboard/compliance', keywords: ['scap', 'security', 'automation', 'vulnerability', 'xccdf', 'oval'] },
+                { name: 'CIV-STIG', url: '/dashboard/compliance', keywords: ['stig', 'configuration', 'compliance', 'disa', 'security'] },
+                { name: 'CIV-ACAS', url: '/dashboard/compliance', keywords: ['acas', 'vulnerability', 'management', 'scanning', 'tenable'] },
+                { name: 'CIV-NESSUS', url: '/dashboard/compliance', keywords: ['nessus', 'scanner', 'vulnerability', 'network', 'security'] },
+                { name: 'CIV-EAM', url: '/dashboard/compliance', keywords: ['opengov', 'eam', 'asset', 'management', 'maintenance'] },
+                { name: 'CIV-CHEQ', url: '/dashboard/compliance', keywords: ['cheqroom', 'asset', 'tracking', 'equipment', 'audit'] },
+                { name: 'SOC 2 Type II', url: '/dashboard/compliance', keywords: ['soc2', 'trust', 'aicpa', 'audit', 'security'] },
+                { name: 'ISO 27001', url: '/dashboard/compliance', keywords: ['iso', '27001', 'information', 'security', 'isms'] },
+                { name: 'Badges', url: '/dashboard/badges', keywords: ['badge', 'quality', 'coverage', 'security', 'svg'] },
+                { name: 'Assurance Cases', url: '/dashboard/assurance', keywords: ['assurance', 'case', 'gsn', 'argument', 'evidence'] },
+                { name: 'Help', url: '/dashboard/help', keywords: ['help', 'documentation', 'guide', 'support', 'api'] }
+            ];
+
+            // Find matching modules
+            const results = searchData.filter(item => {
+                const nameMatch = item.name.toLowerCase().includes(query);
+                const keywordMatch = item.keywords.some(keyword => keyword.includes(query));
+                return nameMatch || keywordMatch;
+            });
+
+            if (results.length === 0) {
+                alert('No results found for: ' + query);
+                return;
+            }
+
+            if (results.length === 1) {
+                // Single result - navigate directly
+                window.location.href = results[0].url;
+            } else {
+                // Multiple results - show selection
+                const resultText = results.map((r, i) => `${i + 1}. ${r.name}`).join('\\n');
+                const selection = prompt(`Multiple results found:\\n\\n${resultText}\\n\\nEnter number to navigate (or cancel):`);
+                
+                if (selection) {
+                    const index = parseInt(selection) - 1;
+                    if (index >= 0 && index < results.length) {
+                        window.location.href = results[index].url;
+                    }
+                }
             }
         }
         """
