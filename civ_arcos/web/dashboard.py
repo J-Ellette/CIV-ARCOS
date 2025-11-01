@@ -1584,9 +1584,33 @@ const results = await response.json();</code></pre>
         
         function copyBadgeUrl() {{
             const urlInput = document.getElementById('badge-url');
-            urlInput.select();
-            document.execCommand('copy');
-            alert('Badge URL copied to clipboard!');
+            const url = urlInput.value;
+            
+            // Use modern Clipboard API with fallback
+            if (navigator.clipboard && navigator.clipboard.writeText) {{
+                navigator.clipboard.writeText(url).then(function() {{
+                    alert('Badge URL copied to clipboard!');
+                }}).catch(function(err) {{
+                    console.error('Failed to copy:', err);
+                    // Fallback to older method
+                    urlInput.select();
+                    try {{
+                        document.execCommand('copy');
+                        alert('Badge URL copied to clipboard!');
+                    }} catch (e) {{
+                        alert('Failed to copy URL. Please copy manually.');
+                    }}
+                }});
+            }} else {{
+                // Fallback for older browsers
+                urlInput.select();
+                try {{
+                    document.execCommand('copy');
+                    alert('Badge URL copied to clipboard!');
+                }} catch (e) {{
+                    alert('Failed to copy URL. Please copy manually.');
+                }}
+            }}
         }}
     </script>
 </body>
@@ -1817,9 +1841,33 @@ const results = await response.json();</code></pre>
         
         function copyBadgeUrl() {{
             const urlInput = document.getElementById('badge-url');
-            urlInput.select();
-            document.execCommand('copy');
-            alert('Badge URL copied to clipboard!');
+            const url = urlInput.value;
+            
+            // Use modern Clipboard API with fallback
+            if (navigator.clipboard && navigator.clipboard.writeText) {{
+                navigator.clipboard.writeText(url).then(function() {{
+                    alert('Badge URL copied to clipboard!');
+                }}).catch(function(err) {{
+                    console.error('Failed to copy:', err);
+                    // Fallback to older method
+                    urlInput.select();
+                    try {{
+                        document.execCommand('copy');
+                        alert('Badge URL copied to clipboard!');
+                    }} catch (e) {{
+                        alert('Failed to copy URL. Please copy manually.');
+                    }}
+                }});
+            }} else {{
+                // Fallback for older browsers
+                urlInput.select();
+                try {{
+                    document.execCommand('copy');
+                    alert('Badge URL copied to clipboard!');
+                }} catch (e) {{
+                    alert('Failed to copy URL. Please copy manually.');
+                }}
+            }}
         }}
     </script>
 </body>
@@ -2024,9 +2072,33 @@ const results = await response.json();</code></pre>
         
         function copyBadgeUrl() {{
             const urlInput = document.getElementById('badge-url');
-            urlInput.select();
-            document.execCommand('copy');
-            alert('Badge URL copied to clipboard!');
+            const url = urlInput.value;
+            
+            // Use modern Clipboard API with fallback
+            if (navigator.clipboard && navigator.clipboard.writeText) {{
+                navigator.clipboard.writeText(url).then(function() {{
+                    alert('Badge URL copied to clipboard!');
+                }}).catch(function(err) {{
+                    console.error('Failed to copy:', err);
+                    // Fallback to older method
+                    urlInput.select();
+                    try {{
+                        document.execCommand('copy');
+                        alert('Badge URL copied to clipboard!');
+                    }} catch (e) {{
+                        alert('Failed to copy URL. Please copy manually.');
+                    }}
+                }});
+            }} else {{
+                // Fallback for older browsers
+                urlInput.select();
+                try {{
+                    document.execCommand('copy');
+                    alert('Badge URL copied to clipboard!');
+                }} catch (e) {{
+                    alert('Failed to copy URL. Please copy manually.');
+                }}
+            }}
         }}
     </script>
 </body>
