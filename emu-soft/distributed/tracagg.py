@@ -552,16 +552,22 @@ class TracePerformanceAnalyzer:
 # Helper functions for creating spans
 def create_trace_id() -> str:
     """Generate a unique trace ID."""
+    import os
+
     timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat()
-    random_data = f"{timestamp}-{id({})}"
-    return hashlib.sha256(random_data.encode()).hexdigest()[:32]
+    random_bytes = os.urandom(16)
+    unique_str = f"{timestamp}-{random_bytes.hex()}"
+    return hashlib.sha256(unique_str.encode()).hexdigest()[:32]
 
 
 def create_span_id() -> str:
     """Generate a unique span ID."""
+    import os
+
     timestamp = datetime.datetime.now(datetime.timezone.utc).isoformat()
-    random_data = f"{timestamp}-{id({})}"
-    return hashlib.sha256(random_data.encode()).hexdigest()[:16]
+    random_bytes = os.urandom(8)
+    unique_str = f"{timestamp}-{random_bytes.hex()}"
+    return hashlib.sha256(unique_str.encode()).hexdigest()[:16]
 
 
 def create_span(

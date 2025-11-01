@@ -251,7 +251,7 @@ class TopologyMapper:
     def _generate_service_id(self, service_name: str, endpoint: NetworkEndpoint) -> str:
         """Generate a unique service ID."""
         unique_str = f"{service_name}-{endpoint.host}-{endpoint.port}"
-        return hashlib.md5(unique_str.encode()).hexdigest()[:16]
+        return hashlib.sha256(unique_str.encode()).hexdigest()[:16]
 
     def _infer_service_name(
         self, endpoint: NetworkEndpoint, observation: TrafficObservation

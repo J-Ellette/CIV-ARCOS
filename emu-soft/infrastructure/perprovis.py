@@ -252,11 +252,23 @@ class PerformanceProfiler:
         return decorator
 
     def _get_current_memory(self) -> int:
-        """Get current memory usage in bytes."""
+        """
+        Get current memory usage in bytes.
+
+        Note: The memory calculation is platform-dependent.
+        On Linux, ru_maxrss is in kilobytes. On macOS, it's in bytes.
+        We normalize to bytes by multiplying by 1024 (Linux behavior).
+        """
         try:
             import resource
+            import platform
 
-            return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * 1024
+            rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+            # Linux reports in KB, macOS reports in bytes
+            if platform.system() == "Linux":
+                return rss * 1024
+            else:
+                return rss
         except (ImportError, AttributeError):
             # Fallback for systems without resource module
             return 0
@@ -480,9 +492,9 @@ class ProfileVisualizer:
 
             lines.append(f"{prefix}{indent}{node.function_name}{time_info}")
 
-            # Add callees
+            # Add callees - call_count is tracked for potential future features
+            # like weighted call trees or frequency-based filtering
             for callee_key in sorted(node.callees.keys()):
-                # Note: call_count available but not used in current implementation
                 new_prefix = f"{prefix}  "
                 build_tree(callee_key, depth + 1, new_prefix)
 
