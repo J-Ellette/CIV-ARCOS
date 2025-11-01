@@ -901,6 +901,36 @@ class DashboardGenerator:
                 "title": "High-Assurance Cyber Military Systems",
                 "description": "DARPA formal methods platform for provably secure software. Generates machine-checkable proofs demonstrating safety and security properties using model checking and theorem proving."
             },
+            {
+                "name": "RMM API",
+                "url": "/dashboard/compliance/rmm-api",
+                "title": "NIST Resource Metadata Management",
+                "description": "NIST-based Resource Metadata Management API for software artifact metadata, evidence tracking, research data cataloging, and compliance documentation metadata."
+            },
+            {
+                "name": "DoD Cyber Exchange",
+                "url": "/dashboard/compliance/dod-cyber-exchange",
+                "title": "CMMC Framework Tools and Resources",
+                "description": "Centralized cybersecurity information and tools for defense contractors. Provides access to 400+ STIGs, security guides, CMMC resources, and training materials."
+            },
+            {
+                "name": "V-SPELLs",
+                "url": "/dashboard/compliance/vspells",
+                "title": "Verified Security and Performance Enhancement",
+                "description": "DARPA-inspired platform for automatically enhancing security and performance of large legacy software through binary analysis without requiring source code."
+            },
+            {
+                "name": "Statistical Analysis",
+                "url": "/dashboard/compliance/statistical-analysis",
+                "title": "Advanced Quality Metrics Analysis",
+                "description": "Comprehensive statistical analysis for software quality metrics with descriptive statistics, regression analysis, trend analysis, and predictive analytics."
+            },
+            {
+                "name": "ARMATURE Fabric",
+                "url": "/dashboard/compliance/armature-fabric",
+                "title": "Accreditation and Certification Process Automation",
+                "description": "Automated workflow management for complex accreditation and certification processes with evidence assembly, stakeholder coordination, and compliance validation."
+            },
         ]
         
         # Generate module cards HTML
@@ -2894,6 +2924,151 @@ const results = await response.json();</code></pre>
             ]
         )
 
+    def generate_module_page_rmm_api(self) -> str:
+        """Generate individual page for RMM API module."""
+        return self._generate_module_page_template(
+            module_id="rmm-api",
+            module_name="RMM API",
+            title="NIST Resource Metadata Management",
+            description="NIST-based Resource Metadata Management API for managing research data, publications, and software metadata. Provides software artifact metadata management, evidence metadata tracking, research data cataloging, and compliance documentation metadata.",
+            features=[
+                "<strong>Software Metadata:</strong> Manage software artifact metadata and versioning",
+                "<strong>Evidence Tracking:</strong> Track evidence metadata for assurance cases",
+                "<strong>Research Data:</strong> Catalog and manage research data resources",
+                "<strong>Compliance Docs:</strong> Manage compliance documentation metadata",
+                "<strong>Resource Types:</strong> Software, data, publications, standards, evidence",
+                "<strong>Access Control:</strong> Public, restricted, confidential, internal access levels"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/rmm-api/resource/create", "Create resource metadata"),
+                ("GET /api/compliance/rmm-api/resource/{id}", "Retrieve resource metadata"),
+                ("POST /api/compliance/rmm-api/resource/search", "Search resources"),
+                ("PUT /api/compliance/rmm-api/resource/{id}", "Update resource metadata")
+            ],
+            tags=[
+                '<span class="usa-tag">NIST</span>',
+                '<span class="usa-tag">Metadata</span>',
+                '<span class="usa-tag">Research Data</span>',
+                '<span class="usa-tag">Cataloging</span>'
+            ]
+        )
+
+    def generate_module_page_dod_cyber_exchange(self) -> str:
+        """Generate individual page for DoD Cyber Exchange module."""
+        return self._generate_module_page_template(
+            module_id="dod-cyber-exchange",
+            module_name="DoD Cyber Exchange",
+            title="CMMC Framework Tools and Resources",
+            description="Centralized cybersecurity information and tools for defense contractors and the defense industrial base. Provides access to STIGs, security guides, CMMC resources, compliance tools, and training materials.",
+            features=[
+                "<strong>STIG Library:</strong> 400+ Security Technical Implementation Guides",
+                "<strong>Security Guides:</strong> 50+ Security Requirements Guides (SRGs)",
+                "<strong>CMMC Resources:</strong> Assessment guides and compliance tools",
+                "<strong>Tools & Utilities:</strong> STIG Viewer, benchmarks, validators",
+                "<strong>Training Materials:</strong> Cybersecurity awareness training",
+                "<strong>Policy Updates:</strong> Real-time notifications on security policy changes"
+            ],
+            api_endpoints=[
+                ("GET /api/compliance/dod-cyber-exchange/resources", "List available resources"),
+                ("GET /api/compliance/dod-cyber-exchange/stig/{id}", "Get STIG details"),
+                ("POST /api/compliance/dod-cyber-exchange/download", "Download resource"),
+                ("GET /api/compliance/dod-cyber-exchange/updates", "Get policy updates")
+            ],
+            tags=[
+                '<span class="usa-tag">DoD</span>',
+                '<span class="usa-tag">CMMC</span>',
+                '<span class="usa-tag">STIG</span>',
+                '<span class="usa-tag">Training</span>'
+            ]
+        )
+
+    def generate_module_page_vspells(self) -> str:
+        """Generate individual page for V-SPELLs module."""
+        return self._generate_module_page_template(
+            module_id="vspells",
+            module_name="V-SPELLs",
+            title="Verified Security and Performance Enhancement",
+            description="DARPA-inspired platform for automatically enhancing the security and performance of large legacy software systems. Performs binary analysis, verification, and transformation without requiring source code access.",
+            features=[
+                "<strong>Binary Analysis:</strong> Static, dynamic, symbolic execution analysis",
+                "<strong>Security Enhancements:</strong> Bounds checking, stack protection, control-flow integrity",
+                "<strong>Performance Optimization:</strong> Dead code elimination, loop optimization, parallelization",
+                "<strong>Legacy Support:</strong> C, C++, FORTRAN, COBOL, Assembly, Java",
+                "<strong>Automated Verification:</strong> Prove security properties after transformation",
+                "<strong>No Source Required:</strong> Works directly with compiled binaries"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/vspells/analyze", "Analyze legacy binary"),
+                ("POST /api/compliance/vspells/enhance/security", "Apply security enhancements"),
+                ("POST /api/compliance/vspells/enhance/performance", "Apply performance optimizations"),
+                ("POST /api/compliance/vspells/verify", "Verify enhancements")
+            ],
+            tags=[
+                '<span class="usa-tag">DARPA</span>',
+                '<span class="usa-tag">Legacy Software</span>',
+                '<span class="usa-tag">Binary Analysis</span>',
+                '<span class="usa-tag">Automated Enhancement</span>'
+            ]
+        )
+
+    def generate_module_page_statistical_analysis(self) -> str:
+        """Generate individual page for Statistical Analysis module."""
+        return self._generate_module_page_template(
+            module_id="statistical-analysis",
+            module_name="Statistical Analysis",
+            title="Advanced Quality Metrics Analysis",
+            description="Comprehensive statistical analysis for software quality metrics, compliance scoring, and trend analysis. Provides descriptive statistics, inferential statistics, regression analysis, distribution analysis, and predictive analytics.",
+            features=[
+                "<strong>Descriptive Statistics:</strong> Mean, median, mode, standard deviation, variance",
+                "<strong>Inferential Statistics:</strong> Hypothesis testing, confidence intervals, t-tests",
+                "<strong>Regression Analysis:</strong> Linear, polynomial, time series forecasting",
+                "<strong>Distribution Analysis:</strong> Normal, binomial, Poisson distributions",
+                "<strong>Quality Control:</strong> Statistical process control, control charts",
+                "<strong>Predictive Analytics:</strong> Forecasting, anomaly detection, trend analysis"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/statistical-analysis/descriptive", "Calculate descriptive statistics"),
+                ("POST /api/compliance/statistical-analysis/regression", "Perform regression analysis"),
+                ("POST /api/compliance/statistical-analysis/trend", "Analyze trends"),
+                ("POST /api/compliance/statistical-analysis/control-chart", "Generate control chart")
+            ],
+            tags=[
+                '<span class="usa-tag">Statistics</span>',
+                '<span class="usa-tag">Quality Metrics</span>',
+                '<span class="usa-tag">Predictive Analytics</span>',
+                '<span class="usa-tag">SPC</span>'
+            ]
+        )
+
+    def generate_module_page_armature_fabric(self) -> str:
+        """Generate individual page for ARMATURE Fabric module."""
+        return self._generate_module_page_template(
+            module_id="armature-fabric",
+            module_name="ARMATURE Fabric",
+            title="Accreditation and Certification Process Automation",
+            description="Automated workflow management for complex accreditation and certification processes. Provides evidence package assembly, multi-stage process tracking, stakeholder coordination, compliance validation, and complete audit trail management.",
+            features=[
+                "<strong>Workflow Automation:</strong> Automated process orchestration for certifications",
+                "<strong>Evidence Assembly:</strong> Automated evidence collection and validation",
+                "<strong>Multi-Stage Tracking:</strong> Track initiation, preparation, assessment, validation",
+                "<strong>Stakeholder Management:</strong> Role-based access and notifications",
+                "<strong>Compliance Validation:</strong> Automated validation against requirements",
+                "<strong>Audit Trail:</strong> Complete process history and documentation"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/armature-fabric/process/create", "Create certification process"),
+                ("POST /api/compliance/armature-fabric/evidence/add", "Add evidence to package"),
+                ("GET /api/compliance/armature-fabric/process/{id}/status", "Get process status"),
+                ("POST /api/compliance/armature-fabric/validate", "Validate compliance package")
+            ],
+            tags=[
+                '<span class="usa-tag">Certification</span>',
+                '<span class="usa-tag">Workflow</span>',
+                '<span class="usa-tag">Evidence Management</span>',
+                '<span class="usa-tag">Accreditation</span>'
+            ]
+        )
+
     def generate_powershell_page(self) -> str:
         """
         Generate the PowerShell security analysis page using USWDS components.
@@ -3852,6 +4027,11 @@ or
                 { name: 'CIV-CHEQ', url: '/dashboard/compliance', keywords: ['cheqroom', 'asset', 'tracking', 'equipment', 'audit'] },
                 { name: 'SOC 2 Type II', url: '/dashboard/compliance', keywords: ['soc2', 'trust', 'aicpa', 'audit', 'security'] },
                 { name: 'ISO 27001', url: '/dashboard/compliance', keywords: ['iso', '27001', 'information', 'security', 'isms'] },
+                { name: 'RMM API', url: '/dashboard/compliance/rmm-api', keywords: ['rmm', 'nist', 'metadata', 'research', 'resource', 'catalog'] },
+                { name: 'DoD Cyber Exchange', url: '/dashboard/compliance/dod-cyber-exchange', keywords: ['dod', 'cyber', 'exchange', 'cmmc', 'stig', 'defense', 'contractor'] },
+                { name: 'V-SPELLs', url: '/dashboard/compliance/vspells', keywords: ['vspells', 'legacy', 'binary', 'enhancement', 'security', 'performance', 'darpa'] },
+                { name: 'Statistical Analysis', url: '/dashboard/compliance/statistical-analysis', keywords: ['statistics', 'analysis', 'metrics', 'regression', 'trends', 'quality'] },
+                { name: 'ARMATURE Fabric', url: '/dashboard/compliance/armature-fabric', keywords: ['armature', 'certification', 'accreditation', 'workflow', 'evidence', 'automation'] },
                 { name: 'Badges', url: '/dashboard/badges', keywords: ['badge', 'quality', 'coverage', 'security', 'svg'] },
                 { name: 'Assurance Cases', url: '/dashboard/assurance', keywords: ['assurance', 'case', 'gsn', 'argument', 'evidence'] },
                 { name: 'Help', url: '/dashboard/help', keywords: ['help', 'documentation', 'guide', 'support', 'api'] }
