@@ -1108,7 +1108,7 @@ def scap_scan(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
-@app.get("/api/compliance/scap/report/<scan_id>")
+@app.get("/api/compliance/scap/report/{scan_id}")
 def scap_report(request: Request) -> Response:
     """
     Generate SCAP compliance report.
