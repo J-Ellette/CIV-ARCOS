@@ -1233,6 +1233,56 @@ def dashboard_compliance_civ_nessus(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+@app.get("/dashboard/compliance/civ-ramp")
+def dashboard_compliance_civ_ramp(request: Request) -> Response:
+    """CIV-RAMP (FedRAMP) module page."""
+    try:
+        html = dashboard_gen.generate_module_page_civ_ramp()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/civ-star")
+def dashboard_compliance_civ_star(request: Request) -> Response:
+    """CIV-STAR (CSA STAR) module page."""
+    try:
+        html = dashboard_gen.generate_module_page_civ_star()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/civ-cmmc")
+def dashboard_compliance_civ_cmmc(request: Request) -> Response:
+    """CIV-CMMC module page."""
+    try:
+        html = dashboard_gen.generate_module_page_civ_cmmc()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/civ-diss")
+def dashboard_compliance_civ_diss(request: Request) -> Response:
+    """CIV-DISS module page."""
+    try:
+        html = dashboard_gen.generate_module_page_civ_diss()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/compliance/soc2")
+def dashboard_compliance_soc2(request: Request) -> Response:
+    """SOC 2 Type II module page."""
+    try:
+        html = dashboard_gen.generate_module_page_soc2()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
 @app.get("/dashboard/powershell")
 def dashboard_powershell(request: Request) -> Response:
     """Dashboard PowerShell security analysis page."""
