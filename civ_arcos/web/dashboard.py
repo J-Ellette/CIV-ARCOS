@@ -2753,6 +2753,352 @@ const results = await response.json();</code></pre>
 </html>"""
         return html
 
+    def generate_powershell_page(self) -> str:
+        """
+        Generate the PowerShell security analysis page using USWDS components.
+
+        Returns:
+            Complete HTML page as string with USWDS styling
+        """
+        html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell Security Analysis - CIV-ARCOS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/css/uswds.min.css">
+    <style>{self._get_custom_css()}</style>
+</head>
+<body>
+    {self._get_header("PowerShell Security")}
+    
+    <main id="main-content">
+        <section class="usa-section">
+            <div class="grid-container">
+                <h1 class="usa-prose">⚡ PowerShell Security Analysis</h1>
+                <p class="usa-intro">Comprehensive security scanning for PowerShell scripts</p>
+                
+                <div class="usa-alert usa-alert--info margin-top-4">
+                    <div class="usa-alert__body">
+                        <h4 class="usa-alert__heading">PowerScript Integration</h4>
+                        <p class="usa-alert__text">
+                            Integrated PowerShell security scanner for detecting vulnerabilities, 
+                            insecure coding practices, and compliance issues in PowerShell scripts.
+                            Powered by pattern-based analysis with support for PowerShield CLI.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid-row grid-gap margin-top-5">
+                    <div class="desktop:grid-col-8">
+                        <h2>Analyze PowerShell Script</h2>
+                        
+                        <form class="usa-form margin-top-3" id="powershellForm" onsubmit="analyzePowerShell(event)">
+                            <fieldset class="usa-fieldset">
+                                <legend class="usa-legend">Analysis Input</legend>
+                                
+                                <div class="usa-form-group">
+                                    <label class="usa-label" for="analysisMode">
+                                        Analysis Mode
+                                    </label>
+                                    <select class="usa-select" id="analysisMode" name="analysisMode" onchange="toggleInputMode()">
+                                        <option value="file">Upload Script File</option>
+                                        <option value="content">Paste Script Content</option>
+                                        <option value="directory">Scan Directory</option>
+                                    </select>
+                                </div>
+
+                                <div class="usa-form-group" id="fileInput">
+                                    <label class="usa-label" for="scriptPath">
+                                        Script Path <span class="usa-hint">(Required)</span>
+                                    </label>
+                                    <input class="usa-input" id="scriptPath" name="scriptPath" type="text"
+                                           placeholder="/path/to/script.ps1">
+                                    <span class="usa-hint">Enter path to PowerShell script or directory</span>
+                                </div>
+
+                                <div class="usa-form-group" id="contentInput" style="display: none;">
+                                    <label class="usa-label" for="scriptContent">
+                                        PowerShell Script Content <span class="usa-hint">(Required)</span>
+                                    </label>
+                                    <textarea class="usa-textarea" id="scriptContent" name="scriptContent" rows="10"
+                                              placeholder="# Paste your PowerShell script here&#10;Write-Host 'Hello, World!'"></textarea>
+                                    <span class="usa-hint">Paste your PowerShell script content for analysis</span>
+                                </div>
+
+                                <button class="usa-button" type="submit">Analyze Script</button>
+                            </fieldset>
+                        </form>
+
+                        <div id="results" class="margin-top-5" style="display: none;">
+                            <h3>Analysis Results</h3>
+                            <div id="resultsContent"></div>
+                        </div>
+                    </div>
+
+                    <div class="desktop:grid-col-4">
+                        <div class="usa-card">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">Features</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <ul class="usa-list">
+                                        <li><strong>12+ Security Rules:</strong> Comprehensive vulnerability detection</li>
+                                        <li><strong>Multiple Severity Levels:</strong> Critical, High, Medium, Low</li>
+                                        <li><strong>Pattern-Based Analysis:</strong> Fast and accurate scanning</li>
+                                        <li><strong>Evidence Collection:</strong> Results stored for assurance cases</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="usa-card margin-top-3">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">Detection Rules</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <ul class="usa-list usa-list--unstyled text-base-dark">
+                                        <li>✓ Insecure Hash Algorithms (MD5, SHA1)</li>
+                                        <li>✓ Hardcoded Credentials</li>
+                                        <li>✓ Invoke-Expression Risks</li>
+                                        <li>✓ Disabled Certificate Validation</li>
+                                        <li>✓ Unencrypted HTTP Communication</li>
+                                        <li>✓ SQL Injection Vulnerabilities</li>
+                                        <li>✓ Command Injection Risks</li>
+                                        <li>✓ Insecure Deserialization</li>
+                                        <li>✓ Weak Random Generation</li>
+                                        <li>✓ Exposed Secrets (API Keys, Tokens)</li>
+                                        <li>✓ Execution Policy Bypass</li>
+                                        <li>✓ Dangerous Module Imports</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="usa-card margin-top-3">
+                            <div class="usa-card__container">
+                                <header class="usa-card__header">
+                                    <h3 class="usa-card__heading">API Usage</h3>
+                                </header>
+                                <div class="usa-card__body">
+                                    <div class="bg-base-lightest padding-2 margin-y-1">
+                                        <code class="text-base-darkest">POST /api/analysis/powershell</code>
+                                    </div>
+                                    <p class="text-base-dark margin-top-2">Request body:</p>
+                                    <pre class="bg-base-lightest padding-2 text-base-darkest" style="font-size: 0.875rem; overflow-x: auto;">{{
+  "source_path": "/path/to/script.ps1"
+}}
+
+or
+
+{{
+  "content": "Write-Host 'test'"
+}}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="margin-top-5">
+                    <h2>How It Works</h2>
+                    <ol class="usa-process-list">
+                        <li class="usa-process-list__item">
+                            <h4 class="usa-process-list__heading">Input Script</h4>
+                            <p>Upload file, paste content, or specify directory path</p>
+                        </li>
+                        <li class="usa-process-list__item">
+                            <h4 class="usa-process-list__heading">Security Scanning</h4>
+                            <p>Pattern-based analysis checks for 12+ vulnerability types</p>
+                        </li>
+                        <li class="usa-process-list__item">
+                            <h4 class="usa-process-list__heading">Severity Classification</h4>
+                            <p>Violations categorized by severity: Critical, High, Medium, Low</p>
+                        </li>
+                        <li class="usa-process-list__item">
+                            <h4 class="usa-process-list__heading">Evidence Collection</h4>
+                            <p>Results automatically stored for assurance case generation</p>
+                        </li>
+                        <li class="usa-process-list__item">
+                            <h4 class="usa-process-list__heading">Reporting</h4>
+                            <p>Detailed violations with line numbers and code snippets</p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    {self._get_footer()}
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uswds/{self.uswds_version}/js/uswds.min.js"></script>
+    <script>{self.base_js}</script>
+    <script>
+        function toggleInputMode() {{
+            const mode = document.getElementById('analysisMode').value;
+            const fileInput = document.getElementById('fileInput');
+            const contentInput = document.getElementById('contentInput');
+            
+            if (mode === 'content') {{
+                fileInput.style.display = 'none';
+                contentInput.style.display = 'block';
+            }} else {{
+                fileInput.style.display = 'block';
+                contentInput.style.display = 'none';
+            }}
+        }}
+
+        async function analyzePowerShell(event) {{
+            event.preventDefault();
+
+            const form = event.target;
+            const mode = form.analysisMode.value;
+            const resultsDiv = document.getElementById('results');
+            const resultsContent = document.getElementById('resultsContent');
+
+            resultsDiv.style.display = 'block';
+            resultsContent.innerHTML = '<div class="usa-alert usa-alert--info"><div class="usa-alert__body"><p class="usa-alert__text">⚡ Analyzing PowerShell script...</p></div></div>';
+
+            try {{
+                let requestBody = {{}};
+                
+                if (mode === 'content') {{
+                    const content = form.scriptContent.value;
+                    if (!content.trim()) {{
+                        throw new Error('Please provide script content');
+                    }}
+                    requestBody = {{ content: content }};
+                }} else {{
+                    const path = form.scriptPath.value;
+                    if (!path.trim()) {{
+                        throw new Error('Please provide script path');
+                    }}
+                    requestBody = {{ source_path: path }};
+                }}
+
+                const response = await fetch('/api/analysis/powershell', {{
+                    method: 'POST',
+                    headers: {{ 'Content-Type': 'application/json' }},
+                    body: JSON.stringify(requestBody)
+                }});
+
+                const data = await response.json();
+
+                if (data.success) {{
+                    const results = data.results;
+                    const summary = results.summary || {{}};
+                    const violations = results.violations || [];
+                    
+                    let html = `
+                        <div class="usa-alert usa-alert--success margin-bottom-3">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">✅ Analysis Complete</h4>
+                                <p class="usa-alert__text">Scan completed successfully</p>
+                            </div>
+                        </div>
+
+                        <div class="grid-row grid-gap margin-bottom-3">
+                            <div class="tablet:grid-col-3">
+                                <div class="usa-card bg-error-lighter">
+                                    <div class="usa-card__container">
+                                        <div class="usa-card__body text-center">
+                                            <h3 class="text-error font-heading-2xl">${{summary.critical || 0}}</h3>
+                                            <p>Critical</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tablet:grid-col-3">
+                                <div class="usa-card bg-warning-lighter">
+                                    <div class="usa-card__container">
+                                        <div class="usa-card__body text-center">
+                                            <h3 class="text-warning font-heading-2xl">${{summary.high || 0}}</h3>
+                                            <p>High</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tablet:grid-col-3">
+                                <div class="usa-card bg-info-lighter">
+                                    <div class="usa-card__container">
+                                        <div class="usa-card__body text-center">
+                                            <h3 class="text-info font-heading-2xl">${{summary.medium || 0}}</h3>
+                                            <p>Medium</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tablet:grid-col-3">
+                                <div class="usa-card bg-base-lighter">
+                                    <div class="usa-card__container">
+                                        <div class="usa-card__body text-center">
+                                            <h3 class="text-base font-heading-2xl">${{summary.low || 0}}</h3>
+                                            <p>Low</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    if (violations.length > 0) {{
+                        html += '<h4 class="margin-top-3">Violations Found:</h4>';
+                        violations.forEach(v => {{
+                            const severityClass = v.severity === 'Critical' ? 'error' : 
+                                                v.severity === 'High' ? 'warning' : 
+                                                v.severity === 'Medium' ? 'info' : 'base';
+                            html += `
+                                <div class="usa-alert usa-alert--${{severityClass}} margin-top-2">
+                                    <div class="usa-alert__body">
+                                        <h4 class="usa-alert__heading">${{v.severity}}: ${{v.name}} (Line ${{v.line_number}})</h4>
+                                        <p class="usa-alert__text">${{v.message}}</p>
+                                        <div class="bg-base-lightest padding-2 margin-top-1">
+                                            <code>${{v.code_snippet}}</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        }});
+                    }} else {{
+                        html += `
+                            <div class="usa-alert usa-alert--success margin-top-3">
+                                <div class="usa-alert__body">
+                                    <h4 class="usa-alert__heading">✅ No Violations Found</h4>
+                                    <p class="usa-alert__text">Your PowerShell script passed all security checks!</p>
+                                </div>
+                            </div>
+                        `;
+                    }}
+
+                    resultsContent.innerHTML = html;
+                }} else {{
+                    resultsContent.innerHTML = `
+                        <div class="usa-alert usa-alert--error">
+                            <div class="usa-alert__body">
+                                <h4 class="usa-alert__heading">❌ Analysis Failed</h4>
+                                <p class="usa-alert__text">${{data.error || 'Unknown error occurred'}}</p>
+                            </div>
+                        </div>
+                    `;
+                }}
+            }} catch (error) {{
+                resultsContent.innerHTML = `
+                    <div class="usa-alert usa-alert--error">
+                        <div class="usa-alert__body">
+                            <h4 class="usa-alert__heading">❌ Error</h4>
+                            <p class="usa-alert__text">${{error.message}}</p>
+                        </div>
+                    </div>
+                `;
+            }}
+        }}
+    </script>
+</body>
+</html>"""
+        return html
+
     def _generate_badge_examples(self) -> str:
         """Generate HTML for badge examples using USWDS cards."""
         return """
@@ -2889,6 +3235,7 @@ const results = await response.json();</code></pre>
             "Analyze Repository": "/dashboard/analyze",
             "Assurance Cases": "/dashboard/assurance",
             "Badges": "/dashboard/badges",
+            "PowerShell Security": "/dashboard/powershell",
             "Compliance Modules": "/dashboard/compliance"
         }
         
