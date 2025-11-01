@@ -59,6 +59,10 @@ from civ_arcos.compliance import (
     ComplianceFramework as ACASFramework,
     NessusManager,
     ScanType,
+    SBOMGenerator,
+    SupplyChainScanner,
+    SBOMValidator,
+    SBOMFormat,
 )
 
 
@@ -123,6 +127,11 @@ digital_twin_integration = DigitalTwinIntegration()
 # Initialize compliance scanners
 acas_manager = ACASManager()
 nessus_manager = NessusManager()
+
+# Initialize SBOM and supply chain security
+sbom_generator = SBOMGenerator()
+supply_chain_scanner = SupplyChainScanner()
+sbom_validator = SBOMValidator()
 
 
 @app.get("/")
@@ -225,6 +234,13 @@ def index(request: Request) -> Response:
                 "POST /api/community/benchmarks/compare": "Compare to benchmark",
                 "GET /api/community/stats": "Get community platform statistics",
                 "GET /api/ecosystem/documentation": "Get API ecosystem documentation",
+                # SBOM and Supply Chain Security
+                "POST /api/sbom/generate": "Generate an SBOM for a project",
+                "POST /api/sbom/scan-dependencies": "Scan project dependencies",
+                "POST /api/sbom/validate": "Validate SBOM compliance",
+                "POST /api/supply-chain/scan": "Scan for supply chain risks",
+                "GET /api/sbom/formats": "List supported SBOM formats",
+                "GET /api/sbom/docs": "Get SBOM documentation",
                 # Human-Centered Design & XAI
                 "GET /api/personas/list": "List all persona roles",
                 "GET /api/personas/{role}": "Get persona configuration",
@@ -5126,6 +5142,307 @@ def nessus_list_policies(request: Request) -> Response:
         return Response({
             "success": True,
             "policies": policies
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ============================================================================
+# SBOM and Supply Chain Security Endpoints
+# ============================================================================
+
+@app.post("/api/sbom/generate")
+def generate_sbom(request: Request) -> Response:
+    """
+    Generate an SBOM for a project.
+    
+    Request body:
+    {
+        "project_name": "my-project",
+        "project_version": "1.0.0",
+        "project_path": "/path/to/project",  # Optional for scanning
+        "format": "custom",  # spdx, cyclonedx, or custom
+        "metadata": {...}  # Optional additional metadata
+    }
+    """
+    try:
+        data = request.json
+        project_name = data.get("project_name")
+        project_version = data.get("project_version")
+        project_path = data.get("project_path")
+        format_str = data.get("format", "custom")
+        metadata = data.get("metadata", {})
+        
+        if not project_name or not project_version:
+            return Response(
+                {"error": "project_name and project_version are required"},
+                status_code=400
+            )
+        
+        # Parse format
+        try:
+            sbom_format = SBOMFormat(format_str)
+        except ValueError:
+            return Response(
+                {"error": f"Invalid format: {format_str}. Use spdx, cyclonedx, or custom"},
+                status_code=400
+            )
+        
+        # Scan for components if path provided
+        if project_path:
+            components = sbom_generator.scan_dependencies(project_path)
+        else:
+            components = []
+        
+        # Generate SBOM
+        sbom = sbom_generator.generate(
+            project_name=project_name,
+            project_version=project_version,
+            components=components,
+            format=sbom_format,
+            metadata=metadata
+        )
+        
+        return Response({
+            "success": True,
+            "sbom": sbom.to_dict(),
+            "component_count": len(components)
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/sbom/scan-dependencies")
+def scan_dependencies(request: Request) -> Response:
+    """
+    Scan a project directory for dependencies.
+    
+    Request body:
+    {
+        "project_path": "/path/to/project"
+    }
+    """
+    try:
+        data = request.json
+        project_path = data.get("project_path")
+        
+        if not project_path:
+            return Response(
+                {"error": "project_path is required"},
+                status_code=400
+            )
+        
+        components = sbom_generator.scan_dependencies(project_path)
+        
+        return Response({
+            "success": True,
+            "components": [comp.to_dict() for comp in components],
+            "component_count": len(components)
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/sbom/validate")
+def validate_sbom(request: Request) -> Response:
+    """
+    Validate an SBOM for compliance with federal requirements.
+    
+    Request body:
+    {
+        "sbom": {...}  # SBOM dictionary
+    }
+    """
+    try:
+        data = request.json
+        sbom_data = data.get("sbom")
+        
+        if not sbom_data:
+            return Response(
+                {"error": "sbom is required"},
+                status_code=400
+            )
+        
+        # Reconstruct SBOM object
+        from civ_arcos.compliance.sbom import SBOM, Component, ComponentType, LicenseType
+        
+        # Parse format
+        sbom_format = SBOMFormat(sbom_data.get("format", "custom"))
+        
+        # Parse components
+        components = []
+        for comp_data in sbom_data.get("components", []):
+            component = Component(
+                name=comp_data["name"],
+                version=comp_data["version"],
+                type=ComponentType(comp_data["type"]),
+                supplier=comp_data.get("supplier"),
+                licenses=[LicenseType(lic) for lic in comp_data.get("licenses", [])],
+                purl=comp_data.get("purl"),
+                cpe=comp_data.get("cpe"),
+                hashes=comp_data.get("hashes", {}),
+                dependencies=comp_data.get("dependencies", []),
+                vulnerabilities=comp_data.get("vulnerabilities", []),
+                metadata=comp_data.get("metadata", {})
+            )
+            components.append(component)
+        
+        # Create SBOM object
+        sbom = SBOM(
+            format=sbom_format,
+            spec_version=sbom_data.get("spec_version", "1.0"),
+            serial_number=sbom_data.get("serial_number", ""),
+            version=sbom_data.get("version", 1),
+            metadata=sbom_data.get("metadata", {}),
+            components=components,
+            created=sbom_data.get("created", "")
+        )
+        
+        # Validate
+        validation_results = sbom_validator.validate(sbom)
+        
+        return Response({
+            "success": True,
+            "validation": validation_results
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/supply-chain/scan")
+def scan_supply_chain(request: Request) -> Response:
+    """
+    Scan software supply chain for security issues.
+    
+    Request body:
+    {
+        "components": [...]  # List of components to scan
+    }
+    
+    Or:
+    {
+        "sbom": {...}  # SBOM to scan
+    }
+    """
+    try:
+        data = request.json
+        
+        # Parse components from request
+        if "components" in data:
+            from civ_arcos.compliance.sbom import Component, ComponentType, LicenseType
+            components = []
+            for comp_data in data["components"]:
+                component = Component(
+                    name=comp_data["name"],
+                    version=comp_data["version"],
+                    type=ComponentType(comp_data.get("type", "library")),
+                    supplier=comp_data.get("supplier"),
+                    licenses=[LicenseType(lic) for lic in comp_data.get("licenses", ["Unknown"])],
+                    purl=comp_data.get("purl"),
+                    cpe=comp_data.get("cpe"),
+                    hashes=comp_data.get("hashes", {}),
+                    dependencies=comp_data.get("dependencies", [])
+                )
+                components.append(component)
+        elif "sbom" in data:
+            # Extract components from SBOM
+            from civ_arcos.compliance.sbom import Component, ComponentType, LicenseType
+            components = []
+            for comp_data in data["sbom"].get("components", []):
+                component = Component(
+                    name=comp_data["name"],
+                    version=comp_data["version"],
+                    type=ComponentType(comp_data.get("type", "library")),
+                    supplier=comp_data.get("supplier"),
+                    licenses=[LicenseType(lic) for lic in comp_data.get("licenses", ["Unknown"])],
+                    purl=comp_data.get("purl"),
+                    cpe=comp_data.get("cpe"),
+                    hashes=comp_data.get("hashes", {}),
+                    dependencies=comp_data.get("dependencies", [])
+                )
+                components.append(component)
+        else:
+            return Response(
+                {"error": "Either 'components' or 'sbom' is required"},
+                status_code=400
+            )
+        
+        # Scan components
+        scan_results = supply_chain_scanner.scan_components(components)
+        
+        return Response({
+            "success": True,
+            "scan_results": scan_results
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/sbom/formats")
+def list_sbom_formats(request: Request) -> Response:
+    """List supported SBOM formats."""
+    try:
+        formats = [
+            {
+                "format": "spdx",
+                "spec_version": "SPDX-2.3",
+                "description": "Software Package Data Exchange format"
+            },
+            {
+                "format": "cyclonedx",
+                "spec_version": "1.4",
+                "description": "OWASP CycloneDX format"
+            },
+            {
+                "format": "custom",
+                "spec_version": "1.0",
+                "description": "CIV-ARCOS custom SBOM format"
+            }
+        ]
+        
+        return Response({
+            "success": True,
+            "formats": formats
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/sbom/docs")
+def sbom_documentation(request: Request) -> Response:
+    """Get SBOM module documentation."""
+    try:
+        docs = {
+            "module": "Software Bill of Materials (SBOM) and Supply Chain Security",
+            "description": "Federal requirement for all government software per OMB guidance",
+            "features": [
+                "SBOM generation in multiple formats (SPDX, CycloneDX, Custom)",
+                "Automatic dependency scanning (Python, Node.js, Docker)",
+                "Supply chain security scanning",
+                "Vulnerability detection",
+                "License compliance checking",
+                "NTIA minimum elements validation",
+                "Risk scoring and assessment"
+            ],
+            "standards": [
+                "SPDX-2.3",
+                "CycloneDX 1.4",
+                "NTIA Minimum Elements for SBOM",
+                "OMB Federal Software Security Requirements"
+            ],
+            "endpoints": [
+                "POST /api/sbom/generate - Generate an SBOM",
+                "POST /api/sbom/scan-dependencies - Scan project dependencies",
+                "POST /api/sbom/validate - Validate SBOM compliance",
+                "POST /api/supply-chain/scan - Scan for supply chain risks",
+                "GET /api/sbom/formats - List supported formats",
+                "GET /api/sbom/docs - This documentation"
+            ]
+        }
+        
+        return Response({
+            "success": True,
+            "documentation": docs
         })
     except Exception as e:
         return Response({"error": str(e)}, status_code=500)

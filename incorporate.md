@@ -440,11 +440,11 @@ Military Heritage: "Based on DoD-proven technology" Integrated Compliance: Built
 
 ****************************************
 
-### Software Supply Chain Security - OMB's new federal software security requirements
+### Software Supply Chain Security - OMB's new federal software security requirements (COMPLETE)
 (https://github.com/vishalgarg-sec/Software-Supply-Chain-Security)
 ************************************
 
-### Software Bill of Materials (SBOM) - Federal requirement for all government software
+### Software Bill of Materials (SBOM) - Federal requirement for all government software (COMPLETE)
 (https://github.com/vishalgarg-sec/Software-Supply-Chain-Security)
 ****************************************
 
