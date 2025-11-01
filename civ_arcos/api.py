@@ -68,6 +68,11 @@ from civ_arcos.compliance import (
     SBOMFormat,
     ATOManager,
     AssessmentType,
+    StatisticalAnalysisEngine,
+    ARMATUREEngine,
+    CertificationType,
+    DynamicsEngine,
+    WorkflowType,
 )
 
 
@@ -140,6 +145,11 @@ sbom_validator = SBOMValidator()
 
 # Initialize ATO manager
 ato_manager = ATOManager()
+
+# Initialize new compliance modules
+statistical_engine = StatisticalAnalysisEngine()
+armature_engine = ARMATUREEngine()
+dynamics_engine = DynamicsEngine()
 
 
 @app.get("/")
@@ -1178,6 +1188,339 @@ def dashboard_powershell(request: Request) -> Response:
     """Dashboard PowerShell security analysis page."""
     try:
         html = dashboard_gen.generate_powershell_page()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/statistics")
+def dashboard_statistics(request: Request) -> Response:
+    """Dashboard Statistical Analysis page."""
+    try:
+        html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistical Analysis - CIV-ARCOS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0e27; color: #e2e8f0; }
+        .navbar { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); padding: 1.5rem 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .navbar h1 { color: white; font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .navbar p { color: rgba(255,255,255,0.9); font-size: 0.9rem; }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        .card { background: #1e293b; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .card h2 { color: #60a5fa; margin-bottom: 1rem; font-size: 1.5rem; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+        .feature { background: #2d3748; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #3b82f6; }
+        .feature h3 { color: #93c5fd; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .feature p { color: #cbd5e1; line-height: 1.6; }
+        .endpoint { background: #374151; padding: 1rem; border-radius: 6px; margin-bottom: 0.5rem; font-family: 'Courier New', monospace; }
+        .endpoint code { color: #fbbf24; }
+        .back-link { display: inline-block; color: #60a5fa; text-decoration: none; padding: 0.5rem 1rem; background: #1e293b; border-radius: 6px; margin-bottom: 1rem; }
+        .back-link:hover { background: #2d3748; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>📊 Statistical Analysis Packages</h1>
+        <p>Advanced statistical analysis for quality metrics and compliance data</p>
+    </div>
+    
+    <div class="container">
+        <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+        
+        <div class="card">
+            <h2>Overview</h2>
+            <p>The Statistical Analysis module provides comprehensive statistical capabilities for analyzing software quality metrics, detecting trends, and making data-driven decisions about code quality and compliance.</p>
+        </div>
+        
+        <div class="card">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>Descriptive Statistics</h3>
+                    <p>Calculate mean, median, mode, standard deviation, variance, percentiles, and other statistical measures for quality metrics.</p>
+                </div>
+                <div class="feature">
+                    <h3>Inferential Statistics</h3>
+                    <p>Perform hypothesis testing, calculate confidence intervals, and make statistical inferences about quality trends.</p>
+                </div>
+                <div class="feature">
+                    <h3>Regression Analysis</h3>
+                    <p>Linear regression for trend analysis and forecasting future quality metric values with confidence scores.</p>
+                </div>
+                <div class="feature">
+                    <h3>Quality Metrics Analysis</h3>
+                    <p>Specialized analysis for software quality metrics including trend detection, control charts, and comparative analysis.</p>
+                </div>
+                <div class="feature">
+                    <h3>Anomaly Detection</h3>
+                    <p>Automatically detect outliers and anomalies in quality data using statistical methods.</p>
+                </div>
+                <div class="feature">
+                    <h3>Predictive Analytics</h3>
+                    <p>Forecast future values and trends based on historical data with regression modeling.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>API Endpoints</h2>
+            <div class="endpoint"><code>POST /api/statistics/analyze</code> - Comprehensive dataset analysis</div>
+            <div class="endpoint"><code>POST /api/statistics/forecast</code> - Forecast future metric values</div>
+            <div class="endpoint"><code>POST /api/statistics/quality-score</code> - Quality score analysis</div>
+            <div class="endpoint"><code>POST /api/statistics/detect-anomalies</code> - Detect anomalies in data</div>
+            <div class="endpoint"><code>GET /api/statistics/docs</code> - API documentation</div>
+        </div>
+        
+        <div class="card">
+            <h2>Use Cases</h2>
+            <ul style="color: #cbd5e1; line-height: 2; margin-left: 1.5rem;">
+                <li>Analyze test coverage trends over time</li>
+                <li>Detect quality metric degradation early</li>
+                <li>Predict future code quality scores</li>
+                <li>Identify anomalous quality measurements</li>
+                <li>Generate statistical reports for stakeholders</li>
+                <li>Compare quality metrics across teams or projects</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>"""
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/armature")
+def dashboard_armature(request: Request) -> Response:
+    """Dashboard ARMATURE Fabric page."""
+    try:
+        html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARMATURE Fabric - CIV-ARCOS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0e27; color: #e2e8f0; }
+        .navbar { background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%); padding: 1.5rem 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .navbar h1 { color: white; font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .navbar p { color: rgba(255,255,255,0.9); font-size: 0.9rem; }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        .card { background: #1e293b; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .card h2 { color: #a78bfa; margin-bottom: 1rem; font-size: 1.5rem; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+        .feature { background: #2d3748; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #7c3aed; }
+        .feature h3 { color: #c4b5fd; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .feature p { color: #cbd5e1; line-height: 1.6; }
+        .cert-badge { display: inline-block; background: #7c3aed; color: white; padding: 0.5rem 1rem; border-radius: 6px; margin: 0.25rem; font-size: 0.9rem; }
+        .endpoint { background: #374151; padding: 1rem; border-radius: 6px; margin-bottom: 0.5rem; font-family: 'Courier New', monospace; }
+        .endpoint code { color: #fbbf24; }
+        .back-link { display: inline-block; color: #a78bfa; text-decoration: none; padding: 0.5rem 1rem; background: #1e293b; border-radius: 6px; margin-bottom: 1rem; }
+        .back-link:hover { background: #2d3748; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🎯 ARMATURE Fabric</h1>
+        <p>Accreditation and certification process automation</p>
+    </div>
+    
+    <div class="container">
+        <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+        
+        <div class="card">
+            <h2>Overview</h2>
+            <p>ARMATURE Fabric automates complex accreditation and certification processes, providing workflow management, evidence tracking, and compliance validation for enterprise certification programs.</p>
+        </div>
+        
+        <div class="card">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>Certification Workflow Management</h3>
+                    <p>Automated orchestration of multi-stage certification processes with milestone tracking and progress monitoring.</p>
+                </div>
+                <div class="feature">
+                    <h3>Evidence Package Assembly</h3>
+                    <p>Automated collection, validation, and organization of evidence artifacts for certification requirements.</p>
+                </div>
+                <div class="feature">
+                    <h3>Accreditation Tracking</h3>
+                    <p>Comprehensive tracking of accreditation progress, stakeholder activities, and certification status.</p>
+                </div>
+                <div class="feature">
+                    <h3>Stakeholder Coordination</h3>
+                    <p>Role-based access control and collaboration features for certification team members.</p>
+                </div>
+                <div class="feature">
+                    <h3>Compliance Validation</h3>
+                    <p>Automated validation of certification packages against framework requirements.</p>
+                </div>
+                <div class="feature">
+                    <h3>Audit Trail Management</h3>
+                    <p>Complete immutable audit trails for all certification activities and decisions.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Supported Certifications</h2>
+            <div style="margin-top: 1rem;">
+                <span class="cert-badge">ISO 27001</span>
+                <span class="cert-badge">SOC 2</span>
+                <span class="cert-badge">FedRAMP</span>
+                <span class="cert-badge">CMMC</span>
+                <span class="cert-badge">HIPAA</span>
+                <span class="cert-badge">PCI DSS</span>
+                <span class="cert-badge">NIST 800-53</span>
+                <span class="cert-badge">Custom</span>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>API Endpoints</h2>
+            <div class="endpoint"><code>POST /api/armature/initiate</code> - Initiate certification process</div>
+            <div class="endpoint"><code>POST /api/armature/validate</code> - Validate certification package</div>
+            <div class="endpoint"><code>GET /api/armature/status/{package_id}</code> - Get status report</div>
+            <div class="endpoint"><code>GET /api/armature/docs</code> - API documentation</div>
+        </div>
+        
+        <div class="card">
+            <h2>Process Stages</h2>
+            <ul style="color: #cbd5e1; line-height: 2; margin-left: 1.5rem;">
+                <li><strong>Initiation:</strong> Define scope and objectives</li>
+                <li><strong>Preparation:</strong> Gather evidence and documentation</li>
+                <li><strong>Assessment:</strong> Conduct security assessments</li>
+                <li><strong>Remediation:</strong> Address findings and gaps</li>
+                <li><strong>Validation:</strong> Validate all requirements met</li>
+                <li><strong>Accreditation:</strong> Final approval and certification</li>
+                <li><strong>Monitoring:</strong> Ongoing compliance monitoring</li>
+                <li><strong>Renewal:</strong> Certification renewal process</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>"""
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/dynamics")
+def dashboard_dynamics(request: Request) -> Response:
+    """Dashboard Dynamics for Government page."""
+    try:
+        html = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamics for Government - CIV-ARCOS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0e27; color: #e2e8f0; }
+        .navbar { background: linear-gradient(135deg, #059669 0%, #10b981 100%); padding: 1.5rem 2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .navbar h1 { color: white; font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .navbar p { color: rgba(255,255,255,0.9); font-size: 0.9rem; }
+        .container { max-width: 1400px; margin: 2rem auto; padding: 0 2rem; }
+        .card { background: #1e293b; border-radius: 12px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+        .card h2 { color: #34d399; margin-bottom: 1rem; font-size: 1.5rem; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1rem; }
+        .feature { background: #2d3748; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #059669; }
+        .feature h3 { color: #6ee7b7; margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .feature p { color: #cbd5e1; line-height: 1.6; }
+        .workflow-badge { display: inline-block; background: #059669; color: white; padding: 0.5rem 1rem; border-radius: 6px; margin: 0.25rem; font-size: 0.85rem; }
+        .endpoint { background: #374151; padding: 1rem; border-radius: 6px; margin-bottom: 0.5rem; font-family: 'Courier New', monospace; }
+        .endpoint code { color: #fbbf24; }
+        .back-link { display: inline-block; color: #34d399; text-decoration: none; padding: 0.5rem 1rem; background: #1e293b; border-radius: 6px; margin-bottom: 1rem; }
+        .back-link:hover { background: #2d3748; }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🔄 Microsoft Dynamics for Government</h1>
+        <p>CRM and process automation for compliance management</p>
+    </div>
+    
+    <div class="container">
+        <a href="/dashboard" class="back-link">← Back to Dashboard</a>
+        
+        <div class="card">
+            <h2>Overview</h2>
+            <p>Dynamics for Government provides comprehensive CRM capabilities and process automation tailored for compliance management, stakeholder coordination, and document workflows.</p>
+        </div>
+        
+        <div class="card">
+            <h2>Features</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>Compliance Workflow Automation</h3>
+                    <p>Automated workflow management for compliance reviews, audits, and certification processes.</p>
+                </div>
+                <div class="feature">
+                    <h3>Stakeholder Relationship Management</h3>
+                    <p>CRM system for managing contacts, organizations, and relationships across compliance programs.</p>
+                </div>
+                <div class="feature">
+                    <h3>Document Management</h3>
+                    <p>Centralized document management with approval workflows and version control.</p>
+                </div>
+                <div class="feature">
+                    <h3>Task Automation</h3>
+                    <p>Automated task creation, assignment, and tracking with priority management.</p>
+                </div>
+                <div class="feature">
+                    <h3>Integration Hub</h3>
+                    <p>Connect and integrate multiple compliance tools and systems.</p>
+                </div>
+                <div class="feature">
+                    <h3>Analytics & Reporting</h3>
+                    <p>Personalized dashboards and analytics for stakeholder activities and compliance metrics.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Workflow Types</h2>
+            <div style="margin-top: 1rem;">
+                <span class="workflow-badge">Compliance Review</span>
+                <span class="workflow-badge">Document Approval</span>
+                <span class="workflow-badge">Audit Preparation</span>
+                <span class="workflow-badge">Incident Response</span>
+                <span class="workflow-badge">Risk Assessment</span>
+                <span class="workflow-badge">Policy Update</span>
+                <span class="workflow-badge">Vendor Assessment</span>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>API Endpoints</h2>
+            <div class="endpoint"><code>POST /api/dynamics/contact/create</code> - Create contact in CRM</div>
+            <div class="endpoint"><code>POST /api/dynamics/workflow/initiate</code> - Initiate workflow</div>
+            <div class="endpoint"><code>GET /api/dynamics/workflow/status/{instance_id}</code> - Get workflow status</div>
+            <div class="endpoint"><code>GET /api/dynamics/dashboard/{user_id}</code> - Get personalized dashboard</div>
+            <div class="endpoint"><code>GET /api/dynamics/docs</code> - API documentation</div>
+        </div>
+        
+        <div class="card">
+            <h2>Use Cases</h2>
+            <ul style="color: #cbd5e1; line-height: 2; margin-left: 1.5rem;">
+                <li>Automate compliance review processes</li>
+                <li>Manage stakeholder relationships across programs</li>
+                <li>Track document approvals and workflows</li>
+                <li>Coordinate audit preparation activities</li>
+                <li>Assign and track remediation tasks</li>
+                <li>Generate personalized stakeholder dashboards</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>"""
         return Response(html, content_type="text/html")
     except Exception as e:
         return Response({"error": str(e)}, status_code=500)
@@ -5779,6 +6122,381 @@ def ato_documentation(request: Request) -> Response:
                 "POST /api/ato/enable-continuous - Enable continuous ATO",
                 "GET /api/ato/status/{system_name} - Get ATO status",
                 "GET /api/ato/docs - This documentation"
+            ]
+        }
+        
+        return Response({
+            "success": True,
+            "documentation": docs
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ===== Statistical Analysis Endpoints =====
+
+@app.post("/api/statistics/analyze")
+def analyze_dataset(request: Request) -> Response:
+    """Perform comprehensive statistical analysis on a dataset."""
+    try:
+        data = request.body.get("data", [])
+        confidence_level = request.body.get("confidence_level", 95)
+        
+        if not data:
+            return Response({"error": "Missing data parameter"}, status_code=400)
+            
+        result = statistical_engine.analyze_dataset(data, confidence_level)
+        
+        return Response({
+            "success": True,
+            "analysis": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/statistics/forecast")
+def forecast_metric(request: Request) -> Response:
+    """Forecast future metric values using regression."""
+    try:
+        historical_values = request.body.get("historical_values", [])
+        periods_ahead = request.body.get("periods_ahead", 1)
+        
+        if not historical_values:
+            return Response({"error": "Missing historical_values parameter"}, status_code=400)
+            
+        result = statistical_engine.forecast_metric(historical_values, periods_ahead)
+        
+        return Response({
+            "success": True,
+            "forecast": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/statistics/quality-score")
+def analyze_quality_scores(request: Request) -> Response:
+    """Comprehensive statistical analysis of quality scores."""
+    try:
+        project_name = request.body.get("project_name", "Project")
+        coverage_history = request.body.get("coverage_history", [])
+        quality_history = request.body.get("quality_history", [])
+        security_history = request.body.get("security_history", [])
+        
+        result = statistical_engine.quality_score_analysis(
+            project_name=project_name,
+            coverage_history=coverage_history,
+            quality_history=quality_history,
+            security_history=security_history
+        )
+        
+        return Response({
+            "success": True,
+            "analysis": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/statistics/detect-anomalies")
+def detect_anomalies(request: Request) -> Response:
+    """Detect anomalies in data using statistical methods."""
+    try:
+        data = request.body.get("data", [])
+        sigma_threshold = request.body.get("sigma_threshold", 3.0)
+        
+        if not data:
+            return Response({"error": "Missing data parameter"}, status_code=400)
+            
+        anomalies = statistical_engine.detect_anomalies(data, sigma_threshold)
+        
+        return Response({
+            "success": True,
+            "anomaly_indices": anomalies,
+            "anomaly_count": len(anomalies)
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/statistics/docs")
+def statistics_docs(request: Request) -> Response:
+    """Get statistical analysis documentation."""
+    try:
+        docs = {
+            "name": "Statistical Analysis Packages",
+            "description": "Advanced statistical analysis for quality metrics and compliance data",
+            "features": [
+                "Descriptive Statistics (mean, median, std dev, percentiles)",
+                "Inferential Statistics (confidence intervals, hypothesis testing)",
+                "Regression Analysis (linear regression, forecasting)",
+                "Quality Metrics Analysis (trend detection, control charts)",
+                "Anomaly Detection (outlier identification)"
+            ],
+            "endpoints": [
+                "POST /api/statistics/analyze - Comprehensive dataset analysis",
+                "POST /api/statistics/forecast - Forecast future values",
+                "POST /api/statistics/quality-score - Quality score analysis",
+                "POST /api/statistics/detect-anomalies - Anomaly detection",
+                "GET /api/statistics/docs - This documentation"
+            ]
+        }
+        
+        return Response({
+            "success": True,
+            "documentation": docs
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ===== ARMATURE Fabric Endpoints =====
+
+@app.post("/api/armature/initiate")
+def initiate_certification(request: Request) -> Response:
+    """Initiate new certification process."""
+    try:
+        system_name = request.body.get("system_name")
+        cert_type = request.body.get("cert_type", "iso_27001")
+        target_date_str = request.body.get("target_date")
+        
+        if not system_name:
+            return Response({"error": "Missing system_name parameter"}, status_code=400)
+            
+        if not target_date_str:
+            return Response({"error": "Missing target_date parameter"}, status_code=400)
+            
+        # Parse target date
+        from datetime import datetime
+        target_date = datetime.fromisoformat(target_date_str.replace('Z', '+00:00'))
+        
+        # Convert cert type
+        try:
+            cert_type_enum = CertificationType(cert_type)
+        except ValueError:
+            return Response({"error": f"Invalid cert_type: {cert_type}"}, status_code=400)
+            
+        package_id = armature_engine.initiate_certification(
+            system_name=system_name,
+            cert_type=cert_type_enum,
+            target_date=target_date
+        )
+        
+        return Response({
+            "success": True,
+            "package_id": package_id,
+            "system_name": system_name,
+            "certification_type": cert_type
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/armature/validate")
+def validate_certification_package(request: Request) -> Response:
+    """Validate certification package."""
+    try:
+        package_id = request.body.get("package_id")
+        
+        if not package_id:
+            return Response({"error": "Missing package_id parameter"}, status_code=400)
+            
+        result = armature_engine.validate_certification_package(package_id)
+        
+        return Response({
+            "success": True,
+            "validation": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/armature/status/{package_id}")
+def get_certification_status(request: Request) -> Response:
+    """Get certification status report."""
+    try:
+        package_id = request.path_params.get("package_id")
+        
+        result = armature_engine.generate_status_report(package_id)
+        
+        return Response({
+            "success": True,
+            "status": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/armature/docs")
+def armature_docs(request: Request) -> Response:
+    """Get ARMATURE Fabric documentation."""
+    try:
+        docs = {
+            "name": "ARMATURE Fabric",
+            "description": "Accreditation and certification process automation",
+            "features": [
+                "Certification Workflow Management",
+                "Evidence Package Assembly",
+                "Accreditation Tracking",
+                "Stakeholder Coordination",
+                "Compliance Validation",
+                "Audit Trail Management"
+            ],
+            "supported_certifications": [
+                "ISO 27001",
+                "SOC 2",
+                "FedRAMP",
+                "CMMC",
+                "HIPAA",
+                "PCI DSS",
+                "NIST 800-53",
+                "Custom"
+            ],
+            "endpoints": [
+                "POST /api/armature/initiate - Initiate certification process",
+                "POST /api/armature/validate - Validate certification package",
+                "GET /api/armature/status/{package_id} - Get status report",
+                "GET /api/armature/docs - This documentation"
+            ]
+        }
+        
+        return Response({
+            "success": True,
+            "documentation": docs
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+# ===== Dynamics for Government Endpoints =====
+
+@app.post("/api/dynamics/contact/create")
+def create_contact(request: Request) -> Response:
+    """Create a new contact in CRM."""
+    try:
+        contact_id = request.body.get("contact_id")
+        first_name = request.body.get("first_name")
+        last_name = request.body.get("last_name")
+        email = request.body.get("email")
+        
+        if not all([contact_id, first_name, last_name, email]):
+            return Response({"error": "Missing required parameters"}, status_code=400)
+            
+        result = dynamics_engine.crm.create_contact(
+            contact_id=contact_id,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone=request.body.get("phone", ""),
+            organization_id=request.body.get("organization_id", ""),
+            role=request.body.get("role", "")
+        )
+        
+        return Response({
+            "success": True,
+            "contact_id": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.post("/api/dynamics/workflow/initiate")
+def initiate_workflow(request: Request) -> Response:
+    """Initiate a new workflow."""
+    try:
+        workflow_type = request.body.get("workflow_type", "compliance_review")
+        name = request.body.get("name")
+        initiated_by = request.body.get("initiated_by")
+        data = request.body.get("data", {})
+        
+        if not all([name, initiated_by]):
+            return Response({"error": "Missing required parameters"}, status_code=400)
+            
+        # Convert workflow type
+        try:
+            wf_type = WorkflowType(workflow_type)
+        except ValueError:
+            return Response({"error": f"Invalid workflow_type: {workflow_type}"}, status_code=400)
+            
+        instance_id = dynamics_engine.workflows.initiate_workflow(
+            workflow_type=wf_type,
+            name=name,
+            initiated_by=initiated_by,
+            data=data
+        )
+        
+        return Response({
+            "success": True,
+            "instance_id": instance_id,
+            "workflow_type": workflow_type
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/dynamics/workflow/status/{instance_id}")
+def get_workflow_status(request: Request) -> Response:
+    """Get workflow status."""
+    try:
+        instance_id = request.path_params.get("instance_id")
+        
+        result = dynamics_engine.workflows.get_workflow_status(instance_id)
+        
+        return Response({
+            "success": True,
+            "workflow": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/dynamics/dashboard/{user_id}")
+def get_stakeholder_dashboard(request: Request) -> Response:
+    """Get personalized dashboard for stakeholder."""
+    try:
+        user_id = request.path_params.get("user_id")
+        
+        result = dynamics_engine.get_stakeholder_dashboard(user_id)
+        
+        return Response({
+            "success": True,
+            "dashboard": result
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/api/dynamics/docs")
+def dynamics_docs(request: Request) -> Response:
+    """Get Dynamics for Government documentation."""
+    try:
+        docs = {
+            "name": "Microsoft Dynamics for Government",
+            "description": "CRM and process automation for compliance management",
+            "features": [
+                "Compliance Workflow Automation",
+                "Stakeholder Relationship Management",
+                "Document Management",
+                "Task Automation",
+                "Integration Hub",
+                "Analytics & Reporting"
+            ],
+            "workflow_types": [
+                "compliance_review - Compliance review process",
+                "document_approval - Document approval workflow",
+                "audit_preparation - Audit preparation process",
+                "incident_response - Incident response workflow",
+                "risk_assessment - Risk assessment process",
+                "policy_update - Policy update workflow",
+                "vendor_assessment - Vendor assessment process"
+            ],
+            "endpoints": [
+                "POST /api/dynamics/contact/create - Create contact",
+                "POST /api/dynamics/workflow/initiate - Initiate workflow",
+                "GET /api/dynamics/workflow/status/{instance_id} - Get workflow status",
+                "GET /api/dynamics/dashboard/{user_id} - Get user dashboard",
+                "GET /api/dynamics/docs - This documentation"
             ]
         }
         

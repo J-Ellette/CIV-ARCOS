@@ -23,6 +23,9 @@ Implements various compliance and security automation frameworks:
 - HACMS: High-Assurance Cyber Military Systems with formal methods
 - SafeDocs: Parser vulnerability prevention and secure document processing
 - V-SPELLs: Verified Security and Performance Enhancement of Large Legacy Software
+- Statistical Analysis: Advanced statistical analysis for quality metrics
+- ARMATURE Fabric: Accreditation and certification process automation
+- Dynamics for Government: CRM and process automation for compliance
 """
 
 from .scap import (
@@ -256,6 +259,52 @@ from .vspells import (
     AnalysisMethod,
 )
 
+from .statistical_analysis import (
+    StatisticalAnalysisEngine,
+    DescriptiveStatistics,
+    InferentialStatistics,
+    RegressionAnalysis,
+    QualityMetricsAnalyzer,
+    TrendType,
+    DistributionType,
+    StatisticalResult,
+    TrendAnalysis,
+    ControlChart,
+)
+
+from .armature_fabric import (
+    ARMATUREEngine,
+    WorkflowEngine,
+    EvidenceManager,
+    ComplianceValidator,
+    AccreditationTracker,
+    CertificationType,
+    ProcessStage,
+    ProcessStatus,
+    StakeholderRole,
+    EvidenceItem,
+    ControlRequirement,
+    ProcessMilestone,
+    Stakeholder,
+    CertificationPackage,
+)
+
+from .dynamics_gov import (
+    DynamicsEngine,
+    CRMEngine,
+    WorkflowAutomation,
+    DocumentManagement,
+    Contact,
+    Organization,
+    Task,
+    Document,
+    WorkflowInstance,
+    WorkflowType,
+    EntityType,
+    TaskPriority,
+    TaskStatus,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -442,4 +491,44 @@ __all__ = [
     "SecurityEnhancement",
     "PerformanceEnhancement",
     "AnalysisMethod",
+    # Statistical Analysis
+    "StatisticalAnalysisEngine",
+    "DescriptiveStatistics",
+    "InferentialStatistics",
+    "RegressionAnalysis",
+    "QualityMetricsAnalyzer",
+    "TrendType",
+    "DistributionType",
+    "StatisticalResult",
+    "TrendAnalysis",
+    "ControlChart",
+    # ARMATURE Fabric
+    "ARMATUREEngine",
+    "WorkflowEngine",
+    "EvidenceManager",
+    "ComplianceValidator",
+    "AccreditationTracker",
+    "CertificationType",
+    "ProcessStage",
+    "ProcessStatus",
+    "StakeholderRole",
+    "EvidenceItem",
+    "ControlRequirement",
+    "ProcessMilestone",
+    "Stakeholder",
+    "CertificationPackage",
+    # Dynamics for Government
+    "DynamicsEngine",
+    "CRMEngine",
+    "WorkflowAutomation",
+    "DocumentManagement",
+    "Contact",
+    "Organization",
+    "Task",
+    "Document",
+    "WorkflowInstance",
+    "WorkflowType",
+    "EntityType",
+    "TaskPriority",
+    "TaskStatus",
 ]
