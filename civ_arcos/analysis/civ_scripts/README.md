@@ -17,6 +17,34 @@ Following the project philosophy of minimizing external dependencies, these scri
 **Usage:** Tracks line and branch coverage during test execution using `sys.settrace()`  
 **Integration:** Used by `coverage_analyzer.py`
 
+#### TestRunner (civ_pyt.py)
+**Replaces:** `pytest`  
+**Original Tool:** pytest - Python testing framework  
+**Source:** [Emu-Soft/python/TestRunner](https://github.com/J-Ellette/Emu-Soft/tree/main/python/TestRunner)  
+**Usage:** Discovers and runs Python tests with result reporting  
+**Integration:** Can be used as a drop-in replacement for pytest commands
+
+#### TypeChecker (civ_my.py)
+**Replaces:** `mypy`  
+**Original Tool:** mypy - Static type checker for Python  
+**Source:** [Emu-Soft/python/TypeChecker](https://github.com/J-Ellette/Emu-Soft/tree/main/python/TypeChecker)  
+**Usage:** Validates type hints and annotations in Python code  
+**Integration:** Can be used as a drop-in replacement for mypy commands
+
+#### CodeFormatter (civ_bla.py)
+**Replaces:** `black`  
+**Original Tool:** black - Python code formatter  
+**Source:** [Emu-Soft/python/CodeFormatter](https://github.com/J-Ellette/Emu-Soft/tree/main/python/CodeFormatter)  
+**Usage:** Formats Python code for consistency (indentation, whitespace, etc.)  
+**Integration:** Can be used as a drop-in replacement for black commands
+
+#### CodeLinter (civ_fla.py)
+**Replaces:** `flake8`  
+**Original Tool:** flake8 - Python linting tool  
+**Source:** [Emu-Soft/python/CodeLinter](https://github.com/J-Ellette/Emu-Soft/tree/main/python/CodeLinter)  
+**Usage:** Checks Python code for style issues and potential errors  
+**Integration:** Can be used as a drop-in replacement for flake8 commands
+
 #### Submarine (submarine.py)
 **Replaces:** `subprocess` module  
 **Original Tool:** Python standard library subprocess  
@@ -52,8 +80,39 @@ These provide enhanced or documented interfaces to Python standard library modul
 
 All replacement scripts follow the CIV-* naming convention:
 - **CIV-cov** → CodeCoverage (replacement for coverage.py)
+- **CIV-pyt** → TestRunner (replacement for pytest)
+- **CIV-my** → TypeChecker (replacement for mypy)
+- **CIV-bla** → CodeFormatter (replacement for black)
+- **CIV-fla** → CodeLinter (replacement for flake8)
 - Original external tool names are preserved in the Emu-Soft repository
-- Local files use snake_case (e.g., `civ_cov.py`, `submarine.py`)
+- Local files use snake_case (e.g., `civ_cov.py`, `civ_pyt.py`)
+
+## Command-Line Usage
+
+The development tool replacements can be used as drop-in replacements for their external counterparts:
+
+```bash
+# Instead of: pytest
+python -m civ_arcos.analysis.civ_scripts.civ_pyt tests/
+
+# Instead of: mypy civ_arcos/
+python -m civ_arcos.analysis.civ_scripts.civ_my civ_arcos/
+
+# Instead of: black civ_arcos/ tests/
+python -m civ_arcos.analysis.civ_scripts.civ_bla civ_arcos/ tests/
+
+# Instead of: flake8 civ_arcos/ tests/
+python -m civ_arcos.analysis.civ_scripts.civ_fla civ_arcos/ tests/
+```
+
+Alternatively, you can run them directly:
+
+```bash
+python civ_arcos/analysis/civ_scripts/civ_pyt.py tests/
+python civ_arcos/analysis/civ_scripts/civ_my.py civ_arcos/
+python civ_arcos/analysis/civ_scripts/civ_bla.py civ_arcos/
+python civ_arcos/analysis/civ_scripts/civ_fla.py civ_arcos/
+```
 
 ## Adding New Replacements
 
