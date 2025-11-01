@@ -53,6 +53,14 @@ A civilian version of military-grade software assurance following proven ARCOS m
   - **Security Event Collection**: Real-time security event aggregation and analysis
   - **Performance Metrics**: Distributed tracing and performance monitoring
   - **IriusRisk/Threat Dragon**: Export threat models to industry-standard tools
+- **Compliance & Certification Modules**: Enterprise compliance automation suite
+  - **Statistical Analysis**: Advanced statistical analysis for quality metrics, trend detection, and forecasting
+  - **ARMATURE Fabric**: Accreditation and certification process automation (ISO 27001, SOC 2, FedRAMP, CMMC, etc.)
+  - **Dynamics for Government**: CRM and workflow automation for compliance stakeholders
+  - **CIV-SCAP**: Security Content Automation Protocol implementation
+  - **CIV-STIG**: Configuration compliance management
+  - **CIV-ACAS**: Unified vulnerability management
+  - **Multiple Standards**: Support for ISO 27001, SOC 2, FedRAMP, CMMC, HIPAA, PCI DSS, NIST 800-53, and more
 - **Advanced Visualization & Reporting**: Executive-friendly reports and risk visualization
   - **Executive Reports**: Auto-generated PDF/HTML narrative reports with business language
   - **Risk Heatmaps**: Interactive risk maps showing component-level risk visualization
@@ -318,6 +326,50 @@ Get quality badge for specific repo/branch:
 
 **GET /api/status**
 Get system status and evidence count
+
+### Compliance & Certification
+
+**POST /api/statistics/analyze**
+Comprehensive statistical analysis of dataset
+
+**POST /api/statistics/forecast**
+Forecast future metric values using regression
+
+**POST /api/statistics/quality-score**
+Quality score analysis with trend detection
+
+**POST /api/statistics/detect-anomalies**
+Detect anomalies in data
+
+**GET /api/statistics/docs**
+Statistical analysis documentation
+
+**POST /api/armature/initiate**
+Initiate certification process (ISO 27001, SOC 2, FedRAMP, etc.)
+
+**POST /api/armature/validate**
+Validate certification package
+
+**GET /api/armature/status/{package_id}**
+Get certification status report
+
+**GET /api/armature/docs**
+ARMATURE Fabric documentation
+
+**POST /api/dynamics/contact/create**
+Create contact in CRM
+
+**POST /api/dynamics/workflow/initiate**
+Initiate compliance workflow
+
+**GET /api/dynamics/workflow/status/{instance_id}**
+Get workflow status
+
+**GET /api/dynamics/dashboard/{user_id}**
+Get personalized stakeholder dashboard
+
+**GET /api/dynamics/docs**
+Dynamics for Government documentation
 
 ### Plugin Marketplace
 
