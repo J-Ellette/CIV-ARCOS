@@ -84,7 +84,7 @@ class GameWardenPlatform:
         "Artifact Repository",
         "Deployment",
         "Runtime Monitoring"
-    }
+    ]
     
     def __init__(self):
         """Initialize Game Warden platform."""

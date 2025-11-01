@@ -12,7 +12,7 @@ and performance of legacy code without requiring access to source code or
 extensive manual effort.
 """
 
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional
 from datetime import datetime
 from enum import Enum
 import uuid
@@ -62,11 +62,11 @@ class AnalysisMethod(Enum):
 class VSpellsPlatform:
     """
     V-SPELLs (Verified Security and Performance Enhancement of Large Legacy Software).
-    
+
     Automatically enhances security and performance of legacy software through
     binary analysis, verification, and transformation without requiring source code.
     """
-    
+
     # Common legacy vulnerabilities
     LEGACY_VULNERABILITIES = {
         "buffer_overflow": {
@@ -95,7 +95,7 @@ class VSpellsPlatform:
             "mitigation": "Automated synchronization"
         }
     }
-    
+
     # Performance bottlenecks
     PERFORMANCE_BOTTLENECKS = {
         "memory_allocation": {
@@ -119,14 +119,14 @@ class VSpellsPlatform:
             "optimization": "Automated parallelization"
         }
     }
-    
+
     def __init__(self):
         """Initialize V-SPELLs platform."""
         self.projects = {}
         self.analyses = {}
         self.enhancements = {}
         self.verifications = {}
-        
+
     def create_legacy_project(
         self,
         project_name: str,
@@ -138,7 +138,7 @@ class VSpellsPlatform:
     ) -> Dict[str, Any]:
         """
         Create legacy software enhancement project.
-        
+
         Args:
             project_name: Project name
             binary_path: Path to binary/executable
@@ -146,12 +146,12 @@ class VSpellsPlatform:
             size_mb: Binary size in MB
             criticality: System criticality (Low/Medium/High/Critical)
             source_available: Whether source code is available
-            
+
         Returns:
             Project details
         """
         project_id = f"VSPELL-{uuid.uuid4().hex[:12].upper()}"
-        
+
         project = {
             "project_id": project_id,
             "project_name": project_name,
@@ -168,10 +168,10 @@ class VSpellsPlatform:
             "verification_status": "not_started",
             "enhancement_applied": False
         }
-        
+
         self.projects[project_id] = project
         return project
-    
+
     def analyze_binary(
         self,
         project_id: str,
@@ -180,20 +180,20 @@ class VSpellsPlatform:
     ) -> Dict[str, Any]:
         """
         Analyze legacy binary for vulnerabilities and performance issues.
-        
+
         Args:
             project_id: Project ID
             analysis_methods: Analysis methods to use
             deep_analysis: Whether to perform deep analysis
-            
+
         Returns:
             Analysis results
         """
         if project_id not in self.projects:
             raise ValueError(f"Project {project_id} not found")
-        
+
         analysis_id = f"ANALYSIS-{uuid.uuid4().hex[:12].upper()}"
-        
+
         # Simulate comprehensive analysis
         analysis = {
             "analysis_id": analysis_id,
@@ -247,16 +247,16 @@ class VSpellsPlatform:
             "high_vulnerabilities": 1,
             "total_performance_issues": 1
         }
-        
+
         self.analyses[analysis_id] = analysis
-        
+
         # Update project
         project = self.projects[project_id]
         project["analysis_status"] = "completed"
         project["vulnerabilities_found"] = analysis["total_vulnerabilities"]
-        
+
         return analysis
-    
+
     def apply_security_enhancement(
         self,
         project_id: str,
@@ -265,20 +265,20 @@ class VSpellsPlatform:
     ) -> Dict[str, Any]:
         """
         Apply security enhancements to legacy binary.
-        
+
         Args:
             project_id: Project ID
             enhancements: Security enhancements to apply
             verification_level: Verification level (basic/medium/high)
-            
+
         Returns:
             Enhancement results
         """
         if project_id not in self.projects:
             raise ValueError(f"Project {project_id} not found")
-        
+
         enhancement_id = f"ENHANCE-{uuid.uuid4().hex[:12].upper()}"
-        
+
         # Simulate enhancement application
         enhancement = {
             "enhancement_id": enhancement_id,
@@ -312,16 +312,16 @@ class VSpellsPlatform:
             "compatibility_preserved": True,
             "automated_testing_passed": True
         }
-        
+
         self.enhancements[enhancement_id] = enhancement
-        
+
         # Update project
         project = self.projects[project_id]
         project["vulnerabilities_fixed"] = len(enhancement["vulnerabilities_mitigated"])
         project["enhancement_applied"] = True
-        
+
         return enhancement
-    
+
     def apply_performance_enhancement(
         self,
         project_id: str,
@@ -330,20 +330,20 @@ class VSpellsPlatform:
     ) -> Dict[str, Any]:
         """
         Apply performance enhancements to legacy binary.
-        
+
         Args:
             project_id: Project ID
             optimizations: Performance optimizations to apply
             target_speedup: Target speedup factor
-            
+
         Returns:
             Performance enhancement results
         """
         if project_id not in self.projects:
             raise ValueError(f"Project {project_id} not found")
-        
+
         perf_id = f"PERF-{uuid.uuid4().hex[:12].upper()}"
-        
+
         # Simulate performance optimization
         perf_enhancement = {
             "perf_id": perf_id,
@@ -375,13 +375,13 @@ class VSpellsPlatform:
             "functionality_preserved": True,
             "regression_tests_passed": True
         }
-        
+
         # Update project
         project = self.projects[project_id]
         project["performance_improvements"].append(perf_id)
-        
+
         return perf_enhancement
-    
+
     def verify_enhancement(
         self,
         project_id: str,
@@ -390,20 +390,20 @@ class VSpellsPlatform:
     ) -> Dict[str, Any]:
         """
         Verify that enhancements preserve functionality and improve security/performance.
-        
+
         Args:
             project_id: Project ID
             verification_methods: Verification methods to use
             test_suite: Optional test suite to run
-            
+
         Returns:
             Verification results
         """
         if project_id not in self.projects:
             raise ValueError(f"Project {project_id} not found")
-        
+
         verify_id = f"VERIFY-{uuid.uuid4().hex[:12].upper()}"
-        
+
         verification = {
             "verify_id": verify_id,
             "project_id": project_id,
@@ -437,33 +437,33 @@ class VSpellsPlatform:
             "verification_passed": True,
             "deployment_ready": True
         }
-        
+
         self.verifications[verify_id] = verification
-        
+
         # Update project
         project = self.projects[project_id]
         project["verification_status"] = "passed"
-        
+
         return verification
-    
+
     def generate_enhancement_report(
         self,
         project_id: str
     ) -> Dict[str, Any]:
         """
         Generate comprehensive enhancement report.
-        
+
         Args:
             project_id: Project ID
-            
+
         Returns:
             Enhancement report
         """
         if project_id not in self.projects:
             raise ValueError(f"Project {project_id} not found")
-        
+
         project = self.projects[project_id]
-        
+
         report = {
             "report_id": f"REPORT-{uuid.uuid4().hex[:12].upper()}",
             "project_id": project_id,
@@ -472,8 +472,10 @@ class VSpellsPlatform:
             "executive_summary": {
                 "vulnerabilities_found": project["vulnerabilities_found"],
                 "vulnerabilities_fixed": project["vulnerabilities_fixed"],
-                "fix_rate": (project["vulnerabilities_fixed"] / project["vulnerabilities_found"] * 100) 
-                           if project["vulnerabilities_found"] > 0 else 0,
+                "fix_rate": (
+                    (project["vulnerabilities_fixed"] / project["vulnerabilities_found"] * 100)
+                    if project["vulnerabilities_found"] > 0 else 0
+                ),
                 "performance_improvements": len(project["performance_improvements"]),
                 "enhancement_status": "Completed" if project["enhancement_applied"] else "Pending"
             },
@@ -506,31 +508,31 @@ class VSpellsPlatform:
                 "roi": "High - Automated approach vs manual rewrite"
             }
         }
-        
+
         return report
-    
+
     def estimate_enhancement_effort(
         self,
         project_id: str
     ) -> Dict[str, Any]:
         """
         Estimate effort required for enhancement.
-        
+
         Args:
             project_id: Project ID
-            
+
         Returns:
             Effort estimation
         """
         if project_id not in self.projects:
             raise ValueError(f"Project {project_id} not found")
-        
+
         project = self.projects[project_id]
-        
+
         # Estimate based on size and complexity
         size_factor = project["size_mb"] / 10  # Base: 10MB
         complexity_factor = 1.5 if project["language"] in ["assembly", "fortran"] else 1.0
-        
+
         estimation = {
             "project_id": project_id,
             "estimation_date": datetime.now().isoformat(),
@@ -546,17 +548,17 @@ class VSpellsPlatform:
                 "High criticality" if project["criticality"] in ["High", "Critical"] else "Normal criticality"
             ]
         }
-        
+
         return estimation
-    
+
     def get_project(self, project_id: str) -> Optional[Dict[str, Any]]:
         """Get project by ID."""
         return self.projects.get(project_id)
-    
+
     def get_analysis(self, analysis_id: str) -> Optional[Dict[str, Any]]:
         """Get analysis by ID."""
         return self.analyses.get(analysis_id)
-    
+
     def list_enhanced_projects(self) -> List[Dict[str, Any]]:
         """List all projects with applied enhancements."""
         return [
