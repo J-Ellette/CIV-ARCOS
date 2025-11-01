@@ -11,7 +11,7 @@ Any newly created, recreated, emulated software will also need to be copied http
 Skip redundancies if I have double listed, or already integrated something into CIV-ARCOS. 
 When complete with each round of implementation, update this md to note the item as (COMPLETE)
 
-Work through one at a time, and then mark each item as (COMPLETE) once you are done implementing them.
+Work through one or more at a time, and then mark each item as (COMPLETE) once you are done implementing them.
 
 ## CIV-SCAP: (COMPLETE)
 Automated compliance content and protocols.
