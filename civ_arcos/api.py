@@ -22,6 +22,8 @@ from civ_arcos.analysis.collectors import (
     TestGenerationCollector,
     ComprehensiveAnalysisCollector,
 )
+from civ_arcos.analysis.powershell_scanner import PowerShellScanner
+from civ_arcos.evidence.collector import Evidence
 from civ_arcos.assurance import (
     AssuranceCase,
     AssuranceCaseBuilder,
@@ -157,6 +159,7 @@ def index(request: Request) -> Response:
                 "POST /api/analysis/security": "Run security scan",
                 "POST /api/analysis/tests": "Generate test suggestions",
                 "POST /api/analysis/comprehensive": "Run comprehensive analysis",
+                "POST /api/analysis/powershell": "Run PowerShell security analysis",
                 "POST /api/assurance/create": "Create an assurance case",
                 "GET /api/assurance/{case_id}": "Get assurance case details",
                 "GET /api/assurance/{case_id}/visualize": "Visualize assurance case",
@@ -708,6 +711,91 @@ def run_comprehensive_analysis(request: Request) -> Response:
         return Response({"error": str(e)}, status_code=500)
 
 
+@app.post("/api/analysis/powershell")
+def run_powershell_analysis(request: Request) -> Response:
+    """
+    Run PowerShell security analysis on PowerShell scripts.
+
+    Request body:
+    {
+        "source_path": "path/to/script.ps1",  # Can be file or directory
+        "content": "PowerShell script content"  # Alternative to source_path
+    }
+    """
+    try:
+        data = request.json()
+        source_path = data.get("source_path")
+        content = data.get("content")
+
+        if not source_path and not content:
+            return Response(
+                {"error": "Either source_path or content is required"}, status_code=400
+            )
+
+        # Initialize scanner
+        scanner = PowerShellScanner()
+
+        # Run scan
+        if content:
+            file_name = data.get("file_name", "script.ps1")
+            scan_result = scanner.scan_content(content, file_name)
+        elif os.path.isfile(source_path):
+            scan_result = scanner.scan_script(source_path)
+        elif os.path.isdir(source_path):
+            scan_result = scanner.scan_directory(source_path)
+        else:
+            return Response(
+                {"error": f"Invalid source_path: {source_path}"}, status_code=400
+            )
+
+        if not scan_result.get("success"):
+            return Response(
+                {"error": scan_result.get("error", "Scan failed")}, status_code=500
+            )
+
+        # Store evidence
+        evidence_ids = []
+        
+        # Generate evidence ID and timestamp
+        import hashlib
+        import json
+        from datetime import datetime, timezone
+        
+        evidence_data_str = json.dumps(scan_result, sort_keys=True)
+        evidence_id = hashlib.sha256(
+            f"powershell_security_scan:{evidence_data_str}".encode()
+        ).hexdigest()[:16]
+        
+        # Create evidence for the scan results
+        evidence = Evidence(
+            id=evidence_id,
+            type="powershell_security_scan",
+            source="powershell_scanner",
+            timestamp=datetime.now(timezone.utc).isoformat(),
+            data=scan_result,
+            provenance={
+                "scanner": scan_result.get("scanner", "built-in"),
+                "total_violations": scan_result.get("total_violations", 0),
+                "summary": scan_result.get("summary", {}),
+                "collection_time": datetime.now(timezone.utc).isoformat(),
+            },
+        )
+        stored_id = evidence_store.store_evidence(evidence)
+        evidence_ids.append(stored_id)
+
+        return Response(
+            {
+                "success": True,
+                "evidence_collected": len(evidence_ids),
+                "evidence_ids": evidence_ids,
+                "results": scan_result,
+            }
+        )
+
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
 @app.post("/api/assurance/create")
 def create_assurance_case(request: Request) -> Response:
     """
@@ -1080,6 +1168,16 @@ def dashboard_compliance(request: Request) -> Response:
     """Dashboard compliance modules page."""
     try:
         html = dashboard_gen.generate_compliance_page()
+        return Response(html, content_type="text/html")
+    except Exception as e:
+        return Response({"error": str(e)}, status_code=500)
+
+
+@app.get("/dashboard/powershell")
+def dashboard_powershell(request: Request) -> Response:
+    """Dashboard PowerShell security analysis page."""
+    try:
+        html = dashboard_gen.generate_powershell_page()
         return Response(html, content_type="text/html")
     except Exception as e:
         return Response({"error": str(e)}, status_code=500)

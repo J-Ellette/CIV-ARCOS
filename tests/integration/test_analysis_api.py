@@ -151,3 +151,137 @@ def test_api_root_shows_new_endpoints(server):
     assert "POST /api/analysis/security" in endpoints
     assert "POST /api/analysis/tests" in endpoints
     assert "POST /api/analysis/comprehensive" in endpoints
+    assert "POST /api/analysis/powershell" in endpoints
+
+
+def test_powershell_analysis_with_content(server):
+    """Test PowerShell analysis API endpoint with content."""
+    url = f"{server}/api/analysis/powershell"
+    
+    # PowerShell script with vulnerabilities
+    ps_code = """
+# Insecure hash algorithm
+$hash = Get-FileHash -Path "file.txt" -Algorithm MD5
+
+# Hardcoded credential
+$password = ConvertTo-SecureString "MyPassword" -AsPlainText -Force
+
+# Unencrypted HTTP
+$data = Invoke-WebRequest -Uri "http://example.com/api"
+"""
+    
+    data = {"content": ps_code}
+    result, status = make_post_request(url, data)
+    
+    assert status == 200
+    assert result["success"] is True
+    assert "evidence_collected" in result
+    assert "results" in result
+    
+    # Check scan results
+    scan_results = result["results"]
+    assert scan_results["success"] is True
+    assert "violations" in scan_results
+    assert "total_violations" in scan_results
+    assert "summary" in scan_results
+    
+    # Should detect some vulnerabilities
+    assert scan_results["total_violations"] > 0
+
+
+def test_powershell_analysis_with_file(server, temp_dir):
+    """Test PowerShell analysis API endpoint with file."""
+    # Create a PowerShell test file
+    ps_file = Path(temp_dir) / "test.ps1"
+    ps_file.write_text("""
+# Safe PowerShell script
+$name = Read-Host -Prompt "Enter name"
+Write-Host "Hello, $name"
+""")
+    
+    url = f"{server}/api/analysis/powershell"
+    data = {"source_path": str(ps_file)}
+    
+    result, status = make_post_request(url, data)
+    
+    assert status == 200
+    assert result["success"] is True
+    assert "evidence_collected" in result
+    assert "results" in result
+
+
+def test_powershell_analysis_missing_input(server):
+    """Test PowerShell analysis API without required input."""
+    url = f"{server}/api/analysis/powershell"
+    data = {}  # No source_path or content
+    
+    result, status = make_post_request(url, data)
+    
+    assert status == 400
+    assert "error" in result
+
+
+def test_powershell_analysis_vulnerability_detection(server):
+    """Test that PowerShell scanner detects specific vulnerabilities."""
+    url = f"{server}/api/analysis/powershell"
+    
+    # Script with multiple known vulnerabilities
+    ps_code = """
+# MD5 hash
+$hash = Get-FileHash -Path "file.txt" -Algorithm MD5
+
+# Hardcoded API key (fake for testing)
+$apiKey = "test_fake_EXAMPLE1234567890abcdefghijklmnopq"
+
+# Invoke-Expression with variable
+Invoke-Expression $userInput
+
+# SQL injection
+$query = "SELECT * FROM users WHERE id = " + $userId
+
+# Execution policy bypass
+Set-ExecutionPolicy Bypass -Scope Process
+"""
+    
+    data = {"content": ps_code}
+    result, status = make_post_request(url, data)
+    
+    assert status == 200
+    scan_results = result["results"]
+    
+    # Check that multiple violations are detected
+    assert scan_results["total_violations"] >= 4
+    
+    # Check severity summary
+    summary = scan_results["summary"]
+    assert summary["critical"] > 0 or summary["high"] > 0
+
+
+def test_powershell_analysis_safe_script(server):
+    """Test PowerShell analysis with safe script."""
+    url = f"{server}/api/analysis/powershell"
+    
+    # Safe PowerShell script
+    ps_code = """
+# Safe script using best practices
+$userName = Read-Host -Prompt "Enter name"
+Write-Host "Hello, $userName"
+
+# Using secure hash
+$hash = Get-FileHash -Path "file.txt" -Algorithm SHA256
+
+# Using HTTPS
+$result = Invoke-RestMethod -Uri "https://api.example.com" -Method Get
+
+# Safe credential handling
+$securePassword = Read-Host -AsSecureString -Prompt "Password"
+"""
+    
+    data = {"content": ps_code}
+    result, status = make_post_request(url, data)
+    
+    assert status == 200
+    scan_results = result["results"]
+    
+    # Should have no or very few violations
+    assert scan_results["total_violations"] == 0 or scan_results["total_violations"] <= 1
