@@ -811,6 +811,36 @@ class DashboardGenerator:
                 "title": "Trust Services Certification",
                 "description": "AICPA SOC 2 Type II compliance framework for SaaS providers. Demonstrates security, availability, and privacy controls through independent attestation."
             },
+            {
+                "name": "ISO 27001",
+                "url": "/dashboard/compliance/iso27001",
+                "title": "Information Security Management System",
+                "description": "ISO/IEC 27001:2022 International Information Security Standard. Implements comprehensive ISMS with 93 Annex A controls for systematic information security management."
+            },
+            {
+                "name": "MIL-STD-498",
+                "url": "/dashboard/compliance/milstd498",
+                "title": "Military Standard Software Development",
+                "description": "US DoD software development and documentation standard. Comprehensive lifecycle management with 13 Data Item Descriptions for defense software systems."
+            },
+            {
+                "name": "DEF STAN 00-970",
+                "url": "/dashboard/compliance/defstan",
+                "title": "UK Defense Software Standards",
+                "description": "UK Ministry of Defence software quality standard. Safety-critical and high-integrity software development with comprehensive quality assurance requirements."
+            },
+            {
+                "name": "SBOM",
+                "url": "/dashboard/compliance/sbom",
+                "title": "Software Bill of Materials",
+                "description": "Federal requirement per OMB guidance. Generate, validate, and scan SBOMs in SPDX and CycloneDX formats with supply chain security analysis."
+            },
+            {
+                "name": "ATO",
+                "url": "/dashboard/compliance/ato",
+                "title": "Authority to Operate",
+                "description": "DoD's Accelerated Authority to Operate for rapid deployment. AI-enabled continuous monitoring and automated security baseline assessment with cATO support."
+            },
         ]
         
         # Generate module cards HTML
@@ -2364,6 +2394,153 @@ const results = await response.json();</code></pre>
                 '<span class="usa-tag">Processing Integrity</span>',
                 '<span class="usa-tag">Confidentiality</span>',
                 '<span class="usa-tag">Privacy</span>'
+            ]
+        )
+
+    def generate_module_page_iso27001(self) -> str:
+        """Generate individual page for ISO 27001 module."""
+        return self._generate_module_page_template(
+            module_id="iso27001",
+            module_name="ISO 27001",
+            title="Information Security Management System",
+            description="ISO/IEC 27001:2022 International Information Security Standard. Implements comprehensive ISMS with 93 Annex A controls across 4 themes for systematic information security management and certification readiness.",
+            features=[
+                "<strong>93 Annex A Controls:</strong> Organizational, People, Physical, and Technological controls",
+                "<strong>Risk Assessment:</strong> Comprehensive information security risk identification and treatment",
+                "<strong>Statement of Applicability:</strong> Control selection justification and documentation",
+                "<strong>Internal Audits:</strong> Audit planning, execution, and findings management",
+                "<strong>Management Reviews:</strong> Executive-level governance and decision tracking",
+                "<strong>Certification Support:</strong> Gap analysis and certification readiness assessment"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/iso27001/isms/create", "Create ISMS implementation"),
+                ("POST /api/compliance/iso27001/risk/assess", "Conduct risk assessment"),
+                ("POST /api/compliance/iso27001/audit/create", "Create internal audit"),
+                ("GET /api/compliance/iso27001/certification/readiness", "Check certification readiness")
+            ],
+            tags=[
+                '<span class="usa-tag">Organizational (37)</span>',
+                '<span class="usa-tag">People (8)</span>',
+                '<span class="usa-tag">Physical (14)</span>',
+                '<span class="usa-tag">Technological (34)</span>'
+            ]
+        )
+
+    def generate_module_page_milstd498(self) -> str:
+        """Generate individual page for MIL-STD-498 module."""
+        return self._generate_module_page_template(
+            module_id="milstd498",
+            module_name="MIL-STD-498",
+            title="Military Standard Software Development",
+            description="US DoD MIL-STD-498 software development and documentation standard. Comprehensive lifecycle management with 13 Data Item Descriptions (DIDs) covering requirements, design, testing, and maintenance for defense software systems.",
+            features=[
+                "<strong>13 Document Types:</strong> Complete software development documentation suite",
+                "<strong>Lifecycle Activities:</strong> System requirements through qualification testing",
+                "<strong>Requirements Traceability:</strong> End-to-end requirement tracking and verification",
+                "<strong>Version Control:</strong> Formal version description documents (VDD)",
+                "<strong>Test Documentation:</strong> Plans, procedures, descriptions, and reports",
+                "<strong>Configuration Management:</strong> Software development files and baselines"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/milstd498/project/create", "Create MIL-STD-498 project"),
+                ("POST /api/compliance/milstd498/document/generate", "Generate required documents"),
+                ("POST /api/compliance/milstd498/requirements/trace", "Trace requirements"),
+                ("GET /api/compliance/milstd498/compliance/status", "Check compliance status")
+            ],
+            tags=[
+                '<span class="usa-tag">SDP</span>',
+                '<span class="usa-tag">SRS</span>',
+                '<span class="usa-tag">SDD</span>',
+                '<span class="usa-tag">STD</span>',
+                '<span class="usa-tag">VDD</span>'
+            ]
+        )
+
+    def generate_module_page_defstan(self) -> str:
+        """Generate individual page for DEF STAN 00-970 module."""
+        return self._generate_module_page_template(
+            module_id="defstan",
+            module_name="DEF STAN 00-970",
+            title="UK Defense Software Standards",
+            description="UK Ministry of Defence DEF STAN 00-970 software quality standard. Safety-critical and high-integrity software development with comprehensive quality assurance, configuration management, and verification requirements.",
+            features=[
+                "<strong>4 Integrity Levels:</strong> From safety-critical (Level 1) to low-integrity (Level 4)",
+                "<strong>Safety Requirements:</strong> Hazard analysis, mitigation, and verification methods",
+                "<strong>Quality Assurance:</strong> Comprehensive QA requirements and metrics tracking",
+                "<strong>Configuration Management:</strong> Formal CM practices for defense systems",
+                "<strong>Verification & Validation:</strong> Multi-level V&V throughout lifecycle",
+                "<strong>Documentation Standards:</strong> Complete technical documentation suite"
+            ],
+            api_endpoints=[
+                ("POST /api/compliance/defstan/assessment/create", "Create DEF STAN assessment"),
+                ("POST /api/compliance/defstan/safety/analyze", "Perform safety analysis"),
+                ("POST /api/compliance/defstan/quality/measure", "Measure quality metrics"),
+                ("GET /api/compliance/defstan/compliance/report", "Generate compliance report")
+            ],
+            tags=[
+                '<span class="usa-tag">Safety-Critical</span>',
+                '<span class="usa-tag">High Integrity</span>',
+                '<span class="usa-tag">Level 1-4</span>',
+                '<span class="usa-tag">UK MoD</span>'
+            ]
+        )
+
+    def generate_module_page_sbom(self) -> str:
+        """Generate individual page for SBOM module."""
+        return self._generate_module_page_template(
+            module_id="sbom",
+            module_name="SBOM",
+            title="Software Bill of Materials",
+            description="Federal requirement per OMB guidance for all government software. Generate, validate, and scan SBOMs in SPDX and CycloneDX formats with comprehensive supply chain security analysis and vulnerability tracking.",
+            features=[
+                "<strong>Multiple Formats:</strong> SPDX, CycloneDX, and custom SBOM formats",
+                "<strong>Component Tracking:</strong> Complete software component inventory with versions",
+                "<strong>License Analysis:</strong> Open source license identification and compliance",
+                "<strong>Vulnerability Scanning:</strong> CVE database integration for security analysis",
+                "<strong>Supply Chain Security:</strong> Dependency risk assessment and validation",
+                "<strong>NTIA Minimum Elements:</strong> Full compliance with federal SBOM requirements"
+            ],
+            api_endpoints=[
+                ("POST /api/sbom/generate", "Generate SBOM from project"),
+                ("POST /api/sbom/scan-dependencies", "Scan for vulnerabilities"),
+                ("POST /api/sbom/validate", "Validate SBOM completeness"),
+                ("GET /api/sbom/formats", "List supported SBOM formats")
+            ],
+            tags=[
+                '<span class="usa-tag">SPDX</span>',
+                '<span class="usa-tag">CycloneDX</span>',
+                '<span class="usa-tag">NTIA</span>',
+                '<span class="usa-tag">OMB</span>'
+            ]
+        )
+
+    def generate_module_page_ato(self) -> str:
+        """Generate individual page for ATO module."""
+        return self._generate_module_page_template(
+            module_id="ato",
+            module_name="ATO",
+            title="Authority to Operate",
+            description="DoD's Accelerated Authority to Operate for rapid software deployment. AI-enabled continuous monitoring, automated security baseline assessment, risk-based decision making, and continuous ATO (cATO) support integrated with DevSecOps.",
+            features=[
+                "<strong>Accelerated Process:</strong> Fast-track security authorization for rapid deployment",
+                "<strong>Security Baselines:</strong> Automated NIST 800-53 control assessment",
+                "<strong>Risk Assessment:</strong> Comprehensive risk identification and scoring",
+                "<strong>Continuous ATO:</strong> Ongoing monitoring and authorization maintenance",
+                "<strong>DevSecOps Integration:</strong> Automated security in CI/CD pipelines",
+                "<strong>Authorization Packages:</strong> Complete ATO package generation and tracking"
+            ],
+            api_endpoints=[
+                ("POST /api/ato/initiate", "Initiate ATO process"),
+                ("POST /api/ato/assess", "Conduct security assessment"),
+                ("POST /api/ato/authorize", "Make authorization decision"),
+                ("POST /api/ato/enable-continuous", "Enable continuous ATO"),
+                ("GET /api/ato/status/{system_name}", "Get ATO status")
+            ],
+            tags=[
+                '<span class="usa-tag">DoD</span>',
+                '<span class="usa-tag">NIST 800-53</span>',
+                '<span class="usa-tag">cATO</span>',
+                '<span class="usa-tag">DevSecOps</span>'
             ]
         )
 
