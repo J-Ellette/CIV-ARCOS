@@ -298,7 +298,7 @@ Get quality badge for specific repo/branch:
 **GET /api/status**
 Get system status and evidence count
 
-### Plugin Marketplace (Step 9)
+### Plugin Marketplace
 
 **POST /api/plugins/register**
 Register a new plugin with security validation
@@ -320,7 +320,7 @@ Validate plugin code security
 Search plugins:
 - `?q=query` - Search query
 
-### Webhook Endpoints (Step 9)
+### Webhook Endpoints
 
 **POST /api/webhooks/github**
 GitHub webhook handler
@@ -334,7 +334,7 @@ Bitbucket webhook handler
 **GET /api/webhooks/endpoints**
 Get available webhook endpoints
 
-### GraphQL (Step 9)
+### GraphQL
 
 **POST /api/graphql**
 Execute GraphQL query:
@@ -348,7 +348,7 @@ Execute GraphQL query:
 **GET /api/graphql/schema**
 Get GraphQL schema
 
-### Community Platform (Step 9)
+### Community Platform
 
 **POST /api/community/patterns/share**
 Share a quality pattern
