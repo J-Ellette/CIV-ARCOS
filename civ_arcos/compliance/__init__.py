@@ -13,6 +13,15 @@ Implements various compliance and security automation frameworks:
 - MIL-STD-498: Military Standard for Software Development
 - ACVP: Automated Cryptographic Validation Protocol
 - RMM: NIST Resource Metadata Management
+- Qualtrax: Quality and compliance software for documentation and audits
+- Hyland: Digital government document management and workflows
+- DISS: Defense Information System for Security (clearance management)
+- CMMC: Cybersecurity Maturity Model Certification ecosystem
+- GCM: UL Solutions Global Compliance Management
+- Game Warden: DevSecOps platform for DoD ATO
+- DoD Cyber Exchange: CMMC framework tools and resources
+- HACMS: High-Assurance Cyber Military Systems with formal methods
+- SafeDocs: Parser vulnerability prevention and secure document processing
 """
 
 from .scap import (
@@ -176,6 +185,68 @@ from .rmm_api import (
     create_rmm_client,
 )
 
+from .qualtrax import (
+    QualtraxPlatform,
+    DocumentStatus,
+    AuditType,
+    ComplianceStatus as QualtraxComplianceStatus,
+)
+
+from .hyland import (
+    HylandPlatform,
+    DocumentType as HylandDocumentType,
+    WorkflowStatus,
+    RecordDispositionStatus,
+)
+
+from .diss import (
+    DISSPlatform,
+    ClearanceLevel,
+    InvestigationType,
+    AdjudicationStatus,
+    VisitStatus,
+)
+
+from .cmmc import (
+    CMMCPlatform,
+    CMMCLevel,
+    PracticeStatus,
+    AssessmentStatus as CMMCAssessmentStatus,
+)
+
+from .gcm import (
+    GCMPlatform,
+    ProductCategory,
+    ComplianceStatus as GCMComplianceStatus,
+    RegulatoryRegion,
+)
+
+from .game_warden import (
+    GameWardenPlatform,
+    ATOStatus as GameWardenATOStatus,
+    ImpactLevel,
+    SecurityControlStatus,
+)
+
+from .dod_cyber_exchange import (
+    DoDCyberExchange,
+    ResourceType as CyberExchangeResourceType,
+    SecurityDomain as CyberExchangeSecurityDomain,
+)
+
+from .hacms import (
+    HACMSPlatform,
+    AssuranceLevel,
+    ProofStatus,
+    FormalMethodType,
+)
+
+from .safedocs import (
+    SafeDocsEngine,
+    DocumentFormat,
+    VulnerabilityType as ParserVulnerabilityType,
+)
+
 __all__ = [
     # SCAP
     "SCAPEngine",
@@ -312,4 +383,48 @@ __all__ = [
     "Metadata",
     "Resource",
     "create_rmm_client",
+    # Qualtrax
+    "QualtraxPlatform",
+    "DocumentStatus",
+    "AuditType",
+    "QualtraxComplianceStatus",
+    # Hyland
+    "HylandPlatform",
+    "HylandDocumentType",
+    "WorkflowStatus",
+    "RecordDispositionStatus",
+    # DISS
+    "DISSPlatform",
+    "ClearanceLevel",
+    "InvestigationType",
+    "AdjudicationStatus",
+    "VisitStatus",
+    # CMMC
+    "CMMCPlatform",
+    "CMMCLevel",
+    "PracticeStatus",
+    "CMMCAssessmentStatus",
+    # GCM
+    "GCMPlatform",
+    "ProductCategory",
+    "GCMComplianceStatus",
+    "RegulatoryRegion",
+    # Game Warden
+    "GameWardenPlatform",
+    "GameWardenATOStatus",
+    "ImpactLevel",
+    "SecurityControlStatus",
+    # DoD Cyber Exchange
+    "DoDCyberExchange",
+    "CyberExchangeResourceType",
+    "CyberExchangeSecurityDomain",
+    # HACMS
+    "HACMSPlatform",
+    "AssuranceLevel",
+    "ProofStatus",
+    "FormalMethodType",
+    # SafeDocs
+    "SafeDocsEngine",
+    "DocumentFormat",
+    "ParserVulnerabilityType",
 ]

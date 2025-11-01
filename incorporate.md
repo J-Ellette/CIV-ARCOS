@@ -733,55 +733,55 @@ With an emphasis on automation, this platform integrates compliance as code into
 
 ****************************************
 
-## Qualtrax: 
+## Qualtrax: (COMPLETE) 
 A quality and compliance software that manages documentation, automates processes, and streamlines internal and external audits to ensure real-time regulatory compliance.
 (https://www.ideagen.com/products/qualtrax)
 
 ****************************************
 
-## Hyland Digital Government Solutions: 
+## Hyland Digital Government Solutions: (COMPLETE) 
 Modernizes government operations by digitizing and automating document capture, workflows, and records management to meet compliance requirements.
 (https://www.hyland.com/en/solutions/industries/government)
 
 ****************************************
 
-## Defense Information System for Security (DISS): 
+## Defense Information System for Security (DISS): (COMPLETE) 
 Used by the U.S. Department of Defense (DoD), this is an enterprise-wide system for personnel security, suitability, and credentialing for military, civilian, and contractor personnel. It provides secure communications and automated record-keeping for security clearances and eligibility determinations, replacing the former Joint Personnel Adjudication System (JPAS).
 (https://www.dcsa.mil/Systems-Applications/Defense-Information-System-for-Security-DISS/)
 
 ****************************************
 
-## Cybersecurity Maturity Model Certification (CMMC) Ecosystem: 
+## Cybersecurity Maturity Model Certification (CMMC) Ecosystem: (COMPLETE) 
 Although CMMC is a set of standards rather than a single software, the ecosystem is supported by automated tools and platforms. The Department of Defense establishes criteria to give assurance that contractors' applications meet security standards, and vendors provide tools to assist in achieving and demonstrating that compliance.
 (https://dodcio.defense.gov/cmmc/About/)
 
 ****************************************
 
-## UL Solutions Global Compliance Management (GCM): 
+## UL Solutions Global Compliance Management (GCM): (COMPLETE) 
 This software suite helps businesses and government entities proactively manage regulatory compliance from product design to production launch. It centralizes compliance activities and provides real-time alerts on regulatory updates from over 7,000 sources in more than 200 countries.
 (https://www.ul.com/software/introducing-global-compliance-management-gcm)
 
 ****************************************
 
-## 2F Game Warden (Second Front Systems): 
+## 2F Game Warden (Second Front Systems): (COMPLETE) 
 This commercial DevSecOps platform is designed specifically for defense contractors. It helps them rapidly achieve an Authority to Operate (ATO) for their software, automatically ensuring compliance with DoD security requirements.
 (https://www.secondfront.com/products/game-warden/)
 
 ****************************************
 
-## DoD Cyber Exchange: 
+## DoD Cyber Exchange: (COMPLETE) 
 This resource provides automated tools and information for the Cybersecurity Maturity Model Certification (CMMC) framework. It helps defense contractors adhere to security standards and demonstrate compliance. 
 (https://www.cyber.mil/)
 
 ****************************************
 
-## High-Assurance Cyber Military Systems (HACMS): 
+## High-Assurance Cyber Military Systems (HACMS): (COMPLETE) 
 This program used formal methods to create high-assurance software capable of withstanding cyber threats. The tools developed under HACMS generated machine-checkable proofs that demonstrated the safety and security of code.
 (https://www.darpa.mil/research/programs/high-assurance-cyber-military-systems)
 
 ****************************************
 
-## SafeDocs: 
+## SafeDocs: (COMPLETE) 
 This effort developed tools to address vulnerabilities in software parsers that process electronic documents. The goal was to create safer documents for more secure computing.
 (https://www.darpa.mil/research/programs/safe-documents)
 
