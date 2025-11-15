@@ -1,0 +1,17 @@
+# Testing and Quality Tools (OPTIONAL - Replaced with CIV-scripts)
+# These tools have been replaced with custom implementations in civ_arcos/analysis/civ_scripts/
+# - pytest → CIV-pyt (civ_pyt.py)
+# - coverage → CIV-cov (civ_cov.py)
+# - black → CIV-bla (civ_bla.py)
+# - mypy → CIV-my (civ_my.py)
+# - flake8 → CIV-fla (civ_fla.py)
+#
+# Install these only if you prefer using the original tools:
+# pytest>=7.4.0
+# coverage>=7.3.0
+# black>=23.7.0
+# mypy>=1.5.0
+# flake8>=6.1.0
+
+# Core dependencies (minimal, standard library preferred)
+# We're building our own web framework and ORM equivalents

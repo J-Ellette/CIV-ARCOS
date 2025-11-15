@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  civ-arcos:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+    environment:
+      - ARCOS_DEBUG=false
+      - ARCOS_STORAGE_PATH=/data/evidence
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+    restart: unless-stopped

@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Main CIV-ARCOS service
+  civ-arcos:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+    environment:
+      - ARCOS_DEBUG=false
+      - ARCOS_STORAGE_PATH=/data/evidence
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+    restart: unless-stopped
+    networks:
+      - arcos-network
+
+  # Plugin Development Environment
+  plugin-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./data:/data
+      - ./plugins:/data/plugins
+      - ./workspace:/workspace
+      - ./civ_arcos:/app/civ_arcos
+    environment:
+      - ARCOS_DEBUG=true
+      - ARCOS_STORAGE_PATH=/data/evidence
+      - ARCOS_PORT=8000
+      - PLUGIN_DEV_MODE=true
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+    command: ["python", "-m", "civ_arcos.api"]
+    networks:
+      - arcos-network
+
+  # Development tools container
+  dev-tools:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./workspace:/workspace
+      - ./plugins:/data/plugins
+      - ./civ_arcos:/app/civ_arcos
+    environment:
+      - PYTHONPATH=/app:/workspace
+    command: ["tail", "-f", "/dev/null"]  # Keep container running
+    networks:
+      - arcos-network
+
+networks:
+  arcos-network:
+    driver: bridge

@@ -1,0 +1,31 @@
+{
+  "title": "Test Assurance Case",
+  "description": "A simple test case",
+  "root_goal_id": "goal_1",
+  "nodes": {
+    "goal_1": {
+      "id": "goal_1",
+      "node_type": "GOAL",
+      "title": "System is secure",
+      "description": "The system provides adequate security for user data",
+      "child_ids": ["strategy_1"],
+      "evidence_ids": []
+    },
+    "strategy_1": {
+      "id": "strategy_1", 
+      "node_type": "STRATEGY",
+      "title": "Secure by design",
+      "description": "Implement security controls at design level",
+      "child_ids": ["solution_1"],
+      "evidence_ids": []
+    },
+    "solution_1": {
+      "id": "solution_1",
+      "node_type": "SOLUTION", 
+      "title": "Encryption implemented",
+      "description": "All data is encrypted at rest and in transit",
+      "child_ids": [],
+      "evidence_ids": ["evidence_1"]
+    }
+  }
+}

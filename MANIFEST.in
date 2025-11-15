@@ -1,0 +1,7 @@
+include README.md
+include LICENSE
+include requirements.txt
+include build-guide.md
+recursive-include civ_arcos *.py
+recursive-exclude tests *
+recursive-exclude examples *

@@ -1,0 +1,18 @@
+<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" 
+      viewBox="0 0 1400 1000" 
+      preserveAspectRatio="xMidYMid meet"
+      style="max-width: 100%; height: auto; display: block; margin: 0 auto; background: #f8fafc;">
+      <defs>
+        <style>
+          .drakon-text { font-family: 'Segoe UI', Arial, sans-serif; text-anchor: middle; dominant-baseline: middle; font-weight: 500; }
+          .drakon-node { cursor: pointer; transition: opacity 0.2s ease; }
+          .drakon-node:hover { opacity: 0.8; }
+          .drakon-connection { stroke: #4a5568; stroke-width: 2.5; fill: none; marker-end: url(#arrowhead); }
+          .chart-container { transform: translate(275px, 90px); }
+        </style>
+        <marker id="arrowhead" markerWidth="12" markerHeight="9" refX="11" refY="4.5" orient="auto">
+          <polygon points="0 0, 12 4.5, 0 9" fill="#4a5568" />
+        </marker>
+      </defs>
+      <g class="chart-container">
+    <line x1="393" y1="160" x2="387" y2="260" class="drakon-connection" /><line x1="387" y1="340" x2="273" y2="440" class="drakon-connection" /><line x1="273" y1="520" x2="573" y2="620" class="drakon-connection" /><g class="drakon-node"><rect x="218" y="80" width="350" height="80" fill="#90EE90" stroke="#333333" stroke-width="2" /><text x="393" y="120" class="drakon-text" fill="#000000" font-size="12">System operates safely in all normal operating conditions</text></g><g class="drakon-node"><polygon points="387,260 562,300 387,340 212,300" fill="#87CEEB" stroke="#333333" stroke-width="2" /><text x="387" y="300" class="drakon-text" fill="#000000" font-size="12">Argument by systematic hazard analysis and risk assessment</text></g><g class="drakon-node"><rect x="98" y="440" width="350" height="80" fill="#90EE90" stroke="#333333" stroke-width="2" /><text x="273" y="480" class="drakon-text" fill="#000000" font-size="12">All identified hazards have been eliminated or mitigated to acceptable levels</text></g><g class="drakon-node"><rect x="398" y="620" width="350" height="80" rx="15" ry="15" fill="#FFD700" stroke="#333333" stroke-width="2" /><text x="573" y="660" class="drakon-text" fill="#000000" font-size="12">Hazard Analysis Report v2.1</text></g>  </g></svg>
